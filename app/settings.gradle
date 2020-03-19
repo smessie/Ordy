@@ -1,0 +1,2 @@
+rootProject.name='Ordy'
+include ':app'
