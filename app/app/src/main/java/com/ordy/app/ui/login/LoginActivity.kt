@@ -2,9 +2,7 @@ package com.ordy.app.ui.login
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.fragment.app.activityViewModels
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import com.ordy.app.R
 import com.ordy.app.ui.login.login.LoginFragment
@@ -28,7 +26,9 @@ class LoginActivity : AppCompatActivity() {
 
             when(it) {
                 true -> {
-                    fragmentTransaction.replace(R.id.fragment, LoginFragment())
+                    fragmentTransaction.replace(R.id.fragment,
+                        LoginFragment()
+                    )
                 }
 
                 false -> {

@@ -5,7 +5,7 @@ class Query<T> {
     /**
      * Status of the query
      */
-    var status: QueryStatus = QueryStatus.LOADING
+    var status: QueryStatus = QueryStatus.INITIALIZED
 
     /**
      * Data received from the API.

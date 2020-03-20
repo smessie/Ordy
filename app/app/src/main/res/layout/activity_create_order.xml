@@ -1,36 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.orders.create.CreateOrderActivity"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:divider="@drawable/divider_horizontal"
-    android:showDividers="middle"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.orders.create.CreateOrderActivity">
 
-    <!-- Location -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable name="handlers" type="com.ordy.app.ui.orders.create.CreateOrderHandlers" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:divider="@drawable/divider_horizontal"
+        android:showDividers="middle"
+        android:orientation="vertical">
 
+        <!-- Location -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_location"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/create_order_input_location"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/input_location_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:startIconDrawable="@drawable/ic_location_on_black_24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/input_location_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Choose"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/input_location"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.545" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Deadline -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_location"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
+            android:id="@+id/input_deadline"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/create_order_input_location"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/input_location_button"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:startIconDrawable="@drawable/ic_location_on_black_24dp">
+            android:hint="@string/create_order_input_deadline"
+            app:startIconDrawable="@drawable/ic_access_time_black_24dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -39,50 +76,21 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/input_location_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="Choose"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/input_location"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.545" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- Deadline -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_deadline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/create_order_input_deadline"
-        app:startIconDrawable="@drawable/ic_access_time_black_24dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <com.google.android.material.textfield.TextInputEditText
+        <!-- Group -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1" />
+            android:hint="@string/create_order_input_group"
+            app:startIconDrawable="@drawable/ic_group_black_24dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <AutoCompleteTextView
+                android:id="@+id/input_group_values"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1" />
 
-    <!-- Group -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/create_order_input_group"
-        app:startIconDrawable="@drawable/ic_group_black_24dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-
-        <AutoCompleteTextView
-            android:id="@+id/input_group_values"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-</LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+</layout>

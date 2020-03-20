@@ -17,48 +17,21 @@ class FetchHandler {
          * @return Wrapped Query object.
          */
         fun <T> handleLive(observable: Observable<T>): MutableLiveData<Query<T>> {
-            val query = Query<T>()
-
-            // Set the query in loading state.
-            query.status = QueryStatus.LOADING
-
-            val liveData = MutableLiveData(query)
-
-            val fetch = observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { result ->
-                        query.data = result
-
-                        // Set the query in success state.
-                        query.status = QueryStatus.SUCCESS
-
-                        // Update the livedata.
-                        liveData.postValue(query)
-                    },
-
-                    { error ->
-                        query.error = ErrorHandler.handle(error)
-
-                        // Set the query in error state.
-                        query.status = QueryStatus.ERROR
-
-                        // Update the livedata.
-                        liveData.postValue(query)
-                    }
-                )
-
-            return liveData
+            return handle(MutableLiveData(Query()), observable)
         }
 
-        fun <T> handle(observable: Observable<T>, handler: QueryHandler<T>) {
+        fun <T> handle(mutableLiveData: MutableLiveData<Query<T>>, observable: Observable<T>): MutableLiveData<Query<T>> {
 
             val query = Query<T>()
 
             // Set the query in loading state.
             query.status = QueryStatus.LOADING
 
-            val fetch = observable.subscribeOn(Schedulers.io())
+            // Update the livedata.
+            mutableLiveData.postValue(query)
+
+            val fetch = observable
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { result ->
@@ -67,8 +40,8 @@ class FetchHandler {
                         // Set the query in success state.
                         query.status = QueryStatus.SUCCESS
 
-                        // Execute the handler.
-                        handler.onQuerySuccess(result)
+                        // Update the livedata.
+                        mutableLiveData.postValue(query)
                     },
 
                     { error ->
@@ -80,9 +53,11 @@ class FetchHandler {
                         query.status = QueryStatus.ERROR
 
                         // Execute the handler.
-                        handler.onQueryError(errorObject)
+                        mutableLiveData.postValue(query)
                     }
                 )
+
+            return mutableLiveData
         }
     }
 }

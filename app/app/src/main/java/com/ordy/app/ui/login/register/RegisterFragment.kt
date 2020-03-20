@@ -9,25 +9,28 @@ import android.widget.Button
 import androidx.fragment.app.activityViewModels
 
 import com.ordy.app.R
+import com.ordy.app.databinding.FragmentRegisterBinding
 import com.ordy.app.ui.login.LoginViewModel
 
 class RegisterFragment : Fragment() {
 
+    private val viewModel: LoginViewModel by activityViewModels()
+
+    /**
+     * Called when view is created.
+     */
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_register, container, false)
+        inflater.inflate(R.layout.fragment_register, container, false)
 
-        // Get the viewmodel from the activity.
-        val viewModel: LoginViewModel by activityViewModels()
+        // Create binding for the fragment.
+        val binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        binding.handlers = RegisterHandlers(this, viewModel)
 
-        // Open register when clicked on the goto register button.
-        view.findViewById<Button>(R.id.button_goto_login).setOnClickListener {
-            viewModel.openLogin()
-        }
-
-        return view
+        return binding.root
     }
 }

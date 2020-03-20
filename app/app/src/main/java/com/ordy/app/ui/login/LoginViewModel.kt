@@ -1,14 +1,11 @@
 package com.ordy.app.ui.login
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ordy.app.api.apiService
 import com.ordy.app.api.models.UserLogin
 import com.ordy.app.api.util.FetchHandler
-import com.ordy.app.api.util.QueryError
-import com.ordy.app.api.util.QueryHandler
-
+import com.ordy.app.api.util.Query
 class LoginViewModel : ViewModel() {
 
     /**
@@ -18,6 +15,8 @@ class LoginViewModel : ViewModel() {
      */
     val isLogin: MutableLiveData<Boolean> = MutableLiveData(true)
 
+    val loginResult: MutableLiveData<Query<Void>> = MutableLiveData(Query())
+
     /**
      * Attempt to login the user.
      *
@@ -25,17 +24,7 @@ class LoginViewModel : ViewModel() {
      * @param password Given password
      */
     fun login(email: String, password: String) {
-
-        FetchHandler.handle(apiService.login(UserLogin(email, password)), object: QueryHandler<Void> {
-
-            override fun onQuerySuccess(data: Void) {
-                Log.i("BANAAN", "SUCCESS LOGIN")
-            }
-
-            override fun onQueryError(error: QueryError) {
-                Log.i("BANAAN", "FAILED LOGIN")
-            }
-        })
+        FetchHandler.handle(loginResult, apiService.login(UserLogin(email, password)))
     }
 
     /**

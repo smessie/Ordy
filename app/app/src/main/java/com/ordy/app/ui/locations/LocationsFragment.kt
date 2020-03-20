@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ordy.app.R
-import com.ordy.app.ui.groups.GroupsViewModel
-import com.ordy.app.ui.payments.PaymentsViewModel
+import com.ordy.app.databinding.FragmentLocationsBinding
 
 class LocationsFragment : Fragment() {
+
+    private val viewModel: LocationsViewModel by viewModels()
 
     /**
      * Called when view is created.
@@ -20,11 +21,13 @@ class LocationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_locations, container, false)
+        // Inflate the layout for this fragment
+        inflater.inflate(R.layout.fragment_locations, container, false)
 
-        // Create the view model.
-        val viewModel: LocationsViewModel by viewModels()
+        // Create binding for the fragment.
+        val binding = FragmentLocationsBinding.inflate(inflater, container, false)
+        binding.handlers = LocationsBindings(this, viewModel)
 
-        return view
+        return binding.root
     }
 }

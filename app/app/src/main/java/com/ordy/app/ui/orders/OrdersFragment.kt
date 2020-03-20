@@ -19,6 +19,8 @@ class OrdersFragment : Fragment() {
 
     private lateinit var tabsAdapter: TabsAdapter
 
+    private val viewModel: OrdersViewModel by viewModels()
+
     /**
      * Called when view is created.
      */
@@ -28,9 +30,6 @@ class OrdersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_orders, container, false)
-
-        // Create the view model.
-        val viewModel: OrdersViewModel by viewModels()
 
         // Create the tabs adapter.
         tabsAdapter = TabsAdapter(childFragmentManager)

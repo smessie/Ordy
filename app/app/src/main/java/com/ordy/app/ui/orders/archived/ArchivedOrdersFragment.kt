@@ -5,9 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.ordy.app.R
+import com.ordy.app.databinding.FragmentOrdersArchivedBinding
+import com.ordy.app.ui.orders.OrdersViewModel
 
 class ArchivedOrdersFragment : Fragment() {
+
+    private val viewModel: OrdersViewModel by viewModels()
 
     /**
      * Called when view is created.
@@ -17,8 +22,11 @@ class ArchivedOrdersFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_orders_archived, container, false)
 
-        return view
+        // Create binding for the fragment.
+        val binding = FragmentOrdersArchivedBinding.inflate(inflater, container, false)
+        binding.handlers = ArchivedOrdersHandlers(this, viewModel)
+
+        return binding.root
     }
 }
