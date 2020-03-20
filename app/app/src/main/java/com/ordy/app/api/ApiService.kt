@@ -17,7 +17,7 @@ interface ApiService {
     fun users(): Observable<List<User>>
 
     @POST("auth/login")
-    fun login(@Body body: UserLogin): Observable<Boolean>
+    fun login(@Body body: UserLogin): Observable<Void>
 
     /**
      * Create function for creating the Api Service.

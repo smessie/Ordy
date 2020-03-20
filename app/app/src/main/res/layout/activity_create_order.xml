@@ -34,7 +34,8 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,7 +48,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/inputLocation"
+            app:layout_constraintStart_toEndOf="@+id/input_location"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.545" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -63,7 +64,8 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,7 +81,8 @@
         <AutoCompleteTextView
             android:id="@+id/input_group_values"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

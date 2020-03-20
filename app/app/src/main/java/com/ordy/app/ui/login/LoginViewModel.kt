@@ -26,9 +26,9 @@ class LoginViewModel : ViewModel() {
      */
     fun login(email: String, password: String) {
 
-        FetchHandler.handle(apiService.login(UserLogin(email, password)), object: QueryHandler<Boolean> {
+        FetchHandler.handle(apiService.login(UserLogin(email, password)), object: QueryHandler<Void> {
 
-            override fun onQuerySuccess(data: Boolean) {
+            override fun onQuerySuccess(data: Void) {
                 Log.i("BANAAN", "SUCCESS LOGIN")
             }
 
