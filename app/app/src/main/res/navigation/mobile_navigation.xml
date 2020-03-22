@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_orders">
+
+    <fragment
+        android:id="@+id/navigation_orders"
+        android:name="com.ordy.app.ui.orders.OrdersFragment"
+        android:label="@string/title_orders"
+        tools:layout="@layout/fragment_orders" />
+
+    <fragment
+        android:id="@+id/navigation_groups"
+        android:name="com.ordy.app.ui.groups.GroupsFragment"
+        android:label="@string/title_groups"
+        tools:layout="@layout/fragment_groups" />
+
+    <fragment
+        android:id="@+id/navigation_payments"
+        android:name="com.ordy.app.ui.payments.PaymentsFragment"
+        android:label="@string/title_payments"
+        tools:layout="@layout/fragment_payments" />
+
+    <fragment
+        android:id="@+id/navigation_locations"
+        android:name="com.ordy.app.ui.locations.LocationsFragment"
+        android:label="@string/title_locations"
+        tools:layout="@layout/fragment_locations" />
+</navigation>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="speeddial_order" type="id" />
+    <item name="speeddial_group" type="id" />
+    <item name="speeddial_login" type="id" />
+</resources>
