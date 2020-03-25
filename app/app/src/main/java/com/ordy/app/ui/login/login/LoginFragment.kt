@@ -1,5 +1,6 @@
 package com.ordy.app.ui.login.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,13 +12,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.ordy.app.MainActivity
 import com.ordy.app.R
+import com.ordy.app.api.util.ErrorHandler
+import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentLoginBinding
 import com.ordy.app.ui.login.LoginViewModel
 import com.ordy.app.util.InputUtil
+import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
+import kotlinx.android.synthetic.main.fragment_login.view.input_email
 
 class LoginFragment : Fragment() {
 
@@ -45,15 +52,22 @@ class LoginFragment : Fragment() {
             when(it.status) {
 
                 QueryStatus.LOADING -> {
-                    Log.i("BANAAN", "NOW LOADING")
+                    Snackbar.make(requireView(), "Attempting to login...", Snackbar.LENGTH_INDEFINITE).show()
                 }
 
                 QueryStatus.SUCCESS -> {
-                    Log.i("BANAAN", "DONE LOADING")
+                    // Open the main activity
+                    val intent = Intent(this.context, MainActivity::class.java)
+                    startActivity(intent)
                 }
 
                 QueryStatus.ERROR -> {
-                    Log.i("BANAAN", "ERROR LOADING")
+                    ErrorHandler.handleInputs(it.error, view, listOf(
+                        InputField("email", this.input_email),
+                        InputField("password", this.input_password)
+                    ))
+
+                    ErrorHandler.handleGeneral(it.error, view)
                 }
             }
         })
