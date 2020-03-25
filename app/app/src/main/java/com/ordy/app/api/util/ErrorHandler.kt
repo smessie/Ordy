@@ -13,15 +13,16 @@ class ErrorHandler {
     companion object {
 
         /**
-         * Handle an error, received from RetroFit.
+         * Parse an error, received from RetroFit.
          *
          * @return Wrapped Query Error object.
          */
-        fun handle(error: Throwable): QueryError {
+        fun parse(error: Throwable): QueryError {
 
             val queryError = QueryError()
             queryError.error = error
 
+            // Print the error message to the console for debugging
             error.printStackTrace()
 
             // Handle HTTP Exceptions.
@@ -57,7 +58,7 @@ class ErrorHandler {
             // Handle all other exceptions.
             // This can be due to Runtime Errors
             else {
-                queryError.message = "An unknown error has occurred"
+                queryError.message = error.message!!
                 queryError.description = "Something went wrong, please contact a developer."
                 queryError.code = "unknown"
             }
@@ -66,7 +67,37 @@ class ErrorHandler {
         }
 
         /**
-         * Handle field errors.
+         * Handle input errors & general errors.
+         * Will also display the error message when no general error or field error is specified,
+         * but when an error occurred anyway.
+         *
+         * @param queryError QueryError object
+         * @param view Current view
+         * @param fields List of input fields
+         */
+        fun handle(queryError: QueryError?, view: View?, fields: List<InputField>) {
+
+            // Handle input errors.
+            this.handleInputs(queryError, view, fields)
+
+            // Handle general errors.
+            this.handleGeneral(queryError, view)
+
+            // If no general error or input error is specified, but an error occurred anyway.
+            if(queryError != null
+                && queryError.inputErrors.isEmpty()
+                && queryError.generalErrors.isEmpty()
+                && view != null) {
+
+                // Create and show a snackbar with the error message.
+                val snackbar = Snackbar.make(view, queryError.message, Snackbar.LENGTH_LONG)
+                snackbar.view.setBackgroundColor(Color.parseColor("#e74c3c"))
+                snackbar.show()
+            }
+        }
+
+        /**
+         * Handle input errors.
          * Will display an error message underneath the fields that have an error.
          *
          * @param queryError QueryError object

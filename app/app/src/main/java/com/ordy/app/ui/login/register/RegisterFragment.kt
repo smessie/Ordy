@@ -60,13 +60,11 @@ class RegisterFragment : Fragment() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler.handleInputs(it.error, view, listOf(
+                    ErrorHandler.handle(it.error, view, listOf(
                         InputField("username", this.input_register_username),
                         InputField("email", this.input_register_email),
                         InputField("password", this.input_register_password)
                     ))
-
-                    ErrorHandler.handleGeneral(it.error, view)
                 }
             }
         })

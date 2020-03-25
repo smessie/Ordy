@@ -68,12 +68,10 @@ class LoginFragment : Fragment() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler.handleInputs(it.error, view, listOf(
+                    ErrorHandler.handle(it.error, view, listOf(
                         InputField("email", this.input_email),
                         InputField("password", this.input_password)
                     ))
-
-                    ErrorHandler.handleGeneral(it.error, view)
                 }
             }
         })
