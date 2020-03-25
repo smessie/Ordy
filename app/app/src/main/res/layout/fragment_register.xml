@@ -25,11 +25,12 @@
 
         <!-- Username -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_username"
+            android:id="@+id/input_register_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/username"
             app:startIconDrawable="@drawable/ic_person_black_24dp"
+            app:errorEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -41,11 +42,12 @@
 
         <!-- Email -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_email"
+            android:id="@+id/input_register_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email"
             app:startIconDrawable="@drawable/ic_email_black_24dp"
+            app:errorEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -57,11 +59,12 @@
 
         <!-- Password -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_password"
+            android:id="@+id/input_register_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
             app:startIconDrawable="@drawable/ic_lock_outline_black_24dp"
+            app:errorEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -73,11 +76,12 @@
 
         <!-- Repeat Password -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_password_repeat"
+            android:id="@+id/input_register_password_repeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password_repeat"
             app:startIconDrawable="@drawable/ic_lock_outline_black_24dp"
+            app:errorEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -92,7 +96,8 @@
             android:id="@+id/button_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/register" />
+            android:text="@string/register"
+            android:onClick="@{() -> handlers.onRegisterClick()}"/>
 
         <!-- Goto Login Button -->
         <Button
@@ -100,7 +105,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/register_login"
-            style="@style/Widget.MaterialComponents.Button.TextButton" />
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:onClick="@{() -> handlers.onGotoLoginClick()}"/>
 
     </LinearLayout>
 </layout>

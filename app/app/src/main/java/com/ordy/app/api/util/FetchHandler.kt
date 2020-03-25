@@ -1,5 +1,6 @@
 package com.ordy.app.api.util
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.models.User
 import io.reactivex.Observable

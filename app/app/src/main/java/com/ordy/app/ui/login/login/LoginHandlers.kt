@@ -1,9 +1,5 @@
 package com.ordy.app.ui.login.login
 
-import android.util.Log
-import android.view.View
-import com.google.android.material.textfield.TextInputLayout
-import com.ordy.app.R
 import com.ordy.app.ui.login.LoginViewModel
 import com.ordy.app.util.InputUtil
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -25,6 +21,6 @@ class LoginHandlers (val fragment: LoginFragment, val viewModel: LoginViewModel)
      * Open register when clicked on the goto register button
      */
     fun onGotoRegisterClick() {
-        viewModel.openRegister()
+        viewModel.isLogin.postValue(false)
     }
 }

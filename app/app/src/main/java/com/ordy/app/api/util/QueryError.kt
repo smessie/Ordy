@@ -29,4 +29,14 @@ class QueryError {
      * Original error, as received from RetroFit.
      */
     var error: Throwable? = null
+
+    /**
+     * List with general errors.
+     */
+    var generalErrors: List<QueryGeneralError> = emptyList()
+
+    /**
+     * List with input errors.
+     */
+    var inputErrors: List<QueryInputError> = emptyList()
 }

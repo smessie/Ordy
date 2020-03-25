@@ -4,5 +4,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- Horizontal space between items in a LinearLayout -->
-    <dimen name="divider_horizontal">16dp</dimen>
+    <dimen name="divider_horizontal">10dp</dimen>
 </resources>
