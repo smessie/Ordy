@@ -11,5 +11,7 @@ class AppPreferences (val context: Context) {
      */
     var accessToken: String?
         get() = preferences.getString("access_token", "")
-        set(value) = preferences.edit().putString("access_token", value).commit() as Unit
+        set(value) {
+            preferences.edit().putString("access_token", value).commit()
+        }
 }

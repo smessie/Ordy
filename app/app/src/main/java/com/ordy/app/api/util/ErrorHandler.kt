@@ -1,6 +1,5 @@
 package com.ordy.app.api.util
 
-import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -23,6 +22,8 @@ class ErrorHandler {
             val queryError = QueryError()
             queryError.error = error
 
+            error.printStackTrace()
+
             // Handle HTTP Exceptions.
             if(error is HttpException) {
                 queryError.message = error.message()
@@ -38,14 +39,16 @@ class ErrorHandler {
                         // Convert the error body.
                         val errorResult = Gson().fromJson(errorBody!!.charStream(), ErrorResult::class.java)
 
-                        // General errors (when defined)
-                        if (errorResult.generalErrors != null) {
-                            queryError.generalErrors = errorResult.generalErrors
-                        }
+                        if(errorResult != null) {
+                            // General errors (when defined)
+                            if (errorResult.generalErrors != null) {
+                               queryError.generalErrors = errorResult.generalErrors
+                            }
 
-                        // Input errors (when defined)
-                        if (errorResult.inputErrors != null) {
-                            queryError.inputErrors = errorResult.inputErrors
+                            // Input errors (when defined)
+                            if (errorResult.inputErrors != null) {
+                               queryError.inputErrors = errorResult.inputErrors
+                            }
                         }
                     }
                 }
