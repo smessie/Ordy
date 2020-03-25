@@ -124,7 +124,7 @@ interface ApiService {
                     RxJava2CallAdapterFactory.create())
                 .addConverterFactory(
                     GsonConverterFactory.create())
-                .baseUrl("https://api.dev.ordy.ga/")
+                .baseUrl("https://api.dev.geocode.ga/")
                 .build()
 
             return retrofit.create(ApiService::class.java)
