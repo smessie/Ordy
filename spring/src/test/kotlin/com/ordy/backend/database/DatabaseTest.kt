@@ -71,7 +71,7 @@ class DatabaseTest {
     }
 
     @Test
-    fun `Should find cuisine when miltiple cuisines in db`() {
+    fun `Should find cuisine when multiple cuisines in db`() {
         cuisineRepository.save(cuisine)
         val found = cuisineRepository.findById(cuisine.id)
         Assert.isTrue(!found.isEmpty, "not found")
