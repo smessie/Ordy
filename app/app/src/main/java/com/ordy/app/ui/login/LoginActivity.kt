@@ -1,23 +1,23 @@
 package com.ordy.app.ui.login
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.ordy.app.R
+import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.ui.login.login.LoginFragment
 import com.ordy.app.ui.login.register.RegisterFragment
 
 class LoginActivity : AppCompatActivity() {
+
+    private val viewModel: LoginViewModel by viewModels { ApiServiceViewModelFactory(applicationContext) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Set the activity layout file.
         setContentView(R.layout.activity_login)
-
-        // Create the view model.
-        val viewModel: LoginViewModel by viewModels()
 
         // Observe which fragment to show (login or register)
         viewModel.isLogin.observe(this, Observer {

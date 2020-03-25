@@ -1,6 +1,7 @@
 package com.ordy.app.ui.profile
 
-import androidx.lifecycle.ViewModel
+import com.ordy.app.api.ApiService
+import com.ordy.app.api.ApiServiceViewModel
 
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
 }

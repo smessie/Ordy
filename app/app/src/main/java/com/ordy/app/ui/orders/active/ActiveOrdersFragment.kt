@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ordy.app.R
+import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.databinding.FragmentOrdersActiveBinding
 import com.ordy.app.ui.orders.OrdersViewModel
 
 class ActiveOrdersFragment : Fragment() {
 
-    private val viewModel: OrdersViewModel by viewModels()
+    private val viewModel: OrdersViewModel by viewModels { ApiServiceViewModelFactory(requireContext()) }
 
     /**
      * Called when view is created.

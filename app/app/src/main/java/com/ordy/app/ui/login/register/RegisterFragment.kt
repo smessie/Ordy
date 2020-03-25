@@ -1,23 +1,19 @@
 package com.ordy.app.ui.login.register
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
-
 import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentRegisterBinding
 import com.ordy.app.ui.login.LoginViewModel
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_register.*
 
 class RegisterFragment : Fragment() {
@@ -54,17 +50,17 @@ class RegisterFragment : Fragment() {
                 }
 
                 QueryStatus.SUCCESS -> {
-                    Log.i("BANAAN", "DONE LOADING")
+
+                    // Go to the login fragment.
+                    viewModel.isLogin.postValue(true)
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler.handleInputs(it.error, view, listOf(
+                    ErrorHandler.handle(it.error, view, listOf(
                         InputField("username", this.input_register_username),
                         InputField("email", this.input_register_email),
                         InputField("password", this.input_register_password)
                     ))
-
-                    ErrorHandler.handleGeneral(it.error, view)
                 }
             }
         })

@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ordy.app.R
+import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.databinding.FragmentLocationsBinding
 
 class LocationsFragment : Fragment() {
 
-    private val viewModel: LocationsViewModel by viewModels()
+    private val viewModel: LocationsViewModel by viewModels { ApiServiceViewModelFactory(requireContext()) }
 
     /**
      * Called when view is created.

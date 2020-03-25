@@ -1,8 +1,9 @@
 package com.ordy.app.ui.orders
 
-import androidx.lifecycle.ViewModel
+import com.ordy.app.api.ApiService
+import com.ordy.app.api.ApiServiceViewModel
 
-class OrdersViewModel : ViewModel() {
+class OrdersViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
 
 
 }

@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.ordy.app.R
-import com.ordy.app.ui.groups.GroupsViewModel
+import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.ui.orders.active.ActiveOrdersFragment
 import com.ordy.app.ui.orders.archived.ArchivedOrdersFragment
 import com.ordy.app.util.TabsAdapter
@@ -19,7 +19,7 @@ class OrdersFragment : Fragment() {
 
     private lateinit var tabsAdapter: TabsAdapter
 
-    private val viewModel: OrdersViewModel by viewModels()
+    private val viewModel: OrdersViewModel by viewModels { ApiServiceViewModelFactory(requireContext()) }
 
     /**
      * Called when view is created.

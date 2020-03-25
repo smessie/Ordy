@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ordy.app.R
+import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.databinding.FragmentPaymentsBinding
-import com.ordy.app.ui.groups.GroupsViewModel
 
 class PaymentsFragment : Fragment() {
 
-    private val viewModel: PaymentsViewModel by viewModels()
+    private val viewModel: PaymentsViewModel by viewModels { ApiServiceViewModelFactory(requireContext()) }
 
     /**
      * Called when view is created.
