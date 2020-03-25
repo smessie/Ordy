@@ -78,7 +78,7 @@ interface ApiService {
     fun order(@Path("orderId") orderId: Int): Observable<Order>
 
     @GET("/orders/{orderId}/bill")
-     fun orderBill(@Path("orderId") orderId: Int): Observable<Image>
+    fun orderBill(@Path("orderId") orderId: Int): Observable<Image>
 
     @POST("/orders/{orderId}/bill")
     fun createOrderBill(@Path("orderId") orderId: Int, @Path("bill") bill: File): Observable<Order>

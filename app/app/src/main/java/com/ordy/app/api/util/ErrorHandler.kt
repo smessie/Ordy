@@ -38,7 +38,7 @@ class ErrorHandler {
 
                     if(errorBody != null) {
                         // Convert the error body.
-                        val errorResult = Gson().fromJson(errorBody!!.charStream(), ErrorResult::class.java)
+                        val errorResult = Gson().fromJson(errorBody.charStream(), ErrorResult::class.java)
 
                         if(errorResult != null) {
                             // General errors (when defined)
@@ -58,7 +58,7 @@ class ErrorHandler {
             // Handle all other exceptions.
             // This can be due to Runtime Errors
             else {
-                queryError.message = error.message!!
+                queryError.message = error.message ?: "An unknown error has occurred"
                 queryError.description = "Something went wrong, please contact a developer."
                 queryError.code = "unknown"
             }
