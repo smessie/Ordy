@@ -1,10 +1,9 @@
 package com.ordy.backend.database.models
 
-import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "Cuisines")
+@Table(name = "cuisines")
 class Cuisine (
         @Id @GeneratedValue var id: Int = 0,
         @Column(nullable = false) var name: String,

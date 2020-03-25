@@ -3,7 +3,7 @@ package com.ordy.backend.database.models
 import javax.persistence.*
 
 @Entity
-@Table(name = "Locations")
+@Table(name = "locations")
 class Location (
         @Id @GeneratedValue var id: Int = 0,
         @Column(nullable = false) var name: String,

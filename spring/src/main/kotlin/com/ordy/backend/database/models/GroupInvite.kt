@@ -3,7 +3,7 @@ package com.ordy.backend.database.models
 import javax.persistence.*
 
 @Entity
-@Table(name = "GroupInvites")
+@Table(name = "groupInvites")
 class GroupInvite (
         @Id @GeneratedValue val id: Int = 0,
         @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false) var user: User,
