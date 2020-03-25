@@ -11,5 +11,5 @@ data class Group(
     val name: String,
 
     @SerializedName("creator")
-    val user: User
+    val creator: User
 )
