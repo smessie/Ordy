@@ -6,8 +6,8 @@ import javax.persistence.*
 @Table(name = "OrderItems")
 class OrderItem (
     @Id @GeneratedValue var id: Int = 0,
-    @Column(nullable = false) var comment: String,
-    @Column(nullable = false) var paid: Boolean,
+    @Column(nullable = false) var comment: String = "",
+    @Column(nullable = false) var paid: Boolean = false,
     @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false) var order: Order,
     @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false) var item: Item,
     @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false) var user: User
