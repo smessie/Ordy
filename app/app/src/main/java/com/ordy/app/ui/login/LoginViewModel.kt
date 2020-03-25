@@ -3,7 +3,7 @@ package com.ordy.app.ui.login
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ordy.app.api.apiService
-import com.ordy.app.api.models.UserLogin
+import com.ordy.app.api.models.actions.UserLogin
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 class LoginViewModel : ViewModel() {
@@ -24,7 +24,12 @@ class LoginViewModel : ViewModel() {
      * @param password Given password
      */
     fun login(email: String, password: String) {
-        FetchHandler.handle(loginResult, apiService.login(UserLogin(email, password)))
+        FetchHandler.handle(loginResult, apiService.login(
+            UserLogin(
+                email,
+                password
+            )
+        ))
     }
 
     /**
