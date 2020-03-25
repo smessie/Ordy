@@ -1,11 +1,11 @@
 package com.ordy.app.api
 
+import android.content.Context
 import android.media.Image
 import com.ordy.app.api.models.*
 import com.ordy.app.api.models.actions.*
 import io.reactivex.Observable
 import okhttp3.ResponseBody
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,7 +18,7 @@ interface ApiService {
      * Authentication
      */
     @POST("auth/login")
-    fun login(@Body body: UserLogin): Observable<ResponseBody>
+    fun login(@Body body: UserLogin): Observable<AccessToken>
 
     @POST("auth/register")
     fun register(@Body body: UserRegister): Observable<ResponseBody>
@@ -78,7 +78,7 @@ interface ApiService {
     fun order(@Path("orderId") orderId: Int): Observable<Order>
 
     @GET("/orders/{orderId}/bill")
-    fun orderBill(@Path("orderId") orderId: Int): Observable<Image>
+     fun orderBill(@Path("orderId") orderId: Int): Observable<Image>
 
     @POST("/orders/{orderId}/bill")
     fun createOrderBill(@Path("orderId") orderId: Int, @Path("bill") bill: File): Observable<Order>
@@ -113,28 +113,5 @@ interface ApiService {
     @POST("/user/payments/{orderId}/{userId}/notification")
     fun userNotifyDeptor(@Path("orderId") orderId: Int, @Path("userId") userId: Int): Observable<ResponseBody>
 
-    /**
-     * Create function for creating the Api Service.
-     */
-    companion object {
-        fun create(): ApiService {
-
-            val retrofit = Retrofit.Builder()
-                .addCallAdapterFactory(
-                    RxJava2CallAdapterFactory.create())
-                .addConverterFactory(
-                    GsonConverterFactory.create())
-                .baseUrl("https://api.dev.geocode.ga/")
-                .build()
-
-            return retrofit.create(ApiService::class.java)
-        }
-    }
-}
-
-/**
- * Global variable
- */
-val apiService by lazy {
-    ApiService.create()
+    fun create(context: Context)
 }

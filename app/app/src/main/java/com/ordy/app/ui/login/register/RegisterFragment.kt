@@ -54,7 +54,9 @@ class RegisterFragment : Fragment() {
                 }
 
                 QueryStatus.SUCCESS -> {
-                    Log.i("BANAAN", "DONE LOADING")
+
+                    // Go to the login fragment.
+                    viewModel.isLogin.postValue(true)
                 }
 
                 QueryStatus.ERROR -> {

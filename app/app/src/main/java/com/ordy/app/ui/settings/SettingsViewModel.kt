@@ -1,7 +1,8 @@
 package com.ordy.app.ui.settings
 
-import androidx.lifecycle.ViewModel
+import com.ordy.app.api.ApiService
+import com.ordy.app.api.ApiServiceViewModel
 
-class SettingsViewModel : ViewModel() {
+class SettingsViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
 
 }

@@ -23,8 +23,6 @@ class ErrorHandler {
             val queryError = QueryError()
             queryError.error = error
 
-            error.printStackTrace()
-
             // Handle HTTP Exceptions.
             if(error is HttpException) {
                 queryError.message = error.message()

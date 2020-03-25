@@ -8,13 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
+import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentGroupsBinding
 
 
 class GroupsFragment : Fragment() {
 
-    private val viewModel: GroupsViewModel by viewModels()
+    private val viewModel: GroupsViewModel by viewModels { ApiServiceViewModelFactory(requireContext()) }
 
     /**
      * Called when view is created.

@@ -1,12 +1,8 @@
 package com.ordy.app.ui.groups
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.ordy.app.api.apiService
-import com.ordy.app.api.models.User
-import com.ordy.app.api.util.FetchHandler
-import com.ordy.app.api.util.Query
+import com.ordy.app.api.ApiService
+import com.ordy.app.api.ApiServiceViewModel
 
-class GroupsViewModel : ViewModel()  {
+class GroupsViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
 
 }

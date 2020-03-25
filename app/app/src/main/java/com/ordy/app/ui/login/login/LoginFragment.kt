@@ -1,5 +1,6 @@
 package com.ordy.app.ui.login.login
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.ordy.app.AppPreferences
 import com.ordy.app.MainActivity
 import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
@@ -56,6 +58,10 @@ class LoginFragment : Fragment() {
                 }
 
                 QueryStatus.SUCCESS -> {
+
+                    // Store the given access token.
+                    AppPreferences(requireContext()).accessToken = it.requireData().accessToken
+
                     // Open the main activity
                     val intent = Intent(this.context, MainActivity::class.java)
                     startActivity(intent)

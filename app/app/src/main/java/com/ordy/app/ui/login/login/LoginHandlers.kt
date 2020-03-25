@@ -1,5 +1,8 @@
 package com.ordy.app.ui.login.login
 
+import com.ordy.app.api.ApiService
+import com.ordy.app.api.models.actions.UserLogin
+import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.ui.login.LoginViewModel
 import com.ordy.app.util.InputUtil
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -14,7 +17,12 @@ class LoginHandlers (val fragment: LoginFragment, val viewModel: LoginViewModel)
         val email = InputUtil.extractText(fragment.input_email)
         val password = InputUtil.extractText(fragment.input_password)
 
-        viewModel.login(email, password)
+        FetchHandler.handle(viewModel.loginResult, viewModel.apiService.login(
+            UserLogin(
+                email,
+                password
+            )
+        ))
     }
 
     /**
