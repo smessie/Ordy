@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.databinding.FragmentPaymentsBinding
-import com.ordy.app.ui.groups.GroupsViewModel
 
 class PaymentsFragment : Fragment() {
 

@@ -1,12 +1,10 @@
 package com.ordy.app.ui.login
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.ApiService
-import com.ordy.app.api.ApiServiceProvider
 import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.ui.login.login.LoginFragment
 import com.ordy.app.ui.login.register.RegisterFragment

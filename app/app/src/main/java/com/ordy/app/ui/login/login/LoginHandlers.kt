@@ -1,6 +1,5 @@
 package com.ordy.app.ui.login.login
 
-import com.ordy.app.api.ApiService
 import com.ordy.app.api.models.actions.UserLogin
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.ui.login.LoginViewModel

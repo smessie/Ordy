@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.databinding.FragmentOrdersArchivedBinding
 import com.ordy.app.ui.orders.OrdersViewModel

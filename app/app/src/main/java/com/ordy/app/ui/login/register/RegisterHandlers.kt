@@ -1,6 +1,5 @@
 package com.ordy.app.ui.login.register
 
-import com.ordy.app.api.ApiService
 import com.ordy.app.api.models.actions.UserRegister
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.ui.login.LoginViewModel
