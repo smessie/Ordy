@@ -30,7 +30,7 @@ class ApiServiceProvider {
             .addConverterFactory(
                 GsonConverterFactory.create())
             .client(client)
-            .baseUrl("http://dev.api.ordy.ga")
+            .baseUrl("http://192.168.0.151:8080")
             .build()
 
         return retrofit.create(ApiService::class.java)

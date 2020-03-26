@@ -1,6 +1,8 @@
 package com.ordy.app.api.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 data class Order(
@@ -9,7 +11,7 @@ data class Order(
     val id: Int,
 
     @SerializedName("deadline")
-    val deadline: LocalTime,
+    val deadline: LocalDateTime,
 
     @SerializedName("billUrl")
     val billUrl: String,

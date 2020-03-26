@@ -9,18 +9,9 @@
         <variable name="handlers" type="com.ordy.app.ui.orders.archived.ArchivedOrdersHandlers" />
     </data>
 
-    <ScrollView
+    <!-- Orders -->
+    <ListView
+        android:id="@+id/orders_archived"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Archived orders"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </ScrollView>
-
+        android:layout_height="match_parent" />
 </layout>
