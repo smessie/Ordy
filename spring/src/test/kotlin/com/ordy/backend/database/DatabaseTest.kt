@@ -55,7 +55,7 @@ class DatabaseTest {
                     private = false, cuisine = cuisine)
             locationRepository.save(tmpLocation)
             cuisineRepository.save(tmpCuisine)
-            val tmpOrder = Order(deadline = LocalDate.now(), group = tmpGroup, creator = tmpUser, location = tmpLocation)
+            val tmpOrder = Order(deadline = LocalDate.now(), group = tmpGroup, courier = tmpUser, location = tmpLocation)
             val tmpOrderItem = OrderItem(order = tmpOrder, user = tmpUser, item = itemRepository.findAll().first())
             orderRepository.save(tmpOrder)
             orderItemRepository.save(tmpOrderItem)

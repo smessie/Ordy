@@ -12,7 +12,7 @@ class OrderController {
 
     @GetMapping("/{orderId}")
     fun getOrderById(@PathVariable orderId: Int) {
-
+        //TODO: also return: orderedItems: [ { ... }, { ... }, ... , { ... }]
     }
 
     @PostMapping("/{orderId}/bill")
