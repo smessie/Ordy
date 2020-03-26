@@ -19,4 +19,14 @@ class GroupController {
     fun postInvite(@PathVariable groupId: Int, @PathVariable userId: Int) {
 
     }
+
+    @DeleteMapping("/{groupId}/invites/{userId}")
+    fun deleteInvite(@PathVariable groupId: Int, @PathVariable userId: Int) {
+
+    }
+
+    @DeleteMapping("/{groupId}/members/{userId}")
+    fun deleteMember(@PathVariable groupId: Int, @PathVariable userId: Int) {
+
+    }
 }
