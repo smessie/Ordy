@@ -15,7 +15,7 @@ import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewOrderBinding
 import com.ordy.app.ui.orders.overview.general.OrderGeneralFragment
 import com.ordy.app.ui.orders.overview.personal.OrderPersonalFragment
-import com.ordy.app.ui.orders.overview.personal.OrderUsersFragment
+import com.ordy.app.ui.orders.overview.users.OrderUsersFragment
 import com.ordy.app.util.OrderUtil
 import com.ordy.app.util.TabsAdapter
 import com.ordy.app.util.TabsEntry

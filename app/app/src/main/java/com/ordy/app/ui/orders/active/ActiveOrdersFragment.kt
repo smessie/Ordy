@@ -12,7 +12,7 @@ import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.api.util.Query
 import com.ordy.app.databinding.FragmentOrdersActiveBinding
-import com.ordy.app.ui.orders.overview.users.OrdersListAdapter
+import com.ordy.app.ui.orders.OrdersListAdapter
 import com.ordy.app.ui.orders.OrdersViewModel
 import java.lang.IllegalStateException
 

@@ -1,5 +1,6 @@
 package com.ordy.app.util
 
+import android.util.Log
 import com.ordy.app.api.models.OrderItem
 import java.util.*
 
@@ -70,11 +71,41 @@ class OrderUtil {
 
             return itemGroups
         }
+
+        /**
+         * Takes a list of order items and will put them in order item user groups, based on equal user.
+         * @param items List with order items
+         */
+        fun userGroupItems(items: List<OrderItem>): List<OrderItemUserGroup> {
+
+            val itemUserGroups = arrayListOf<OrderItemUserGroup>()
+
+            for(item in items) {
+
+                // Check if the order item already has a corresponding group.
+                val match = itemUserGroups.find { it.username == item.user.username }
+
+                if(match !== null) {
+                    match.items.add(item)
+                } else {
+
+                    // Create a new order item group.
+                    itemUserGroups.add(OrderItemUserGroup(item.user.username, arrayListOf(item)))
+                }
+            }
+
+            return itemUserGroups
+        }
     }
 }
 
 data class OrderItemGroup(
     var name: String,
     var quantity: Int,
+    var items: MutableList<OrderItem>
+)
+
+data class OrderItemUserGroup(
+    var username: String,
     var items: MutableList<OrderItem>
 )

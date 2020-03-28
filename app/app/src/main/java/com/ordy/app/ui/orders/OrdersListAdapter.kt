@@ -1,4 +1,4 @@
-package com.ordy.app.ui.orders.overview.users
+package com.ordy.app.ui.orders
 
 import android.content.Context
 import android.content.Intent
@@ -19,7 +19,7 @@ class OrdersListAdapter(val context: Context?, var orders: Query<List<Order>>): 
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout. , parent, false)
+        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_order_card, parent, false)
 
         when(orders.status) {
 
