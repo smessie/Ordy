@@ -4,12 +4,13 @@ import com.ordy.backend.database.repositories.UserRepository
 import com.ordy.backend.wrappers.AuthLoginWrapper
 import com.ordy.backend.wrappers.AuthRegisterWrapper
 import com.ordy.backend.wrappers.AuthTokenWrapper
+import com.ordy.backend.services.TokenService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
 
 @Service
-class AuthService(@Autowired userRepository: UserRepository) {
+class AuthService(@Autowired userRepository: UserRepository, @Autowired tokenService: TokenService) {
     private final val bCryptRounds = 12
 
     private fun hashPasswd(password: String) : String {
@@ -22,8 +23,8 @@ class AuthService(@Autowired userRepository: UserRepository) {
     }
 
     fun login(loginWrapper: AuthLoginWrapper) : AuthTokenWrapper {
-        //TODO
-        return AuthTokenWrapper("0")
+        val user = userRepository.findByEmail(loginWrapper.email)
+        return AuthTokenWrapper(tokenService.encrypt(user.id))
     }
 
     fun register(registerWrapper: AuthRegisterWrapper) {
