@@ -24,13 +24,15 @@ class AuthService(@Autowired userRepository: UserRepository, @Autowired tokenSer
     }
 
     fun login(loginWrapper: AuthLoginWrapper) : AuthTokenWrapper {
-        val user = userRepository.findByEmail(loginWrapper.email)
-        return AuthTokenWrapper(tokenService.encrypt(user.id))
+        val user = userRepository.findByEmail(loginWrapper.email).get(0)
+        if (checkPasswd(loginWrapper.password, user.password)) {
+            return AuthTokenWrapper(tokenService.encrypt(user.id))
+        }
     }
 
     fun register(registerWrapper: AuthRegisterWrapper) {
         newUser = User()
-        newUser.password = registerWrapper.password
+        newUser.password = hashPasswd(registerWrapper.password)
         newUser.name = registerWrapper.name
         newUser.email = registerWrapper.email
         userRepository.save(newUser)
