@@ -41,6 +41,9 @@ interface ApiService {
     @POST("groups")
     fun createGroup(@Body body: GroupCreate): Observable<Int>
 
+    @GET("groups/{groupId}")
+    fun group(@Path("groupId") groupId: Int): Observable<Group>
+
     @PATCH("groups/{groupId}")
     fun updateGroup(@Path("groupId") groupId: Int, @Body body: GroupUpdate): Observable<Group>
 
