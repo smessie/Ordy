@@ -5,6 +5,7 @@ import com.ordy.backend.wrappers.AuthLoginWrapper
 import com.ordy.backend.wrappers.AuthRegisterWrapper
 import com.ordy.backend.wrappers.AuthTokenWrapper
 import com.ordy.backend.services.TokenService
+import com.ordy.backend.database.models.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
@@ -28,6 +29,10 @@ class AuthService(@Autowired userRepository: UserRepository, @Autowired tokenSer
     }
 
     fun register(registerWrapper: AuthRegisterWrapper) {
-        //TODO
+        newUser = User()
+        newUser.password = registerWrapper.password
+        newUser.name = registerWrapper.name
+        newUser.email = registerWrapper.email
+        userRepository.save(newUser)
     }
 }
