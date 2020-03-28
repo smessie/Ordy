@@ -12,4 +12,3 @@ class GroupWrapper(
 class GroupIdWrapper(
         val groupId: Int
 )
-
