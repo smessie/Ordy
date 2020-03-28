@@ -1,21 +1,29 @@
 package com.ordy.backend.controllers
 
+import com.ordy.backend.services.AuthService
+import com.ordy.backend.wrappers.AuthLoginWrapper
+import com.ordy.backend.wrappers.AuthRegisterWrapper
+import com.ordy.backend.wrappers.AuthTokenWrapper
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 
 @Controller
 @RequestMapping("/auth")
-class AuthController {
+@ResponseStatus(HttpStatus.OK)
+class AuthController(@Autowired val authService: AuthService) {
 
     @PostMapping("/login")
-    fun login() {
-
+    fun login(@RequestBody loginWrapper: AuthLoginWrapper) : AuthTokenWrapper {
+        return authService.login(loginWrapper)
     }
 
     @PostMapping("/register")
-    fun register() {
-
+    fun register(@RequestBody registerWrapper: AuthRegisterWrapper) {
+        return authService.register(registerWrapper)
     }
 }

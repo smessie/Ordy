@@ -3,7 +3,7 @@ package com.ordy.backend.database.models
 import javax.persistence.*
 
 @Entity
-@Table(name = "orderItems")
+@Table(name = "order_items")
 class OrderItem (
     @Id @GeneratedValue var id: Int = 0,
     @Column(nullable = false) var comment: String = "",
