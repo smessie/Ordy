@@ -68,46 +68,46 @@ interface ApiService {
     /**
      * Orders
      */
-    @POST("/orders")
+    @POST("orders")
     fun createOrder(@Body body: OrderCreate): Observable<Order>
 
-    @GET("/orders/{orderId}")
+    @GET("orders/{orderId}")
     fun order(@Path("orderId") orderId: Int): Observable<Order>
 
-    @GET("/orders/{orderId}/bill")
+    @GET("orders/{orderId}/bill")
     fun orderBill(@Path("orderId") orderId: Int): Observable<Image>
 
-    @POST("/orders/{orderId}/bill")
+    @POST("orders/{orderId}/bill")
     fun createOrderBill(@Path("orderId") orderId: Int, @Path("bill") bill: File): Observable<Order>
 
-    @GET("/user/orders")
+    @GET("user/orders")
     fun userOrders(): Observable<List<Order>>
 
-    @PATCH("/user/orders/{orderId}")
+    @PATCH("user/orders/{orderId}")
     fun userUpdateOrders(@Path("orderId") orderId: Int, @Body body: OrderUpdate): Observable<ResponseBody>
 
-    @POST("/user/orders/{orderId}/items")
+    @POST("user/orders/{orderId}/items")
     fun userAddOrderItem(@Path("orderId") orderId: Int, @Body body: OrderAddItem): Observable<OrderItem>
 
-    @PATCH("/user/orders/{orderId}/items/{orderItemId}")
+    @PATCH("user/orders/{orderId}/items/{orderItemId}")
     fun userUpdateOrderItem(@Path("orderId") orderId: Int, @Path("orderItemId") orderItemId: Int, @Body body: OrderUpdateItem): Observable<ResponseBody>
 
-    @DELETE("/user/orders/{orderId}/items/{orderItemId}")
+    @DELETE("user/orders/{orderId}/items/{orderItemId}")
     fun userDeleteOrderItem(@Path("orderId") orderId: Int, @Path("orderItemId") orderItemId: Int): Observable<ResponseBody>
 
     /**
      * Payments
      */
-    @GET("/user/payments/debtors")
+    @GET("user/payments/debtors")
     fun userDebtors(): Observable<List<Payment>>
 
-    @GET("/user/payments/debts")
+    @GET("user/payments/debts")
     fun userDepts(): Observable<List<Payment>>
 
-    @PATCH("/user/payments/{orderId}/{userId}")
+    @PATCH("user/payments/{orderId}/{userId}")
     fun userSetPaid(@Path("orderId") orderId: Int, @Path("userId") userId: Int, @Body body: PaymentUpdate): Observable<ResponseBody>
 
-    @POST("/user/payments/{orderId}/{userId}/notification")
+    @POST("user/payments/{orderId}/{userId}/notification")
     fun userNotifyDeptor(@Path("orderId") orderId: Int, @Path("userId") userId: Int): Observable<ResponseBody>
 
     fun create(context: Context)

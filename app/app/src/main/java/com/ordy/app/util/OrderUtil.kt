@@ -1,0 +1,80 @@
+package com.ordy.app.util
+
+import com.ordy.app.api.models.OrderItem
+import java.util.*
+
+class OrderUtil {
+
+    companion object {
+
+        /**
+         * Get the time left between 2 dates in a simple format
+         * @param date Date
+         */
+        fun timeLeftFormat(date: Date): String {
+            val differenceSec = this.timeLeft(date)
+
+            val hours = differenceSec / 3600
+            val minutes = (differenceSec % 3600) / 60
+            val seconds = differenceSec % 60
+
+            return when {
+                hours >= 1 -> {
+                    "${hours}h ${minutes}m"
+                }
+                minutes >= 1 -> {
+                    "${minutes}m"
+                }
+                seconds >= 1 -> {
+                    "${seconds}s"
+                }
+                else -> {
+                    "Closed"
+                }
+            }
+        }
+
+        /**
+         * Get the time left in seconds for a specific date.
+         * @param date Date
+         */
+        fun timeLeft(date: Date): Long {
+            val difference = date.time - Date().time
+
+            return difference / 1000
+        }
+
+        /**
+         * Takes a list of order items and will put them in order item groups, based on equal name.
+         * This way we can express quantities of order items (eg: 2x Small Pepperoni Pizza)
+         * @param items List with order items
+         */
+        fun groupItems(items: List<OrderItem>): List<OrderItemGroup> {
+
+            val itemGroups = arrayListOf<OrderItemGroup>()
+
+            for(item in items) {
+
+                // Check if the order item already has a corresponding group.
+                val match = itemGroups.find { it.name.toLowerCase() == item.name.toLowerCase() }
+
+                if(match !== null) {
+                    match.quantity += 1
+                    match.items.add(item)
+                } else {
+
+                    // Create a new order item group.
+                    itemGroups.add(OrderItemGroup(item.name, 1, arrayListOf(item)))
+                }
+            }
+
+            return itemGroups
+        }
+    }
+}
+
+data class OrderItemGroup(
+    var name: String,
+    var quantity: Int,
+    var items: MutableList<OrderItem>
+)

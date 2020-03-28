@@ -14,6 +14,21 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <style name="Widget.AppTheme.Button.IconButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:backgroundTint">@android:color/white</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">0dp</item>
+        <item name="rippleColor">@android:color/darker_gray</item>
+    </style>
+
     <style name="LoginHeaderText">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@android:color/white</item>
@@ -29,5 +44,10 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:layout_marginTop">15dp</item>
         <item name="android:layout_marginBottom">15dp</item>
+    </style>
+
+    <style name="Title">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

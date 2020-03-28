@@ -1,4 +1,4 @@
-package com.ordy.app.ui.orders
+package com.ordy.app.ui.orders.overview.users
 
 import android.content.Context
 import android.content.Intent
@@ -6,19 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import androidx.core.content.ContextCompat.startActivity
 import com.ordy.app.R
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
+import com.ordy.app.util.OrderUtil
 import kotlinx.android.synthetic.main.list_order_card.view.*
+import java.text.SimpleDateFormat
 
 class OrdersListAdapter(val context: Context?, var orders: Query<List<Order>>): BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_order_card, parent, false)
+        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout. , parent, false)
 
         when(orders.status) {
 
@@ -41,8 +42,8 @@ class OrdersListAdapter(val context: Context?, var orders: Query<List<Order>>): 
                 // Assign the data.
                 view.order_location_name.text = order.location.name
                 view.order_group_name.text = order.group.name
-                //view.order_deadline_time.text = "Deadline: ${order.deadline}"
-                view.order_deadline_time_left.text = "10 m"
+                view.order_deadline_time.text = "Closing on: ${SimpleDateFormat("HH:mm").format(order.deadline)}"
+                view.order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
                 view.order_courier_name.text = order.courier.username
 
                 // Set click handler.

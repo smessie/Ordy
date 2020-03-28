@@ -12,7 +12,7 @@ import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.api.util.Query
 import com.ordy.app.databinding.FragmentOrdersArchivedBinding
-import com.ordy.app.ui.orders.OrdersListAdapter
+import com.ordy.app.ui.orders.overview.users.OrdersListAdapter
 import com.ordy.app.ui.orders.OrdersViewModel
 
 class ArchivedOrdersFragment : Fragment() {
@@ -35,7 +35,10 @@ class ArchivedOrdersFragment : Fragment() {
         binding.handlers = ArchivedOrdersHandlers(this, viewModel)
 
         // Create the list view adapter
-        listAdapter = OrdersListAdapter(requireContext(), Query())
+        listAdapter = OrdersListAdapter(
+            requireContext(),
+            Query()
+        )
         binding.root.findViewById<ListView>(R.id.orders_archived).adapter = listAdapter
 
         return binding.root

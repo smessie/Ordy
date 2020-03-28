@@ -14,4 +14,15 @@ class AppPreferences (val context: Context) {
         set(value) {
             preferences.edit().putString("access_token", value).commit()
         }
+
+    /**
+    * User ID of the logged in user
+    */
+    var userId: Int?
+        get() = preferences.getInt("user_id", 1)
+        set(value) {
+            if (value != null) {
+                preferences.edit().putInt("user_id", value).commit()
+            }
+        }
 }

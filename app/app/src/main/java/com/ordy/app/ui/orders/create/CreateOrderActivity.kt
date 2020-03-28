@@ -16,9 +16,6 @@ class CreateOrderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Set the activity layout file.
-        setContentView(R.layout.activity_create_order)
-
         // Create binding for the activity.
         val binding: ActivityCreateOrderBinding = DataBindingUtil.setContentView(this, R.layout.activity_create_order)
         binding.handlers = CreateOrderHandlers(this, viewModel)
