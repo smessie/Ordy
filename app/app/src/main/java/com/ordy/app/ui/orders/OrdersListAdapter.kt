@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.list_order_card.view.*
 import kotlinx.android.synthetic.main.list_order_card.view.order_deadline_time_left
 import java.text.SimpleDateFormat
 
-class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, var orders: Query<List<Order>>): BaseAdapter() {
+class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, var orders: Query<List<Order>>, val  orderStatus: OrdersStatus): BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -36,7 +36,7 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
             }
 
             QueryStatus.SUCCESS -> {
-                val order = orders.requireData()[position]
+                val order = OrderUtil.filterOrdersStatus(orders.requireData(), orderStatus)[position]
 
                 // Stop the shimmer effect & hide.
                 view.order_loading.stopShimmer()
@@ -82,7 +82,7 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
     override fun getCount(): Int {
         return when(orders.status) {
             QueryStatus.LOADING -> 4
-            QueryStatus.SUCCESS -> orders.requireData().size
+            QueryStatus.SUCCESS -> OrderUtil.filterOrdersStatus(orders.requireData(), orderStatus).size
             else -> 0
         }
     }

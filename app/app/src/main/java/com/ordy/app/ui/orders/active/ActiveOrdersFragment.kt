@@ -15,6 +15,7 @@ import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.api.util.Query
 import com.ordy.app.databinding.FragmentOrdersActiveBinding
 import com.ordy.app.ui.orders.OrdersListAdapter
+import com.ordy.app.ui.orders.OrdersStatus
 import com.ordy.app.ui.orders.OrdersViewModel
 import java.lang.IllegalStateException
 
@@ -43,7 +44,8 @@ class ActiveOrdersFragment : Fragment() {
         listAdapter = OrdersListAdapter(
             activity as AppCompatActivity,
             requireContext(),
-            Query()
+            Query(),
+            OrdersStatus.ACTIVE
         )
 
         binding.root.findViewById<ListView>(R.id.orders_active).adapter = listAdapter

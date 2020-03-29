@@ -1,7 +1,9 @@
 package com.ordy.app.util
 
 import android.util.Log
+import com.ordy.app.api.models.Order
 import com.ordy.app.api.models.OrderItem
+import com.ordy.app.ui.orders.OrdersStatus
 import java.util.*
 
 class OrderUtil {
@@ -41,6 +43,16 @@ class OrderUtil {
          */
         fun timeLeft(date: Date): Long {
             val difference = date.time - Date().time
+
+            return difference / 1000
+        }
+
+        /**
+         * Get the time since in seconds for a specific date.
+         * @param date Date
+         */
+        fun timeSince(date: Date): Long {
+            val difference = Date().time - date.time
 
             return difference / 1000
         }
@@ -95,6 +107,23 @@ class OrderUtil {
             }
 
             return itemUserGroups
+        }
+
+        /**
+         * Filter the orders by the given orders status
+         *
+         * @param orders List with orders
+         * @param ordersStatus Status of the orders
+         */
+        fun filterOrdersStatus(orders: List<Order>, ordersStatus: OrdersStatus): List<Order> {
+
+            val archivedDelay = 12 * 60 * 60;
+
+            return if(ordersStatus == OrdersStatus.ACTIVE) {
+                orders.filter { this.timeSince(it.deadline) < archivedDelay}
+            } else {
+                orders.filter { this.timeSince(it.deadline) >= archivedDelay}
+            }
         }
     }
 }
