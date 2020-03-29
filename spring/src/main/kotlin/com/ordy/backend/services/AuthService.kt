@@ -45,6 +45,7 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
             val throwableList = ThrowableList()
             throwableList.addException(PropertyException(HttpStatus.UNPROCESSABLE_ENTITY, "email", "Not a valid email address"))
             throwableList.addException(GenericException(HttpStatus.UNPROCESSABLE_ENTITY, "Could not login"))
+            throw throwableList.also { it.code = HttpStatus.UNPROCESSABLE_ENTITY }
         }
 
         val users = userRepository.findByEmail(loginWrapper.email)
