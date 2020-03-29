@@ -16,6 +16,6 @@ class PropertyExceptionWrapper(ex: PropertyException) : ExceptionWrapper {
 }
 
 class ThrowableListWrapper(l: ThrowableList) : ExceptionWrapper {
-    val inputErrors = l.inputErrors.forEach { it.wrap() }
-    val generalErrors = l.generalErrors.forEach { it.wrap() }
+    val inputErrors: List<PropertyExceptionWrapper> = l.inputErrors.map { it.wrap() }
+    val generalErrors: List<GenericExceptionWrapper> = l.generalErrors.map { it.wrap() }
 }
