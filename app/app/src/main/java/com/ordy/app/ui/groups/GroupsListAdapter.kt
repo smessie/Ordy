@@ -11,6 +11,8 @@ import com.ordy.app.R
 import com.ordy.app.api.models.Group
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
+import com.ordy.app.ui.groups.create.CreateGroupActivity
+import com.ordy.app.ui.orders.OrdersFragment
 import kotlinx.android.synthetic.main.list_group_card.view.*
 
 class GroupsListAdapter (val context: Context?, var groups: Query<List<Group>>): BaseAdapter() {
@@ -29,11 +31,16 @@ class GroupsListAdapter (val context: Context?, var groups: Query<List<Group>>):
                 /* TODO: stop loading effect */
 
                 // assinging data
-                /* TODO: meer dan alleen dit veld*/
+                /* TODO: meer velden / andere velden*/
                 view.group_name.text = group.name
+                view.group_creator.text = group.creator.username
 
                 // click handler
-                /* TODO */
+                view.group.setOnClickListener {
+                    val intent = Intent(view.context, /*TODO: maak een activity aan voor een group*/ CreateGroupActivity::class.java)
+
+                    view.context.startActivity(intent)
+                }
             }
         }
 
@@ -50,7 +57,7 @@ class GroupsListAdapter (val context: Context?, var groups: Query<List<Group>>):
 
     override fun getCount(): Int {
         return when (groups.status) {
-            QueryStatus.LOADING -> 4 // TODO VRAAG: waarom 4?
+            QueryStatus.LOADING -> 4
             QueryStatus.SUCCESS -> groups.requireData().size
             else -> 0
         }

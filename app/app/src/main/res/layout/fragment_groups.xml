@@ -11,24 +11,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
+        android:orientation="vertical"
+        android:paddingTop="15sp">
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:text="Your groups: "
-                android:textSize="26sp" />
+                android:textSize="30sp" />
 
             <Button
+                android:id="@+id/create_group_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight=""
-                android:text="New group" />
-        </LinearLayout>
+                android:text="new group"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="15sp"/>
+        </RelativeLayout>
         <ListView
             android:id="@+id/groups"
             android:layout_width="match_parent"

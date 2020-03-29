@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- TODO: meer / andere attributen -->
     <declare-styleable name="GroupCardView">
         <attr name="groupName" format="string" />
+        <attr name="groupCreator" format="string" />
+        <attr name="memberCount" format="integer" />
     </declare-styleable>
 </resources>
