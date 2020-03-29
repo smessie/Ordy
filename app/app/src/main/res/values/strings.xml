@@ -39,4 +39,6 @@
     <string name="no_archived_orders_description">Orders that are 12 hours past deadline will be placed here</string>
 
     <string name="add_item_order_input_search">Search for an item</string>
+    <string name="add_item_order_default_title">Not in the list?</string>
+    <string name="add_item_order_default_text">Add \"%1$s\" to your order instead</string>
 </resources>

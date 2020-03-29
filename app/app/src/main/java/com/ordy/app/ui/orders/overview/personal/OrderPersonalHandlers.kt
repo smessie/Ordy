@@ -18,8 +18,9 @@ class OrderPersonalHandlers(val fragment: OrderPersonalFragment, val viewModel: 
             if(query.status == QueryStatus.SUCCESS) {
                 val intent = Intent(fragment.requireContext(), AddItemOrderActivity::class.java)
 
-                // Pass the location id as extra information:
+                // Pass the location & order id as extra information:
                 intent.putExtra("location_id", query.requireData().location.id)
+                intent.putExtra("order_id", query.requireData().id)
 
                 fragment.requireContext().startActivity(intent)
             }
