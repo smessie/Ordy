@@ -1,12 +1,10 @@
 package com.ordy.backend.services
 
 import com.ordy.backend.database.repositories.UserRepository
-import com.ordy.backend.exceptions.ExceptionHandler
 import com.ordy.backend.exceptions.GenericException
 import com.ordy.backend.wrappers.AuthLoginWrapper
 import com.ordy.backend.wrappers.AuthRegisterWrapper
 import com.ordy.backend.wrappers.AuthTokenWrapper
-import com.ordy.backend.services.TokenService
 import com.ordy.backend.database.models.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -29,14 +27,15 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
     fun login(loginWrapper: AuthLoginWrapper) : AuthTokenWrapper {
         val users = userRepository.findByEmail(loginWrapper.email)
 
-        if (!users.isEmpty()) {
-            val user = users.get(0)
+        if (users.isNotEmpty()) {
+            val user = users[0]
             if (checkPasswd(loginWrapper.password, user.password)) {
-                return AuthTokenWrapper(tokenService.encrypt(user.id))
+                return AuthTokenWrapper(tokenService.encrypt(user.id.toString()))
             } else {
-                throw GenericException(HttpStatus.NOT_FOUND, "User not found")
-
+                throw GenericException(HttpStatus.NOT_FOUND, "Incorrect email, password combination")
             }
+        } else {
+            throw GenericException(HttpStatus.NOT_FOUND, "Incorrect email, password combination")
         }
     }
 
@@ -44,7 +43,7 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
         val users = userRepository.findByEmail(registerWrapper.email)
         // Checks if email is in use
         if (users.isEmpty()) {
-            val newUser = User(registerWrapper.name, registerWrapper.email, hashPasswd(registerWrapper.password))
+            val newUser = User(name = registerWrapper.username, email = registerWrapper.email, password = hashPasswd(registerWrapper.password))
             userRepository.saveAndFlush(newUser)
         } else {
             throw GenericException(HttpStatus.FORBIDDEN, "Email alread in use")

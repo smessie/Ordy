@@ -8,6 +8,7 @@ import com.ordy.backend.wrappers.GroupWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import java.util.logging.Logger
 
 @RestController
 @RequestMapping("/groups")
@@ -27,6 +28,8 @@ class GroupController(@Autowired val groupService: GroupService) {
 
     @PostMapping("/{groupId}/invites/{userId}")
     fun postInvite(@PathVariable groupId: Int, @PathVariable userId: Int) {
+        val log = Logger.getLogger("function")
+        log.info("[function]")
         groupService.createInvite(groupId, userId)
     }
 

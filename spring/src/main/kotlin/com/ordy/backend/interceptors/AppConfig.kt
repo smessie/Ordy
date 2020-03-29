@@ -6,12 +6,16 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-class AppConfig: WebMvcConfigurer() {
-
-    @Autowired
-    lateinit var authInterceptor: AuthInterceptor
+class AppConfig: WebMvcConfigurer {
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(logInterceptor);
+        registry.addInterceptor(AuthInterceptor())
+                .addPathPatterns(listOf(
+                        "/groups/**",
+                        "/user/**",
+                        "/locations/**",
+                        "/orders/**"
+                ))
+                .excludePathPatterns("/auth/**")
     }
 }

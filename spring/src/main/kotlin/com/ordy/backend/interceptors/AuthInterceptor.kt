@@ -11,27 +11,36 @@ import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.http.HttpStatus
+import java.util.*
+import java.util.logging.Logger
 
 @Component
-class AuthInterceptor(@Autowired val tokenService: TokenService, @Autowired val userRepo: UserRepository): HandlerInterceptor{
+class AuthInterceptor: HandlerInterceptor{
+
+    @Autowired private lateinit var tokenService: TokenService
+    @Autowired private lateinit var userRepo: UserRepository
+
+    private val log = Logger.getLogger("prehandle")
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, dataObject: Any) : Boolean {
-        val token = request.getHeader("authentication")
+        log.info("[preHandle]; ${request.contextPath}")
+
+        val token = request.getHeader("authentication") ?: throw GenericException(HttpStatus.UNAUTHORIZED, "Invalid token")
         val userId = tokenService.decrypt(token).toIntOrNull()
 
         // Check if decrypted id is numerical
         if (userId != null) {
             val optionalUsers = userRepo.findAllById(userId)
 
-            if (!optionalUsers.isEmpty()) {
-                val optionalUser = optionalUsers.get(0)
+            if (optionalUsers.isNotEmpty()) {
+                val optionalUser = optionalUsers[0]
                 request.setAttribute("user", optionalUser)
                 return true
             } else {
-                throw GenericException(HttpStatus.NOT_FOUND, "Invalid token")
+                throw GenericException(HttpStatus.UNAUTHORIZED, "Invalid token")
             }
         } else {
-            throw GenericException(HttpStatus.NOT_FOUND, "Invalid token")
+            throw GenericException(HttpStatus.UNAUTHORIZED, "Invalid token")
         }
     }
 
