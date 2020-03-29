@@ -1,4 +1,4 @@
-package com.ordy.backend.database.interceptors
+package com.ordy.backend.interceptors
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.http.HttpStatus
-import java.util.*
 import java.util.logging.Logger
 
 @Component
