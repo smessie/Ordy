@@ -73,7 +73,7 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
         }
         throwableList.ifNotEmpty {
             throwableList.addException(GenericException(HttpStatus.UNPROCESSABLE_ENTITY, "Could not register"))
-            throw throwableList
+            throw throwableList.also { it.code = HttpStatus.UNPROCESSABLE_ENTITY }
         }
 
         val users = userRepository.findByEmail(registerWrapper.email)
@@ -83,7 +83,9 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
             val newUser = User(name = registerWrapper.username, email = registerWrapper.email, password = hashPasswd(registerWrapper.password))
             userRepository.saveAndFlush(newUser)
         } else {
-            throw GenericException(HttpStatus.FORBIDDEN, "Email alread in use")
+            throwableList.addException(PropertyException(HttpStatus.FORBIDDEN, "email", "Email alread in use"))
+            throwableList.addException(GenericException(HttpStatus.FORBIDDEN, "Could not register"))
+            throw throwableList.also { it.code = HttpStatus.FORBIDDEN }
         }
     }
 }
