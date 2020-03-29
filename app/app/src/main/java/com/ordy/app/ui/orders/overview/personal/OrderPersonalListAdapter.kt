@@ -1,7 +1,6 @@
 package com.ordy.app.ui.orders.overview.personal
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,9 @@ import com.ordy.app.api.models.Order
 import com.ordy.app.api.models.OrderItem
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
-import com.ordy.app.util.OrderItemGroup
-import com.ordy.app.util.OrderUtil
 import kotlinx.android.synthetic.main.list_order_item.view.*
 
-class OrderPersonalListAdapter(val context: Context?, var order: Query<Order>): BaseAdapter() {
+class OrderPersonalListAdapter(val context: Context?, var order: Query<Order>, var showActions: Boolean): BaseAdapter() {
 
     var orderItems: List<OrderItem> = emptyList()
 
@@ -44,6 +41,12 @@ class OrderPersonalListAdapter(val context: Context?, var order: Query<Order>): 
                 view.order_item_quantity.text = "1x"
                 view.order_item_name.text = orderItem.name
                 view.order_item_comment.text = orderItem.comment
+
+                if(showActions) {
+                    view.order_item_actions.visibility = View.VISIBLE
+                } else {
+                    view.order_item_actions.visibility = View.INVISIBLE
+                }
             }
         }
 
@@ -64,5 +67,9 @@ class OrderPersonalListAdapter(val context: Context?, var order: Query<Order>): 
             QueryStatus.SUCCESS -> orderItems.size
             else -> 0
         }
+    }
+
+    override fun isEnabled(position: Int): Boolean {
+        return false
     }
 }

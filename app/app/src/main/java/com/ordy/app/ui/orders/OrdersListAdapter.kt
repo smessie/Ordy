@@ -6,16 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.appcompat.app.AppCompatActivity
 import com.ordy.app.R
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
 import com.ordy.app.util.OrderUtil
+import com.ordy.app.util.TimerUtil
+import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.list_order_card.view.*
+import kotlinx.android.synthetic.main.list_order_card.view.order_deadline_time_left
 import java.text.SimpleDateFormat
 
-class OrdersListAdapter(val context: Context?, var orders: Query<List<Order>>): BaseAdapter() {
+class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, var orders: Query<List<Order>>): BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -45,6 +49,11 @@ class OrdersListAdapter(val context: Context?, var orders: Query<List<Order>>): 
                 view.order_deadline_time.text = "Closing on: ${SimpleDateFormat("HH:mm").format(order.deadline)}"
                 view.order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
                 view.order_courier_name.text = order.courier.username
+
+                // Update the closing time left every second.
+                TimerUtil.updateUI(activity, 0, 1000) {
+                    view.order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
+                }
 
                 // Set click handler.
                 view.order.setOnClickListener {

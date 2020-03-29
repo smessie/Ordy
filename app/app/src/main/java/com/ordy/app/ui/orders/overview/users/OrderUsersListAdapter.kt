@@ -86,4 +86,8 @@ class OrderUsersListAdapter(val context: Context?, var order: Query<Order>): Bas
             else -> 0
         }
     }
+
+    override fun isEnabled(position: Int): Boolean {
+        return false
+    }
 }

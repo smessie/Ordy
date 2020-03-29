@@ -19,8 +19,10 @@ import com.ordy.app.ui.orders.overview.users.OrderUsersFragment
 import com.ordy.app.util.OrderUtil
 import com.ordy.app.util.TabsAdapter
 import com.ordy.app.util.TabsEntry
+import com.ordy.app.util.TimerUtil
 import kotlinx.android.synthetic.main.activity_overview_order.*
 import java.text.SimpleDateFormat
+
 
 class OverviewOrderActivity : AppCompatActivity() {
 
@@ -77,10 +79,14 @@ class OverviewOrderActivity : AppCompatActivity() {
                     val order = it.requireData()
 
                     order_deadline_time.text = SimpleDateFormat("HH:mm").format(order.deadline)
-                    order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
                     order_title.text = "Order: ${order.location.name}"
                     order_location_name.text = order.location.name
                     order_courier_name.text = order.courier.username
+
+                    // Update the closing time left every second.
+                    TimerUtil.updateUI(this, 0, 1000) {
+                        order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
+                    }
                 }
 
                 QueryStatus.ERROR -> {

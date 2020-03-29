@@ -1,6 +1,7 @@
 package com.ordy.app.ui.orders.overview.general
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,10 @@ class OrderGeneralListAdapter(val context: Context?, var order: Query<Order>): B
                 // Assign the data.
                 view.order_item_quantity.text = "${orderItemGroup.quantity}x"
                 view.order_item_name.text = orderItemGroup.name
-                view.order_item_comment.text = orderItemGroup.items.filter { it.comment !== null }.map { "1x ${it.comment}" }.joinToString("\n")
+                view.order_item_comment.text =
+                    orderItemGroup.items
+                        .filter { it.comment !== null }
+                        .joinToString("\n") { "1x ${it.comment}" }
 
                 // Hide action buttons
                 view.order_item_actions.visibility = View.GONE
@@ -64,5 +68,9 @@ class OrderGeneralListAdapter(val context: Context?, var order: Query<Order>): B
             QueryStatus.SUCCESS -> orderItemGroups.size
             else -> 0
         }
+    }
+
+    override fun isEnabled(position: Int): Boolean {
+        return false
     }
 }

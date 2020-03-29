@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -36,6 +37,7 @@ class ArchivedOrdersFragment : Fragment() {
 
         // Create the list view adapter
         listAdapter = OrdersListAdapter(
+            activity as AppCompatActivity,
             requireContext(),
             Query()
         )

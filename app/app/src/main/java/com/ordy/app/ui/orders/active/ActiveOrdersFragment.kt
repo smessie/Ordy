@@ -1,10 +1,12 @@
 package com.ordy.app.ui.orders.active
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -39,9 +41,11 @@ class ActiveOrdersFragment : Fragment() {
 
         // Create the list view adapter
         listAdapter = OrdersListAdapter(
+            activity as AppCompatActivity,
             requireContext(),
             Query()
         )
+
         binding.root.findViewById<ListView>(R.id.orders_active).adapter = listAdapter
 
         return binding.root
@@ -52,6 +56,8 @@ class ActiveOrdersFragment : Fragment() {
 
         // Update the list adapter when the "orders" query updates
         viewModel.activeOrders.observe(this, Observer {
+
+            Log.i("TAG", "UPDATED to ${viewModel.activeOrders.value!!.status}")
 
             val listAdapter = this.listAdapter ?: throw IllegalStateException("List adapter should not be null")
 
