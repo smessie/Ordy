@@ -43,7 +43,11 @@ class ArchivedOrdersFragment : Fragment() {
             Query(),
             OrdersStatus.ARCHIVED
         )
-        binding.root.findViewById<ListView>(R.id.orders_archived).adapter = listAdapter
+
+        binding.root.findViewById<ListView>(R.id.orders_archived).apply {
+            adapter = listAdapter
+            emptyView = binding.root.findViewById(R.id.orders_archived_empty)
+        }
 
         return binding.root
     }

@@ -48,7 +48,10 @@ class ActiveOrdersFragment : Fragment() {
             OrdersStatus.ACTIVE
         )
 
-        binding.root.findViewById<ListView>(R.id.orders_active).adapter = listAdapter
+        binding.root.findViewById<ListView>(R.id.orders_active).apply {
+            adapter = listAdapter
+            emptyView = binding.root.findViewById(R.id.orders_active_empty)
+        }
 
         return binding.root
     }

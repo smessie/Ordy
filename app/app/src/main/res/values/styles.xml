@@ -46,8 +46,15 @@
         <item name="android:layout_marginBottom">15dp</item>
     </style>
 
+    <!-- Title -->
     <style name="Title">
         <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Subtitle -->
+    <style name="Subtitle">
+        <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 </resources>
