@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -19,7 +20,7 @@ class OrdersFragment : Fragment() {
 
     private lateinit var tabsAdapter: TabsAdapter
 
-    private val viewModel: OrdersViewModel by viewModels { ApiServiceViewModelFactory(requireContext()) }
+    private val viewModel: OrdersViewModel by activityViewModels { ApiServiceViewModelFactory(requireContext()) }
 
     /**
      * Called when view is created.
