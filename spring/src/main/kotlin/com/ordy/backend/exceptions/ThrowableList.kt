@@ -11,12 +11,12 @@ class ThrowableList(code: HttpStatus = HttpStatus.NOT_FOUND) : OrdyException(cod
     var generalErrors: LinkedList<GenericException> = LinkedList()
         private set
 
-    fun addException(ex: PropertyException) {
-        inputErrors.add(ex)
+    fun addPropertyException(field: String, message: String) {
+        inputErrors.add(PropertyException(code, field, message))
     }
 
-    fun addException(ex: GenericException) {
-        generalErrors.add(ex)
+    fun addGenericException(message: String) {
+        generalErrors.add(GenericException(code, message))
     }
 
     fun ifEmpty(f: () -> Unit) {

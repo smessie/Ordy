@@ -17,7 +17,7 @@ class ExceptionHandler {
 
     @ExceptionHandler(GenericException::class)
     fun handleException(e: GenericException) : ResponseEntity<ThrowableListWrapper> {
-        val ec = ThrowableList().also { it.addException(e) }
+        val ec = ThrowableList().also { it.addGenericException(e.message) }
         return ResponseEntity
                 . status(e.code)
                 . body(ec.wrap())
@@ -25,7 +25,7 @@ class ExceptionHandler {
 
     @ExceptionHandler(PropertyException::class)
     fun handleException(e: PropertyException) : ResponseEntity<ThrowableListWrapper> {
-        val ec = ThrowableList().also { it.addException(e) }
+        val ec = ThrowableList().also { it.addPropertyException(e.field, e.message) }
         return ResponseEntity
                 . status(e.code)
                 . body(ec.wrap())

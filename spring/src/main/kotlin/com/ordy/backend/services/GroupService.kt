@@ -21,7 +21,7 @@ class GroupService(@Autowired val groupRepository: GroupRepository) {
 
     private fun checkGroupName(name: String, list: ThrowableList) {
         if (!groupNameRegex.matches(name)) {
-            list.addException(PropertyException(HttpStatus.UNPROCESSABLE_ENTITY, "name", "Name should only contain letters, numbers an spaces"))
+            list.addPropertyException("name", "Name should only contain letters, numbers an spaces")
         }
     }
 
@@ -45,7 +45,7 @@ class GroupService(@Autowired val groupRepository: GroupRepository) {
                     group.get().name = groupWrapper.name
                     groupRepository.save(group.get())
                 },
-                {throwableList.addException(GenericException(HttpStatus.NOT_FOUND, "Group with id $groupId not found"))})
+                {throwableList.addGenericException("Group with id $groupId not found")})
 
         throwableList.ifNotEmpty { throw throwableList }
 
