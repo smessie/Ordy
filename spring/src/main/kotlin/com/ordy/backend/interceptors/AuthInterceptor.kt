@@ -6,19 +6,14 @@ import javax.servlet.http.HttpServletResponse
 import com.ordy.backend.database.repositories.UserRepository
 import com.ordy.backend.exceptions.GenericException
 import com.ordy.backend.services.TokenService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.http.HttpStatus
 
 @Component
-class AuthInterceptor: HandlerInterceptor{
-
-    @Autowired
-    private final val tokenService = TokenService()
-
-    @Autowired
-    private final val userRepo = UserRepository()
+class AuthInterceptor(@Autowired val tokenService: TokenService, @Autowired val userRepo: UserRepository): HandlerInterceptor{
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, dataObject: Any) : Boolean {
         val token = request.getHeader("authentication")
@@ -26,10 +21,10 @@ class AuthInterceptor: HandlerInterceptor{
 
         // Check if decrypted id is numerical
         if (userId != null) {
-            val optionalUsers = userRepo.findById(userId)
+            val optionalUsers = userRepo.findAllById(userId)
 
             if (!optionalUsers.isEmpty()) {
-                optionalUser = optionalUsers.get(0)
+                val optionalUser = optionalUsers.get(0)
                 request.setAttribute("user", optionalUser)
                 return true
             } else {

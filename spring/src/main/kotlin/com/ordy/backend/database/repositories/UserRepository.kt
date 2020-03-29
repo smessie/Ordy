@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserRepository : JpaRepository<User, Int> {
     fun findByEmail(email: String) : List<User>
-    fun findById(id: Int) : List<User>
+    fun findAllById(id: Int) : List<User>
 }

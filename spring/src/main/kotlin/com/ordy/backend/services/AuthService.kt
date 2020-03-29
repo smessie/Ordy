@@ -14,9 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
 
 @Service
-class AuthService(@Autowired userRepository: UserRepository, @Autowired tokenService: TokenService) {
+class AuthService(@Autowired val userRepository: UserRepository, @Autowired val tokenService: TokenService) {
     private final val bCryptRounds = 12
-    private final val exceptionHandler = ExceptionHandler()
 
     private fun hashPasswd(password: String) : String {
         return BCrypt.hashpw(password, BCrypt.gensalt(bCryptRounds))
@@ -45,10 +44,7 @@ class AuthService(@Autowired userRepository: UserRepository, @Autowired tokenSer
         val users = userRepository.findByEmail(registerWrapper.email)
         // Checks if email is in use
         if (users.isEmpty()) {
-            newUser = User()
-            newUser.password = hashPasswd(registerWrapper.password)
-            newUser.name = registerWrapper.name
-            newUser.email = registerWrapper.email
+            val newUser = User(registerWrapper.name, registerWrapper.email, hashPasswd(registerWrapper.password))
             userRepository.saveAndFlush(newUser)
         } else {
             throw GenericException(HttpStatus.FORBIDDEN, "Email alread in use")
