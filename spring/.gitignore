@@ -33,3 +33,6 @@ build/
 ### Personal config files ###
 .env.bat
 .env
+
+### Libraries ###
+lib/

@@ -23,7 +23,7 @@ class DatabaseTest {
     @Autowired lateinit var groupMemberRepository: GroupMemberRepository
     @Autowired lateinit var groupInviteRepository: GroupInviteRepository
 
-    private val user = User(name = "Bob", email = "Bob@mail.com", password = "yeetskeet")
+    private val user = User(username = "Bob", email = "Bob@mail.com", password = "yeetskeet")
     private val cuisine = Cuisine(name = "Cuisine")
     private val location = Location(name = "Frituur", latitude = 0.0, longitude = 0.0, address = "Straat 0", private = false, cuisine = cuisine)
     private val group = Group(name = "ZeusWPI", creator = user)
@@ -33,7 +33,7 @@ class DatabaseTest {
     @BeforeEach
     fun populate_db() {
         for (i in 1..20) {
-            val tmpUser = User(name = "user$i", email = "user$i@mail.com", password = "yeetskeet")
+            val tmpUser = User(username = "user$i", email = "user$i@mail.com", password = "yeetskeet")
             val tmpGroup = Group(name = "User $i 's group", creator = tmpUser)
             userRepository.save(tmpUser)
             groupRepository.save(tmpGroup)
