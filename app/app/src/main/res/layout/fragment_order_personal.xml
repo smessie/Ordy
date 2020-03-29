@@ -36,7 +36,8 @@
                 android:layout_centerVertical="true"
                 android:elevation="0dp"
                 android:text="Add item"
-                style="?android:attr/borderlessButtonStyle"/>
+                style="?android:attr/borderlessButtonStyle"
+                android:onClick="@{() -> handlers.onAddItemClick()}"/>
         </RelativeLayout>
 
         <ListView

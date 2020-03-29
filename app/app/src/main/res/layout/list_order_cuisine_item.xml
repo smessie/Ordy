@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <!-- Loading -->
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/order_cuisine_item_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/placeholder_single"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <!-- Data -->
+    <LinearLayout
+        android:id="@+id/order_cuisine_item_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <!-- Name of the cuisine item -->
+        <TextView
+            android:id="@+id/order_cuisine_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"/>
+
+        <!-- Action button of the cuisine item -->
+        <Button
+            android:id="@+id/order_cuisine_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="Add"
+            android:backgroundTint="@color/colorPrimary"
+            style="@style/TextAppearance.AppCompat.Widget.Button.Inverse"/>
+    </LinearLayout>
+</RelativeLayout>
