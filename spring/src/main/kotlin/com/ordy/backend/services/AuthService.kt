@@ -43,12 +43,13 @@ class AuthService(@Autowired userRepository: UserRepository, @Autowired tokenSer
 
     fun register(registerWrapper: AuthRegisterWrapper) {
         val users = userRepository.findByEmail(registerWrapper.email)
+        // Checks if email is in use
         if (users.isEmpty()) {
             newUser = User()
             newUser.password = hashPasswd(registerWrapper.password)
             newUser.name = registerWrapper.name
             newUser.email = registerWrapper.email
-            userRepository.save(newUser)
+            userRepository.saveAndFlush(newUser)
         } else {
             throw GenericException(HttpStatus.FORBIDDEN, "Email alread in use")
         }
