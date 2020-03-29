@@ -40,6 +40,13 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
     }
 
     fun login(loginWrapper: AuthLoginWrapper) : AuthTokenWrapper {
+
+        if (checkEmail(loginWrapper.email).not()) {
+            val throwableList = ThrowableList()
+            throwableList.addException(PropertyException(HttpStatus.UNPROCESSABLE_ENTITY, "email", "Not a valid email address"))
+            throwableList.addException(GenericException(HttpStatus.UNPROCESSABLE_ENTITY, "Could not login"))
+        }
+
         val users = userRepository.findByEmail(loginWrapper.email)
 
         if (users.isNotEmpty()) {
@@ -55,7 +62,6 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
     }
 
     fun register(registerWrapper: AuthRegisterWrapper) {
-        val users = userRepository.findByEmail(registerWrapper.email)
 
         val throwableList = ThrowableList()
         if (checkEmail(registerWrapper.email).not()) {
@@ -69,6 +75,8 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
             throwableList.addException(GenericException(HttpStatus.UNPROCESSABLE_ENTITY, "Could not register"))
             throw throwableList
         }
+
+        val users = userRepository.findByEmail(registerWrapper.email)
 
         // Checks if email is in use
         if (users.isEmpty()) {
