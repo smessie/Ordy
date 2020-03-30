@@ -3,10 +3,7 @@ package com.ordy.backend.services
 import com.ordy.backend.database.models.Location
 import com.ordy.backend.database.models.Order
 import com.ordy.backend.database.models.User
-import com.ordy.backend.database.repositories.GroupMemberRepository
-import com.ordy.backend.database.repositories.GroupRepository
-import com.ordy.backend.database.repositories.LocationRepository
-import com.ordy.backend.database.repositories.OrderRepository
+import com.ordy.backend.database.repositories.*
 import com.ordy.backend.exceptions.GenericException
 import com.ordy.backend.exceptions.ThrowableList
 import com.ordy.backend.wrappers.OrderCreateWrapper
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Service
 @Service
 class OrderService(
         @Autowired val orderRepository: OrderRepository,
+        @Autowired val userRepository: UserRepository,
         @Autowired val groupMemberRepository: GroupMemberRepository,
         @Autowired val groupRepository: GroupRepository,
         @Autowired val locationRepository: LocationRepository
@@ -26,8 +24,8 @@ class OrderService(
      * Get a list of orders for a given user.
      * @param user User
      */
-    fun getOrders(user: User): List<Order> {
-
+    fun getOrders(userId: Int): List<Order> {
+        var user = userRepository.findById(userId).get()
         var groups = groupMemberRepository.findGroupMembersByUser(user).map { it.group }
 
         return groups.flatMap { orderRepository.findAllByGroup(it) }
@@ -37,8 +35,8 @@ class OrderService(
      * Get an order by id.
      * @param user User
      */
-    fun getOrder(user: User, orderId: Int): Order {
-
+    fun getOrder(userId: Int, orderId: Int): Order {
+        var user = userRepository.findById(userId).get()
         val order = orderRepository.findById(orderId)
         var groups = groupMemberRepository.findGroupMembersByUser(user).map { it.group }
 
@@ -60,7 +58,8 @@ class OrderService(
      * Create an order for a given user.
      * @param user User
      */
-    fun createOrder(user: User, orderCreate: OrderCreateWrapper): Order {
+    fun createOrder(userId: Int, orderCreate: OrderCreateWrapper): Order {
+        var user = userRepository.findById(userId).get()
         val throwableList = ThrowableList()
 
         // Validate that the deadline is present.

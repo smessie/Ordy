@@ -16,14 +16,14 @@ class OrderController(@Autowired val orderService: OrderService) {
 
     @PostMapping()
     @JsonView(View.Detail::class)
-    fun postOrder(@RequestAttribute user: User, @RequestBody orderCreate: OrderCreateWrapper): Order {
-        return orderService.createOrder(user, orderCreate)
+    fun postOrder(@RequestAttribute userId: Int, @RequestBody orderCreate: OrderCreateWrapper): Order {
+        return orderService.createOrder(userId, orderCreate)
     }
 
     @GetMapping("/{orderId}")
     @JsonView(View.Detail::class)
-    fun getOrderById(@RequestAttribute user: User, @PathVariable orderId: Int): Order {
-        return orderService.getOrder(user, orderId)
+    fun getOrderById(@RequestAttribute userId: Int, @PathVariable orderId: Int): Order {
+        return orderService.getOrder(userId, orderId)
     }
 
     @PostMapping("/{orderId}/bill")

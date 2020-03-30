@@ -15,8 +15,8 @@ class UserOrderController(@Autowired val orderService: OrderService) {
 
     @GetMapping
     @JsonView(View.List::class)
-    fun getOrders(@RequestAttribute user: User): List<Order> {
-        return orderService.getOrders(user)
+    fun getOrders(@RequestAttribute userId: Int): List<Order> {
+        return orderService.getOrders(userId)
     }
 
     @PatchMapping("/{orderId}")
