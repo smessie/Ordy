@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.groups.create.CreateGroupActivity">
+    tools:context=".ui.groups.create.OverviewGroupActivity">
 
     <data>
         <variable name="handlers" type="com.ordy.app.ui.groups.create.CreateGroupHandlers" />

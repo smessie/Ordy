@@ -8,5 +8,8 @@ data class User(
     val id: Int,
 
     @SerializedName("username")
-    val username: String
+    val username: String,
+
+    @SerializedName("email")
+    val email: String?
 )

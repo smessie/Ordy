@@ -14,6 +14,10 @@
     <string name="title_login">Login</string>
     <string name="title_register">Register</string>
 
+    <string name="title_group">Group:</string>
+    <string name="no_group_members_title">No group members found</string>
+    <string name="no_group_members_description">Failed loading group members or no members in this group. Are you lost?</string>
+
     <string name="speeddial_order">New order</string>
     <string name="speeddial_group">New group</string>
 

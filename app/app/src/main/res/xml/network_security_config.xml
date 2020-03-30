@@ -3,6 +3,8 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">localhost</domain>
         <!-- locale test -->
-        <domain includeSubdomains="true">192.168.1.6</domain>
+        <domain includeSubdomains="true">192.168.2.17</domain> <!-- ieben -->
+        <domain includeSubdomains="true">192.168.1.6</domain> <!-- stijn -->
+        <domain includeSubdomains="true">192.168.0.151</domain> <!-- maarten -->
     </domain-config>
 </network-security-config>
