@@ -26,11 +26,10 @@ class AuthInterceptor: HandlerInterceptor{
 
         // Check if decrypted id is numerical
         if (userId != null) {
-            val optionalUsers = userRepo.findAllById(userId)
+            val optionalUser = userRepo.findById(userId)
 
-            if (optionalUsers.isNotEmpty()) {
-                val optionalUser = optionalUsers[0]
-                request.setAttribute("user", optionalUser)
+            if (optionalUser.isPresent) {
+                request.setAttribute("userId", optionalUser.get().id)
                 return true
             } else {
                 throw GenericException(HttpStatus.UNAUTHORIZED, "Invalid token")
