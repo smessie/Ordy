@@ -13,7 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
-import com.ordy.app.ui.groups.create.CreateGroupActivity
+import com.ordy.app.ui.groups.overview.OverviewGroupActivity
 import com.ordy.app.ui.login.LoginActivity
 import com.ordy.app.ui.orders.create.CreateOrderActivity
 import com.ordy.app.ui.profile.ProfileActivity
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.speeddial_group -> {
 
                     // Open the create group activity
-                    val intent = Intent(this, CreateGroupActivity::class.java)
+                    val intent = Intent(this, OverviewGroupActivity::class.java)
                     startActivity(intent)
 
                     // Close the speeddial.

@@ -6,18 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import androidx.core.content.ContextCompat.startActivity
 import com.ordy.app.R
 import com.ordy.app.api.models.Group
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
-import com.ordy.app.ui.groups.create.CreateGroupActivity
-import com.ordy.app.ui.orders.OrdersFragment
+import com.ordy.app.ui.groups.overview.OverviewGroupActivity
 import kotlinx.android.synthetic.main.list_group_card.view.*
 
-class GroupsListAdapter (val context: Context?, var groups: Query<List<Group>>): BaseAdapter() {
+class GroupsListAdapter(val context: Context?, var groups: Query<List<Group>>) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_group_card, parent, false)
+        val view = convertView ?: LayoutInflater.from(context).inflate(
+            R.layout.list_group_card,
+            parent,
+            false
+        )
 
         when (groups.status) {
 
@@ -37,7 +39,10 @@ class GroupsListAdapter (val context: Context?, var groups: Query<List<Group>>):
 
                 // click handler
                 view.group.setOnClickListener {
-                    val intent = Intent(view.context, /*TODO: maak een activity aan voor een group*/ CreateGroupActivity::class.java)
+                    val intent = Intent(view.context, OverviewGroupActivity::class.java)
+
+                    // Pass the group as extra information
+                    intent.putExtra("group_id", group.id)
 
                     view.context.startActivity(intent)
                 }

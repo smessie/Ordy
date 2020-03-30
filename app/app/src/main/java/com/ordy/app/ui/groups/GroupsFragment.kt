@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
@@ -20,7 +21,7 @@ import java.lang.IllegalStateException
 
 class GroupsFragment : Fragment() {
 
-    private val viewModel: GroupsViewModel by viewModels { ApiServiceViewModelFactory(requireContext()) }
+    private val viewModel: GroupsViewModel by activityViewModels { ApiServiceViewModelFactory(requireContext()) }
 
     private var listAdapter: GroupsListAdapter? = null
 
