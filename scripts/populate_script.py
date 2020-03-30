@@ -127,3 +127,5 @@ def fill_cuisine_map():
     cuisine_id_map[name] = id
 
 update_database()
+cursor.close()
+mariadb_connection.close()
