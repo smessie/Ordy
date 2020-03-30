@@ -2,7 +2,7 @@ package com.ordy.backend.database.models
 
 import com.fasterxml.jackson.annotation.JsonView
 import com.ordy.backend.database.View
-import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -15,7 +15,7 @@ class Order (
 
         @Column(nullable = false)
         @JsonView(View.List::class)
-        var deadline: LocalDate,
+        var deadline: LocalDateTime,
 
         @Column(nullable = true, name = "bill_url", length = 512)
         @JsonView(View.Detail::class)

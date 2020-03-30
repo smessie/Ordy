@@ -1,10 +1,10 @@
 package com.ordy.backend.wrappers
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 class OrderCreateWrapper(
-        val deadline: Optional<LocalDate>,
+        val deadline: Optional<LocalDateTime>,
         val groupId: Optional<Int>,
         val locationId: Optional<Int>,
         val customLocationName: Optional<String>
