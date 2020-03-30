@@ -37,6 +37,7 @@ class UserOrderController(@Autowired val orderService: OrderService) {
     }
 
     @PatchMapping("/{orderId}/items/{orderItemId}")
+    @JsonView(View.Empty::class)
     fun patchOrderItem(
             @RequestAttribute userId: Int,
             @PathVariable orderId: Int,
@@ -47,7 +48,12 @@ class UserOrderController(@Autowired val orderService: OrderService) {
     }
 
     @DeleteMapping("/{orderId}/items/{orderItemId}")
-    fun deleteOrderItem(@PathVariable orderId: Int, @PathVariable orderItemId: Int) {
-
+    @JsonView(View.Empty::class)
+    fun deleteOrderItem(
+            @RequestAttribute userId: Int,
+            @PathVariable orderId: Int,
+            @PathVariable orderItemId: Int
+    ) {
+        orderService.deleteItemOrder(userId, orderId, orderItemId)
     }
 }

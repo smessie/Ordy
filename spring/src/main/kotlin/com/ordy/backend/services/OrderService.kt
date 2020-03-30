@@ -184,7 +184,6 @@ class OrderService(
      */
     fun updateItemOrder(userId: Int, orderId: Int, orderItemId: Int, orderUpdateItem: OrderUpdateItemWrapper) {
         val throwableList = ThrowableList()
-        var user = userRepository.findById(userId).get()
         var order = this.getOrder(userId, orderId)
         var orderItemOptional = orderItemRepository.findById(orderItemId)
 
@@ -210,5 +209,29 @@ class OrderService(
         val orderItem = orderItemOptional.get()
         orderItem.comment = orderUpdateItem.comment.get()
         orderItemRepository.save(orderItem)
+    }
+
+    /**
+     * Delete an item of an order.
+     */
+    fun deleteItemOrder(userId: Int, orderId: Int, orderItemId: Int) {
+        val throwableList = ThrowableList()
+        var order = this.getOrder(userId, orderId)
+        var orderItemOptional = orderItemRepository.findById(orderItemId)
+
+        // Validate that the order item exists.
+        if(!orderItemOptional.isPresent) {
+            throwableList.addGenericException("Order item does not exist")
+            throwableList.ifNotEmpty { throw throwableList }
+        }
+
+        // Validate that the order item is linked to the given order.
+        if(!order.orderItems.contains(orderItemOptional.get())) {
+            throwableList.addGenericException("Order item is not linked to the order")
+            throwableList.ifNotEmpty { throw throwableList }
+        }
+
+        // Delete the order item
+        orderItemRepository.delete(orderItemOptional.get())
     }
 }
