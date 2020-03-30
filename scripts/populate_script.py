@@ -7,9 +7,10 @@ import mysql.connector as mariadb
 mariadb_connection = mariadb.connect(host='ordy.ga', user='ordy_remote_dev', password='Pl31s3d0n0tNuk3Th1sD1t1B1s3Y33T', database='ordy_remote_dev', buffered=True)
 cursor = mariadb_connection.cursor()
 cuisine_id_map = {}
+coordinate_margin = 0.001
 
 def location_is_registered(lat, lon, name):
-  min_lat, max_lat, min_lon, max_lon = lat - 0.01, lat + 0.01, lon - 0.01, lon + 0.01
+  min_lat, max_lat, min_lon, max_lon = lat - coordinate_margin, lat + coordinate_margin, lon - coordinate_margin, lon + coordinate_margin
 
   cursor.execute("SELECT name, COUNT(*) FROM locations WHERE latitude > %s AND longitude > %s AND latitude < %s AND longitude < %s AND name = %s GROUP BY name",
   (min_lat, min_lon, max_lat, max_lon, name))
