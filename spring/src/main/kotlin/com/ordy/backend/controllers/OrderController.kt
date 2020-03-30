@@ -3,8 +3,6 @@ package com.ordy.backend.controllers
 import com.fasterxml.jackson.annotation.JsonView
 import com.ordy.backend.database.View
 import com.ordy.backend.database.models.Order
-import com.ordy.backend.database.models.User
-import com.ordy.backend.services.GroupService
 import com.ordy.backend.services.OrderService
 import com.ordy.backend.wrappers.OrderCreateWrapper
 import org.springframework.beans.factory.annotation.Autowired

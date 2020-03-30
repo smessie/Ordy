@@ -31,5 +31,9 @@ class Order (
 
         @JsonView(View.List::class)
         @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false)
-        var location: Location
+        var location: Location,
+
+        @JsonView(View.Detail::class)
+        @OneToMany(mappedBy="order")
+        var orderItems: Set<OrderItem> = emptySet()
 )
