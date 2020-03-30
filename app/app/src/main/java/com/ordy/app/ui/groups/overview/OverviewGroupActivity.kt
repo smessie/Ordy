@@ -91,12 +91,7 @@ class OverviewGroupActivity : AppCompatActivity() {
 
                 QueryStatus.ERROR -> {
                     viewModel.handlingRemoveRequest = false
-                    if (viewModel.rootView != null) {
-                        ErrorHandler.handleRawGeneral(
-                            "Remove member request failed. Please try again...",
-                            viewModel.rootView!!
-                        )
-                    }
+                    ErrorHandler.handle(it.error, binding.root, listOf())
                 }
             }
         })
@@ -112,12 +107,7 @@ class OverviewGroupActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    if (viewModel.rootView != null) {
-                        ErrorHandler.handleRawGeneral(
-                            "Leaving group failed. Please try again...",
-                            viewModel.rootView!!
-                        )
-                    }
+                    ErrorHandler.handle(it.error, binding.root, listOf())
                 }
             }
         })
