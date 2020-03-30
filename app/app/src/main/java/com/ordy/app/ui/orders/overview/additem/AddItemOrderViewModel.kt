@@ -8,6 +8,7 @@ import com.ordy.app.api.models.OrderItem
 import com.ordy.app.api.models.actions.OrderAddItem
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
+import okhttp3.ResponseBody
 
 class AddItemOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
 

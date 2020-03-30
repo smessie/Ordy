@@ -6,9 +6,13 @@ import com.ordy.app.api.ApiServiceViewModel
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
+import okhttp3.ResponseBody
 
 class OverviewOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
 
+    /**
+     * Specific order
+     */
     val order: MutableLiveData<Query<Order>> = MutableLiveData(Query())
 
     /**

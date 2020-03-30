@@ -24,5 +24,5 @@ data class Order(
     val courier: User,
 
     @SerializedName("orderItems")
-    val orderItems: List<OrderItem> = emptyList()
+    val orderItems: MutableList<OrderItem> = mutableListOf()
 )

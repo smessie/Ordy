@@ -1,5 +1,6 @@
 package com.ordy.app.ui.orders.overview
 
-class OverviewOrderHandlers(val activity: OverviewOrderActivity, val viewModel: OverviewOrderViewModel) {
+import com.ordy.app.api.util.FetchHandler
 
+class OverviewOrderHandlers(val activity: OverviewOrderActivity, val viewModel: OverviewOrderViewModel) {
 }

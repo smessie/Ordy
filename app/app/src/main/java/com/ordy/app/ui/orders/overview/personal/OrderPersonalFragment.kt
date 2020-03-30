@@ -27,6 +27,8 @@ class OrderPersonalFragment : Fragment() {
 
     private var listAdapter: OrderPersonalListAdapter? = null
 
+    lateinit var handlers: OrderPersonalHandlers
+
     /**
      * Called when view is created.
      */
@@ -40,13 +42,15 @@ class OrderPersonalFragment : Fragment() {
 
         // Create binding for the fragment.
         val binding = FragmentOrderPersonalBinding.inflate(inflater, container, false)
-        binding.handlers = OrderPersonalHandlers(this, viewModel)
+        handlers = OrderPersonalHandlers(this, viewModel)
+        binding.handlers = handlers
 
         // Create the list view adapter
         listAdapter = OrderPersonalListAdapter(
             requireContext(),
             binding.root,
-            requireActivity(),
+            handlers,
+            this,
             viewModel
         )
         binding.root.findViewById<ListView>(R.id.order_items).adapter = listAdapter
