@@ -14,3 +14,7 @@ class OrderAddItemWrapper(
         val itemId: Optional<Int>,
         val customItemName: Optional<String>
 )
+
+class OrderUpdateItemWrapper(
+        val comment: Optional<String>
+)

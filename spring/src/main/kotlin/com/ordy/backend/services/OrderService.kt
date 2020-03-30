@@ -6,6 +6,7 @@ import com.ordy.backend.exceptions.GenericException
 import com.ordy.backend.exceptions.ThrowableList
 import com.ordy.backend.wrappers.OrderAddItemWrapper
 import com.ordy.backend.wrappers.OrderCreateWrapper
+import com.ordy.backend.wrappers.OrderUpdateItemWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -24,7 +25,6 @@ class OrderService(
 
     /**
      * Get a list of orders for a given user.
-     * @param user User
      */
     fun getOrders(userId: Int): List<Order> {
         var user = userRepository.findById(userId).get()
@@ -35,7 +35,6 @@ class OrderService(
 
     /**
      * Get an order by id.
-     * @param user User
      */
     fun getOrder(userId: Int, orderId: Int): Order {
         var user = userRepository.findById(userId).get()
@@ -58,7 +57,6 @@ class OrderService(
 
     /**
      * Create an order for a given user.
-     * @param user User
      */
     fun createOrder(userId: Int, orderCreate: OrderCreateWrapper): Order {
         var user = userRepository.findById(userId).get()
@@ -179,5 +177,38 @@ class OrderService(
         orderItemRepository.save(orderItem)
 
         return orderItem
+    }
+
+    /**
+     * Update an item of an order
+     */
+    fun updateItemOrder(userId: Int, orderId: Int, orderItemId: Int, orderUpdateItem: OrderUpdateItemWrapper) {
+        val throwableList = ThrowableList()
+        var user = userRepository.findById(userId).get()
+        var order = this.getOrder(userId, orderId)
+        var orderItemOptional = orderItemRepository.findById(orderItemId)
+
+        // Validate that the order item exists.
+        if(!orderItemOptional.isPresent) {
+            throwableList.addGenericException("Order item does not exist")
+            throwableList.ifNotEmpty { throw throwableList }
+        }
+
+        // Validate that the order item is linked to the given order.
+        if(!order.orderItems.contains(orderItemOptional.get())) {
+            throwableList.addGenericException("Order item is not linked to the order")
+            throwableList.ifNotEmpty { throw throwableList }
+        }
+
+        // Validate that the comment exists.
+        if(!orderUpdateItem.comment.isPresent) {
+            throwableList.addPropertyException("comment", "Comment cannot be null")
+            throwableList.ifNotEmpty { throw throwableList }
+        }
+
+        // Update the order item
+        val orderItem = orderItemOptional.get()
+        orderItem.comment = orderUpdateItem.comment.get()
+        orderItemRepository.save(orderItem)
     }
 }
