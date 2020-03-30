@@ -26,8 +26,6 @@ class GroupController(@Autowired val groupService: GroupService) {
 
     @PostMapping("/{groupId}/invites/{userId}")
     fun postInvite(@PathVariable groupId: Int, @PathVariable userId: Int) {
-        val log = Logger.getLogger("function")
-        log.info("[function]")
         groupService.createInvite(groupId, userId)
     }
 
