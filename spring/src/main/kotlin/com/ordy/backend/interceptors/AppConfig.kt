@@ -1,6 +1,7 @@
-package com.ordy.backend.database.interceptors
+package com.ordy.backend.interceptors
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ordy.backend.database.repositories.UserRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -8,8 +9,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 class AppConfig: WebMvcConfigurer {
 
+    @Autowired
+    private lateinit var authInterceptor: AuthInterceptor
+
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(AuthInterceptor())
+        registry.addInterceptor(authInterceptor)
                 .addPathPatterns(listOf(
                         "/groups/**",
                         "/user/**",

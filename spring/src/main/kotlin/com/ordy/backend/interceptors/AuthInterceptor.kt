@@ -1,4 +1,4 @@
-package com.ordy.backend.database.interceptors
+package com.ordy.backend.interceptors
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.http.HttpStatus
-import java.util.*
 import java.util.logging.Logger
 
 @Component
@@ -25,7 +24,7 @@ class AuthInterceptor: HandlerInterceptor{
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, dataObject: Any) : Boolean {
         log.info("[preHandle]; ${request.contextPath}")
 
-        val token = request.getHeader("authentication") ?: throw GenericException(HttpStatus.UNAUTHORIZED, "Invalid token")
+        val token = request.getHeader("Authorization") ?: throw GenericException(HttpStatus.UNAUTHORIZED, "Invalid token")
         val userId = tokenService.decrypt(token).toIntOrNull()
 
         // Check if decrypted id is numerical

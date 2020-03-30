@@ -1,11 +1,11 @@
 package com.ordy.backend.services
 
+import com.ordy.backend.database.models.User
 import com.ordy.backend.database.repositories.UserRepository
+import com.ordy.backend.exceptions.ThrowableList
 import com.ordy.backend.wrappers.AuthLoginWrapper
 import com.ordy.backend.wrappers.AuthRegisterWrapper
 import com.ordy.backend.wrappers.AuthTokenWrapper
-import com.ordy.backend.database.models.User
-import com.ordy.backend.exceptions.ThrowableList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.bcrypt.BCrypt
