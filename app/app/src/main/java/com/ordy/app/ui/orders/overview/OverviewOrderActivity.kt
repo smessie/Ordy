@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewOrderBinding
@@ -93,7 +94,7 @@ class OverviewOrderActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    // TODO: error handling.
+                    ErrorHandler.handle(it.error, binding.root)
                 }
             }
         })
