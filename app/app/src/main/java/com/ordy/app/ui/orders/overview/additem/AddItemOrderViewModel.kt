@@ -39,4 +39,11 @@ class AddItemOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiSer
     fun getSearchValue(): String {
         return searchValueData.value!!
     }
+
+    /**
+     * Get the result from the add item query.
+     */
+    fun getAddItemResult(): Query<OrderItem> {
+        return addItemResult.value!!
+    }
 }
