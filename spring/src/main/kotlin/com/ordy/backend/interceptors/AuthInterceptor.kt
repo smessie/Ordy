@@ -23,7 +23,7 @@ class AuthInterceptor: HandlerInterceptor{
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, dataObject: Any) : Boolean {
         log.info("[preHandle]; ${request.contextPath}")
 
-        val token = request.getHeader("authentication") ?: throw GenericException(HttpStatus.UNAUTHORIZED, "Invalid token")
+        val token = request.getHeader("Authorization") ?: throw GenericException(HttpStatus.UNAUTHORIZED, "Invalid token")
         val userId = tokenService.decrypt(token).toIntOrNull()
 
         // Check if decrypted id is numerical
