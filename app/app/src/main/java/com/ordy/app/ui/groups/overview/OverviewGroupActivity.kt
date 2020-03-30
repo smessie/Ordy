@@ -2,6 +2,7 @@ package com.ordy.app.ui.groups.overview
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.ListView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -82,5 +83,13 @@ class OverviewGroupActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
