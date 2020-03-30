@@ -28,7 +28,6 @@ def populate():
         loc = locationDict["elements"][i]
         
         tags = loc["tags"]
-
         # Filter out locations without name
         if "name" in tags:
           name = tags["name"]
@@ -49,11 +48,10 @@ def populate():
             values = (name, lat, lon, address, private, cuisine)
             insert = "INSERT INTO locations (name, latitude, longitude, address, private, cuisine_id) VALUES (%s,%s,%s,%s,%s,%s)"
             cursor.execute(insert, values)
-            
             mariadb_connection.commit()
           
 
-# Determines cuisine-id, taking different spelling ethods into account
+# Determines cuisine-id, taking different spelling methods into account
 def get_cuisine_id(name: str):
   name = name.lower()
   if name == "kebab" or name == "shawarma" or name == "pitta" or name == "pita":
@@ -86,7 +84,7 @@ def update_database():
   update_json()
   populate()
 
-#### TESTING PUPRPOSES ####
+#### TESTING PURPOSES ####
 def get_content():
   cursor.execute("SELECT id, name, latitude, longitude, address, private, cuisine_id FROM locations")
   for id, name, latitude, longitude, address, private, cuisine in cursor:
