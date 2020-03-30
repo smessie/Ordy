@@ -22,6 +22,7 @@ import com.ordy.app.util.TabsEntry
 import com.ordy.app.util.TimerUtil
 import kotlinx.android.synthetic.main.activity_overview_order.*
 import java.text.SimpleDateFormat
+import kotlin.properties.Delegates
 
 
 class OverviewOrderActivity : AppCompatActivity() {
@@ -29,6 +30,8 @@ class OverviewOrderActivity : AppCompatActivity() {
     private val viewModel: OverviewOrderViewModel by viewModels { ApiServiceViewModelFactory(applicationContext) }
 
     private lateinit var tabsAdapter: TabsAdapter
+
+    private var orderId by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +64,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         tabs.setupWithViewPager(viewPager)
 
         // Extract the "order_id" from the given intent variables.
-        val orderId = intent.getIntExtra("order_id", -1)
+        orderId = intent.getIntExtra("order_id", -1)
 
         // Fetch the specific order.
         FetchHandler.handle(viewModel.order, viewModel.apiService.order(orderId))
@@ -94,5 +97,12 @@ class OverviewOrderActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Update the order.
+        FetchHandler.handle(viewModel.order, viewModel.apiService.order(orderId))
     }
 }

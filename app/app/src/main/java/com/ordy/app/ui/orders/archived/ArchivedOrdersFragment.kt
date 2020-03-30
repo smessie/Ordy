@@ -21,7 +21,7 @@ class ArchivedOrdersFragment : Fragment() {
 
     private val viewModel: OrdersViewModel by viewModels { ApiServiceViewModelFactory(requireContext()) }
 
-    private var listAdapter: OrdersListAdapter? = null
+    private lateinit var listAdapter: OrdersListAdapter
 
     /**
      * Called when view is created.
@@ -57,8 +57,6 @@ class ArchivedOrdersFragment : Fragment() {
 
         // Update the list adapter when the "orders" query updates
         viewModel.orders.observe(this, Observer {
-
-            val listAdapter = this.listAdapter ?: throw IllegalStateException("List adapter should not be null")
 
             // Notify the changes to the list view (to re-render automatically)
             listAdapter.notifyDataSetChanged()

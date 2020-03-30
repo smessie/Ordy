@@ -19,7 +19,7 @@ class AddItemOrderActivity : AppCompatActivity() {
 
     val viewModel: AddItemOrderViewModel by viewModels { ApiServiceViewModelFactory(applicationContext) }
 
-    var listAdapter: AddItemOrderListAdapter? = null
+    lateinit var listAdapter: AddItemOrderListAdapter
 
     lateinit var handlers: AddItemOrderHandlers
 
@@ -47,16 +47,12 @@ class AddItemOrderActivity : AppCompatActivity() {
         // Update the list adapter when the "cuisine" query updates
         viewModel.cuisineItems.observe(this, Observer {
 
-            val listAdapter = this.listAdapter ?: throw IllegalStateException("List adapter should not be null")
-
             // Update the orders
             listAdapter.update()
         })
 
         // Update the "search value" of the list adapter when a change is observed
         viewModel.searchValueData.observe(this, Observer {
-
-            val listAdapter = this.listAdapter ?: throw IllegalStateException("List adapter should not be null")
 
             // Update the list adapter
             listAdapter.update()

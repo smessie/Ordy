@@ -19,7 +19,7 @@ class OrderUsersFragment : Fragment() {
 
     private val viewModel: OverviewOrderViewModel by activityViewModels()
 
-    private var listAdapter: OrderUsersListAdapter? = null
+    private lateinit var listAdapter: OrderUsersListAdapter
 
     /**
      * Called when view is created.
@@ -42,8 +42,6 @@ class OrderUsersFragment : Fragment() {
 
         // Update the list adapter when the "order" query updates
         viewModel.order.observe(viewLifecycleOwner, Observer {
-
-            val listAdapter = this.listAdapter ?: throw IllegalStateException("List adapter should not be null")
 
             // Update the list view
             listAdapter.update()

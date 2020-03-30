@@ -1,5 +1,6 @@
 package com.ordy.app.ui.orders.overview.additem
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,8 @@ class AddItemOrderListAdapter(
     private var cuisineFiltered: List<Item> = emptyList()
 
     private val listView: ListView = activity.findViewById(R.id.order_cuisine_items)
-    private var defaultItemView = LayoutInflater.from(activity.applicationContext).inflate(R.layout.list_order_cuisine_item_default, null)
+    private var defaultItemView = LayoutInflater.from(activity.applicationContext)
+        .inflate(R.layout.list_order_cuisine_item_default, null)
 
     init {
         // Set click handler for default view.
@@ -30,15 +32,14 @@ class AddItemOrderListAdapter(
                 activity.handlers.addItem(orderId, null, viewModel.getSearchValue())
             }
         }
-
-        listView.addFooterView(defaultItemView)
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
-        val view = convertView ?: LayoutInflater.from(activity.applicationContext).inflate(R.layout.list_order_cuisine_item, parent, false)
+        val view = convertView ?: LayoutInflater.from(activity.applicationContext)
+            .inflate(R.layout.list_order_cuisine_item, parent, false)
 
-        when(viewModel.getCuisineItems().status) {
+        when (viewModel.getCuisineItems().status) {
 
             QueryStatus.LOADING -> {
 
@@ -80,7 +81,7 @@ class AddItemOrderListAdapter(
     }
 
     override fun getCount(): Int {
-        return when(viewModel.getCuisineItems().status) {
+        return when (viewModel.getCuisineItems().status) {
             QueryStatus.LOADING -> 6
             QueryStatus.SUCCESS -> cuisineFiltered.size
             else -> 0
@@ -89,11 +90,12 @@ class AddItemOrderListAdapter(
 
     fun update() {
 
-        if(viewModel.getCuisineItems().status == QueryStatus.SUCCESS) {
+        if (viewModel.getCuisineItems().status == QueryStatus.SUCCESS) {
 
             // Create a filtered list that complies with the given search result.
             cuisineFiltered = viewModel.getCuisineItems().requireData().filter {
-                it.name.toLowerCase().matches(Regex(".*${viewModel.getSearchValue().toLowerCase()}.*"))
+                it.name.toLowerCase()
+                    .matches(Regex(".*${viewModel.getSearchValue().toLowerCase()}.*"))
             }
 
             // Add the "default" item to the bottom of the listview
@@ -105,8 +107,12 @@ class AddItemOrderListAdapter(
                 )
             )
 
+            // Remove the footer and add it again to prevent errors
+            listView.removeFooterView(defaultItemView)
+            listView.addFooterView(defaultItemView)
+
             // Only show the "default" item when the search query is not empty.
-            if(viewModel.getSearchValue().isEmpty()) {
+            if (viewModel.getSearchValue().isEmpty()) {
                 defaultItemView.add_item_order_default.visibility = View.GONE
             } else {
                 defaultItemView.add_item_order_default.visibility = View.VISIBLE

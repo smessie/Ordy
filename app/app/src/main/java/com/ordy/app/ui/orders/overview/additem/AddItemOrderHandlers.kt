@@ -1,6 +1,5 @@
 package com.ordy.app.ui.orders.overview.additem
 
-import android.util.Log
 import com.ordy.app.api.models.actions.OrderAddItem
 import com.ordy.app.api.util.FetchHandler
 
@@ -14,8 +13,7 @@ class AddItemOrderHandlers(val activity: AddItemOrderActivity, val viewModel: Ad
      */
     fun addItem(orderId: Int, cuisineItemId: Int?, name: String?) {
 
-        Log.i("BANAAN", "ADD ITEM CALLED")
-
+        // Add the item to the order
         FetchHandler.handle(
             viewModel.addItemResult,
             viewModel.apiService.userAddOrderItem(

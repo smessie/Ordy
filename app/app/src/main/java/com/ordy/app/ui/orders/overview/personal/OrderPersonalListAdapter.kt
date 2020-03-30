@@ -22,6 +22,7 @@ import com.ordy.app.util.TimerUtil
 import kotlinx.android.synthetic.main.fragment_order_personal.view.*
 import kotlinx.android.synthetic.main.list_order_item.view.*
 import okhttp3.ResponseBody
+import java.util.*
 
 class OrderPersonalListAdapter(
     val context: Context,
@@ -33,6 +34,7 @@ class OrderPersonalListAdapter(
 
     private var orderItems: List<OrderItem> = emptyList()
     private var showActions: Boolean = true
+    private var updateTimer: Timer = Timer()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context)
@@ -150,19 +152,28 @@ class OrderPersonalListAdapter(
                 it.user.id == AppPreferences(context!!).userId
             }
 
+            // Stop the previous timer.
+            updateTimer.cancel()
+
             // Remove the action buttons when the order is closed.
-            TimerUtil.updateUI(fragment.requireActivity() as AppCompatActivity, 0, 1000) {
-                val closed = OrderUtil.timeLeft(viewModel.getOrder().requireData().deadline) <= 0
+            updateTimer = TimerUtil.updateUI(fragment.requireActivity() as AppCompatActivity, 0, 1000) {
 
-                // Update the list view only when necessary
-                if (!closed != showActions) {
-                    showActions = !closed
+                // Cancel the timer when the query updates.
+                if(viewModel.getOrder().status != QueryStatus.SUCCESS) {
+                    updateTimer.cancel()
+                } else {
+                    val closed = OrderUtil.timeLeft(viewModel.getOrder().requireData().deadline) <= 0
 
-                    // Hide the "add item"-button
-                    view.order_items_add.visibility = if (closed) View.INVISIBLE else View.VISIBLE
+                    // Update the list view only when necessary
+                    if (!closed != showActions) {
+                        showActions = !closed
 
-                    // Notify the changes to the list view (to re-render automatically)
-                    notifyDataSetChanged()
+                        // Hide the "add item"-button
+                        view.order_items_add.visibility = if (closed) View.INVISIBLE else View.VISIBLE
+
+                        // Notify the changes to the list view (to re-render automatically)
+                        notifyDataSetChanged()
+                    }
                 }
             }
         }

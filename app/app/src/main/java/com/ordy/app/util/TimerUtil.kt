@@ -14,15 +14,19 @@ class TimerUtil {
          * @param delay Delay between executions
          * @param action Action to execute
          */
-        fun updateUI(activity: AppCompatActivity, offset: Int, delay: Int, action: () -> Unit) {
+        fun updateUI(activity: AppCompatActivity, offset: Int, delay: Int, action: () -> Unit): Timer {
 
-            Timer().scheduleAtFixedRate(object : TimerTask() {
+            val timer = Timer()
+
+            timer.scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
                     activity.runOnUiThread {
                         action()
                     }
                 }
             }, 0, 1000)
+
+            return timer
         }
     }
 }
