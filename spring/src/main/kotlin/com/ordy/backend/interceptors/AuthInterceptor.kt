@@ -22,6 +22,7 @@ class AuthInterceptor: HandlerInterceptor{
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, dataObject: Any) : Boolean {
 
+
         val token = request.getHeader("Authorization")
         if (token == null) {
             prepareResponse(response, GenericException(HttpStatus.UNAUTHORIZED, "Invalid token"))
