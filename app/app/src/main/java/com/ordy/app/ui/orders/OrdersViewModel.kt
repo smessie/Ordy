@@ -9,5 +9,12 @@ import com.ordy.app.api.util.Query
 
 class OrdersViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
 
-    val activeOrders: MutableLiveData<Query<List<Order>>> = FetchHandler.handleLive(apiService.userOrders())
+    val orders: MutableLiveData<Query<List<Order>>> = FetchHandler.handleLive(apiService.userOrders())
+
+    /**
+     * Get a list of orders
+     */
+    fun getOrders(): Query<List<Order>> {
+        return orders.value!!
+    }
 }

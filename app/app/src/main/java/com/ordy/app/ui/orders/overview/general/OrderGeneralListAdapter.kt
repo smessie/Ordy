@@ -10,17 +10,19 @@ import com.ordy.app.R
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
+import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import com.ordy.app.util.OrderItemGroup
+import com.ordy.app.util.OrderUtil
 import kotlinx.android.synthetic.main.list_order_item.view.*
 
-class OrderGeneralListAdapter(val context: Context?, var order: Query<Order>): BaseAdapter() {
+class OrderGeneralListAdapter(val context: Context?, var viewModel: OverviewOrderViewModel): BaseAdapter() {
 
-    var orderItemGroups: List<OrderItemGroup> = emptyList()
+    private var orderItemGroups: List<OrderItemGroup> = emptyList()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_order_item, parent, false)
 
-        when(order.status) {
+        when(viewModel.getOrder().status) {
 
             QueryStatus.LOADING -> {
 
@@ -68,7 +70,7 @@ class OrderGeneralListAdapter(val context: Context?, var order: Query<Order>): B
     }
 
     override fun getCount(): Int {
-        return when(order.status) {
+        return when(viewModel.getOrder().status) {
             QueryStatus.LOADING -> 4
             QueryStatus.SUCCESS -> orderItemGroups.size
             else -> 0
@@ -77,5 +79,18 @@ class OrderGeneralListAdapter(val context: Context?, var order: Query<Order>): B
 
     override fun isEnabled(position: Int): Boolean {
         return false
+    }
+
+    fun update() {
+
+        // Update the order item groups, when the query succeeded.
+        if(viewModel.getOrder().status == QueryStatus.SUCCESS) {
+            val orderItems = viewModel.getOrder().requireData().orderItems
+
+            orderItemGroups = OrderUtil.groupItems(orderItems)
+        }
+
+        // Notify the changes to the list view (to re-render automatically)
+        notifyDataSetChanged()
     }
 }

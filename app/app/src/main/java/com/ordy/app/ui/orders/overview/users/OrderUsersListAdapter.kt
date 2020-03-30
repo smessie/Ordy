@@ -10,18 +10,20 @@ import com.ordy.app.R
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
+import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import com.ordy.app.util.OrderItemUserGroup
+import com.ordy.app.util.OrderUtil
 import kotlinx.android.synthetic.main.list_order_item.view.*
 import kotlinx.android.synthetic.main.list_order_item_user.view.*
 
-class OrderUsersListAdapter(val context: Context?, var order: Query<Order>): BaseAdapter() {
+class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderViewModel): BaseAdapter() {
 
-    var orderItemUserGroups: List<OrderItemUserGroup> = emptyList()
+    private var orderItemUserGroups: List<OrderItemUserGroup> = emptyList()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_order_item_user, parent, false)
 
-        when(order.status) {
+        when(viewModel.getOrder().status) {
 
             QueryStatus.LOADING -> {
 
@@ -85,7 +87,7 @@ class OrderUsersListAdapter(val context: Context?, var order: Query<Order>): Bas
     }
 
     override fun getCount(): Int {
-        return when(order.status) {
+        return when(viewModel.getOrder().status) {
             QueryStatus.LOADING -> 4
             QueryStatus.SUCCESS -> orderItemUserGroups.size
             else -> 0
@@ -94,5 +96,19 @@ class OrderUsersListAdapter(val context: Context?, var order: Query<Order>): Bas
 
     override fun isEnabled(position: Int): Boolean {
         return false
+    }
+
+    fun update() {
+
+        // Update the order item groups, when the query succeeded.
+        if(viewModel.getOrder().status == QueryStatus.SUCCESS) {
+
+            val orderItems = viewModel.getOrder().requireData().orderItems
+
+            orderItemUserGroups = OrderUtil.userGroupItems(orderItems)
+        }
+
+        // Notify the changes to the list view (to re-render automatically)
+        notifyDataSetChanged()
     }
 }

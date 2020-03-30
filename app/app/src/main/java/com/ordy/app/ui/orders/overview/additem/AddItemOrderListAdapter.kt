@@ -15,8 +15,7 @@ import kotlinx.android.synthetic.main.list_order_cuisine_item_default.view.*
 class AddItemOrderListAdapter(
     val activity: AddItemOrderActivity,
     val orderId: Int,
-    var cuisine: Query<List<Item>>,
-    var searchValue: String
+    val viewModel: AddItemOrderViewModel
 ) : BaseAdapter() {
 
     private var cuisineFiltered: List<Item> = emptyList()
@@ -27,7 +26,7 @@ class AddItemOrderListAdapter(
     init {
         // Set click handler for default view.
         defaultItemView.add_item_order_default_add.setOnClickListener {
-            activity.handlers.addItem(orderId, null, searchValue)
+            activity.handlers.addItem(orderId, null, viewModel.getSearchValue())
         }
 
         listView.addFooterView(defaultItemView)
@@ -37,7 +36,7 @@ class AddItemOrderListAdapter(
 
         val view = convertView ?: LayoutInflater.from(activity.applicationContext).inflate(R.layout.list_order_cuisine_item, parent, false)
 
-        when(cuisine.status) {
+        when(viewModel.getCuisineItems().status) {
 
             QueryStatus.LOADING -> {
 
@@ -77,7 +76,7 @@ class AddItemOrderListAdapter(
     }
 
     override fun getCount(): Int {
-        return when(cuisine.status) {
+        return when(viewModel.getCuisineItems().status) {
             QueryStatus.LOADING -> 6
             QueryStatus.SUCCESS -> cuisineFiltered.size
             else -> 0
@@ -86,19 +85,24 @@ class AddItemOrderListAdapter(
 
     fun update() {
 
-        if(cuisine.status == QueryStatus.SUCCESS) {
+        if(viewModel.getCuisineItems().status == QueryStatus.SUCCESS) {
 
             // Create a filtered list that complies with the given search result.
-            cuisineFiltered = cuisine.requireData().filter { it.name.toLowerCase().matches(Regex(".*${searchValue.toLowerCase()}.*")) }
+            cuisineFiltered = viewModel.getCuisineItems().requireData().filter {
+                it.name.toLowerCase().matches(Regex(".*${viewModel.getSearchValue().toLowerCase()}.*"))
+            }
 
             // Add the "default" item to the bottom of the listview
             // This item serves as a fallback when no correct matches were found.
             defaultItemView.add_item_order_default_text.text = String.format(
-                activity.applicationContext.resources.getString(R.string.add_item_order_default_text, searchValue)
+                activity.applicationContext.resources.getString(
+                    R.string.add_item_order_default_text,
+                    viewModel.getSearchValue()
+                )
             )
 
             // Only show the "default" item when the search query is not empty.
-            if(searchValue.isEmpty()) {
+            if(viewModel.getSearchValue().isEmpty()) {
                 defaultItemView.add_item_order_default.visibility = View.GONE
             } else {
                 defaultItemView.add_item_order_default.visibility = View.VISIBLE
@@ -106,6 +110,6 @@ class AddItemOrderListAdapter(
         }
 
         // Notify the changes to the list view (to re-render automatically)
-        this.notifyDataSetChanged()
+        notifyDataSetChanged()
     }
 }

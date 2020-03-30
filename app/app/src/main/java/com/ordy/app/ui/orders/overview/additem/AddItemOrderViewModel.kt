@@ -17,12 +17,26 @@ class AddItemOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiSer
     val cuisineItems: MutableLiveData<Query<List<Item>>> = MutableLiveData(Query())
 
     /**
-     * Value of the search input field
+     * Value of the search input field.
      */
-    val searchFieldValue: MutableLiveData<String> = MutableLiveData("")
+    val searchValueData: MutableLiveData<String> = MutableLiveData("")
 
     /**
      * Result of the "addItem" query.
      */
     val addItemResult: MutableLiveData<Query<OrderItem>> = MutableLiveData(Query())
+
+    /**
+     * Get the list with cuisine items.
+     */
+    fun getCuisineItems(): Query<List<Item>> {
+        return cuisineItems.value!!
+    }
+
+    /**
+     * Get the value of the search input field.
+     */
+    fun getSearchValue(): String {
+        return searchValueData.value!!
+    }
 }

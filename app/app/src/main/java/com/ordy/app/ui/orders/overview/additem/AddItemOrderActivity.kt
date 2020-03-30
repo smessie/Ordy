@@ -1,7 +1,6 @@
 package com.ordy.app.ui.orders.overview.additem
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.widget.ListView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,8 +14,6 @@ import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityAddItemOrderBinding
-import kotlinx.android.synthetic.main.activity_add_item_order.view.*
-import kotlinx.android.synthetic.main.list_order_cuisine_item_default.view.*
 
 class AddItemOrderActivity : AppCompatActivity() {
 
@@ -44,7 +41,7 @@ class AddItemOrderActivity : AppCompatActivity() {
         FetchHandler.handle(viewModel.cuisineItems, viewModel.apiService.locationItems(locationId))
 
         // Create the list view adapter
-        listAdapter = AddItemOrderListAdapter(this, orderId, Query(QueryStatus.LOADING),"")
+        listAdapter = AddItemOrderListAdapter(this, orderId, viewModel)
         binding.root.findViewById<ListView>(R.id.order_cuisine_items).adapter = listAdapter
 
         // Update the list adapter when the "cuisine" query updates
@@ -53,17 +50,15 @@ class AddItemOrderActivity : AppCompatActivity() {
             val listAdapter = this.listAdapter ?: throw IllegalStateException("List adapter should not be null")
 
             // Update the orders
-            listAdapter.cuisine = it
             listAdapter.update()
         })
 
         // Update the "search value" of the list adapter when a change is observed
-        viewModel.searchFieldValue.observe(this, Observer {
+        viewModel.searchValueData.observe(this, Observer {
 
             val listAdapter = this.listAdapter ?: throw IllegalStateException("List adapter should not be null")
 
             // Update the list adapter
-            listAdapter.searchValue = it
             listAdapter.update()
         })
 

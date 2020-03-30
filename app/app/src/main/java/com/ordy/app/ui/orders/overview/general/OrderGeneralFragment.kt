@@ -40,7 +40,7 @@ class OrderGeneralFragment : Fragment() {
         binding.handlers = OrderGeneralHandlers(this, viewModel)
 
         // Create the list view adapter
-        listAdapter = OrderGeneralListAdapter(requireContext(), Query(QueryStatus.LOADING))
+        listAdapter = OrderGeneralListAdapter(requireContext(), viewModel)
         binding.root.findViewById<ListView>(R.id.order_items).adapter = listAdapter
 
         // Update the list adapter when the "order" query updates
@@ -48,20 +48,8 @@ class OrderGeneralFragment : Fragment() {
 
             val listAdapter = this.listAdapter ?: throw IllegalStateException("List adapter should not be null")
 
-            // Update the orders
-            listAdapter.order = it
-
-            // Update the order item groups, when the query succeeded.
-            if(it.status == QueryStatus.SUCCESS) {
-
-                val orderItems = it.requireData().orderItems
-                val orderItemGroups = OrderUtil.groupItems(orderItems)
-
-                listAdapter.orderItemGroups = orderItemGroups
-            }
-
-            // Notify the changes to the list view (to re-render automatically)
-            listAdapter.notifyDataSetChanged()
+            // Update the list view
+            listAdapter.update()
         })
 
         return binding.root

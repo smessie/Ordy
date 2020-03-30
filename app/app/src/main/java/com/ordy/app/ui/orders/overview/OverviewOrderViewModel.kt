@@ -10,4 +10,11 @@ import com.ordy.app.api.util.Query
 class OverviewOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
 
     val order: MutableLiveData<Query<Order>> = MutableLiveData(Query())
+
+    /**
+     * Get the order value
+     */
+    fun getOrder(): Query<Order> {
+        return order.value!!
+    }
 }

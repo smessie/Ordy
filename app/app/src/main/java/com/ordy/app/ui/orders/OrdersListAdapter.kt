@@ -19,13 +19,13 @@ import kotlinx.android.synthetic.main.list_order_card.view.*
 import kotlinx.android.synthetic.main.list_order_card.view.order_deadline_time_left
 import java.text.SimpleDateFormat
 
-class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, var orders: Query<List<Order>>, val  orderStatus: OrdersStatus): BaseAdapter() {
+class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, val viewModel: OrdersViewModel, val  orderStatus: OrdersStatus): BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_order_card, parent, false)
 
-        when(orders.status) {
+        when(viewModel.getOrders().status) {
 
             QueryStatus.LOADING -> {
 
@@ -36,7 +36,7 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
             }
 
             QueryStatus.SUCCESS -> {
-                val order = OrderUtil.filterOrdersStatus(orders.requireData(), orderStatus)[position]
+                val order = OrderUtil.filterOrdersStatus(viewModel.getOrders().requireData(), orderStatus)[position]
 
                 // Stop the shimmer effect & hide.
                 view.order_loading.stopShimmer()
@@ -80,10 +80,10 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
     }
 
     override fun getCount(): Int {
-        return when(orders.status) {
+        return when(viewModel.getOrders().status) {
             QueryStatus.INITIALIZED -> 4
             QueryStatus.LOADING -> 4
-            QueryStatus.SUCCESS -> OrderUtil.filterOrdersStatus(orders.requireData(), orderStatus).size
+            QueryStatus.SUCCESS -> OrderUtil.filterOrdersStatus(viewModel.getOrders().requireData(), orderStatus).size
             else -> 0
         }
     }

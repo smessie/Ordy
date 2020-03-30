@@ -40,7 +40,7 @@ class ArchivedOrdersFragment : Fragment() {
         listAdapter = OrdersListAdapter(
             activity as AppCompatActivity,
             requireContext(),
-            Query(),
+            viewModel,
             OrdersStatus.ARCHIVED
         )
 
@@ -56,12 +56,9 @@ class ArchivedOrdersFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         // Update the list adapter when the "orders" query updates
-        viewModel.activeOrders.observe(this, Observer {
+        viewModel.orders.observe(this, Observer {
 
             val listAdapter = this.listAdapter ?: throw IllegalStateException("List adapter should not be null")
-
-            // Update the orders
-            listAdapter.orders = it
 
             // Notify the changes to the list view (to re-render automatically)
             listAdapter.notifyDataSetChanged()

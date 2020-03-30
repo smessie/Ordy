@@ -43,7 +43,12 @@ class OrderPersonalFragment : Fragment() {
         binding.handlers = OrderPersonalHandlers(this, viewModel)
 
         // Create the list view adapter
-        listAdapter = OrderPersonalListAdapter(requireContext(), Query(QueryStatus.LOADING), true)
+        listAdapter = OrderPersonalListAdapter(
+            requireContext(),
+            binding.root,
+            requireActivity(),
+            viewModel
+        )
         binding.root.findViewById<ListView>(R.id.order_items).adapter = listAdapter
 
         // Update the list adapter when the "order" query updates
@@ -51,36 +56,7 @@ class OrderPersonalFragment : Fragment() {
 
             val listAdapter = this.listAdapter ?: throw IllegalStateException("List adapter should not be null")
 
-            // Update the orders
-            listAdapter.order = it
-
-            // Update the order items, when the query succeeded.
-            if(it.status == QueryStatus.SUCCESS) {
-
-                // Only show the items with the same user id as the logged in user.
-                val orderItems = it.requireData().orderItems.filter { it.user.id == AppPreferences(requireContext()).userId }
-
-                // Remove the action buttons when the order is closed.
-                TimerUtil.updateUI(this.activity as AppCompatActivity, 0, 1000) {
-                    val closed = OrderUtil.timeLeft(it.requireData().deadline) <= 0
-
-                    // Update the list view only when necessary
-                    if(!closed != listAdapter.showActions) {
-                        listAdapter.showActions = !closed
-
-                        // Hide the "add item"-button
-                        binding.root.order_items_add.visibility = if (closed) View.INVISIBLE else View.VISIBLE
-
-                        // Notify the changes to the list view (to re-render automatically)
-                        listAdapter.notifyDataSetChanged()
-                    }
-                }
-
-                listAdapter.orderItems = orderItems
-            }
-
-            // Notify the changes to the list view (to re-render automatically)
-            listAdapter.notifyDataSetChanged()
+            listAdapter.update()
         })
 
         return binding.root
