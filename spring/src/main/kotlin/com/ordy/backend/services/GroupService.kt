@@ -5,8 +5,6 @@ import com.ordy.backend.database.models.User
 import com.ordy.backend.database.repositories.GroupRepository
 import com.ordy.backend.exceptions.ThrowableList
 import com.ordy.backend.wrappers.GroupCreateWrapper
-import com.ordy.backend.wrappers.GroupIdWrapper
-import com.ordy.backend.wrappers.GroupWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -22,17 +20,17 @@ class GroupService(@Autowired val groupRepository: GroupRepository) {
         }
     }
 
-    fun createGroup(user: User, groupWrapper: GroupCreateWrapper) : GroupIdWrapper {
+    fun createGroup(user: User, groupWrapper: GroupCreateWrapper): Group {
         val throwableList = ThrowableList()
         checkGroupName(groupWrapper.name, throwableList)
         throwableList.ifNotEmpty { throw throwableList }
 
         val group = Group(name = groupWrapper.name, creator = user)
         groupRepository.save(group)
-        return GroupIdWrapper(group.id)
+        return group
     }
 
-    fun updateGroup(groupId: Int, groupWrapper: GroupCreateWrapper) : GroupWrapper {
+    fun updateGroup(groupId: Int, groupWrapper: GroupCreateWrapper): Group {
         val throwableList = ThrowableList()
         checkGroupName(groupWrapper.name, throwableList)
 
@@ -47,7 +45,7 @@ class GroupService(@Autowired val groupRepository: GroupRepository) {
 
         throwableList.ifNotEmpty { throw throwableList }
 
-        return GroupWrapper(group.get().id, group.get().name)
+        return group.get()
     }
 
     fun createInvite(groupId: Int, userId: Int) {

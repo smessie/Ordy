@@ -5,16 +5,15 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
-@RequestMapping("/user/groups")
-class UserGroupController {
+@RequestMapping("/user/invites")
+class UserInviteController {
     @GetMapping
-    fun getGroups() {
+    fun getInvites() {
 
     }
 
-    @PostMapping("/{groupId}/leave")
-    fun postLeaveGroup(@PathVariable groupId: Int) {
+    @PostMapping("/{groupId}")
+    fun postInvite(@PathVariable groupId: Int) {
 
     }
 }
-

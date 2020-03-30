@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 class AuthController(@Autowired val authService: AuthService) {
 
     @PostMapping("/login")
-    fun login(@RequestBody loginWrapper: AuthLoginWrapper) : AuthTokenWrapper {
+    fun login(@RequestBody loginWrapper: AuthLoginWrapper): AuthTokenWrapper {
         return authService.login(loginWrapper)
     }
 

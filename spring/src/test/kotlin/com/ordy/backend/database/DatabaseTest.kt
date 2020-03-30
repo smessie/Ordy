@@ -46,8 +46,6 @@ class DatabaseTest {
             val tmpCuisine = Cuisine(name = "Cuisine $i")
             for (j in 1..20) {
                 val tmpItem = Item(name = "Item $j for cuisine $i")
-                tmpItem.addCuisine(cuisine)
-                tmpCuisine.addItem(tmpItem)
                 itemRepository.save(tmpItem)
             }
 
@@ -66,7 +64,7 @@ class DatabaseTest {
     fun `Should find user when multiple users in db`() {
         userRepository.save(user)
         val found = userRepository.findById(user.id)
-        Assert.isTrue(!found.isEmpty, "not found")
+        Assert.isTrue(!found.isPresent, "not found")
         Assert.isTrue(found.get() == user, "not the same")
     }
 
@@ -74,7 +72,7 @@ class DatabaseTest {
     fun `Should find cuisine when multiple cuisines in db`() {
         cuisineRepository.save(cuisine)
         val found = cuisineRepository.findById(cuisine.id)
-        Assert.isTrue(!found.isEmpty, "not found")
+        Assert.isTrue(!found.isPresent, "not found")
         Assert.isTrue(found.get() == cuisine, "not the same")
     }
 
@@ -82,16 +80,10 @@ class DatabaseTest {
     fun `Should find location when multiple locations in db`() {
         locationRepository.save(location)
         val found = locationRepository.findById(location.id)
-        Assert.isTrue(!found.isEmpty, "not found")
+        Assert.isTrue(!found.isPresent, "not found")
         Assert.isTrue(found.get() == location, "not the same")
     }
 
-    @Test
-    fun `all items should have 2 cuisines`() {
-        itemRepository.findAll().forEach {
-            Assert.isTrue(it.cuisines.size == 2, "items: ${it.name} has ${it.cuisines.size} items instead of 2.")
-        }
-    }
 
     @Test
     fun `cuisine should have 400 items`() {
@@ -105,18 +97,9 @@ class DatabaseTest {
     fun `cuisine, adding item twice should not increase items size`() {
         cuisineRepository.save(cuisine)
         val tmpItem = Item(name = "yes")
-        cuisine.addItem(tmpItem)
+        cuisine.items.add(tmpItem)
         val itemSize = cuisine.items.size
-        cuisine.addItem(tmpItem)
+        cuisine.items.add(tmpItem)
         Assert.isTrue(itemSize == cuisine.items.size, "size did not match")
-    }
-
-    @Test
-    fun `item, adding cuisine twice should not increase items size`() {
-        val tmpItem = Item(name = "yes")
-        tmpItem.addCuisine(cuisine)
-        val cuisineSize = tmpItem.cuisines.size
-        tmpItem.addCuisine(cuisine)
-        Assert.isTrue(cuisineSize == tmpItem.cuisines.size, "size did not match")
     }
 }

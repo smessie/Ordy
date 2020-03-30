@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/locations")
 class LocationController {
+
     @GetMapping
-    fun getLocation(@RequestParam("q") query: String) {
+    fun getLocations(@RequestParam("q") query: String) {
 
     }
 
