@@ -1,6 +1,5 @@
 package com.ordy.backend.interceptors
 
-import com.ordy.backend.database.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
