@@ -18,21 +18,21 @@ class Location (
 
         @Column(nullable = true)
         @JsonView(View.Detail::class)
-        var latitude: Double,
+        var latitude: Double?,
 
         @Column(nullable = true)
         @JsonView(View.Detail::class)
-        var longitude: Double,
+        var longitude: Double?,
 
         @Column(nullable = true)
         @JsonView(View.Detail::class)
-        var address: String,
+        var address: String = "",
 
         @Column(nullable = true)
         @JsonView(View.Ignore::class)
-        var private: Boolean,
+        var private: Boolean = true,
 
         @JsonView(View.Detail::class)
-        @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false)
-        var cuisine: Cuisine
+        @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = true)
+        var cuisine: Cuisine?
 )
