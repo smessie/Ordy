@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
@@ -12,7 +13,7 @@ import com.ordy.app.databinding.FragmentPaymentsBinding
 
 class PaymentsFragment : Fragment() {
 
-    private val viewModel: PaymentsViewModel by viewModels { ApiServiceViewModelFactory(requireContext()) }
+    private val viewModel: PaymentsViewModel by activityViewModels { ApiServiceViewModelFactory(requireContext()) }
 
     /**
      * Called when view is created.
