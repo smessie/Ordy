@@ -32,7 +32,7 @@ class Location (
         @JsonView(View.Ignore::class)
         var private: Boolean = true,
 
-        @JsonView(View.Detail::class)
+        @JsonView(View.Ignore::class)
         @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = true)
         var cuisine: Cuisine?
 )

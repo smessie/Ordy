@@ -1,10 +1,15 @@
 package com.ordy.backend.controllers
 
+import com.fasterxml.jackson.annotation.JsonView
+import com.ordy.backend.database.View
+import com.ordy.backend.database.models.Item
+import com.ordy.backend.services.LocationService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/locations")
-class LocationController {
+class LocationController(@Autowired val locationService: LocationService) {
 
     @GetMapping
     fun getLocations(@RequestParam("q") query: String) {
@@ -17,7 +22,8 @@ class LocationController {
     }
 
     @GetMapping("/{locationId}/items")
-    fun getLocationItems(@PathVariable locationId: Int) {
-
+    @JsonView(View.Detail::class)
+    fun getLocationItems(@RequestAttribute userId: Int, @PathVariable locationId: Int): List<Item> {
+        return locationService.getLocationItems(userId, locationId)
     }
 }
