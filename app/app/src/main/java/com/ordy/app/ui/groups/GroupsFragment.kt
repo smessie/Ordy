@@ -9,19 +9,20 @@ import android.widget.Button
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
-import com.ordy.app.api.util.Query
 import com.ordy.app.databinding.FragmentGroupsBinding
 import com.ordy.app.ui.groups.create.CreateGroupActivity
-import java.lang.IllegalStateException
 
 
 class GroupsFragment : Fragment() {
 
-    private val viewModel: GroupsViewModel by activityViewModels { ApiServiceViewModelFactory(requireContext()) }
+    private val viewModel: GroupsViewModel by activityViewModels {
+        ApiServiceViewModelFactory(
+            requireContext()
+        )
+    }
 
     private var listAdapter: GroupsListAdapter? = null
 
@@ -41,7 +42,7 @@ class GroupsFragment : Fragment() {
         binding.handlers = GroupsHandlers(this, viewModel)
 
         // list view adapter
-        listAdapter = GroupsListAdapter(requireContext(), Query())
+        listAdapter = GroupsListAdapter(requireContext(), viewModel)
         binding.root.findViewById<ListView>(R.id.groups).adapter = listAdapter
 
         // binding button to load new activity
@@ -58,9 +59,8 @@ class GroupsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         viewModel.groups.observe(this, Observer {
-            val listAdapter = this.listAdapter ?: throw IllegalStateException("List adapter should not be null!")
-
-            listAdapter.groups = it
+            val listAdapter =
+                this.listAdapter ?: throw IllegalStateException("List adapter should not be null!")
 
             // notify changes to list view
             listAdapter.notifyDataSetChanged()

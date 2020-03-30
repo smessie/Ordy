@@ -16,7 +16,7 @@ class OverviewGroupViewModel(apiService: ApiService) : ApiServiceViewModel(apiSe
     val leaveResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
     val removeResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
     var handlingRemoveRequest = false
-    var rootView: View? = null
+    lateinit var rootView: View
 
     fun removeMember(groupId: Int, userId: Int) {
         if (!handlingRemoveRequest) {
@@ -25,12 +25,14 @@ class OverviewGroupViewModel(apiService: ApiService) : ApiServiceViewModel(apiSe
                 removeResult, apiService.deleteMemberGroup(groupId, userId)
             )
         } else {
-            if (rootView != null) {
-                ErrorHandler.handleRawGeneral(
-                    "Calm down ;) another request is still processing...",
-                    rootView!!
-                )
-            }
+            ErrorHandler.handleRawGeneral(
+                "Calm down ;) another request is still processing...",
+                rootView
+            )
         }
+    }
+
+    fun getGroup(): Query<Group> {
+        return group.value!!
     }
 }

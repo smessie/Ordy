@@ -45,7 +45,7 @@ class OverviewGroupActivity : AppCompatActivity() {
         FetchHandler.handle(viewModel.group, viewModel.apiService.group(groupId))
 
         // Create the list view adapter
-        listAdapter = OverviewGroupListAdapter(applicationContext, Query(), viewModel)
+        listAdapter = OverviewGroupListAdapter(applicationContext, viewModel)
         binding.root.findViewById<ListView>(R.id.group_members).adapter = listAdapter
 
         // Set the action bar elevation to 0, since the group extends the action bar.
@@ -66,9 +66,6 @@ class OverviewGroupActivity : AppCompatActivity() {
 
                     val listAdapter = this.listAdapter
                         ?: throw IllegalStateException("List adapter should not be null")
-
-                    // Update the members by updating the group
-                    listAdapter.group = it
 
                     // Notify the changes to the list view (to re-render automatically)
                     listAdapter.notifyDataSetChanged()
@@ -126,6 +123,9 @@ class OverviewGroupActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Make the top back button go back to GroupsFragment
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             finish()

@@ -8,5 +8,10 @@ import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 
 class GroupsViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
-    val groups: MutableLiveData<Query<List<Group>>> = FetchHandler.handleLive(apiService.userGroups())
+    val groups: MutableLiveData<Query<List<Group>>> =
+        FetchHandler.handleLive(apiService.userGroups())
+
+    fun getGroups(): Query<List<Group>> {
+        return groups.value!!
+    }
 }

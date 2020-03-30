@@ -7,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.ordy.app.R
-import com.ordy.app.api.models.Group
-import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.groups.overview.OverviewGroupActivity
 import kotlinx.android.synthetic.main.list_group_card.view.*
 
-class GroupsListAdapter(val context: Context?, var groups: Query<List<Group>>) : BaseAdapter() {
+class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(
             R.layout.list_group_card,
@@ -21,14 +19,14 @@ class GroupsListAdapter(val context: Context?, var groups: Query<List<Group>>) :
             false
         )
 
-        when (groups.status) {
+        when (viewModel.getGroups().status) {
 
             QueryStatus.LOADING -> {
                 /* TODO: make loading effect */
             }
 
             QueryStatus.SUCCESS -> {
-                val group = groups.requireData()[position]
+                val group = viewModel.getGroups().requireData()[position]
 
                 /* TODO: stop loading effect */
 
@@ -61,9 +59,9 @@ class GroupsListAdapter(val context: Context?, var groups: Query<List<Group>>) :
     }
 
     override fun getCount(): Int {
-        return when (groups.status) {
+        return when (viewModel.getGroups().status) {
             QueryStatus.LOADING -> 4
-            QueryStatus.SUCCESS -> groups.requireData().size
+            QueryStatus.SUCCESS -> viewModel.getGroups().requireData().size
             else -> 0
         }
     }

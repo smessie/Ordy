@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.list_group_member_card.view.*
 
 class OverviewGroupListAdapter(
     val context: Context?,
-    var group: Query<Group>,
     var viewModel: OverviewGroupViewModel
 ) :
     BaseAdapter() {
@@ -26,7 +25,7 @@ class OverviewGroupListAdapter(
             false
         )
 
-        when (group.status) {
+        when (viewModel.getGroup().status) {
             QueryStatus.LOADING -> {
 
                 // Start the shimmer effect & show
@@ -36,7 +35,7 @@ class OverviewGroupListAdapter(
             }
 
             QueryStatus.SUCCESS -> {
-                val member = group.requireData().members[position]
+                val member = viewModel.getGroup().requireData().members[position]
 
                 // Stop the shimmer effect & hide
                 view.member_loading.stopShimmer()
@@ -49,7 +48,7 @@ class OverviewGroupListAdapter(
 
                 // Set click handler on remove button
                 view.member_remove.setOnClickListener {
-                    viewModel.removeMember(group.requireData().id, member.id)
+                    viewModel.removeMember(viewModel.getGroup().requireData().id, member.id)
                 }
             }
         }
@@ -66,9 +65,9 @@ class OverviewGroupListAdapter(
     }
 
     override fun getCount(): Int {
-        return when (group.status) {
+        return when (viewModel.getGroup().status) {
             QueryStatus.LOADING -> 6
-            QueryStatus.SUCCESS -> group.requireData().members.size
+            QueryStatus.SUCCESS -> viewModel.getGroup().requireData().members.size
             else -> 0
         }
     }

@@ -18,10 +18,10 @@ class OverviewGroupHandlers(
                 viewModel.leaveResult,
                 viewModel.apiService.userLeaveGroup(viewModel.group.value!!.requireData().id)
             )
-        } else if (viewModel.rootView != null) {
+        } else {
             ErrorHandler.handleRawGeneral(
                 "You already are no member of this group.",
-                viewModel.rootView!!
+                viewModel.rootView
             )
         }
     }
@@ -30,21 +30,19 @@ class OverviewGroupHandlers(
      * Handle the invite button clicked
      */
     fun onInviteButtonClick() {
-        if (viewModel.rootView != null) {
-            if (viewModel.group.value != null) {
-                // TODO: change activity to InviteMemberActivity when created
-                val intent = Intent(viewModel.rootView!!.context, CreateGroupActivity::class.java)
+        if (viewModel.group.value != null) {
+            // TODO: change activity to InviteMemberActivity when created
+            val intent = Intent(viewModel.rootView.context, CreateGroupActivity::class.java)
 
-                // Pass the group as extra information
-                intent.putExtra("group_id", viewModel.group.value!!.requireData().id)
+            // Pass the group as extra information
+            intent.putExtra("group_id", viewModel.group.value!!.requireData().id)
 
-                viewModel.rootView!!.context.startActivity(intent)
-            } else {
-                ErrorHandler.handleRawGeneral(
-                    "Request failed. Please try again...",
-                    viewModel.rootView!!
-                )
-            }
+            viewModel.rootView.context.startActivity(intent)
+        } else {
+            ErrorHandler.handleRawGeneral(
+                "Request failed. Please try again...",
+                viewModel.rootView
+            )
         }
     }
 }
