@@ -5,7 +5,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "cuisines")
 class Cuisine (
-        @Id @GeneratedValue var id: Int = 0,
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Int = 0,
         @Column(nullable = false) var name: String,
         @ManyToMany(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
         var items: MutableSet<Item> = mutableSetOf()
