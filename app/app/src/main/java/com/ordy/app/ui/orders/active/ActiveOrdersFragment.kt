@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
@@ -13,7 +14,7 @@ import com.ordy.app.ui.orders.OrdersViewModel
 
 class ActiveOrdersFragment : Fragment() {
 
-    private val viewModel: OrdersViewModel by viewModels { ApiServiceViewModelFactory(requireContext()) }
+    private val viewModel: OrdersViewModel by activityViewModels { ApiServiceViewModelFactory(requireContext()) }
 
     /**
      * Called when view is created.
