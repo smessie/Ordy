@@ -11,7 +11,11 @@ import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import kotlinx.android.synthetic.main.list_group_member_card.view.*
 
-class OverviewGroupListAdapter(val context: Context?, var group: Query<Group>) :
+class OverviewGroupListAdapter(
+    val context: Context?,
+    var group: Query<Group>,
+    var viewModel: OverviewGroupViewModel
+) :
     BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -42,6 +46,11 @@ class OverviewGroupListAdapter(val context: Context?, var group: Query<Group>) :
                 // Assign the data
                 view.member_name.text = member.username
                 view.member_email.text = member.email
+
+                // Set click handler on remove button
+                view.member_remove.setOnClickListener {
+                    viewModel.removeMember(group.requireData().id, member.id)
+                }
             }
         }
 

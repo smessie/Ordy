@@ -37,14 +37,16 @@ class OverviewGroupActivity : AppCompatActivity() {
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
 
+        viewModel.rootView = binding.root
+
         // Extract the "group_id" from the given intent variables.
         val groupId = intent.getIntExtra("group_id", -1)
 
-        // Fetch the specific order.
+        // Fetch the specific group.
         FetchHandler.handle(viewModel.group, viewModel.apiService.group(groupId))
 
         // Create the list view adapter
-        listAdapter = OverviewGroupListAdapter(applicationContext, Query())
+        listAdapter = OverviewGroupListAdapter(applicationContext, Query(), viewModel)
         binding.root.findViewById<ListView>(R.id.group_members).adapter = listAdapter
 
         // Set the action bar elevation to 0, since the group extends the action bar.
@@ -56,10 +58,6 @@ class OverviewGroupActivity : AppCompatActivity() {
         viewModel.group.observe(this, Observer {
 
             when (it.status) {
-
-                QueryStatus.LOADING -> {
-                    Log.i("TAG", "NOW LOADING")
-                }
 
                 QueryStatus.SUCCESS -> {
                     val group = it.requireData()
@@ -79,6 +77,29 @@ class OverviewGroupActivity : AppCompatActivity() {
 
                 QueryStatus.ERROR -> {
                     ErrorHandler.handle(it.error, binding.root, emptyList())
+                }
+            }
+        })
+
+        // Observe the changes of the remove member request.
+        viewModel.removeResult.observe(this, Observer {
+
+            when (it.status) {
+
+                QueryStatus.SUCCESS -> {
+                    viewModel.handlingRemoveRequest = false
+                    // Update the specific group.
+                    FetchHandler.handle(viewModel.group, viewModel.apiService.group(groupId))
+                }
+
+                QueryStatus.ERROR -> {
+                    viewModel.handlingRemoveRequest = false
+                    if (viewModel.rootView != null) {
+                        ErrorHandler.handleRawGeneral(
+                            "Remove member request failed. Please try again...",
+                            viewModel.rootView!!
+                        )
+                    }
                 }
             }
         })
