@@ -1,17 +1,16 @@
 package com.ordy.backend.interceptors
 
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
-
 import com.ordy.backend.database.repositories.UserRepository
 import com.ordy.backend.exceptions.GenericException
 import com.ordy.backend.services.TokenService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView
-import org.springframework.http.HttpStatus
 import java.util.logging.Logger
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @Component
 class AuthInterceptor: HandlerInterceptor{

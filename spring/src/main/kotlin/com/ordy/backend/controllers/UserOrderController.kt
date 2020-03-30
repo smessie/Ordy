@@ -1,6 +1,5 @@
 package com.ordy.backend.controllers
 
-import com.ordy.backend.database.models.OrderItem
 import org.springframework.web.bind.annotation.*
 
 

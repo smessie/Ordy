@@ -3,14 +3,11 @@ package com.ordy.backend.services
 import com.ordy.backend.database.models.Group
 import com.ordy.backend.database.models.User
 import com.ordy.backend.database.repositories.GroupRepository
-import com.ordy.backend.exceptions.GenericException
-import com.ordy.backend.exceptions.PropertyException
 import com.ordy.backend.exceptions.ThrowableList
 import com.ordy.backend.wrappers.GroupCreateWrapper
 import com.ordy.backend.wrappers.GroupIdWrapper
 import com.ordy.backend.wrappers.GroupWrapper
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.util.*
 
