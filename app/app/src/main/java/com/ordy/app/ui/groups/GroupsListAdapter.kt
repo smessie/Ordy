@@ -34,6 +34,7 @@ class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) :
                 /* TODO: meer velden / andere velden*/
                 view.group_name.text = group.name
                 view.group_creator.text = group.creator.username
+                view.group_member_count.text = group.members.size.toString()
 
                 // click handler
                 view.group.setOnClickListener {
