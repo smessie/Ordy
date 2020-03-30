@@ -29,21 +29,4 @@ class AppConfig: WebMvcConfigurer {
                 ))
                 .excludePathPatterns("/auth/**")
     }
-
-    @Bean
-    fun jacksonMessageConverter(): MappingJackson2HttpMessageConverter {
-        val converter = MappingJackson2HttpMessageConverter()
-
-        val mapper = ObjectMapper()
-        mapper.setConfig(mapper.serializationConfig.withView(View.Empty::class.java))
-        mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false)
-        converter.objectMapper = mapper
-
-        return converter
-    }
-
-    override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>?>) {
-        converters.add(jacksonMessageConverter());
-        super.configureMessageConverters(converters);
-    }
 }
