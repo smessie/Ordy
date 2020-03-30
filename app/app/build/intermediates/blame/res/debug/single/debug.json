@@ -32,12 +32,12 @@
         "source": "/Users/ieben/AndroidStudioProjects/project1920-groep-1/app/app/src/main/res/anim/shake.xml"
     },
     {
-        "merged": "/Users/ieben/AndroidStudioProjects/project1920-groep-1/app/app/build/intermediates/res/merged/debug/mipmap-hdpi_ic_launcher.png.flat",
-        "source": "/Users/ieben/AndroidStudioProjects/project1920-groep-1/app/app/src/main/res/mipmap-hdpi/ic_launcher.png"
-    },
-    {
         "merged": "/Users/ieben/AndroidStudioProjects/project1920-groep-1/app/app/build/intermediates/res/merged/debug/drawable_ic_group_black_24dp.xml.flat",
         "source": "/Users/ieben/AndroidStudioProjects/project1920-groep-1/app/app/src/main/res/drawable/ic_group_black_24dp.xml"
+    },
+    {
+        "merged": "/Users/ieben/AndroidStudioProjects/project1920-groep-1/app/app/build/intermediates/res/merged/debug/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "/Users/ieben/AndroidStudioProjects/project1920-groep-1/app/app/src/main/res/mipmap-hdpi/ic_launcher.png"
     },
     {
         "merged": "/Users/ieben/AndroidStudioProjects/project1920-groep-1/app/app/build/intermediates/res/merged/debug/layout_activity_main.xml.flat",

@@ -16,6 +16,8 @@
 
     <string name="title_group">Group:&#160;</string>
     <string name="members">Members:&#160;</string>
+    <string name="group_invite_user">Invite User</string>
+    <string name="group_leave">Leave</string>
 
     <string name="speeddial_order">New order</string>
     <string name="speeddial_group">New group</string>

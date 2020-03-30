@@ -1,7 +1,6 @@
 package com.ordy.app.ui.groups.overview
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.ListView
 import androidx.activity.viewModels
@@ -97,6 +96,27 @@ class OverviewGroupActivity : AppCompatActivity() {
                     if (viewModel.rootView != null) {
                         ErrorHandler.handleRawGeneral(
                             "Remove member request failed. Please try again...",
+                            viewModel.rootView!!
+                        )
+                    }
+                }
+            }
+        })
+
+        // Observe the changes of the leave group request.
+        viewModel.leaveResult.observe(this, Observer {
+
+            when (it.status) {
+
+                QueryStatus.SUCCESS -> {
+                    // Go back to the GroupsFragment
+                    finish()
+                }
+
+                QueryStatus.ERROR -> {
+                    if (viewModel.rootView != null) {
+                        ErrorHandler.handleRawGeneral(
+                            "Leaving group failed. Please try again...",
                             viewModel.rootView!!
                         )
                     }

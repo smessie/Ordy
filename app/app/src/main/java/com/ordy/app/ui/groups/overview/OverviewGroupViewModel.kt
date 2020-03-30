@@ -13,6 +13,7 @@ import okhttp3.ResponseBody
 class OverviewGroupViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
 
     val group: MutableLiveData<Query<Group>> = MutableLiveData(Query())
+    val leaveResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
     val removeResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
     var handlingRemoveRequest = false
     var rootView: View? = null

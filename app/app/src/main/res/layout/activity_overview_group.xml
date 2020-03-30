@@ -91,14 +91,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:backgroundTint="@android:color/darker_gray"
-                    android:text="Leave" />
+                    android:onClick="@{() -> handlers.onLeaveButtonClick()}"
+                    android:text="@string/group_leave" />
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:backgroundTint="@color/colorAccent"
-                    android:text="Invite User" />
+                    android:onClick="@{() -> handlers.onInviteButtonClick()}"
+                    android:text="@string/group_invite_user" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
