@@ -37,12 +37,13 @@ class GroupService(@Autowired val groupRepository: GroupRepository) {
         checkGroupName(groupWrapper.name, throwableList)
 
         val group: Optional<Group> = groupRepository.findById(groupId)
-        group.ifPresentOrElse(
-                {
-                    group.get().name = groupWrapper.name
-                    groupRepository.save(group.get())
-                },
-                {throwableList.addGenericException("Group with id $groupId not found")})
+
+        if(group.isPresent()) {
+            group.get().name = groupWrapper.name
+            groupRepository.save(group.get())
+        } else {
+            throwableList.addGenericException("Group with id $groupId not found")
+        }
 
         throwableList.ifNotEmpty { throw throwableList }
 
