@@ -1,10 +1,9 @@
 package com.ordy.backend.controllers
 
+import com.ordy.backend.database.models.Group
 import com.ordy.backend.database.models.User
 import com.ordy.backend.services.GroupService
 import com.ordy.backend.wrappers.GroupCreateWrapper
-import com.ordy.backend.wrappers.GroupIdWrapper
-import com.ordy.backend.wrappers.GroupWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -16,12 +15,12 @@ import java.util.logging.Logger
 class GroupController(@Autowired val groupService: GroupService) {
 
     @PostMapping
-    fun postGroup(@RequestBody groupCreateWrapper: GroupCreateWrapper, @RequestHeader user: User) : GroupIdWrapper {
+    fun postGroup(@RequestBody groupCreateWrapper: GroupCreateWrapper, @RequestHeader user: User): Group {
         return groupService.createGroup(user, groupCreateWrapper)
     }
 
     @PatchMapping("/{groupId}")
-    fun patchGroup(@PathVariable groupId: Int, @RequestBody groupCreateWrapper: GroupCreateWrapper) : GroupWrapper {
+    fun patchGroup(@PathVariable groupId: Int, @RequestBody groupCreateWrapper: GroupCreateWrapper): Group {
         return groupService.updateGroup(groupId, groupCreateWrapper)
     }
 

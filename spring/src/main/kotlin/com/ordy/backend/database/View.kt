@@ -3,18 +3,22 @@ package com.ordy.backend.database
 class View {
 
     /**
-     * Used for fields that will never be returned to the API.
+     * Used internally, will never be returned to the API.
      */
     interface Ignore {}
 
     /**
-     * Used for a list of entities.
+     * Used for just returning the id
      */
-    interface List {}
+    interface Id {}
 
     /**
-     * Used for a more detailed overview of entities.
+     * Used for a list of objects
      */
-    interface Detail {}
-}
+    interface List : Id {}
 
+    /**
+     * Used for a detailed view of a single object
+     */
+    interface Detail : List {}
+}

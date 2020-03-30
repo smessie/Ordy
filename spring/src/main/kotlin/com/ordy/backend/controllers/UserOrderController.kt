@@ -5,7 +5,6 @@ import com.ordy.backend.database.View
 import com.ordy.backend.database.models.Order
 import com.ordy.backend.database.models.User
 import com.ordy.backend.services.OrderService
-import com.ordy.backend.wrappers.OrdersWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 class UserOrderController(@Autowired val orderService: OrderService) {
 
     @GetMapping
-    @JsonView({ View.Detail::class.java, View.Detail::class.java })
+    @JsonView(View.List::class)
     fun getOrders(@RequestAttribute user: User): List<Order> {
         return orderService.getOrders(user)
     }
