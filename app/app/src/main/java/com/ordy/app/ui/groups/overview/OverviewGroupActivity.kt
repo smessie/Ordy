@@ -46,6 +46,11 @@ class OverviewGroupActivity : AppCompatActivity() {
         listAdapter = OverviewGroupListAdapter(applicationContext, Query())
         binding.root.findViewById<ListView>(R.id.group_members).adapter = listAdapter
 
+        // Set the action bar elevation to 0, since the group extends the action bar.
+        if (supportActionBar != null) {
+            supportActionBar!!.elevation = 0F
+        }
+
         // Observe the changes of the fetch.
         viewModel.group.observe(this, Observer {
 
