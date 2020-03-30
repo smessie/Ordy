@@ -15,7 +15,6 @@ import java.util.logging.Logger
 @ResponseStatus(HttpStatus.OK)
 class GroupController(@Autowired val groupService: GroupService) {
 
-
     @PostMapping
     fun postGroup(@RequestBody groupCreateWrapper: GroupCreateWrapper, @RequestHeader user: User) : GroupIdWrapper {
         return groupService.createGroup(user, groupCreateWrapper)
