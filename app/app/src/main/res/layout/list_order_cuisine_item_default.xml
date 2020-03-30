@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:gravity="center"
+    android:id="@+id/add_item_order_default"
     >
 
     <!-- Default item -->

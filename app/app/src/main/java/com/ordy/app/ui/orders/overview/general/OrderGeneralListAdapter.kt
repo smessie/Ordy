@@ -43,8 +43,13 @@ class OrderGeneralListAdapter(val context: Context?, var order: Query<Order>): B
                 view.order_item_name.text = orderItemGroup.name
                 view.order_item_comment.text =
                     orderItemGroup.items
-                        .filter { it.comment !== null }
+                        .filter { it.comment != "" }
                         .joinToString("\n") { "1x ${it.comment}" }
+
+                // Hide the comment area when comment is empty.
+                if(view.order_item_comment.text == "") {
+                    view.order_item_comment.visibility = View.GONE
+                }
 
                 // Hide action buttons
                 view.order_item_actions.visibility = View.GONE

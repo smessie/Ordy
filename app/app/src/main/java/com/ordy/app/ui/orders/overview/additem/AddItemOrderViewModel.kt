@@ -25,24 +25,4 @@ class AddItemOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiSer
      * Result of the "addItem" query.
      */
     val addItemResult: MutableLiveData<Query<OrderItem>> = MutableLiveData(Query())
-
-    /**
-     * Add a new item to a given order
-     * @param orderId Id of the order to add the item to
-     * @param cuisineItemId Id of the cuisin item (or null when a custom item name is given)
-     * @param name Custom item name (ignored when cuisineItemId is present)
-     */
-    fun addItem(orderId: Int, cuisineItemId: Int?, name: String?) {
-
-        FetchHandler.handle(
-            addItemResult,
-            apiService.userAddOrderItem(
-                orderId,
-                OrderAddItem(
-                    cuisineItemId,
-                    name
-                )
-            )
-        )
-    }
 }

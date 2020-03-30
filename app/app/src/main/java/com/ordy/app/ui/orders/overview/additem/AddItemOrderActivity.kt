@@ -24,12 +24,15 @@ class AddItemOrderActivity : AppCompatActivity() {
 
     var listAdapter: AddItemOrderListAdapter? = null
 
+    lateinit var handlers: AddItemOrderHandlers
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Create binding for the activity.
         val binding: ActivityAddItemOrderBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_item_order)
-        binding.handlers = AddItemOrderHandlers(this, viewModel)
+        handlers = AddItemOrderHandlers(this, viewModel)
+        binding.handlers = handlers
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
 
@@ -64,6 +67,7 @@ class AddItemOrderActivity : AppCompatActivity() {
             listAdapter.update()
         })
 
+        // Observe the result of adding an item to the order.
         viewModel.addItemResult.observe(this, Observer {
 
             when(it.status) {

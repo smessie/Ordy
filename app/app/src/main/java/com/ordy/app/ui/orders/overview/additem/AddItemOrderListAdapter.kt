@@ -27,7 +27,7 @@ class AddItemOrderListAdapter(
     init {
         // Set click handler for default view.
         defaultItemView.add_item_order_default_add.setOnClickListener {
-            activity.viewModel.addItem(orderId, null, searchValue)
+            activity.handlers.addItem(orderId, null, searchValue)
         }
 
         listView.addFooterView(defaultItemView)
@@ -60,7 +60,7 @@ class AddItemOrderListAdapter(
 
                 // Set click handler.
                 view.order_cuisine_add.setOnClickListener {
-                    activity.viewModel.addItem(orderId, it.id, null)
+                    activity.handlers.addItem(orderId, it.id, null)
                 }
             }
         }
@@ -99,11 +99,9 @@ class AddItemOrderListAdapter(
 
             // Only show the "default" item when the search query is not empty.
             if(searchValue.isEmpty()) {
-                listView.removeFooterView(defaultItemView)
+                defaultItemView.add_item_order_default.visibility = View.GONE
             } else {
-                // Remove & add since we don't know if it was already added or not
-                listView.removeFooterView(defaultItemView)
-                listView.addFooterView(defaultItemView)
+                defaultItemView.add_item_order_default.visibility = View.VISIBLE
             }
         }
 

@@ -60,6 +60,11 @@ class OrderUsersListAdapter(val context: Context?, var order: Query<Order>): Bas
                     orderItemView.order_item_name.text = orderItem.item.name
                     orderItemView.order_item_comment.text = orderItem.comment
 
+                    // Hide the comment area when comment is empty.
+                    if(orderItemView.order_item_comment.text == "") {
+                        orderItemView.order_item_comment.visibility = View.GONE
+                    }
+
                     // Hide action buttons
                     orderItemView.order_item_actions.visibility = View.GONE
 

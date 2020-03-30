@@ -42,6 +42,11 @@ class OrderPersonalListAdapter(val context: Context?, var order: Query<Order>, v
                 view.order_item_name.text = orderItem.item.name
                 view.order_item_comment.text = orderItem.comment
 
+                // Hide the comment area when comment is empty.
+                if(view.order_item_comment.text == "") {
+                    view.order_item_comment.visibility = View.GONE
+                }
+
                 if(showActions) {
                     view.order_item_actions.visibility = View.VISIBLE
                 } else {
