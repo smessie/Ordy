@@ -60,24 +60,24 @@ class OrderUtil {
         /**
          * Takes a list of order items and will put them in order item groups, based on equal name.
          * This way we can express quantities of order items (eg: 2x Small Pepperoni Pizza)
-         * @param items List with order items
+         * @param orderItems List with order items
          */
-        fun groupItems(items: List<OrderItem>): List<OrderItemGroup> {
+        fun groupItems(orderItems: List<OrderItem>): List<OrderItemGroup> {
 
             val itemGroups = arrayListOf<OrderItemGroup>()
 
-            for(item in items) {
+            for(orderItem in orderItems) {
 
                 // Check if the order item already has a corresponding group.
-                val match = itemGroups.find { it.name.toLowerCase() == item.name.toLowerCase() }
+                val match = itemGroups.find { it.name.toLowerCase() == orderItem.item.name.toLowerCase() }
 
                 if(match !== null) {
                     match.quantity += 1
-                    match.items.add(item)
+                    match.items.add(orderItem)
                 } else {
 
                     // Create a new order item group.
-                    itemGroups.add(OrderItemGroup(item.name, 1, arrayListOf(item)))
+                    itemGroups.add(OrderItemGroup(orderItem.item.name, 1, arrayListOf(orderItem)))
                 }
             }
 
@@ -86,23 +86,23 @@ class OrderUtil {
 
         /**
          * Takes a list of order items and will put them in order item user groups, based on equal user.
-         * @param items List with order items
+         * @param orderItems List with order items
          */
-        fun userGroupItems(items: List<OrderItem>): List<OrderItemUserGroup> {
+        fun userGroupItems(orderItems: List<OrderItem>): List<OrderItemUserGroup> {
 
             val itemUserGroups = arrayListOf<OrderItemUserGroup>()
 
-            for(item in items) {
+            for(orderItem in orderItems) {
 
                 // Check if the order item already has a corresponding group.
-                val match = itemUserGroups.find { it.username == item.user.username }
+                val match = itemUserGroups.find { it.username == orderItem.user.username }
 
                 if(match !== null) {
-                    match.items.add(item)
+                    match.items.add(orderItem)
                 } else {
 
                     // Create a new order item group.
-                    itemUserGroups.add(OrderItemUserGroup(item.user.username, arrayListOf(item)))
+                    itemUserGroups.add(OrderItemUserGroup(orderItem.user.username, arrayListOf(orderItem)))
                 }
             }
 

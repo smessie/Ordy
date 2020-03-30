@@ -39,7 +39,7 @@ class OrderPersonalListAdapter(val context: Context?, var order: Query<Order>, v
 
                 // Assign the data.
                 view.order_item_quantity.text = "1x"
-                view.order_item_name.text = orderItem.name
+                view.order_item_name.text = orderItem.item.name
                 view.order_item_comment.text = orderItem.comment
 
                 if(showActions) {

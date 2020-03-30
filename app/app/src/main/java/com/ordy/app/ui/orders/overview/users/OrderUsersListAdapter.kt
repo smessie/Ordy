@@ -57,7 +57,7 @@ class OrderUsersListAdapter(val context: Context?, var order: Query<Order>): Bas
 
                     // Assign the data.
                     orderItemView.order_item_quantity.text = "1x"
-                    orderItemView.order_item_name.text = orderItem.name
+                    orderItemView.order_item_name.text = orderItem.item.name
                     orderItemView.order_item_comment.text = orderItem.comment
 
                     // Hide action buttons

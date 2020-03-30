@@ -1,6 +1,5 @@
 package com.ordy.app.ui.orders.overview.additem
 
-import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.ApiService
 import com.ordy.app.api.ApiServiceViewModel
