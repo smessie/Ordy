@@ -13,7 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
-import com.ordy.app.ui.groups.overview.OverviewGroupActivity
+import com.ordy.app.ui.groups.create.CreateGroupActivity
 import com.ordy.app.ui.login.LoginActivity
 import com.ordy.app.ui.orders.create.CreateOrderActivity
 import com.ordy.app.ui.profile.ProfileActivity
@@ -35,10 +35,14 @@ class MainActivity : AppCompatActivity() {
         // New order button
         speedDialView
             .addActionItem(
-                SpeedDialActionItem.Builder(R.id.speeddial_order, R.drawable.ic_library_books_black_24dp)
-                .setLabel(getString(R.string.speeddial_order))
-                .setFabImageTintColor(Color.WHITE)
-                .create())
+                SpeedDialActionItem.Builder(
+                    R.id.speeddial_order,
+                    R.drawable.ic_library_books_black_24dp
+                )
+                    .setLabel(getString(R.string.speeddial_order))
+                    .setFabImageTintColor(Color.WHITE)
+                    .create()
+            )
 
         // New group button
         speedDialView
@@ -46,16 +50,21 @@ class MainActivity : AppCompatActivity() {
                 SpeedDialActionItem.Builder(R.id.speeddial_group, R.drawable.ic_group_black_24dp)
                     .setLabel(getString(R.string.speeddial_group))
                     .setFabImageTintColor(Color.WHITE)
-                    .create())
+                    .create()
+            )
 
         // Login button
         // TODO: remove once implemented
         speedDialView
             .addActionItem(
-                SpeedDialActionItem.Builder(R.id.speeddial_login, R.drawable.ic_lock_outline_black_24dp)
+                SpeedDialActionItem.Builder(
+                    R.id.speeddial_login,
+                    R.drawable.ic_lock_outline_black_24dp
+                )
                     .setLabel("Login")
                     .setFabImageTintColor(Color.WHITE)
-                    .create())
+                    .create()
+            )
 
         // Click actions.
         speedDialView.setOnActionSelectedListener { actionItem ->
@@ -76,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.speeddial_group -> {
 
                     // Open the create group activity
-                    val intent = Intent(this, OverviewGroupActivity::class.java)
+                    val intent = Intent(this, CreateGroupActivity::class.java)
                     startActivity(intent)
 
                     // Close the speeddial.
@@ -106,8 +115,14 @@ class MainActivity : AppCompatActivity() {
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_orders, R.id.navigation_groups, R.id.navigation_payments, R.id.navigation_locations))
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_orders,
+                R.id.navigation_groups,
+                R.id.navigation_payments,
+                R.id.navigation_locations
+            )
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
