@@ -17,4 +17,11 @@ class OrdersViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) 
     fun getOrders(): Query<List<Order>> {
         return orders.value!!
     }
+
+    /**
+     * Refresh the list of orders
+     */
+    fun refreshOrders() {
+        FetchHandler.handle(orders, apiService.userOrders())
+    }
 }

@@ -9,10 +9,10 @@
         <variable name="handlers" type="com.ordy.app.ui.orders.active.ActiveOrdersHandlers" />
     </data>
 
-    <LinearLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/orders_active_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <!-- Orders -->
         <ListView
@@ -43,5 +43,5 @@
                 android:gravity="center"
                 />
         </LinearLayout>
-    </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

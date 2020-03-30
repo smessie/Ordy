@@ -22,6 +22,7 @@ import com.ordy.app.util.TabsAdapter
 import com.ordy.app.util.TabsEntry
 import com.ordy.app.util.TimerUtil
 import kotlinx.android.synthetic.main.activity_overview_order.*
+import kotlinx.android.synthetic.main.activity_overview_order.view.*
 import java.text.SimpleDateFormat
 import kotlin.properties.Delegates
 
@@ -69,6 +70,18 @@ class OverviewOrderActivity : AppCompatActivity() {
 
         // Fetch the specific order.
         FetchHandler.handle(viewModel.order, viewModel.apiService.order(orderId))
+
+        // Swipe to refresh
+        binding.root.order_refresh.setOnRefreshListener {
+            viewModel.refreshOrders(orderId)
+        }
+
+        // Stop refreshing on load
+        viewModel.order.observe(this, Observer {
+            if(it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+                binding.root.order_refresh.isRefreshing = false
+            }
+        })
 
         // Observe the changes of the fetch.
         viewModel.order.observe(this, Observer {

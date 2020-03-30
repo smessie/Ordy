@@ -21,4 +21,11 @@ class OverviewOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiSe
     fun getOrder(): Query<Order> {
         return order.value!!
     }
+
+    /**
+     * Refresh the order
+     */
+    fun refreshOrders(orderId: Int) {
+        FetchHandler.handle(order, apiService.order(orderId))
+    }
 }
