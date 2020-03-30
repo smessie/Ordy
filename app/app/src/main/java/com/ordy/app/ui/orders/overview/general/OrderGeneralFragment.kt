@@ -41,7 +41,10 @@ class OrderGeneralFragment : Fragment() {
 
         // Create the list view adapter
         listAdapter = OrderGeneralListAdapter(requireContext(), viewModel)
-        binding.root.findViewById<ListView>(R.id.order_items).adapter = listAdapter
+        binding.root.findViewById<ListView>(R.id.order_items).apply {
+            adapter = listAdapter
+            emptyView = binding.root.findViewById(R.id.order_items_empty)
+        }
 
         // Update the list adapter when the "order" query updates
         viewModel.order.observe(viewLifecycleOwner, Observer {

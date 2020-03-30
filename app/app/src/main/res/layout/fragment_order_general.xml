@@ -27,5 +27,29 @@
             android:layout_height="wrap_content"
             android:divider="@android:color/transparent"
             />
+
+        <!-- Empty placeholder -->
+        <LinearLayout
+            android:id="@+id/order_items_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:text="@string/no_order_items_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                style="@style/Subtitle"
+                />
+
+            <TextView
+                android:text="@string/no_order_items_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                />
+        </LinearLayout>
     </LinearLayout>
 </layout>

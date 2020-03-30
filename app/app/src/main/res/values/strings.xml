@@ -41,4 +41,7 @@
     <string name="add_item_order_input_search">Search for an item</string>
     <string name="add_item_order_default_title">Not in the list?</string>
     <string name="add_item_order_default_text">Add \"%1$s\" to your order instead</string>
+    <string name="no_order_items_title">No items found</string>
+    <string name="no_order_items_description">Nobody has ordered anything.</string>
+    <string name="no_order_items_description_personal">You have not ordered anything. Click the \"add item\" button to add an item to this order.</string>
 </resources>
