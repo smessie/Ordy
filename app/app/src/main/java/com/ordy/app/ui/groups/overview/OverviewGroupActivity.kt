@@ -11,7 +11,6 @@ import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.FetchHandler
-import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewGroupBinding
 import kotlinx.android.synthetic.main.activity_overview_group.*
@@ -25,6 +24,7 @@ class OverviewGroupActivity : AppCompatActivity() {
     }
 
     private var listAdapter: OverviewGroupListAdapter? = null
+    lateinit var handlers: OverviewGroupHandlers
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,8 @@ class OverviewGroupActivity : AppCompatActivity() {
         // Create binding for the activity.
         val binding: ActivityOverviewGroupBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_overview_group)
-        binding.handlers = OverviewGroupHandlers(this, viewModel)
+        handlers = OverviewGroupHandlers(this, viewModel)
+        binding.handlers = handlers
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
 
@@ -45,7 +46,7 @@ class OverviewGroupActivity : AppCompatActivity() {
         FetchHandler.handle(viewModel.group, viewModel.apiService.group(groupId))
 
         // Create the list view adapter
-        listAdapter = OverviewGroupListAdapter(applicationContext, viewModel)
+        listAdapter = OverviewGroupListAdapter(applicationContext, viewModel, handlers)
         binding.root.findViewById<ListView>(R.id.group_members).adapter = listAdapter
 
         // Set the action bar elevation to 0, since the group extends the action bar.

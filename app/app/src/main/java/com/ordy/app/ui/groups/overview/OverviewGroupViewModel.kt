@@ -18,20 +18,6 @@ class OverviewGroupViewModel(apiService: ApiService) : ApiServiceViewModel(apiSe
     var handlingRemoveRequest = false
     lateinit var rootView: View
 
-    fun removeMember(groupId: Int, userId: Int) {
-        if (!handlingRemoveRequest) {
-            handlingRemoveRequest = true
-            FetchHandler.handle(
-                removeResult, apiService.deleteMemberGroup(groupId, userId)
-            )
-        } else {
-            ErrorHandler.handleRawGeneral(
-                "Calm down ;) another request is still processing...",
-                rootView
-            )
-        }
-    }
-
     fun getGroup(): Query<Group> {
         return group.value!!
     }

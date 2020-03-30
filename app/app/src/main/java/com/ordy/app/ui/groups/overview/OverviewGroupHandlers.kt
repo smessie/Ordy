@@ -45,4 +45,18 @@ class OverviewGroupHandlers(
             )
         }
     }
+
+    fun removeMember(groupId: Int, userId: Int) {
+        if (!viewModel.handlingRemoveRequest) {
+            viewModel.handlingRemoveRequest = true
+            FetchHandler.handle(
+                viewModel.removeResult, viewModel.apiService.deleteMemberGroup(groupId, userId)
+            )
+        } else {
+            ErrorHandler.handleRawGeneral(
+                "Calm down ;) another request is still processing...",
+                viewModel.rootView
+            )
+        }
+    }
 }

@@ -13,7 +13,8 @@ import kotlinx.android.synthetic.main.list_group_member_card.view.*
 
 class OverviewGroupListAdapter(
     val context: Context?,
-    var viewModel: OverviewGroupViewModel
+    var viewModel: OverviewGroupViewModel,
+    val handlers: OverviewGroupHandlers
 ) :
     BaseAdapter() {
 
@@ -48,7 +49,7 @@ class OverviewGroupListAdapter(
 
                 // Set click handler on remove button
                 view.member_remove.setOnClickListener {
-                    viewModel.removeMember(viewModel.getGroup().requireData().id, member.id)
+                    handlers.removeMember(viewModel.getGroup().requireData().id, member.id)
                 }
             }
         }
