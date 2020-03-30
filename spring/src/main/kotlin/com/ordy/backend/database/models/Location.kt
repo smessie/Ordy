@@ -5,7 +5,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "locations")
 class Location (
-        @Id @GeneratedValue var id: Int = 0,
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Int = 0,
         @Column(nullable = false) var name: String,
         @Column(nullable = true) var latitude: Double,
         @Column(nullable = true) var longitude: Double,

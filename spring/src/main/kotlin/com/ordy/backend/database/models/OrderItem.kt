@@ -5,7 +5,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "order_items")
 class OrderItem (
-    @Id @GeneratedValue var id: Int = 0,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Int = 0,
     @Column(nullable = false) var comment: String = "",
     @Column(nullable = false) var paid: Boolean = false,
     @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false) var order: Order,

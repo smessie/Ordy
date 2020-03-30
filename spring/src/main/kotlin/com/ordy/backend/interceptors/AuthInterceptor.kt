@@ -19,10 +19,7 @@ class AuthInterceptor: HandlerInterceptor{
     @Autowired private lateinit var tokenService: TokenService
     @Autowired private lateinit var userRepo: UserRepository
 
-    private val log = Logger.getLogger("prehandle")
-
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, dataObject: Any) : Boolean {
-        log.info("[preHandle]; ${request.contextPath}")
 
         val token = request.getHeader("Authorization") ?: throw GenericException(HttpStatus.UNAUTHORIZED, "Invalid token")
         val userId = tokenService.decrypt(token).toIntOrNull()
@@ -41,14 +38,5 @@ class AuthInterceptor: HandlerInterceptor{
         } else {
             throw GenericException(HttpStatus.UNAUTHORIZED, "Invalid token")
         }
-    }
-
-    override fun postHandle(request: HttpServletRequest, response: HttpServletResponse, dataObject: Any, model: ModelAndView?){
-        // Not used yet
-
-    }
-
-    override fun afterCompletion(request: HttpServletRequest, response: HttpServletResponse, dataObject: Any, e: Exception?) {
-        // Not used yet
     }
 }

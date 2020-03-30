@@ -5,7 +5,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "groups")
 class Group (
-        @Id @GeneratedValue var id: Int = 0,
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Int = 0,
         @Column(nullable = false) var name: String,
         @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false) var creator: User
 )
