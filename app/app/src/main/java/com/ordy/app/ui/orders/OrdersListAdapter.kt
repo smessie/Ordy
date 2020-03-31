@@ -21,6 +21,8 @@ import java.text.SimpleDateFormat
 
 class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, val viewModel: OrdersViewModel, val  orderStatus: OrdersStatus): BaseAdapter() {
 
+    var ordersFiltered: List<Order> = emptyList()
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_order_card, parent, false)
@@ -36,7 +38,7 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
             }
 
             QueryStatus.SUCCESS -> {
-                val order = OrderUtil.filterOrdersStatus(viewModel.getOrders().requireData(), orderStatus)[position]
+                val order = ordersFiltered[position]
 
                 // Stop the shimmer effect & hide.
                 view.order_loading.stopShimmer()
@@ -88,4 +90,17 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
         }
     }
 
+    fun update() {
+
+        // Update the filtered orders, when the query succeeded.
+        if(viewModel.getOrders().status == QueryStatus.SUCCESS) {
+            ordersFiltered = OrderUtil.filterOrdersStatus(
+                viewModel.getOrders().requireData(),
+                orderStatus
+            )
+        }
+
+        // Notify the changes to the list view (to re-render automatically)
+        notifyDataSetChanged()
+    }
 }

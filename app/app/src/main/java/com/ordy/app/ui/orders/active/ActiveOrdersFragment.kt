@@ -68,7 +68,7 @@ class ActiveOrdersFragment : Fragment() {
         viewModel.orders.observe(this, Observer {
 
             // Notify the changes to the list view (to re-render automatically)
-            listAdapter.notifyDataSetChanged()
+            listAdapter.update()
         })
     }
 }
