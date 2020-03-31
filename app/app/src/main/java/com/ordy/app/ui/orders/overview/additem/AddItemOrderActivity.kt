@@ -1,6 +1,7 @@
 package com.ordy.app.ui.orders.overview.additem
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ListView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -74,7 +75,8 @@ class AddItemOrderActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler.handle(it.error, binding.root, emptyList())
+                    Log.i("TEST", it.requireError().message)
+                    ErrorHandler.handle(it.error, binding.root)
                 }
             }
         })

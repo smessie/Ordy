@@ -63,7 +63,7 @@ class AddItemOrderListAdapter(
                 // Set click handler.
                 view.order_cuisine_add.setOnClickListener {
                     if (viewModel.getAddItemResult().status != QueryStatus.LOADING) {
-                        activity.handlers.addItem(orderId, it.id, null)
+                        activity.handlers.addItem(orderId, cuisineItem.id, null)
                     }
                 }
             }

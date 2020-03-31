@@ -1,6 +1,7 @@
 package com.ordy.app.api.util
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import com.google.android.material.snackbar.Snackbar
@@ -25,12 +26,20 @@ class ErrorHandler {
             // Print the error message to the console for debugging
             error.printStackTrace()
 
+            Log.i("Error Handler", "----------------------------------------------")
+            Log.i("Error Handler", "An error occurred:")
+
             // Handle HTTP Exceptions.
             if (error is HttpException) {
-                queryError.message = error.message()
+                queryError.message = if (error.message().isEmpty())
+                                        "An unknown error has occurred"
+                                        else error.message()
                 queryError.description = ""
                 queryError.code = error.code().toString()
                 queryError.response = error.response()
+
+                Log.i("Error Handler", "Message: ${queryError.message}")
+                Log.i("Error Handler", "Code: ${queryError.code}")
 
                 // General errors & input errors (when the error body is defined)
                 if (queryError.response != null && queryError.response!!.errorBody() != null) {
@@ -64,6 +73,11 @@ class ErrorHandler {
                 queryError.code = "unknown"
             }
 
+            Log.i("Error Handler", "Stacktrace: ")
+            error.printStackTrace()
+            Log.i("Error Handler", "----------------------------------------------")
+
+
             return queryError
         }
 
@@ -92,9 +106,7 @@ class ErrorHandler {
             ) {
 
                 // Create and show a snackbar with the error message.
-                val snackbar = Snackbar.make(view, queryError.message, Snackbar.LENGTH_LONG)
-                snackbar.view.setBackgroundColor(Color.parseColor("#e74c3c"))
-                snackbar.show()
+                this.handleRawGeneral(queryError.message, view)
             }
         }
 
@@ -108,7 +120,7 @@ class ErrorHandler {
          */
         fun handleInputs(queryError: QueryError?, view: View?, fields: List<InputField>) {
 
-            if (queryError?.inputErrors != null) {
+            if (queryError != null) {
 
                 for (field in fields) {
 
@@ -142,7 +154,7 @@ class ErrorHandler {
          */
         fun handleGeneral(queryError: QueryError?, view: View?) {
 
-            if (queryError?.generalErrors != null && view != null && queryError.generalErrors.isNotEmpty()) {
+            if (queryError != null && view != null && queryError.generalErrors.isNotEmpty()) {
                 handleRawGeneral(queryError.generalErrors[0].message, view)
             }
         }
