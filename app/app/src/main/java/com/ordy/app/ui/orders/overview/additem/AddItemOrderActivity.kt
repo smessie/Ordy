@@ -75,7 +75,6 @@ class AddItemOrderActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    Log.i("TEST", it.requireError().message)
                     ErrorHandler.handle(it.error, binding.root)
                 }
             }
