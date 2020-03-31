@@ -44,4 +44,5 @@
     <string name="no_order_items_title">No items found</string>
     <string name="no_order_items_description">Nobody has ordered anything.</string>
     <string name="no_order_items_description_personal">You have not ordered anything. Click the \"add item\" button to add an item to this order.</string>
+    <string name="order_item_comment">Enter extra comment</string>
 </resources>

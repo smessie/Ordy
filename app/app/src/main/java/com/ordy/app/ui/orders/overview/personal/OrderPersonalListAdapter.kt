@@ -12,11 +12,13 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.ordy.app.AppPreferences
 import com.ordy.app.R
+import com.ordy.app.api.models.Order
 import com.ordy.app.api.models.OrderItem
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
+import com.ordy.app.ui.orders.overview.addcomment.AddCommentDialog
 import com.ordy.app.util.OrderUtil
 import com.ordy.app.util.TimerUtil
 import kotlinx.android.synthetic.main.fragment_order_personal.view.*
@@ -26,7 +28,7 @@ import java.util.*
 
 class OrderPersonalListAdapter(
     val context: Context,
-    val view: View,
+    val parentView: View,
     val handlers: OrderPersonalHandlers,
     val fragment: OrderPersonalFragment,
     val viewModel: OverviewOrderViewModel
@@ -65,52 +67,17 @@ class OrderPersonalListAdapter(
                 view.order_item_comment.text = orderItem.comment
 
                 // Hide the comment area when comment is empty.
-                if (view.order_item_comment.text == "") {
+                if (orderItem.comment == "") {
                     view.order_item_comment.visibility = View.GONE
+                } else {
+                    view.order_item_comment.visibility = View.VISIBLE
                 }
 
-                // Result of the delete item query
-                val deleteResult = MutableLiveData<Query<ResponseBody>>(Query())
+                // Add the update action
+                addUpdateAction(order, orderItem, view)
 
-                // Implement the button click actions.
-                view.order_item_action_delete.setOnClickListener {
-
-                    // Prevent multiple delete requests from sending.
-                    if (deleteResult.value!!.status != QueryStatus.LOADING) {
-                        handlers.removeItem(
-                            deleteResult,
-                            order.id,
-                            orderItem.id
-                        )
-                    }
-                }
-
-                // Implement listener of changes of delete query result
-                deleteResult.observe(fragment, Observer {
-
-                    when (it.status) {
-
-                        QueryStatus.LOADING -> {
-                            Snackbar.make(
-                                fragment.requireView(),
-                                "Attempting to delete item...",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-
-                        QueryStatus.SUCCESS -> {
-                            // Delete the order item from the list view
-                            viewModel.getOrder().requireData().orderItems.remove(orderItem)
-
-                            // Update the query.
-                            viewModel.order.postValue(viewModel.getOrder())
-                        }
-
-                        QueryStatus.ERROR -> {
-                            ErrorHandler.handle(it.error, fragment.requireView(), listOf())
-                        }
-                    }
-                })
+                // Add the delete action
+                addDeleteAction(order, orderItem, view)
 
                 if (showActions) {
                     view.order_item_actions.visibility = View.VISIBLE
@@ -143,6 +110,94 @@ class OrderPersonalListAdapter(
         return false
     }
 
+    fun addUpdateAction(order: Order, orderItem: OrderItem, view: View) {
+        // Result of the update item query
+        val updateResult = MutableLiveData<Query<ResponseBody>>(Query())
+
+        // Implement the add comment action
+        view.order_item_action_comment.setOnClickListener {
+            val manager = fragment.parentFragmentManager
+
+            val dialog = AddCommentDialog(
+                order = order,
+                orderItem = orderItem,
+                updateResult = updateResult,
+                handlers = handlers
+            )
+
+            dialog.show(manager, "AddCommentDialog")
+        }
+
+        // Implement listener of changes of update item query result
+        updateResult.observe(fragment, Observer {
+
+            when (it.status) {
+
+                QueryStatus.LOADING -> {
+                    Snackbar.make(
+                        fragment.requireView(),
+                        "Attempting to update item...",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+
+                QueryStatus.SUCCESS -> {
+                    // Update the query.
+                    viewModel.refreshOrder(order.id)
+                }
+
+                QueryStatus.ERROR -> {
+                    ErrorHandler.handle(it.error, fragment.requireView(), listOf())
+                }
+            }
+        })
+    }
+
+    fun addDeleteAction(order: Order, orderItem: OrderItem, view: View) {
+        // Result of the delete item query
+        val deleteResult = MutableLiveData<Query<ResponseBody>>(Query())
+
+        // Implement the delete button.
+        view.order_item_action_delete.setOnClickListener {
+
+            // Prevent multiple delete requests from sending.
+            if (deleteResult.value!!.status != QueryStatus.LOADING) {
+                handlers.removeItem(
+                    deleteResult,
+                    order.id,
+                    orderItem.id
+                )
+            }
+        }
+
+        // Implement listener of changes of delete query result
+        deleteResult.observe(fragment, Observer {
+
+            when (it.status) {
+
+                QueryStatus.LOADING -> {
+                    Snackbar.make(
+                        fragment.requireView(),
+                        "Attempting to delete item...",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+
+                QueryStatus.SUCCESS -> {
+                    // Delete the order item from the list view
+                    viewModel.getOrder().requireData().orderItems.remove(orderItem)
+
+                    // Update the query.
+                    viewModel.order.postValue(viewModel.getOrder())
+                }
+
+                QueryStatus.ERROR -> {
+                    ErrorHandler.handle(it.error, fragment.requireView(), listOf())
+                }
+            }
+        })
+    }
+
     fun update() {
         // Update the order items, when the query succeeded.
         if (viewModel.getOrder().status == QueryStatus.SUCCESS) {
@@ -156,26 +211,29 @@ class OrderPersonalListAdapter(
             updateTimer.cancel()
 
             // Remove the action buttons when the order is closed.
-            updateTimer = TimerUtil.updateUI(fragment.requireActivity() as AppCompatActivity, 0, 1000) {
+            updateTimer =
+                TimerUtil.updateUI(fragment.requireActivity() as AppCompatActivity, 0, 1000) {
 
-                // Cancel the timer when the query updates.
-                if(viewModel.getOrder().status != QueryStatus.SUCCESS) {
-                    updateTimer.cancel()
-                } else {
-                    val closed = OrderUtil.timeLeft(viewModel.getOrder().requireData().deadline) <= 0
+                    // Cancel the timer when the query updates.
+                    if (viewModel.getOrder().status != QueryStatus.SUCCESS) {
+                        updateTimer.cancel()
+                    } else {
+                        val closed =
+                            OrderUtil.timeLeft(viewModel.getOrder().requireData().deadline) <= 0
 
-                    // Update the list view only when necessary
-                    if (!closed != showActions) {
-                        showActions = !closed
+                        // Update the list view only when necessary
+                        if (!closed != showActions) {
+                            showActions = !closed
 
-                        // Hide the "add item"-button
-                        view.order_items_add.visibility = if (closed) View.INVISIBLE else View.VISIBLE
+                            // Hide the "add item"-button
+                            parentView.order_items_add.visibility =
+                                if (closed) View.INVISIBLE else View.VISIBLE
 
-                        // Notify the changes to the list view (to re-render automatically)
-                        notifyDataSetChanged()
+                            // Notify the changes to the list view (to re-render automatically)
+                            notifyDataSetChanged()
+                        }
                     }
                 }
-            }
         }
 
         // Notify the changes to the list view (to re-render automatically)

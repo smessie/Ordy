@@ -73,7 +73,7 @@ class OverviewOrderActivity : AppCompatActivity() {
 
         // Swipe to refresh
         binding.root.order_refresh.setOnRefreshListener {
-            viewModel.refreshOrders(orderId)
+            viewModel.refreshOrder(orderId)
         }
 
         // Stop refreshing on load

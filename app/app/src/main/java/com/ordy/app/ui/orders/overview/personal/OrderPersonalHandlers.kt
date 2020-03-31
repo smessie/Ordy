@@ -2,6 +2,7 @@ package com.ordy.app.ui.orders.overview.personal
 
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData
+import com.ordy.app.api.models.actions.OrderUpdateItem
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
@@ -13,9 +14,9 @@ class OrderPersonalHandlers(val fragment: OrderPersonalFragment, val viewModel: 
 
     /**
      * Remove an item from a given order
-     * @param orderId Id of the order to add the item to
-     * @param cuisineItemId Id of the cuisin item (or null when a custom item name is given)
-     * @param name Custom item name (ignored when cuisineItemId is present)
+     * @param livedata Object to bind result to
+     * @param orderId Id of the order
+     * @param orderItemId Id of the order item
      */
     fun removeItem(livedata: MutableLiveData<Query<ResponseBody>>, orderId: Int, orderItemId: Int) {
         FetchHandler.handle(
@@ -23,6 +24,28 @@ class OrderPersonalHandlers(val fragment: OrderPersonalFragment, val viewModel: 
             viewModel.apiService.userDeleteOrderItem(
                 orderId,
                 orderItemId
+            )
+        )
+    }
+
+    /**
+     * Update the comment of a given order.
+     * @param livedata Object to bind result to
+     * @param orderId Id of the order
+     * @param orderItemId Id of the order item
+     * @param comment Comment to set for the item.
+     */
+    fun updateItem(livedata: MutableLiveData<Query<ResponseBody>>, orderId: Int, orderItemId: Int, comment: String) {
+
+        // Add the item to the order
+        FetchHandler.handle(
+            livedata,
+            viewModel.apiService.userUpdateOrderItem(
+                orderId,
+                orderItemId,
+                OrderUpdateItem(
+                    comment
+                )
             )
         )
     }
