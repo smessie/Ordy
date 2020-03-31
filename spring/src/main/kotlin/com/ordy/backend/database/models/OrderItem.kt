@@ -6,7 +6,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "order_items")
-class OrderItem (
+class OrderItem(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ class OrderItem (
     var paid: Boolean = false,
 
     @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false)
-    @JsonView(View.List::class)
+    @JsonView(View.Ignore::class)
     var order: Order,
 
     @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false)

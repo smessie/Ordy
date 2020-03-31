@@ -5,6 +5,5 @@ import com.ordy.backend.database.models.User
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface GroupMemberRepository : JpaRepository<GroupMember, Int> {
-
     fun findGroupMembersByUser(user: User): List<GroupMember>
 }

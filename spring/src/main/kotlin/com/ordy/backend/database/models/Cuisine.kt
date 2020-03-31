@@ -13,7 +13,7 @@ class Cuisine (
         var id: Int = 0,
 
         @Column(nullable = false)
-        @JsonView(View.List::class)
+        @JsonView(View.Ignore::class)
         var name: String,
 
         @ManyToMany(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)

@@ -9,7 +9,7 @@ import javax.persistence.*
 class Item (
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @JsonView(View.Id::class)
+        @JsonView(View.List::class)
         var id: Int = 0,
 
         @Column(nullable = false)

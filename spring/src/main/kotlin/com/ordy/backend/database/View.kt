@@ -8,6 +8,11 @@ class View {
     interface Ignore {}
 
     /**
+     * Used for nothing. Will return nothing.
+     */
+    interface Empty {}
+
+    /**
      * Used for just returning the id
      */
     interface Id {}
