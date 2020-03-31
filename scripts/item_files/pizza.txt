@@ -1,0 +1,13 @@
+Pizza Pepperoni
+Pizza Calzone
+Pizza Margherita
+Pizza Pita
+Pizza Quattro Stagioni
+Pizza Marinara
+Pizza Quattro Formaggi
+Pizza Tonno
+Pizza Gorgonzola
+Pizza Napoletana
+Pizza Americana
+Pizza Frutti Di Mare
+Pizza Carbonara
