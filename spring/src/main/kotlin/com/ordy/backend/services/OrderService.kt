@@ -30,7 +30,7 @@ class OrderService(
         var user = userRepository.findById(userId).get()
         var groups = groupMemberRepository.findGroupMembersByUser(user).map { it.group }
 
-        return groups.flatMap { orderRepository.findAllByGroup(it) }
+        return groups.flatMap { orderRepository.findAllByGroup(it) }.sortedBy { it.deadline }.reversed()
     }
 
     /**
