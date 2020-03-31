@@ -4,7 +4,7 @@ import com.ordy.backend.exceptions.wrappers.ThrowableListWrapper
 import org.springframework.http.HttpStatus
 import java.util.*
 
-class ThrowableList(code: HttpStatus = HttpStatus.NOT_FOUND) : OrdyException(code) {
+class ThrowableList(code: HttpStatus = HttpStatus.BAD_REQUEST) : OrdyException(code) {
     var inputErrors: LinkedList<PropertyException> = LinkedList()
         private set
     var generalErrors: LinkedList<GenericException> = LinkedList()
