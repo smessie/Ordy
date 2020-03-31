@@ -44,7 +44,7 @@ class OrderService(
 
         // Validate that the order exists
         if(!order.isPresent) {
-            throw GenericException(HttpStatus.UNAUTHORIZED, "Order does not exist")
+            throw GenericException(HttpStatus.BAD_REQUEST, "Order does not exist")
         }
 
         // Validate that the user is part of the group that owns the order
@@ -91,8 +91,7 @@ class OrderService(
 
             // Validate that the location is valid.
             if(!locationDb.isPresent) {
-                throwableList.addPropertyException("locationId", "Location does not exist")
-                throwableList.ifNotEmpty { throw throwableList }
+                throw throwableList.also{it.addPropertyException("locationId", "Location does not exist")}
             }
 
             location = locationDb.get()
@@ -103,8 +102,7 @@ class OrderService(
 
             // Validate that the custom location name is valid.
             if(!orderCreate.customLocationName.isPresent) {
-                throwableList.addPropertyException("customLocationName", "Location name cannot be empty")
-                throwableList.ifNotEmpty { throw throwableList }
+                throw throwableList.also{it.addPropertyException("customLocationName", "Location name cannot be empty")}
             }
 
             location = Location(
@@ -144,8 +142,7 @@ class OrderService(
 
             // Validate that the item is valid.
             if(!itemDb.isPresent) {
-                throwableList.addPropertyException("itemId", "Item does not exist")
-                throwableList.ifNotEmpty { throw throwableList }
+                throw throwableList.also{it.addPropertyException("itemId", "Item does not exist")}
             }
 
             item = itemDb.get()
@@ -155,8 +152,7 @@ class OrderService(
 
             // Validate that the custom item name is valid.
             if(!orderAddItem.customItemName.isPresent) {
-                throwableList.addPropertyException("customItemName", "Item name cannot be empty")
-                throwableList.ifNotEmpty { throw throwableList }
+                throw throwableList.also{it.addPropertyException("customItemName", "Item name cannot be empty")}
             }
 
             // Create a new item.
@@ -189,20 +185,17 @@ class OrderService(
 
         // Validate that the order item exists.
         if(!orderItemOptional.isPresent) {
-            throwableList.addGenericException("Order item does not exist")
-            throwableList.ifNotEmpty { throw throwableList }
+            throw throwableList.also{it.addGenericException("Order item does not exist")}
         }
 
         // Validate that the order item is linked to the given order.
         if(!order.orderItems.contains(orderItemOptional.get())) {
-            throwableList.addGenericException("Order item is not linked to the order")
-            throwableList.ifNotEmpty { throw throwableList }
+            throw throwableList.also{it.addGenericException("Order item is not linked to the order")}
         }
 
         // Validate that the comment exists.
         if(!orderUpdateItem.comment.isPresent) {
-            throwableList.addPropertyException("comment", "Comment cannot be null")
-            throwableList.ifNotEmpty { throw throwableList }
+            throw throwableList.also{it.addPropertyException("comment", "Comment cannot be null")}
         }
 
         // Update the order item
@@ -221,14 +214,12 @@ class OrderService(
 
         // Validate that the order item exists.
         if(!orderItemOptional.isPresent) {
-            throwableList.addGenericException("Order item does not exist")
-            throwableList.ifNotEmpty { throw throwableList }
+            throw throwableList.also{it.addGenericException("Order item does not exist")}
         }
 
         // Validate that the order item is linked to the given order.
         if(!order.orderItems.contains(orderItemOptional.get())) {
-            throwableList.addGenericException("Order item is not linked to the order")
-            throwableList.ifNotEmpty { throw throwableList }
+            throw throwableList.also{it.addGenericException("Order item is not linked to the order")}
         }
 
         // Delete the order item

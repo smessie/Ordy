@@ -26,6 +26,6 @@ class LocationService(
             throw GenericException(HttpStatus.BAD_REQUEST, "Location does not exist")
         }
 
-        return if (location.get().cuisine != null) location.get().cuisine!!.items.toList() else emptyList()
+        return location.get().cuisine?.items?.toList() ?: emptyList()
     }
 }
