@@ -142,7 +142,10 @@ class OrderService(
 
             // Validate that the item is valid.
             if(!itemDb.isPresent) {
-                throw throwableList.also{it.addPropertyException("itemId", "Item does not exist")}
+                throw throwableList.also{
+                    it.addPropertyException("itemId", "Item does not exist")
+                    it.addGenericException("Item does not exist")
+                }
             }
 
             item = itemDb.get()
@@ -152,7 +155,10 @@ class OrderService(
 
             // Validate that the custom item name is valid.
             if(!orderAddItem.customItemName.isPresent) {
-                throw throwableList.also{it.addPropertyException("customItemName", "Item name cannot be empty")}
+                throw throwableList.also{
+                    it.addPropertyException("customItemName", "Item name cannot be empty")
+                    it.addGenericException("Item name cannot be empty")
+                }
             }
 
             // Create a new item.
