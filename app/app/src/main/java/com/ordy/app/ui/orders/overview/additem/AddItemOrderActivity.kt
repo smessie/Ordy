@@ -15,6 +15,7 @@ import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityAddItemOrderBinding
+import com.ordy.app.util.SnackbarUtil
 
 class AddItemOrderActivity : AppCompatActivity() {
 
@@ -65,16 +66,22 @@ class AddItemOrderActivity : AppCompatActivity() {
             when(it.status) {
 
                 QueryStatus.LOADING -> {
-                    Snackbar.make(binding.root, "Adding item...", Snackbar.LENGTH_INDEFINITE).show()
+                    SnackbarUtil.openSnackbar(
+                        binding.root,
+                        "Adding item..."
+                    )
                 }
 
                 QueryStatus.SUCCESS -> {
+                    SnackbarUtil.closeSnackbar(binding.root)
 
                     // Go back to the order overview activity.
                     finish()
                 }
 
                 QueryStatus.ERROR -> {
+                    SnackbarUtil.closeSnackbar(binding.root)
+
                     ErrorHandler.handle(it.error, binding.root)
                 }
             }

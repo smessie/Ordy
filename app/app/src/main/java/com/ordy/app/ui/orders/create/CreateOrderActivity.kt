@@ -19,6 +19,7 @@ import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityCreateOrderBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
+import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.activity_create_order.*
 import java.security.acl.Group
 
@@ -71,10 +72,14 @@ class CreateOrderActivity : AppCompatActivity() {
             when(it.status) {
 
                 QueryStatus.LOADING -> {
-                    Snackbar.make(binding.root, "Creating order...", Snackbar.LENGTH_INDEFINITE).show()
+                    SnackbarUtil.openSnackbar(
+                        binding.root,
+                        "Creating order..."
+                    )
                 }
 
                 QueryStatus.SUCCESS -> {
+                    SnackbarUtil.closeSnackbar(binding.root)
 
                     // Go to the order overview activity.
                     val intent = Intent(applicationContext, OverviewOrderActivity::class.java)
@@ -86,6 +91,8 @@ class CreateOrderActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
+                    SnackbarUtil.closeSnackbar(binding.root)
+
                     ErrorHandler.handle(it.error, binding.root, listOf(
                         InputField("locationId", this.input_location),
                         InputField("customLocationName", this.input_location),

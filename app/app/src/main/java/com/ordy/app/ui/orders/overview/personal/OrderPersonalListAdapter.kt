@@ -20,6 +20,7 @@ import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import com.ordy.app.ui.orders.overview.addcomment.AddCommentDialog
 import com.ordy.app.util.OrderUtil
+import com.ordy.app.util.SnackbarUtil
 import com.ordy.app.util.TimerUtil
 import kotlinx.android.synthetic.main.fragment_order_personal.view.*
 import kotlinx.android.synthetic.main.list_order_item.view.*
@@ -134,19 +135,22 @@ class OrderPersonalListAdapter(
             when (it.status) {
 
                 QueryStatus.LOADING -> {
-                    Snackbar.make(
+                    SnackbarUtil.openSnackbar(
                         fragment.requireView(),
-                        "Attempting to update item...",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                        "Attempting to update item..."
+                    )
                 }
 
                 QueryStatus.SUCCESS -> {
+                    SnackbarUtil.closeSnackbar(fragment.requireView())
+
                     // Update the query.
                     viewModel.refreshOrder(order.id)
                 }
 
                 QueryStatus.ERROR -> {
+                    SnackbarUtil.closeSnackbar(fragment.requireView())
+
                     ErrorHandler.handle(it.error, fragment.requireView(), listOf())
                 }
             }
@@ -176,14 +180,15 @@ class OrderPersonalListAdapter(
             when (it.status) {
 
                 QueryStatus.LOADING -> {
-                    Snackbar.make(
+                    SnackbarUtil.openSnackbar(
                         fragment.requireView(),
-                        "Attempting to delete item...",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                        "Attempting to delete item..."
+                    )
                 }
 
                 QueryStatus.SUCCESS -> {
+                    SnackbarUtil.closeSnackbar(fragment.requireView())
+
                     // Delete the order item from the list view
                     viewModel.getOrder().requireData().orderItems.remove(orderItem)
 
@@ -192,6 +197,8 @@ class OrderPersonalListAdapter(
                 }
 
                 QueryStatus.ERROR -> {
+                    SnackbarUtil.closeSnackbar(fragment.requireView())
+
                     ErrorHandler.handle(it.error, fragment.requireView(), listOf())
                 }
             }
