@@ -3,11 +3,10 @@ package com.ordy.app.util
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.util.Log
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.lifecycle.MutableLiveData
-import java.text.DateFormat
+import android.text.format.DateFormat;
 import java.util.*
 
 class PickerUtil {
@@ -17,7 +16,7 @@ class PickerUtil {
         fun openDateTimePicker(liveData: MutableLiveData<Date>, context: Context) {
 
             val calendar: Calendar = Calendar.getInstance()
-            val hour = calendar.get(Calendar.HOUR) + 1
+            val hour = calendar.get(Calendar.HOUR_OF_DAY) + 1
             val minute = 0
 
             val returnCalendar = Calendar.getInstance()
@@ -25,17 +24,15 @@ class PickerUtil {
             val timePicker = TimePickerDialog(
                 context,
                 { timePicker: TimePicker, hour: Int, minute: Int ->
-                    returnCalendar.set(Calendar.HOUR, hour)
+                    returnCalendar.set(Calendar.HOUR_OF_DAY, hour)
                     returnCalendar.set(Calendar.MINUTE, minute)
-
-                    Log.i("BANAAN", returnCalendar.time.toString())
 
                     // Update the livedata
                     liveData.postValue(returnCalendar.time)
                 },
                 hour,
                 minute,
-                true
+                DateFormat.is24HourFormat(context)
             )
 
             val datePicker = DatePickerDialog(
