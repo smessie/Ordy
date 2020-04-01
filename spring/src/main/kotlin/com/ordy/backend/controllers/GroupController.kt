@@ -52,4 +52,10 @@ class GroupController(@Autowired val groupService: GroupService) {
     fun deleteMember(@PathVariable groupId: Int, @PathVariable userKickId: Int, @RequestAttribute userId: Int) {
         groupService.deleteMember(groupId, userKickId, userId)
     }
+
+    @GetMapping("/{groupId}/invites/search/{username}")
+    @JsonView(View.List::class)
+    fun searchMatchingInviteUsers(@PathVariable groupId: Int, @PathVariable username: String, @RequestAttribute userId: Int): List<User>{
+        return groupService.searchMatchingInviteUsers(groupId, username, userId)
+    }
 }
