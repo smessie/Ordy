@@ -83,7 +83,6 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
 
     override fun getCount(): Int {
         return when(viewModel.getOrders().status) {
-            QueryStatus.INITIALIZED -> 4
             QueryStatus.LOADING -> 4
             QueryStatus.SUCCESS -> OrderUtil.filterOrdersStatus(viewModel.getOrders().requireData(), orderStatus).size
             else -> 0

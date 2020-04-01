@@ -36,6 +36,13 @@
             android:label="@string/title_create_order"
             android:parentActivityName=".MainActivity" />
 
+        <!-- Create order select location activity -->
+        <activity
+            android:name=".ui.orders.create.location.CreateOrderLocationDialog"
+            android:label="@string/title_create_order"
+            android:parentActivityName=".ui.orders.create.CreateOrderActivity"
+            android:launchMode="singleTop" />
+
         <!-- Overview order activity -->
         <activity
             android:name=".ui.orders.overview.OverviewOrderActivity"

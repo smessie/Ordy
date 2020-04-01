@@ -45,4 +45,10 @@
     <string name="no_order_items_description">Nobody has ordered anything.</string>
     <string name="no_order_items_description_personal">You have not ordered anything. Click the \"add item\" button to add an item to this order.</string>
     <string name="order_item_comment">Enter extra comment</string>
+    <string name="order_location_input_search">Search for a location</string>
+    <string name="pick">Pick</string>
+    <string name="no_locations_title">No locations found</string>
+    <string name="no_locations_description">Use the searchbar above to search for a location by name</string>
+    <string name="loading_locations_title">Loading locations...</string>
+    <string name="loading_locations_description">Please wait while fetching locations...</string>
 </resources>

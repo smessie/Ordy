@@ -10,8 +10,21 @@
 
     <!-- No action bar -->
     <style name="AppTheme.NoActionBar" parent="AppTheme">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+
+        <!-- Show the title bar -->
+        <item name="android:windowFullscreen">false</item>
+
+        <item name="android:windowIsFloating">false</item>
+
+        <!-- Background should be white and not transparant  -->
+        <item name="android:windowBackground">@android:color/white</item>
+
+        <!-- Open/close animation -->
+        <item name="android:windowEnterAnimation">@anim/sd_scale_fade_and_translate_in</item>
+        <item name="android:windowExitAnimation">@anim/sd_scale_fade_and_translate_out</item>
     </style>
 
     <style name="Widget.AppTheme.Button.IconButton" parent="Widget.AppCompat.Button.Borderless">

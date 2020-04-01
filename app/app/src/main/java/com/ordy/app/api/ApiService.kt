@@ -27,7 +27,7 @@ interface ApiService {
      * Locations
      */
     @GET("locations")
-    fun locations(@Query("search") search: String): Observable<List<Location>>
+    fun locations(@Query("q") search: String): Observable<List<Location>>
 
     @GET("locations/{locationId}")
     fun location(@Path("locationId") locationId: Int): Observable<Location>
