@@ -46,14 +46,17 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
 
         // Check if the user was found & the password is correct.
         if (users.isNotEmpty() && checkPasswd(loginWrapper.password, users.first().password)) {
-            return AuthTokenWrapper(tokenService.encrypt(
-                    jacksonObjectMapper().writeValueAsString(
-                            TokenWrapper(
-                                userId = users.first().id,
-                                random = UUID.randomUUID().toString()
-                            )
-                    )
-            ))
+            return AuthTokenWrapper(
+                    tokenService.encrypt(
+                        jacksonObjectMapper().writeValueAsString(
+                                TokenWrapper(
+                                    userId = users.first().id,
+                                    random = UUID.randomUUID().toString()
+                                )
+                        )
+                    ),
+                    users.first().id
+            )
         } else {
             val throwableList = ThrowableList()
             throwableList.addPropertyException("email", "Email and/or password is wrong")

@@ -12,5 +12,6 @@ class AuthRegisterWrapper(
 )
 
 class AuthTokenWrapper(
-        val accessToken: String
+        val accessToken: String,
+        val userId: Int
 )
