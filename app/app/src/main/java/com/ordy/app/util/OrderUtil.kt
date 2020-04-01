@@ -5,6 +5,7 @@ import com.ordy.app.api.models.Order
 import com.ordy.app.api.models.OrderItem
 import com.ordy.app.ui.orders.OrdersStatus
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class OrderUtil {
 
@@ -16,13 +17,11 @@ class OrderUtil {
          */
         fun timeLeftFormat(date: Date): String {
             val difference = this.timeLeft(date)
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = difference
 
-            val days = calendar.get(Calendar.DAY_OF_YEAR)
-            val hours = calendar.get(Calendar.HOUR_OF_DAY) - 1
-            val minutes = calendar.get(Calendar.MINUTE)
-            val seconds = calendar.get(Calendar.SECOND)
+            val days = TimeUnit.MILLISECONDS.toDays(difference)
+            val hours = TimeUnit.MILLISECONDS.toHours(difference) % 24
+            val minutes = TimeUnit.MILLISECONDS.toMinutes(difference) % 60
+            val seconds = TimeUnit.MILLISECONDS.toSeconds(difference) % 60
 
             return when {
                 hours >= 24 -> {
@@ -48,11 +47,15 @@ class OrderUtil {
          * @param date Date
          */
         fun timeLeft(date: Date): Long {
-            val calendarDate = Calendar.getInstance()
-            val calendarNow = Calendar.getInstance()
-            calendarDate.time = date
+            return date.time - System.currentTimeMillis()
+        }
 
-            return calendarDate.timeInMillis - calendarNow.timeInMillis
+        /**
+         * Get the time until in milliseconds for a specific date.
+         * @param date Date
+         */
+        fun timeUntil(date: Date): Long {
+            return System.currentTimeMillis() - date.time
         }
 
         /**
@@ -118,9 +121,9 @@ class OrderUtil {
             val archivedDelay = 12 * 60 * 60 * 1000
 
             return if(ordersStatus == OrdersStatus.ACTIVE) {
-                orders.filter { this.timeLeft(it.deadline) < archivedDelay }
+                orders.filter { this.timeUntil(it.deadline) < archivedDelay }
             } else {
-                orders.filter { this.timeLeft(it.deadline) >= archivedDelay}
+                orders.filter { this.timeUntil(it.deadline) >= archivedDelay}
             }
         }
     }
