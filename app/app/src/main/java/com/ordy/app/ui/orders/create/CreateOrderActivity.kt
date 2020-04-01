@@ -71,7 +71,7 @@ class CreateOrderActivity : AppCompatActivity() {
             when(it.status) {
 
                 QueryStatus.LOADING -> {
-                    Snackbar.make(binding.root, "Creating order...", Snackbar.LENGTH_INDEFINITE).show()
+                    Snackbar.make(binding.root, "Creating order...", Snackbar.LENGTH_LONG).show()
                 }
 
                 QueryStatus.SUCCESS -> {
