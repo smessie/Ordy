@@ -14,6 +14,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.util.ErrorHandler
+import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.DialogCreateOrderLocationBinding
 import com.ordy.app.ui.orders.create.CreateOrderViewModel
@@ -91,6 +93,12 @@ class CreateOrderLocationDialog : DialogFragment() {
                 QueryStatus.SUCCESS -> {
                     searchLoading.visibility = View.INVISIBLE
                     listView.emptyView = listViewEmpty
+                }
+
+                QueryStatus.ERROR -> {
+                    searchLoading.visibility = View.INVISIBLE
+                    
+                    ErrorHandler.handle(it.error, view)
                 }
             }
 

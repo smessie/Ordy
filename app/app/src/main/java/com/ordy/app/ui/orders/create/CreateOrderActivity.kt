@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -16,6 +17,7 @@ import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.InputField
+import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityCreateOrderBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
@@ -56,7 +58,7 @@ class CreateOrderActivity : AppCompatActivity() {
         // Set the group when selecting a value.
         groupValues.setOnItemClickListener { _, _, position, _ ->
 
-            if(viewModel.getGroups().status == QueryStatus.SUCCESS) {
+            if (viewModel.getGroups().status == QueryStatus.SUCCESS) {
                 viewModel.setGroupValue(viewModel.getGroups().requireData()[position])
             }
         }
@@ -64,12 +66,40 @@ class CreateOrderActivity : AppCompatActivity() {
         // Set the groups of the spinner.
         viewModel.groups.observe(this, Observer {
             adapter.notifyDataSetChanged()
+
+            // Show an error dialog when the user is not part of any group.
+            if (it.status == QueryStatus.SUCCESS) {
+                if (it.requireData().isEmpty()) {
+                    AlertDialog.Builder(this).apply {
+                        setTitle("You are not part of any group")
+                        setMessage("Join a group or create one yourself to be able to create an order")
+                        setPositiveButton(android.R.string.ok) { _, _ ->
+
+                            // Close the activity
+                            finish()
+                        }
+                    }.show()
+                }
+            }
+
+            // Show an error dialog when unable to fetch groups.
+            if (it.status == QueryStatus.ERROR) {
+                AlertDialog.Builder(this).apply {
+                    setTitle("Unable to fetch your groups")
+                    setMessage(it.requireError().message)
+                    setPositiveButton(android.R.string.ok) { _, _ ->
+
+                        // Close the activity
+                        finish()
+                    }
+                }.show()
+            }
         })
 
         // Observe the result of adding an item to the order.
         viewModel.createOrderResult.observe(this, Observer {
 
-            when(it.status) {
+            when (it.status) {
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
@@ -93,12 +123,14 @@ class CreateOrderActivity : AppCompatActivity() {
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(binding.root)
 
-                    ErrorHandler.handle(it.error, binding.root, listOf(
-                        InputField("locationId", this.input_location),
-                        InputField("customLocationName", this.input_location),
-                        InputField("deadline", this.input_deadline),
-                        InputField("groupId", this.input_group)
-                    ))
+                    ErrorHandler.handle(
+                        it.error, binding.root, listOf(
+                            InputField("locationId", this.input_location),
+                            InputField("customLocationName", this.input_location),
+                            InputField("deadline", this.input_deadline),
+                            InputField("groupId", this.input_group)
+                        )
+                    )
                 }
             }
         })
