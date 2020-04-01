@@ -97,7 +97,7 @@ class CreateOrderLocationDialog : DialogFragment() {
 
                 QueryStatus.ERROR -> {
                     searchLoading.visibility = View.INVISIBLE
-                    
+
                     ErrorHandler.handle(it.error, view)
                 }
             }
