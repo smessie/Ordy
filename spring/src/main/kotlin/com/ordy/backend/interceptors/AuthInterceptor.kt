@@ -41,6 +41,7 @@ class AuthInterceptor: HandlerInterceptor{
                 throw GenericException(HttpStatus.UNAUTHORIZED, "Invalid token")
             }
         } catch (exception: Exception) {
+            exception.printStackTrace()
             throw GenericException(HttpStatus.UNAUTHORIZED, "Invalid token")
         }
     }
