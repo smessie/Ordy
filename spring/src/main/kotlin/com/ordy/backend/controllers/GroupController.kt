@@ -28,10 +28,10 @@ class GroupController(@Autowired val groupService: GroupService) {
         return groupService.updateGroup(groupId, groupCreateWrapper)
     }
 
-    @PostMapping("/{groupId}/invites/{userId}")
+    @PostMapping("/{groupId}/invites/{userInvitedId}")
     @JsonView(View.Empty::class)
-    fun postInvite(@PathVariable groupId: Int, @PathVariable userId: Int) {
-        groupService.createInvite(groupId, userId)
+    fun postInvite(@PathVariable groupId: Int, @PathVariable userInvitedId: Int, @RequestAttribute userId: Int) {
+        groupService.createInvite(groupId, userInvitedId, userId)
     }
 
     @DeleteMapping("/{groupId}/invites/{userId}")
