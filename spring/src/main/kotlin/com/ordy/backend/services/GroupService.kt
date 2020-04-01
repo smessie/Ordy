@@ -157,6 +157,10 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
     fun reactOnInvite(groupId: Int, userId: Int, inviteActionWrapper: InviteActionWrapper){
         val throwableList = ThrowableList()
 
+        if (!inviteActionWrapper.action.isPresent){
+            throw throwableList.also{it.addGenericException("There is no action in the InviteActionWrapper")}
+        }
+
         val groupOptional = groupRepository.findById(groupId)
         val user = userRepository.findById(userId).get()
         if(!groupOptional.isPresent){

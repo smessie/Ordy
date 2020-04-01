@@ -19,7 +19,7 @@ class UserInviteController(@Autowired val groupService: GroupService) {
     }
 
     @PostMapping("/{groupId}")
-    @JsonView(View.Detail::class)
+    @JsonView(View.Empty::class)
     fun postInvite(@PathVariable groupId: Int, @RequestAttribute userId: Int, @RequestBody inviteActionWrapper: InviteActionWrapper) {
         groupService.reactOnInvite(groupId, userId, inviteActionWrapper)
     }
