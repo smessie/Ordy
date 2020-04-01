@@ -47,6 +47,9 @@ interface ApiService {
     @PATCH("groups/{groupId}")
     fun updateGroup(@Path("groupId") groupId: Int, @Body body: GroupUpdate): Observable<Group>
 
+    @GET("groups/{groupId}/invites/search/{username}")
+    fun searchMatchingInviteUsers(@Path("groupId") groupId: Int, @Path("username") username: String): Observable<List<User>>
+
     @POST("groups/{groupId}/invites/{userId}")
     fun createInviteGroup(@Path("groupId") groupId: Int, @Path("userId") userId: Int): Observable<ResponseBody>
 

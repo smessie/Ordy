@@ -3,7 +3,7 @@ package com.ordy.app.ui.groups.overview
 import android.content.Intent
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.FetchHandler
-import com.ordy.app.ui.groups.create.CreateGroupActivity
+import com.ordy.app.ui.groups.invite.InviteMemberActivity
 
 class OverviewGroupHandlers(
     val activity: OverviewGroupActivity,
@@ -31,8 +31,7 @@ class OverviewGroupHandlers(
      */
     fun onInviteButtonClick() {
         if (viewModel.group.value != null) {
-            // TODO: change activity to InviteMemberActivity when created
-            val intent = Intent(viewModel.rootView.context, CreateGroupActivity::class.java)
+            val intent = Intent(viewModel.rootView.context, InviteMemberActivity::class.java)
 
             // Pass the group as extra information
             intent.putExtra("group_id", viewModel.group.value!!.requireData().id)

@@ -10,6 +10,7 @@
 
     <string name="title_create_order">New order</string>
     <string name="title_create_group">New group</string>
+    <string name="title_invite_member">Invite Member</string>
 
     <string name="title_login">Login</string>
     <string name="title_register">Register</string>
@@ -20,6 +21,11 @@
     <string name="group_leave">Leave</string>
     <string name="create_group_name">Group name</string>
 
+    <string name="invite_username_search">Search for usernames to invite</string>
+    <string name="invite_title">Search for usernames</string>
+    <string name="invite_subtitle">Use the searchbar above to search</string>
+    <string name="invite_button">Invite</string>
+
     <string name="speeddial_order">New order</string>
     <string name="speeddial_group">New group</string>
 
@@ -28,6 +34,7 @@
     <string name="create_order_input_group">Group</string>
 
     <string name="create">Create</string>
+    <string name="search">Search</string>
 
     <string name="email">Email</string>
     <string name="password">Password</string>
