@@ -51,4 +51,7 @@
     <string name="no_locations_description">Use the searchbar above to search for a location by name</string>
     <string name="loading_locations_title">Loading locations...</string>
     <string name="loading_locations_description">Please wait while fetching locations...</string>
+    <string name="pick_custom">Pick Custom</string>
+    <string name="location_item_default_title">Not in the list?</string>
+    <string name="location_item_default_text">Add \"%1$s\" as location instead</string>
 </resources>

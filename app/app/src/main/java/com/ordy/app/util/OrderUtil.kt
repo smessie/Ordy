@@ -15,13 +15,19 @@ class OrderUtil {
          * @param date Date
          */
         fun timeLeftFormat(date: Date): String {
-            val differenceSec = this.timeLeft(date)
+            val difference = this.timeLeft(date)
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = difference
 
-            val hours = differenceSec / 3600
-            val minutes = (differenceSec % 3600) / 60
-            val seconds = differenceSec % 60
+            val days = calendar.get(Calendar.DAY_OF_YEAR)
+            val hours = calendar.get(Calendar.HOUR_OF_DAY) - 1
+            val minutes = calendar.get(Calendar.MINUTE)
+            val seconds = calendar.get(Calendar.SECOND)
 
             return when {
+                hours >= 24 -> {
+                    "${days}d ${hours}h ${minutes}m"
+                }
                 hours >= 1 -> {
                     "${hours}h ${minutes}m"
                 }
@@ -38,23 +44,15 @@ class OrderUtil {
         }
 
         /**
-         * Get the time left in seconds for a specific date.
+         * Get the time left in milliseconds for a specific date.
          * @param date Date
          */
         fun timeLeft(date: Date): Long {
-            val difference = date.time - Date().time
+            val calendarDate = Calendar.getInstance()
+            val calendarNow = Calendar.getInstance()
+            calendarDate.time = date
 
-            return difference / 1000
-        }
-
-        /**
-         * Get the time since in seconds for a specific date.
-         * @param date Date
-         */
-        fun timeSince(date: Date): Long {
-            val difference = Date().time - date.time
-
-            return difference / 1000
+            return calendarDate.timeInMillis - calendarNow.timeInMillis
         }
 
         /**
@@ -117,12 +115,12 @@ class OrderUtil {
          */
         fun filterOrdersStatus(orders: List<Order>, ordersStatus: OrdersStatus): List<Order> {
 
-            val archivedDelay = 12 * 60 * 60;
+            val archivedDelay = 12 * 60 * 60 * 1000
 
             return if(ordersStatus == OrdersStatus.ACTIVE) {
-                orders.filter { this.timeSince(it.deadline) < archivedDelay}
+                orders.filter { this.timeLeft(it.deadline) < archivedDelay }
             } else {
-                orders.filter { this.timeSince(it.deadline) >= archivedDelay}
+                orders.filter { this.timeLeft(it.deadline) >= archivedDelay}
             }
         }
     }

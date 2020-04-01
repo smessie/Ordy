@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.list_order_card.view.*
 import kotlinx.android.synthetic.main.list_order_card.view.order_deadline_time_left
 import java.text.SimpleDateFormat
+import java.text.DateFormat
 
 class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, val viewModel: OrdersViewModel, val  orderStatus: OrdersStatus): BaseAdapter() {
 
@@ -45,10 +46,14 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
                 view.order_loading.visibility = View.GONE
                 view.order_data.visibility = View.VISIBLE
 
+                // Formatting deadline
+                val deadlineFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+                    .format(order.deadline)
+
                 // Assign the data.
                 view.order_location_name.text = order.location.name
                 view.order_group_name.text = order.group.name
-                view.order_deadline_time.text = "Closing on: ${SimpleDateFormat("HH:mm").format(order.deadline)}"
+                view.order_deadline_time.text = "Closing on: $deadlineFormat"
                 view.order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
                 view.order_courier_name.text = order.courier.username
 

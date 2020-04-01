@@ -5,19 +5,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ListView
 import androidx.fragment.app.DialogFragment
 import com.ordy.app.R
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.create.CreateOrderViewModel
 import com.ordy.app.ui.orders.create.LocationInput
 import kotlinx.android.synthetic.main.list_location_item.view.*
+import kotlinx.android.synthetic.main.list_location_item_default.view.*
 
 class CreateOrderLocationListAdapter(
     val context: Context,
     val dialog: DialogFragment,
     val viewModel: CreateOrderLocationViewModel,
-    val activityViewModel: CreateOrderViewModel
+    val activityViewModel: CreateOrderViewModel,
+    val listView: ListView
 ) : BaseAdapter() {
+
+    private var defaultItemView = LayoutInflater.from(context)
+        .inflate(R.layout.list_location_item_default, null)
+
+    init {
+        // Set click handler for default view.
+        defaultItemView.location_item_pick_custom.setOnClickListener {
+
+            // Set the selected custom location
+            activityViewModel.setLocationValue(
+                LocationInput(
+                    customLocationName = viewModel.getSearchValue()
+                )
+            )
+
+            // Dismiss the dialog
+            dialog.dismiss()
+        }
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -36,9 +58,11 @@ class CreateOrderLocationListAdapter(
                 view.location_item_pick.setOnClickListener {
 
                     // Set the selected location
-                    activityViewModel.setLocationValue(LocationInput(
-                        location
-                    ))
+                    activityViewModel.setLocationValue(
+                        LocationInput(
+                            location
+                        )
+                    )
 
                     // Dismiss the dialog
                     dialog.dismiss()
@@ -74,4 +98,37 @@ class CreateOrderLocationListAdapter(
         }
     }
 
+    override fun isEmpty(): Boolean {
+
+        // Do not show the empty view when the search query is not empty.
+        // Done to show the footer for a custom location.
+        return viewModel.getSearchValue().isEmpty()
+    }
+
+    fun update() {
+
+        // Only show the "default" item when the search query is not empty.
+        if (viewModel.getSearchValue().isEmpty()
+            || viewModel.getLocations().status == QueryStatus.LOADING
+        ) {
+            defaultItemView.location_item_default.visibility = View.GONE
+        } else {
+            defaultItemView.location_item_default.visibility = View.VISIBLE
+        }
+
+        // Update the text of the default item.
+        defaultItemView.location_item_default_text.text = String.format(
+            context.resources.getString(
+                R.string.add_item_order_default_text,
+                viewModel.getSearchValue()
+            )
+        )
+
+        // Remove the footer and add it again to prevent errors
+        listView.removeFooterView(defaultItemView)
+        listView.addFooterView(defaultItemView)
+
+        // Notify the changes to the list view (to re-render automatically)
+        notifyDataSetChanged()
+    }
 }

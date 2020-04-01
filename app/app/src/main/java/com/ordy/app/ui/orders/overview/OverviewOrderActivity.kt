@@ -23,13 +23,17 @@ import com.ordy.app.util.TabsEntry
 import com.ordy.app.util.TimerUtil
 import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.activity_overview_order.view.*
-import java.text.SimpleDateFormat
+import java.text.DateFormat
 import kotlin.properties.Delegates
 
 
 class OverviewOrderActivity : AppCompatActivity() {
 
-    private val viewModel: OverviewOrderViewModel by viewModels { ApiServiceViewModelFactory(applicationContext) }
+    private val viewModel: OverviewOrderViewModel by viewModels {
+        ApiServiceViewModelFactory(
+            applicationContext
+        )
+    }
 
     private lateinit var tabsAdapter: TabsAdapter
 
@@ -39,11 +43,12 @@ class OverviewOrderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Create binding for the activity.
-        val binding: ActivityOverviewOrderBinding = DataBindingUtil.setContentView(this, R.layout.activity_overview_order)
+        val binding: ActivityOverviewOrderBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_overview_order)
         binding.handlers = OverviewOrderHandlers(this, viewModel)
 
         // Set the action bar elevation to 0, since the order extends the action bar.
-        if(supportActionBar != null) {
+        if (supportActionBar != null) {
             supportActionBar!!.elevation = 0F
         }
 
@@ -78,7 +83,7 @@ class OverviewOrderActivity : AppCompatActivity() {
 
         // Stop refreshing on load
         viewModel.order.observe(this, Observer {
-            if(it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
                 binding.root.order_refresh.isRefreshing = false
             }
         })
@@ -86,7 +91,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         // Observe the changes of the fetch.
         viewModel.order.observe(this, Observer {
 
-            when(it.status) {
+            when (it.status) {
 
                 QueryStatus.LOADING -> {
                     Log.i("TAG", "NOW LOADING")
@@ -95,7 +100,9 @@ class OverviewOrderActivity : AppCompatActivity() {
                 QueryStatus.SUCCESS -> {
                     val order = it.requireData()
 
-                    order_deadline_time.text = SimpleDateFormat("HH:mm").format(order.deadline)
+                    order_deadline_time.text =
+                        DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+                            .format(order.deadline)
                     order_title.text = "Order: ${order.location.name}"
                     order_location_name.text = order.location.name
                     order_courier_name.text = order.courier.username

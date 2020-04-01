@@ -58,7 +58,8 @@ class CreateOrderLocationDialog : DialogFragment() {
             requireContext(),
             this,
             viewModel,
-            activityViewModel
+            activityViewModel,
+            listView
         )
 
         listView.apply {
@@ -94,7 +95,7 @@ class CreateOrderLocationDialog : DialogFragment() {
             }
 
             // Update the list adapter
-            listAdapter.notifyDataSetChanged()
+            listAdapter.update()
         })
 
         return binding.root
