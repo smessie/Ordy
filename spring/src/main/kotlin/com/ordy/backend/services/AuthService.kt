@@ -55,6 +55,7 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
                                 )
                         )
                     ),
+                    users.first().username,
                     users.first().id
             )
         } else {

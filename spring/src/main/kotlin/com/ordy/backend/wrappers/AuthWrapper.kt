@@ -13,5 +13,6 @@ class AuthRegisterWrapper(
 
 class AuthTokenWrapper(
         val accessToken: String,
+        val userName: String,
         val userId: Int
 )
