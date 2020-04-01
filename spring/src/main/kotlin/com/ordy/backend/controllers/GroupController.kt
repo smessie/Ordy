@@ -47,7 +47,7 @@ class GroupController(@Autowired val groupService: GroupService) {
         groupService.deleteInvite(groupId, userInvitedId)
     }
 
-    @DeleteMapping("/{groupId}/members/{userId}")
+    @DeleteMapping("/{groupId}/members/{userKickId}")
     @JsonView(View.Empty::class)
     fun deleteMember(@PathVariable groupId: Int, @PathVariable userKickId: Int, @RequestAttribute userId: Int) {
         groupService.deleteMember(groupId, userKickId, userId)
