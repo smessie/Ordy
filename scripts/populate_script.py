@@ -12,7 +12,6 @@ cursor = mariadb_connection.cursor()
 cuisine_id_map = {}
 coordinate_margin = 0.001
 
-
 def location_is_registered(lat, lon, name):
     min_lat, max_lat, min_lon, max_lon = lat - coordinate_margin, lat + coordinate_margin, lon - coordinate_margin, lon + coordinate_margin
 
@@ -27,7 +26,6 @@ def update_json():
     # Collects all restaurants within borders south, west, north and east respectively
     os.system(
         '''curl --globoff -o osm_output.json "http://overpass-api.de/api/interpreter?data=[out:json];node['amenity'='fast_food'](50.975798,3.582471,51.144645,3.813184);out;"''')
-
 
 def populate():
     with open('osm_output.json') as f:
@@ -134,8 +132,6 @@ def test_cuisine():
             mariadb_connection.commit()
         else:
             cuisine_id_map[cuisine_names[i]] = row[0]
-    get_cuisines()
-    print(cuisine_id_map)
 
 
 def delete_locations():

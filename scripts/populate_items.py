@@ -9,7 +9,6 @@ mariadb_connection = mariadb.connect(host='ordy.ga',
 cursor = mariadb_connection.cursor()
 cuisine_id_map = {}
 
-
 def insert_items():
     for cuisine in cuisine_id_map:
         # Read all predefined items from .txt-files
