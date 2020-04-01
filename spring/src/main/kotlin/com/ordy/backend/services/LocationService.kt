@@ -1,6 +1,7 @@
 package com.ordy.backend.services
 
 import com.ordy.backend.database.models.Item
+import com.ordy.backend.database.models.Location
 import com.ordy.backend.database.repositories.LocationRepository
 import com.ordy.backend.database.repositories.UserRepository
 import com.ordy.backend.exceptions.GenericException
@@ -13,6 +14,13 @@ class LocationService(
         @Autowired val userRepository: UserRepository,
         @Autowired val locationRepository: LocationRepository
 ) {
+
+    /**
+     * Get a list of locations
+     */
+    fun getLocations(query: String): List<Location> {
+        return locationRepository.findFirst30ByNameContaining(query)
+    }
 
     /**
      * Get a list with predefined location items for the given location
