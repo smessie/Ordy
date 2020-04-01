@@ -101,8 +101,8 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
             throw throwableList.also{it.addGenericException("You have to be in this group before you can invite other users!")}
         }
 
-        var inviteOptional = groupInviteRepository.findGroupInvitesByUserAndGroup(invitedUser.get(), group.get())
-        if(!inviteOptional.isEmpty()){
+        var inviteOptional: Optional<GroupInvite> = groupInviteRepository.findGroupInviteByUserAndGroup(invitedUser.get(), group.get())
+        if(!inviteOptional.isPresent){
             throw throwableList.also{it.addGenericException("This person is already invited to this group!")}
         }
 
@@ -111,7 +111,32 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
     }
 
     fun deleteInvite(groupId: Int, userId: Int) {
-        //TODO
+        val throwableList = ThrowableList()
+
+        val invitedUser = userRepository.findById(userId)
+        if(!invitedUser.isPresent){
+            throwableList.addPropertyException("user", "The user from the invite you want to delete does not exist!")
+        }
+
+        val group = groupRepository.findById(groupId)
+        if(!group.isPresent){
+            throwableList.addPropertyException("group", "The group of the invite you want to delete does not exist!")
+        }
+
+        throwableList.ifEmpty {
+            val inviteOptional = groupInviteRepository.findGroupInviteByUserAndGroup(invitedUser.get(), group.get())
+
+            if(!inviteOptional.isPresent){
+                throwableList.addPropertyException("invite", "The invite with given user and group does not exist")
+            }
+
+            throwableList.ifEmpty { groupInviteRepository.delete(inviteOptional.get()) }
+        }
+
+        throwableList.ifNotEmpty {
+            throwableList.addGenericException("failed to delete invite for userid=$userId in groupId=$groupId")
+            throw throwableList
+        }
     }
 
     /**
