@@ -1,5 +1,7 @@
 package com.ordy.backend.wrappers
 
+import java.util.*
+
 class GroupCreateWrapper(
-        val name: String
+        val name: Optional<String>
 )

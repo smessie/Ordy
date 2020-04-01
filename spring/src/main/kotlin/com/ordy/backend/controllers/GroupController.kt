@@ -34,10 +34,10 @@ class GroupController(@Autowired val groupService: GroupService) {
         groupService.createInvite(groupId, userInvitedId, userId)
     }
 
-    @DeleteMapping("/{groupId}/invites/{userInviteId}")
+    @DeleteMapping("/{groupId}/invites/{userInvitedId}")
     @JsonView(View.Empty::class)
-    fun deleteInvite(@PathVariable groupId: Int, @PathVariable userInviteId: Int) {
-        groupService.deleteInvite(groupId, userInviteId)
+    fun deleteInvite(@PathVariable groupId: Int, @PathVariable userInvitedId: Int) {
+        groupService.deleteInvite(groupId, userInvitedId)
     }
 
     @DeleteMapping("/{groupId}/members/{userId}")

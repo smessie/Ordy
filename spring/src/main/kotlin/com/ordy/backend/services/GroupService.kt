@@ -9,7 +9,9 @@ import com.ordy.backend.database.repositories.GroupInviteRepository
 import com.ordy.backend.database.repositories.UserRepository
 import com.ordy.backend.database.repositories.GroupMemberRepository
 import com.ordy.backend.exceptions.ThrowableList
+import com.ordy.backend.wrappers.Action
 import com.ordy.backend.wrappers.GroupCreateWrapper
+import com.ordy.backend.wrappers.InviteActionWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -30,11 +32,11 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
 
     fun createGroup(userId: Int, groupWrapper: GroupCreateWrapper): Group {
         val throwableList = ThrowableList()
-        checkGroupName(groupWrapper.name, throwableList)
+        checkGroupName(groupWrapper.name.get(), throwableList)
         throwableList.ifNotEmpty { throw throwableList }
 
-        var creator = userRepository.findById(userId).get()
-        val group = Group(name = groupWrapper.name, creator = creator)
+        val creator = userRepository.findById(userId).get()
+        val group = Group(name = groupWrapper.name.get(), creator = creator)
         groupRepository.save(group)
 
         // the creator is automatically added to the members of the group he just created
@@ -46,12 +48,12 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
 
     fun updateGroup(groupId: Int, groupWrapper: GroupCreateWrapper): Group {
         val throwableList = ThrowableList()
-        checkGroupName(groupWrapper.name, throwableList)
+        checkGroupName(groupWrapper.name.get(), throwableList)
 
         val group: Optional<Group> = groupRepository.findById(groupId)
 
-        if(group.isPresent()) {
-            group.get().name = groupWrapper.name
+        if(group.isPresent) {
+            group.get().name = groupWrapper.name.get()
             groupRepository.save(group.get())
         } else {
             throwableList.addGenericException("Group with id $groupId not found")
@@ -102,7 +104,7 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
         }
 
         var inviteOptional: Optional<GroupInvite> = groupInviteRepository.findGroupInviteByUserAndGroup(invitedUser.get(), group.get())
-        if(!inviteOptional.isPresent){
+        if(inviteOptional.isPresent){
             throw throwableList.also{it.addGenericException("This person is already invited to this group!")}
         }
 
@@ -140,14 +142,51 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
     }
 
     /**
+     * gives all the invites from a user
+     */
+
+    fun getInvites(userId: Int): List<GroupInvite>{
+        val user = userRepository.findById(userId).get()
+        return groupInviteRepository.findGroupInvitesByUser(user)
+    }
+
+    /**
+     *  accept or deny the invite for the specific group for the logged in user
+     */
+
+    fun reactOnInvite(groupId: Int, userId: Int, inviteActionWrapper: InviteActionWrapper){
+        val throwableList = ThrowableList()
+
+        val groupOptional = groupRepository.findById(groupId)
+        val user = userRepository.findById(userId).get()
+        if(!groupOptional.isPresent){
+            throw throwableList.also{it.addGenericException("The group (id=$groupId) from the invite does not exist!")}
+        }
+
+        val groupInviteOptional = groupInviteRepository.findGroupInviteByUserAndGroup(user, groupOptional.get())
+        if(!groupInviteOptional.isPresent){
+            throw throwableList.also{it.addGenericException("You do not have an invite for group $groupId!")}
+        }
+
+        // accepting the invite means that you want to join the group
+        if (inviteActionWrapper.action.get() == Action.ACCEPT){
+            val groupMember = GroupMember(user = user, group = groupOptional.get())
+            groupMemberRepository.save(groupMember)
+        }
+
+        // the invite has to be deleted no matter if the action is equal to ACCEPT or DENY
+        groupInviteRepository.delete(groupInviteOptional.get())
+    }
+
+    /**
      *  this is called when you want to leave a group
      */
 
     fun leaveGroup(groupId: Int, userId: Int) {
         val throwableList = ThrowableList()
 
-        var user = userRepository.findById(userId).get()
-        var groupMember = groupMemberRepository.findGroupMembersByUser(user).filter { it.group.id == groupId }
+        val user = userRepository.findById(userId).get()
+        val groupMember = groupMemberRepository.findGroupMembersByUser(user).filter { it.group.id == groupId }
 
         if (groupMember.isEmpty()){
             throw throwableList.also{it.addGenericException("You are not in this group!")}
@@ -167,20 +206,20 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
     fun deleteMember(groupId: Int, userKickId: Int, userId: Int) {
         val throwableList = ThrowableList()
 
-        var user = userRepository.findById(userId).get()
-        var groupMemberLogin = groupMemberRepository.findGroupMembersByUser(user).filter { it.group.id == groupId }
+        val user = userRepository.findById(userId).get()
+        val groupMemberLogin = groupMemberRepository.findGroupMembersByUser(user).filter { it.group.id == groupId }
 
         if (groupMemberLogin.isEmpty()){
             throw throwableList.also{it.addGenericException("You have to be in this group to kick someone!")}
         }
 
-        var userKick = userRepository.findById(userKickId)
+        val userKick = userRepository.findById(userKickId)
 
         if (!userKick.isPresent){
             throw throwableList.also{it.addGenericException("The person you want to kick is not found!")}
         }
 
-        var groupMemberKick = groupMemberRepository.findGroupMembersByUser(userKick.get()).filter { it.group.id == groupId }
+        val groupMemberKick = groupMemberRepository.findGroupMembersByUser(userKick.get()).filter { it.group.id == groupId }
 
         if (groupMemberLogin.isEmpty()){
             throw throwableList.also{it.addGenericException("The person you want to kick is not in this group!")}
