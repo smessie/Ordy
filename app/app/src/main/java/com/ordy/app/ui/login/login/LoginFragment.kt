@@ -42,16 +42,25 @@ class LoginFragment : Fragment() {
 
         viewModel.loginResult.observe(this, Observer {
 
-            when(it.status) {
+            when (it.status) {
 
                 QueryStatus.LOADING -> {
-                    Snackbar.make(requireView(), "Attempting to login...", Snackbar.LENGTH_INDEFINITE).show()
+                    Snackbar.make(
+                        requireView(),
+                        "Attempting to login...",
+                        Snackbar.LENGTH_INDEFINITE
+                    ).show()
                 }
 
                 QueryStatus.SUCCESS -> {
 
+                    val preferences = AppPreferences(requireContext())
+
                     // Store the given access token.
-                    AppPreferences(requireContext()).accessToken = it.requireData().accessToken
+                    preferences.accessToken = it.requireData().accessToken
+
+                    // Store the given user.
+                    preferences.userId = it.requireData().user.id
 
                     // Open the main activity
                     val intent = Intent(this.context, MainActivity::class.java)
@@ -59,10 +68,12 @@ class LoginFragment : Fragment() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler.handle(it.error, view, listOf(
-                        InputField("email", this.input_email),
-                        InputField("password", this.input_password)
-                    ))
+                    ErrorHandler.handle(
+                        it.error, view, listOf(
+                            InputField("email", this.input_email),
+                            InputField("password", this.input_password)
+                        )
+                    )
                 }
             }
         })

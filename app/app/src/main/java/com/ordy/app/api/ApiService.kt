@@ -15,7 +15,7 @@ interface ApiService {
      * Authentication
      */
     @POST("auth/login")
-    fun login(@Body body: UserLogin): Observable<AccessToken>
+    fun login(@Body body: UserLogin): Observable<LoginResponse>
 
     @POST("auth/register")
     fun register(@Body body: UserRegister): Observable<ResponseBody>

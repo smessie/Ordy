@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import com.ordy.app.AppPreferences
 import com.ordy.app.R
 import com.ordy.app.api.util.QueryStatus
 import kotlinx.android.synthetic.main.list_group_member_card.view.*
@@ -48,6 +49,16 @@ class OverviewGroupListAdapter(
                 // Set click handler on remove button
                 view.member_remove.setOnClickListener {
                     handlers.removeMember(viewModel.getGroup().requireData().id, member.id)
+                }
+
+                // Hide the remove button if the member is the the creator
+                if (member.id == viewModel.group.value!!.requireData().creator.id) {
+                    view.member_remove.visibility = View.INVISIBLE
+                }
+
+                // Hide the remove button for yourself
+                if (member.id == AppPreferences(context!!).userId) {
+                    view.member_remove.visibility = View.INVISIBLE
                 }
             }
         }

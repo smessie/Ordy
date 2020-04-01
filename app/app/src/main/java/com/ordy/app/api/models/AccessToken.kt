@@ -2,8 +2,11 @@ package com.ordy.app.api.models
 
 import com.google.gson.annotations.SerializedName
 
-data class AccessToken(
+data class LoginResponse(
 
     @SerializedName("accessToken")
-    val accessToken: String
+    val accessToken: String,
+
+    @SerializedName("user")
+    val user: User
 )
