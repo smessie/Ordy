@@ -55,8 +55,7 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
                                 )
                         )
                     ),
-                    users.first().username,
-                    users.first().id
+                    users.first()
             )
         } else {
             val throwableList = ThrowableList()
