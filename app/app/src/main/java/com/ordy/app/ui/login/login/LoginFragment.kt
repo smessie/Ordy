@@ -50,8 +50,13 @@ class LoginFragment : Fragment() {
 
                 QueryStatus.SUCCESS -> {
 
+                    val preferences = AppPreferences(requireContext())
+
                     // Store the given access token.
-                    AppPreferences(requireContext()).accessToken = it.requireData().accessToken
+                    preferences.accessToken = it.requireData().accessToken
+
+                    // Store the given user.
+                    preferences.userId = it.requireData().user.id
 
                     // Open the main activity
                     val intent = Intent(this.context, MainActivity::class.java)

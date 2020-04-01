@@ -19,7 +19,7 @@ class AppPreferences (val context: Context) {
     * User ID of the logged in user
     */
     var userId: Int?
-        get() = preferences.getInt("user_id", 1)
+        get() = preferences.getInt("user_id", -1)
         set(value) {
             if (value != null) {
                 preferences.edit().putInt("user_id", value).commit()
