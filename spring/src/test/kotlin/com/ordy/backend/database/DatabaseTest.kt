@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.util.Assert
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.*
 import java.util.logging.Logger
 
 
@@ -54,7 +55,7 @@ class DatabaseTest {
                     private = false, cuisine = cuisine)
             locationRepository.save(tmpLocation)
             cuisineRepository.save(tmpCuisine)
-            val tmpOrder = Order(deadline = LocalDateTime.now(), group = tmpGroup, courier = tmpUser, location = tmpLocation)
+            val tmpOrder = Order(deadline = Date(), group = tmpGroup, courier = tmpUser, location = tmpLocation)
             val tmpOrderItem = OrderItem(order = tmpOrder, user = tmpUser, item = itemRepository.findAll().first())
             orderRepository.save(tmpOrder)
             orderItemRepository.save(tmpOrderItem)
