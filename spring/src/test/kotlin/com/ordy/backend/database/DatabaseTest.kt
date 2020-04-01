@@ -7,23 +7,30 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.util.Assert
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 import java.util.logging.Logger
 
 
 @DataJpaTest(showSql = false)
 class DatabaseTest {
-    @Autowired lateinit var userRepository: UserRepository
-    @Autowired lateinit var locationRepository: LocationRepository
-    @Autowired lateinit var orderRepository: OrderRepository
-    @Autowired lateinit var orderItemRepository: OrderItemRepository
-    @Autowired lateinit var cuisineRepository: CuisineRepository
-    @Autowired lateinit var itemRepository: ItemRepository
-    @Autowired lateinit var groupRepository: GroupRepository
-    @Autowired lateinit var groupMemberRepository: GroupMemberRepository
-    @Autowired lateinit var groupInviteRepository: GroupInviteRepository
+    @Autowired
+    lateinit var userRepository: UserRepository
+    @Autowired
+    lateinit var locationRepository: LocationRepository
+    @Autowired
+    lateinit var orderRepository: OrderRepository
+    @Autowired
+    lateinit var orderItemRepository: OrderItemRepository
+    @Autowired
+    lateinit var cuisineRepository: CuisineRepository
+    @Autowired
+    lateinit var itemRepository: ItemRepository
+    @Autowired
+    lateinit var groupRepository: GroupRepository
+    @Autowired
+    lateinit var groupMemberRepository: GroupMemberRepository
+    @Autowired
+    lateinit var groupInviteRepository: GroupInviteRepository
 
     private val user = User(username = "Bob", email = "Bob@mail.com", password = "yeetskeet")
     private val cuisine = Cuisine(name = "Cuisine")
@@ -39,7 +46,7 @@ class DatabaseTest {
             val tmpGroup = Group(name = "User $i 's group", creator = tmpUser)
             userRepository.save(tmpUser)
             groupRepository.save(tmpGroup)
-            if (i%2 == 0) {
+            if (i % 2 == 0) {
                 groupMemberRepository.save(GroupMember(user = tmpUser, group = tmpGroup))
             } else {
                 groupInviteRepository.save(GroupInvite(user = tmpUser, group = tmpGroup))
@@ -91,8 +98,8 @@ class DatabaseTest {
     fun `cuisine should have 400 items`() {
         cuisineRepository.save(cuisine)
         cuisineRepository.findById(cuisine.id).ifPresentOrElse(
-                {Assert.isTrue(it.items.size == 400, "Size was ${it.items.size} not 400")},
-                {throw AssertionError("cuisine not found")})
+                { Assert.isTrue(it.items.size == 400, "Size was ${it.items.size} not 400") },
+                { throw AssertionError("cuisine not found") })
     }
 
     @Test

@@ -1,6 +1,9 @@
 package com.ordy.backend.services
 
-import com.ordy.backend.database.models.*
+import com.ordy.backend.database.models.Item
+import com.ordy.backend.database.models.Location
+import com.ordy.backend.database.models.Order
+import com.ordy.backend.database.models.OrderItem
 import com.ordy.backend.database.repositories.*
 import com.ordy.backend.exceptions.GenericException
 import com.ordy.backend.exceptions.ThrowableList
@@ -10,7 +13,6 @@ import com.ordy.backend.wrappers.OrderUpdateItemWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class OrderService(
@@ -43,12 +45,12 @@ class OrderService(
 
 
         // Validate that the order exists
-        if(!order.isPresent) {
+        if (!order.isPresent) {
             throw GenericException(HttpStatus.BAD_REQUEST, "Order does not exist")
         }
 
         // Validate that the user is part of the group that owns the order
-        if(!groups.contains(order.get().group)) {
+        if (!groups.contains(order.get().group)) {
             throw GenericException(HttpStatus.UNAUTHORIZED, "You do not have access to this order")
         }
 
@@ -63,12 +65,12 @@ class OrderService(
         val throwableList = ThrowableList()
 
         // Validate that the deadline is present.
-        if(!orderCreate.deadline.isPresent) {
+        if (!orderCreate.deadline.isPresent) {
             throwableList.addPropertyException("deadline", "Deadline cannot be empty")
         }
 
         // Validate that the group id is present.
-        if(!orderCreate.groupId.isPresent) {
+        if (!orderCreate.groupId.isPresent) {
             throwableList.addPropertyException("groupId", "Group cannot be empty")
         }
 
@@ -77,7 +79,7 @@ class OrderService(
         val group = groupRepository.findById(orderCreate.groupId.get())
 
         // Validate that the group is valid.
-        if(!group.isPresent) {
+        if (!group.isPresent) {
             throwableList.addPropertyException("groupId", "Group does not exist")
         }
 
@@ -86,12 +88,12 @@ class OrderService(
         lateinit var location: Location
 
         // When the location is present: use the location
-        if(orderCreate.locationId.isPresent) {
+        if (orderCreate.locationId.isPresent) {
             val locationDb = locationRepository.findById(orderCreate.locationId.get())
 
             // Validate that the location is valid.
-            if(!locationDb.isPresent) {
-                throw throwableList.also{it.addPropertyException("locationId", "Location does not exist")}
+            if (!locationDb.isPresent) {
+                throw throwableList.also { it.addPropertyException("locationId", "Location does not exist") }
             }
 
             location = locationDb.get()
@@ -101,8 +103,8 @@ class OrderService(
         else {
 
             // Validate that the custom location name is valid.
-            if(!orderCreate.customLocationName.isPresent) {
-                throw throwableList.also{it.addPropertyException("customLocationName", "Location name cannot be empty")}
+            if (!orderCreate.customLocationName.isPresent) {
+                throw throwableList.also { it.addPropertyException("customLocationName", "Location name cannot be empty") }
             }
 
             location = Location(
@@ -137,25 +139,23 @@ class OrderService(
         lateinit var item: Item
 
         // When the itemId is present: use the item
-        if(orderAddItem.itemId.isPresent) {
+        if (orderAddItem.itemId.isPresent) {
             val itemDb = itemRepository.findById(orderAddItem.itemId.get())
 
             // Validate that the item is valid.
-            if(!itemDb.isPresent) {
-                throw throwableList.also{
+            if (!itemDb.isPresent) {
+                throw throwableList.also {
                     it.addPropertyException("itemId", "Item does not exist")
                     it.addGenericException("Item does not exist")
                 }
             }
 
             item = itemDb.get()
-        }
-
-        else {
+        } else {
 
             // Validate that the custom item name is valid.
-            if(!orderAddItem.customItemName.isPresent) {
-                throw throwableList.also{
+            if (!orderAddItem.customItemName.isPresent) {
+                throw throwableList.also {
                     it.addPropertyException("customItemName", "Item name cannot be empty")
                     it.addGenericException("Item name cannot be empty")
                 }
@@ -190,18 +190,18 @@ class OrderService(
         var orderItemOptional = orderItemRepository.findById(orderItemId)
 
         // Validate that the order item exists.
-        if(!orderItemOptional.isPresent) {
-            throw throwableList.also{it.addGenericException("Order item does not exist")}
+        if (!orderItemOptional.isPresent) {
+            throw throwableList.also { it.addGenericException("Order item does not exist") }
         }
 
         // Validate that the order item is linked to the given order.
-        if(!order.orderItems.contains(orderItemOptional.get())) {
-            throw throwableList.also{it.addGenericException("Order item is not linked to the order")}
+        if (!order.orderItems.contains(orderItemOptional.get())) {
+            throw throwableList.also { it.addGenericException("Order item is not linked to the order") }
         }
 
         // Validate that the comment exists.
-        if(!orderUpdateItem.comment.isPresent) {
-            throw throwableList.also{it.addPropertyException("comment", "Comment cannot be null")}
+        if (!orderUpdateItem.comment.isPresent) {
+            throw throwableList.also { it.addPropertyException("comment", "Comment cannot be null") }
         }
 
         // Update the order item
@@ -219,13 +219,13 @@ class OrderService(
         var orderItemOptional = orderItemRepository.findById(orderItemId)
 
         // Validate that the order item exists.
-        if(!orderItemOptional.isPresent) {
-            throw throwableList.also{it.addGenericException("Order item does not exist")}
+        if (!orderItemOptional.isPresent) {
+            throw throwableList.also { it.addGenericException("Order item does not exist") }
         }
 
         // Validate that the order item is linked to the given order.
-        if(!order.orderItems.contains(orderItemOptional.get())) {
-            throw throwableList.also{it.addGenericException("Order item is not linked to the order")}
+        if (!order.orderItems.contains(orderItemOptional.get())) {
+            throw throwableList.also { it.addGenericException("Order item is not linked to the order") }
         }
 
         // Delete the order item
