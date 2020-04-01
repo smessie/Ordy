@@ -9,9 +9,7 @@ import com.ordy.backend.database.repositories.GroupInviteRepository
 import com.ordy.backend.database.repositories.UserRepository
 import com.ordy.backend.database.repositories.GroupMemberRepository
 import com.ordy.backend.exceptions.ThrowableList
-import com.ordy.backend.wrappers.Action
-import com.ordy.backend.wrappers.GroupCreateWrapper
-import com.ordy.backend.wrappers.InviteActionWrapper
+import com.ordy.backend.wrappers.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -56,7 +54,7 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
             group.get().name = groupWrapper.name.get()
             groupRepository.save(group.get())
         } else {
-            throwableList.addGenericException("Group with id $groupId not found")
+            throwableList.addGenericException("Group does not exist")
         }
 
         throwableList.ifNotEmpty { throw throwableList }
@@ -67,12 +65,40 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
     /**
      * get groups of a specific user
      */
-
-    fun getGroups(userId: Int) : List<Group> {
+    fun getGroups(userId: Int) : List<GroupListWrapper> {
         var user = userRepository.findById(userId).get()
         var groups = groupMemberRepository.findGroupMembersByUser(user).map { it.group }
 
-        return groups
+        return groups.map {
+            GroupListWrapper(
+                group = it,
+                membersCount = groupMemberRepository.findGroupMembersByGroup(it).size
+            )
+        }
+    }
+
+    /**
+     * get groups of a specific user
+     */
+    fun getGroup(userId: Int, groupId: Int) : GroupWrapper {
+        val throwableList = ThrowableList()
+        var user = userRepository.findById(userId).get()
+        var group = groupRepository.findById(groupId)
+
+        // Check if the group exists
+        if(!group.isPresent) {
+            throw throwableList.also { it.addGenericException("Group does not exist.") }
+        }
+
+        // Check if the user is part of the group
+        if(!groupMemberRepository.findGroupMembersByGroup(group.get()).map { it.user }.contains(user)) {
+            throw throwableList.also { it.addGenericException("You are not part of this group.") }
+        }
+
+        return GroupWrapper(
+                group = group.get(),
+                members = groupMemberRepository.findGroupMembersByGroup(group.get()).map { it.user }
+        )
     }
 
     /**

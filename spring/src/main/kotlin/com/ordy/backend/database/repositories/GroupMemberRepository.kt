@@ -9,4 +9,5 @@ import java.util.*
 interface GroupMemberRepository : JpaRepository<GroupMember, Int> {
     fun findGroupMembersByUser(user: User): List<GroupMember>
     fun findGroupMemberByUserAndGroup(user: User, group: Group): Optional<GroupMember>
+    fun findGroupMembersByGroup(group: Group): List<GroupMember>
 }

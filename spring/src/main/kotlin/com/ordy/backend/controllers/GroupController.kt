@@ -6,6 +6,7 @@ import com.ordy.backend.database.models.Group
 import com.ordy.backend.database.models.User
 import com.ordy.backend.services.GroupService
 import com.ordy.backend.wrappers.GroupCreateWrapper
+import com.ordy.backend.wrappers.GroupWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -20,6 +21,12 @@ class GroupController(@Autowired val groupService: GroupService) {
     @JsonView(View.Detail::class)
     fun postGroup(@RequestBody groupCreateWrapper: GroupCreateWrapper, @RequestAttribute userId: Int): Group {
         return groupService.createGroup(userId, groupCreateWrapper)
+    }
+
+    @GetMapping("/{groupId}")
+    @JsonView(View.Detail::class)
+    fun getGroups(@RequestAttribute userId: Int, @PathVariable groupId: Int) : GroupWrapper {
+        return groupService.getGroup(userId, groupId)
     }
 
     @PatchMapping("/{groupId}")
