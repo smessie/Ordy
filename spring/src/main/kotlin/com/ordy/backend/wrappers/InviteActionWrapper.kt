@@ -2,9 +2,9 @@ package com.ordy.backend.wrappers
 
 import java.util.*
 
-enum class Action {
+enum class InviteAction {
     ACCEPT, DENY
 }
 class InviteActionWrapper (
-    val action: Optional<Action>
+    val action: Optional<String>
 )

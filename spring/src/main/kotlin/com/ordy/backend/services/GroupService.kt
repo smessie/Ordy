@@ -198,8 +198,20 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
             throw throwableList.also { it.addGenericException("You do not have an invite for group $groupId!") }
         }
 
+        val inviteAction : InviteAction
+        try {
+            inviteAction = InviteAction.valueOf(inviteActionWrapper.action.get().toUpperCase())
+        } catch (e: IllegalArgumentException){
+            throw throwableList.also { it.addGenericException("wrong action was passed! This must be ACCEPT or DENY")}
+        }
+
         // accepting the invite means that you want to join the group
-        if (inviteActionWrapper.action.get() == Action.ACCEPT) {
+        if (inviteAction == InviteAction.ACCEPT) {
+
+            if(groupMemberRepository.findGroupMemberByUserAndGroup(user, groupOptional.get()).isPresent){
+                throw throwableList.also { it.addGenericException("You are already in this group $groupId!") }
+            }
+
             val groupMember = GroupMember(user = user, group = groupOptional.get())
             groupMemberRepository.save(groupMember)
         }
