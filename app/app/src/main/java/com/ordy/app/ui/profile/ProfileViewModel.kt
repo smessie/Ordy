@@ -9,7 +9,8 @@ import com.ordy.app.api.util.Query
 
 class ProfileViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
 
-    val invites: MutableLiveData<Query<List<GroupInvite>>> = MutableLiveData(Query())
+    val invites: MutableLiveData<Query<List<GroupInvite>>> =
+        FetchHandler.handleLive(apiService.userInvites())
 
     /**
      * Get the invites value
