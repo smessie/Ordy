@@ -29,6 +29,7 @@ class LocationsFragment : Fragment() {
         // Create binding for the fragment.
         val binding = FragmentLocationsBinding.inflate(inflater, container, false)
         binding.handlers = LocationsBindings(this, viewModel)
+        binding.viewmodel = viewModel
 
         return binding.root
     }
