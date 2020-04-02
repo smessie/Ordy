@@ -1,5 +1,6 @@
 package com.ordy.app.ui.groups.create
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,6 +14,7 @@ import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityCreateGroupBinding
+import com.ordy.app.ui.groups.overview.OverviewGroupActivity
 import kotlinx.android.synthetic.main.activity_create_group.*
 
 class CreateGroupActivity : AppCompatActivity() {
@@ -43,8 +45,11 @@ class CreateGroupActivity : AppCompatActivity() {
                 QueryStatus.SUCCESS -> {
                     viewModel.handlingCreateRequest = false
 
-                    // Go back to groups list
-                    finish()
+                    // Go to newly created group
+                    val intent = Intent(this, OverviewGroupActivity::class.java)
+                    // Pass the group id as extra information
+                    intent.putExtra("group_id", it.data?.id)
+                    startActivity(intent)
                 }
 
                 QueryStatus.ERROR -> {
