@@ -42,6 +42,9 @@ class CreateGroupActivity : AppCompatActivity() {
 
                 QueryStatus.SUCCESS -> {
                     viewModel.handlingCreateRequest = false
+
+                    // Go back to groups list
+                    finish()
                 }
 
                 QueryStatus.ERROR -> {
