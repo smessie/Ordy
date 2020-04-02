@@ -9,4 +9,5 @@ import java.util.*
 interface GroupInviteRepository : JpaRepository<GroupInvite, Int> {
     fun findGroupInviteByUserAndGroup(user: User, group: Group): Optional<GroupInvite>
     fun findGroupInvitesByUser(user: User): List<GroupInvite>
+    fun findGroupInvitesByGroup(group: Group): List<GroupInvite>
 }
