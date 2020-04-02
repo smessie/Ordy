@@ -79,6 +79,10 @@ class OverviewGroupListAdapter(
         return view
     }
 
+    override fun isEnabled(position: Int): Boolean {
+        return false
+    }
+
     override fun getItem(position: Int): Any {
         return position
     }

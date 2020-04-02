@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    style="@style/Widget.MaterialComponents.CardView">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/group"
@@ -12,8 +11,16 @@
         android:layout_height="wrap_content"
         android:padding="10dp">
 
-        <!-- TODO: Loading -->
+        <!-- Loading -->
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/group_loading">
 
+            <include layout="@layout/placeholder_default"/>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <!-- Data -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/group_data"
             android:layout_width="match_parent"
@@ -24,6 +31,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:divider="@drawable/divider_4dp"
                 android:orientation="vertical"
                 android:showDividers="middle">
 
@@ -31,9 +39,8 @@
                         android:id="@+id/group_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Location Name"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:text="Group Name"
+                        style="@style/Subtitle" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -46,15 +53,13 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Group creator: "
-                        android:textSize="16sp"
                         android:textStyle="bold"/>
 
                     <TextView
                             android:id="@+id/group_creator"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bart"
-                            android:textSize="16sp"/>
+                            android:text="Bart" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -66,14 +71,12 @@
                         android:id="@+id/group_member_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12"
-                        android:textSize="16sp"/>
+                        android:text="12" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" members in group"
-                        android:textSize="16sp"/>
+                        android:text=" members in group" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

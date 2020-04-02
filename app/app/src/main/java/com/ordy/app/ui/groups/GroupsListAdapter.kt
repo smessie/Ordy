@@ -22,22 +22,28 @@ class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) :
         when (viewModel.getGroups().status) {
 
             QueryStatus.LOADING -> {
-                /* TODO: make loading effect */
+
+                // Start the shimmer effect & show
+                view.group_loading.startShimmer()
+                view.group_loading.visibility = View.VISIBLE
+                view.group_data.visibility = View.GONE
             }
 
             QueryStatus.SUCCESS -> {
                 val group = viewModel.getGroups().requireData()[position]
 
-                /* TODO: stop loading effect */
+                // Stop the shimmer effect & hide.
+                view.group_loading.stopShimmer()
+                view.group_loading.visibility = View.GONE
+                view.group_data.visibility = View.VISIBLE
 
-                // assinging data
-                /* TODO: meer velden / andere velden*/
+                // Assign data
                 view.group_name.text = group.name
                 view.group_creator.text = group.creator.username
-                view.group_member_count.text = group.membersCount.toString()
+                view.group_member_count.text = "${group.membersCount}"
 
-                // click handler
-                view.group.setOnClickListener {
+                // Click handler
+                view.setOnClickListener {
                     val intent = Intent(view.context, OverviewGroupActivity::class.java)
 
                     // Pass the group as extra information
