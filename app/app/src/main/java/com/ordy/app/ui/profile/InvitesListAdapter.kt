@@ -15,11 +15,6 @@ import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.util.SnackbarType
 import com.ordy.app.util.SnackbarUtil
-import kotlinx.android.synthetic.main.list_group_card.view.group_creator
-import kotlinx.android.synthetic.main.list_group_card.view.group_data
-import kotlinx.android.synthetic.main.list_group_card.view.group_loading
-import kotlinx.android.synthetic.main.list_group_card.view.group_member_count
-import kotlinx.android.synthetic.main.list_group_card.view.group_name
 import kotlinx.android.synthetic.main.list_invite_group_card.view.*
 import okhttp3.ResponseBody
 
