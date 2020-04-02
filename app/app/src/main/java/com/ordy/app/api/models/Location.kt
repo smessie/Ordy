@@ -23,5 +23,5 @@ data class Location(
     val private: Boolean,
 
     @SerializedName("cuisine")
-    val cuisine: List<Item>
+    val cuisine: Cuisine
 )

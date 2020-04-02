@@ -1,6 +1,7 @@
 package com.ordy.app.api.util
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import com.google.android.material.snackbar.Snackbar
@@ -25,30 +26,39 @@ class ErrorHandler {
             // Print the error message to the console for debugging
             error.printStackTrace()
 
+            Log.i("Error Handler", "----------------------------------------------")
+            Log.i("Error Handler", "An error occurred:")
+
             // Handle HTTP Exceptions.
-            if(error is HttpException) {
-                queryError.message = error.message()
+            if (error is HttpException) {
+                queryError.message = if (error.message().isEmpty())
+                                        "An unknown error has occurred"
+                                        else error.message()
                 queryError.description = ""
                 queryError.code = error.code().toString()
                 queryError.response = error.response()
 
+                Log.i("Error Handler", "Message: ${queryError.message}")
+                Log.i("Error Handler", "Code: ${queryError.code}")
+
                 // General errors & input errors (when the error body is defined)
-                if(queryError.response != null && queryError.response!!.errorBody() != null) {
+                if (queryError.response != null && queryError.response!!.errorBody() != null) {
                     val errorBody = queryError.response!!.errorBody()
 
-                    if(errorBody != null) {
+                    if (errorBody != null) {
                         // Convert the error body.
-                        val errorResult = Gson().fromJson(errorBody.charStream(), ErrorResult::class.java)
+                        val errorResult =
+                            Gson().fromJson(errorBody.charStream(), ErrorResult::class.java)
 
-                        if(errorResult != null) {
+                        if (errorResult != null) {
                             // General errors (when defined)
                             if (errorResult.generalErrors != null) {
-                               queryError.generalErrors = errorResult.generalErrors
+                                queryError.generalErrors = errorResult.generalErrors
                             }
 
                             // Input errors (when defined)
                             if (errorResult.inputErrors != null) {
-                               queryError.inputErrors = errorResult.inputErrors
+                                queryError.inputErrors = errorResult.inputErrors
                             }
                         }
                     }
@@ -63,6 +73,11 @@ class ErrorHandler {
                 queryError.code = "unknown"
             }
 
+            Log.i("Error Handler", "Stacktrace: ")
+            error.printStackTrace()
+            Log.i("Error Handler", "----------------------------------------------")
+
+
             return queryError
         }
 
@@ -75,7 +90,7 @@ class ErrorHandler {
          * @param view Current view
          * @param fields List of input fields
          */
-        fun handle(queryError: QueryError?, view: View?, fields: List<InputField>) {
+        fun handle(queryError: QueryError?, view: View?, fields: List<InputField> = emptyList()) {
 
             // Handle input errors.
             this.handleInputs(queryError, view, fields)
@@ -84,15 +99,14 @@ class ErrorHandler {
             this.handleGeneral(queryError, view)
 
             // If no general error or input error is specified, but an error occurred anyway.
-            if(queryError != null
+            if (queryError != null
                 && queryError.inputErrors.isEmpty()
                 && queryError.generalErrors.isEmpty()
-                && view != null) {
+                && view != null
+            ) {
 
                 // Create and show a snackbar with the error message.
-                val snackbar = Snackbar.make(view, queryError.message, Snackbar.LENGTH_LONG)
-                snackbar.view.setBackgroundColor(Color.parseColor("#e74c3c"))
-                snackbar.show()
+                this.handleRawGeneral(queryError.message, view)
             }
         }
 
@@ -106,18 +120,18 @@ class ErrorHandler {
          */
         fun handleInputs(queryError: QueryError?, view: View?, fields: List<InputField>) {
 
-            if(queryError?.inputErrors != null) {
+            if (queryError != null) {
 
-                for(field in fields) {
+                for (field in fields) {
 
                     val inputError = queryError.inputErrors.find { it.field == field.name }
 
                     // Check if the input field has an error message.
-                    if(inputError != null) {
+                    if (inputError != null) {
                         field.input.error = inputError.message
 
                         // Add shake animation to input field.
-                        if(view != null) {
+                        if (view != null) {
                             val shake = AnimationUtils.loadAnimation(view.context, R.anim.shake)
                             field.input.startAnimation(shake)
                         }
@@ -140,13 +154,24 @@ class ErrorHandler {
          */
         fun handleGeneral(queryError: QueryError?, view: View?) {
 
-            if(queryError?.generalErrors != null && view != null && queryError.generalErrors.isNotEmpty()) {
-
-                // Create and show a snackbar with the error message.
-                val snackbar = Snackbar.make(view, queryError.generalErrors[0].message, Snackbar.LENGTH_LONG)
-                snackbar.view.setBackgroundColor(Color.parseColor("#e74c3c"))
-                snackbar.show()
+            if (queryError != null && view != null && queryError.generalErrors.isNotEmpty()) {
+                handleRawGeneral(queryError.generalErrors[0].message, view)
             }
+        }
+
+        /**
+         * Handle general errors
+         * Will display an error snackbar at the bottom of the screen.
+         *
+         * @param message Raw message in String format
+         * @param view Current view to display the toast
+         */
+        fun handleRawGeneral(message: String, view: View) {
+            // Create and show a snackbar with the error message.
+            val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+            snackbar.setBackgroundTint(Color.parseColor("#E74C3C"))
+
+            snackbar.show()
         }
 
         private data class ErrorResult(

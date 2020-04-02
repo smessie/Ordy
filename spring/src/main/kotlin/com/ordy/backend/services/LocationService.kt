@@ -19,7 +19,7 @@ class LocationService(
      * Get a list of locations
      */
     fun getLocations(query: String): List<Location> {
-        return locationRepository.findFirst30ByNameContaining(query)
+        return locationRepository.findFirst30ByNameContainingAndPrivateEquals(query, false)
     }
 
     /**

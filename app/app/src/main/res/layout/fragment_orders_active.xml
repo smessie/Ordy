@@ -9,17 +9,39 @@
         <variable name="handlers" type="com.ordy.app.ui.orders.active.ActiveOrdersHandlers" />
     </data>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- Orders -->
+        <ListView
+            android:id="@+id/orders_active"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Empty placeholder -->
+        <LinearLayout
+            android:id="@+id/orders_active_empty"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Active Orders"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </ScrollView>
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:text="@string/no_active_orders_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                style="@style/Subtitle"
+                />
+
+            <TextView
+                android:text="@string/no_active_orders_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                />
+        </LinearLayout>
+    </LinearLayout>
 </layout>

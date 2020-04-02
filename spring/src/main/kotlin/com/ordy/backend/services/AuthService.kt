@@ -1,15 +1,18 @@
 package com.ordy.backend.services
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ordy.backend.database.models.User
 import com.ordy.backend.database.repositories.UserRepository
 import com.ordy.backend.exceptions.ThrowableList
 import com.ordy.backend.wrappers.AuthLoginWrapper
 import com.ordy.backend.wrappers.AuthRegisterWrapper
 import com.ordy.backend.wrappers.AuthTokenWrapper
+import com.ordy.backend.wrappers.TokenWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
+import java.util.*
 import javax.mail.internet.AddressException
 import javax.mail.internet.InternetAddress
 
@@ -43,7 +46,17 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
 
         // Check if the user was found & the password is correct.
         if (users.isNotEmpty() && checkPasswd(loginWrapper.password, users.first().password)) {
-            return AuthTokenWrapper(tokenService.encrypt(users.first().id.toString()))
+            return AuthTokenWrapper(
+                    tokenService.encrypt(
+                        jacksonObjectMapper().writeValueAsString(
+                                TokenWrapper(
+                                    userId = users.first().id,
+                                    random = UUID.randomUUID().toString()
+                                )
+                        )
+                    ),
+                    users.first()
+            )
         } else {
             val throwableList = ThrowableList()
             throwableList.addPropertyException("email", "Email and/or password is wrong")

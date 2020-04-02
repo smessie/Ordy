@@ -17,6 +17,7 @@ import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentLoginBinding
 import com.ordy.app.ui.login.LoginViewModel
+import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
@@ -45,13 +46,22 @@ class LoginFragment : Fragment() {
             when(it.status) {
 
                 QueryStatus.LOADING -> {
-                    Snackbar.make(requireView(), "Attempting to login...", Snackbar.LENGTH_INDEFINITE).show()
+                    SnackbarUtil.openSnackbar(
+                        requireView(),
+                        "Attempting to login..."
+                    )
                 }
 
                 QueryStatus.SUCCESS -> {
+                    SnackbarUtil.closeSnackbar(requireView())
+
+                    val preferences = AppPreferences(requireContext())
 
                     // Store the given access token.
-                    AppPreferences(requireContext()).accessToken = it.requireData().accessToken
+                    preferences.accessToken = it.requireData().accessToken
+
+                    // Store the given user.
+                    preferences.userId = it.requireData().user.id
 
                     // Open the main activity
                     val intent = Intent(this.context, MainActivity::class.java)
@@ -59,6 +69,8 @@ class LoginFragment : Fragment() {
                 }
 
                 QueryStatus.ERROR -> {
+                    SnackbarUtil.closeSnackbar(requireView())
+
                     ErrorHandler.handle(it.error, view, listOf(
                         InputField("email", this.input_email),
                         InputField("password", this.input_password)

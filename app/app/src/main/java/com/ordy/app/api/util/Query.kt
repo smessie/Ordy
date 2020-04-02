@@ -40,4 +40,18 @@ class Query<T> {
 
         return error;
     }
+
+    /**
+     * Constructor with query status
+     */
+    constructor(status: QueryStatus?) {
+        if (status != null) {
+            this.status = status
+        }
+    }
+
+    /**
+     * Primary constructor
+     */
+    constructor()
 }
