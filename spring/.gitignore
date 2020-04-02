@@ -29,3 +29,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Personal config files ###
+.env.bat
+.env
+
+### Libraries ###
+lib/

@@ -15,7 +15,7 @@ class FetchHandler {
          * @return Wrapped Query object.
          */
         fun <T> handleLive(observable: Observable<T>): MutableLiveData<Query<T>> {
-            return handle(MutableLiveData(Query()), observable)
+            return handle(MutableLiveData(Query(QueryStatus.LOADING)), observable)
         }
 
         fun <T> handle(mutableLiveData: MutableLiveData<Query<T>>, observable: Observable<T>): MutableLiveData<Query<T>> {

@@ -1,0 +1,62 @@
+package com.ordy.backend.services
+
+import com.ordy.backend.database.models.Group
+import com.ordy.backend.database.models.User
+import com.ordy.backend.database.repositories.GroupRepository
+import com.ordy.backend.exceptions.ThrowableList
+import com.ordy.backend.wrappers.GroupCreateWrapper
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import java.util.*
+
+@Service
+class GroupService(@Autowired val groupRepository: GroupRepository) {
+
+    private val groupNameRegex = Regex("^[A-z0-9 ]+$")
+
+    private fun checkGroupName(name: String, list: ThrowableList) {
+        if (!groupNameRegex.matches(name)) {
+            list.addPropertyException("name", "Name should only contain letters, numbers an spaces")
+        }
+    }
+
+    fun createGroup(user: User, groupWrapper: GroupCreateWrapper): Group {
+        val throwableList = ThrowableList()
+        checkGroupName(groupWrapper.name, throwableList)
+        throwableList.ifNotEmpty { throw throwableList }
+
+        val group = Group(name = groupWrapper.name, creator = user)
+        groupRepository.save(group)
+        return group
+    }
+
+    fun updateGroup(groupId: Int, groupWrapper: GroupCreateWrapper): Group {
+        val throwableList = ThrowableList()
+        checkGroupName(groupWrapper.name, throwableList)
+
+        val group: Optional<Group> = groupRepository.findById(groupId)
+
+        if(group.isPresent()) {
+            group.get().name = groupWrapper.name
+            groupRepository.save(group.get())
+        } else {
+            throwableList.addGenericException("Group with id $groupId not found")
+        }
+
+        throwableList.ifNotEmpty { throw throwableList }
+
+        return group.get()
+    }
+
+    fun createInvite(groupId: Int, userId: Int) {
+        //TODO
+    }
+
+    fun deleteInvite(groupId: Int, userId: Int) {
+        //TODO
+    }
+
+    fun deleteMember(groupId: Int, userId: Int) {
+        //TODO
+    }
+}

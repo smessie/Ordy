@@ -29,11 +29,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!-- Create order activity -->
         <activity
             android:name=".ui.orders.create.CreateOrderActivity"
             android:label="@string/title_create_order"
             android:parentActivityName=".MainActivity" />
+
+        <!-- Create order select location activity -->
+        <activity
+            android:name=".ui.orders.create.location.CreateOrderLocationDialog"
+            android:label="@string/title_create_order"
+            android:parentActivityName=".ui.orders.create.CreateOrderActivity"
+            android:launchMode="singleTop" />
+
+        <!-- Overview order activity -->
+        <activity
+            android:name=".ui.orders.overview.OverviewOrderActivity"
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop" />
+
+        <!-- Add item order activity -->
+        <activity
+            android:name=".ui.orders.overview.additem.AddItemOrderActivity"
+            android:parentActivityName=".ui.orders.overview.OverviewOrderActivity" />
 
         <!-- Create group activity -->
         <activity

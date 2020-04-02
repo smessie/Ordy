@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import com.ordy.app.AppPreferences
 import com.ordy.app.MainActivity
 import com.ordy.app.R
@@ -17,6 +16,7 @@ import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentLoginBinding
 import com.ordy.app.ui.login.LoginViewModel
+import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
@@ -45,14 +45,14 @@ class LoginFragment : Fragment() {
             when (it.status) {
 
                 QueryStatus.LOADING -> {
-                    Snackbar.make(
+                    SnackbarUtil.openSnackbar(
                         requireView(),
-                        "Attempting to login...",
-                        Snackbar.LENGTH_INDEFINITE
-                    ).show()
+                        "Attempting to login..."
+                    )
                 }
 
                 QueryStatus.SUCCESS -> {
+                    SnackbarUtil.closeSnackbar(requireView())
 
                     val preferences = AppPreferences(requireContext())
 
@@ -68,6 +68,8 @@ class LoginFragment : Fragment() {
                 }
 
                 QueryStatus.ERROR -> {
+                    SnackbarUtil.closeSnackbar(requireView())
+
                     ErrorHandler.handle(
                         it.error, view, listOf(
                             InputField("email", this.input_email),

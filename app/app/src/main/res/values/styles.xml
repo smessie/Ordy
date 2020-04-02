@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -12,6 +12,35 @@
     <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+
+        <!-- Show the title bar -->
+        <item name="android:windowFullscreen">false</item>
+
+        <item name="android:windowIsFloating">false</item>
+
+        <!-- Background should be white and not transparant  -->
+        <item name="android:windowBackground">@android:color/white</item>
+
+        <!-- Open/close animation -->
+        <item name="android:windowEnterAnimation">@anim/sd_scale_fade_and_translate_in</item>
+        <item name="android:windowExitAnimation">@anim/sd_scale_fade_and_translate_out</item>
+    </style>
+
+    <style name="Widget.AppTheme.Button.IconButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:backgroundTint">@android:color/white</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">0dp</item>
+        <item name="rippleColor">@android:color/darker_gray</item>
     </style>
 
     <style name="LoginHeaderText">
