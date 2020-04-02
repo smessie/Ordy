@@ -2,13 +2,11 @@ package com.ordy.backend.database.models
 
 import com.fasterxml.jackson.annotation.JsonView
 import com.ordy.backend.database.View
-import com.ordy.backend.database.repositories.GroupMemberRepository
-import org.springframework.beans.factory.annotation.Autowired
 import javax.persistence.*
 
 @Entity
 @Table(name = "groups")
-class Group(
+class Group (
         @Id
         @JsonView(View.Id::class)
         @GeneratedValue(strategy = GenerationType.IDENTITY)
