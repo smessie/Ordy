@@ -34,8 +34,7 @@ class ApiServiceProvider {
                 RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
-            .baseUrl("http://dev.api.ordy.ga")
-            .baseUrl("http://192.168.0.151:8080")
+            .baseUrl("https://api.ordy.ga")
             .build()
 
         return retrofit.create(ApiService::class.java)

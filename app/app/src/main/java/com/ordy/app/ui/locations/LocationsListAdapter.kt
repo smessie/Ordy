@@ -26,6 +26,11 @@ class LocationsListAdapter(
 
                 // Assign the data.
                 view.location_item_name.text = location.name
+                view.location_item_address.text =
+                    when (location.address) {
+                        null -> "No address found"
+                        else -> location.address
+                    }
 
                 // Hide the pick button
                 view.location_item_pick.visibility = View.GONE
@@ -43,10 +48,23 @@ class LocationsListAdapter(
         return position.toLong()
     }
 
+    override fun isEnabled(position: Int): Boolean {
+        return false
+    }
+
     override fun getCount(): Int {
         return when (viewModel.getLocations().status) {
             QueryStatus.LOADING -> 0
-            QueryStatus.SUCCESS -> viewModel.getLocations().requireData().size
+            QueryStatus.SUCCESS -> return when {
+
+                // Do not show any results for a blank search query.
+                viewModel.getSearchValue().isEmpty() -> {
+                    0
+                }
+                else -> {
+                    viewModel.getLocations().requireData().size
+                }
+            }
             else -> 0
         }
     }

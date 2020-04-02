@@ -8,25 +8,23 @@
 
    <LinearLayout
        android:layout_width="wrap_content"
-       android:layout_height="wrap_content">
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:layout_weight="1"
+       android:layout_centerVertical="true">
 
        <!-- Location -->
        <TextView
            android:id="@+id/location_item_name"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:layout_centerVertical="true"
-           android:layout_weight="1"
            android:textStyle="bold" />
 
        <!-- Address -->
        <TextView
            android:id="@+id/location_item_address"
            android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_centerVertical="true"
-           android:layout_weight="1"
-           android:textStyle="bold" />
+           android:layout_height="wrap_content" />
    </LinearLayout>
 
     <Button
