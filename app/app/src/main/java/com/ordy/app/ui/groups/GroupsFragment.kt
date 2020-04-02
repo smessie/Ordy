@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -38,9 +39,14 @@ class GroupsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_groups, container, false)
 
+        val emptyList: LinearLayout = view.findViewById(R.id.groups_empty)
+
         // list view adapter
         listAdapter = GroupsListAdapter(requireContext(), viewModel)
-        view.findViewById<ListView>(R.id.groups).adapter = listAdapter
+        view.findViewById<ListView>(R.id.groups).apply {
+            adapter = listAdapter
+            emptyView = emptyList
+        }
 
         // Swipe to refresh
         view.groups_refresh.setOnRefreshListener {
