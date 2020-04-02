@@ -59,15 +59,6 @@ class MainActivity : AppCompatActivity() {
                     .setFabImageTintColor(Color.WHITE)
                     .create())
 
-        // Login button
-        // TODO: remove once implemented
-        speedDialView
-            .addActionItem(
-                SpeedDialActionItem.Builder(R.id.speeddial_login, R.drawable.ic_lock_outline_black_24dp)
-                    .setLabel("Login")
-                    .setFabImageTintColor(Color.WHITE)
-                    .create())
-
         // Click actions.
         speedDialView.setOnActionSelectedListener { actionItem ->
             when (actionItem.id) {
@@ -88,18 +79,6 @@ class MainActivity : AppCompatActivity() {
 
                     // Open the create group activity
                     val intent = Intent(this, CreateGroupActivity::class.java)
-                    startActivity(intent)
-
-                    // Close the speeddial.
-                    speedDialView.close()
-                }
-
-                // Open login.
-                // TODO: remove once implemented
-                R.id.speeddial_login -> {
-
-                    // Open the create group activity
-                    val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
 
                     // Close the speeddial.
