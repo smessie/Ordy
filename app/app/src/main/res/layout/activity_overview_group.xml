@@ -11,7 +11,7 @@
             type="com.ordy.app.ui.groups.overview.OverviewGroupHandlers" />
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.ordy.app.ui.groups.overview.OverviewGroupViewModel" />
     </data>
 

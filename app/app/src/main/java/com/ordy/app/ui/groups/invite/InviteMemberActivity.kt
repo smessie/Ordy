@@ -42,7 +42,7 @@ class InviteMemberActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_invite_member)
         handlers = InviteMemberHandlers(this, viewModel, binding.root, groupId)
         binding.handlers = handlers
-        binding.viewmodel = viewModel
+        binding.viewModel = viewModel
 
         val listView = binding.root.findViewById<ListView>(R.id.users)
         val listViewEmpty = binding.root.findViewById<LinearLayout>(R.id.users_empty)

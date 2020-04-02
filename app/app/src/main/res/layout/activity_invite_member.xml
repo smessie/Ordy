@@ -11,7 +11,7 @@
             type="com.ordy.app.ui.groups.invite.InviteMemberHandlers" />
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.ordy.app.ui.groups.invite.InviteMemberViewModel" />
     </data>
 
@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:text="@={viewmodel.searchValueData}" />
+                    android:text="@={viewModel.searchValueData}" />
 
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>

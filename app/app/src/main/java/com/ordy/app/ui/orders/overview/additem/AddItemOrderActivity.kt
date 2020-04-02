@@ -33,7 +33,7 @@ class AddItemOrderActivity : AppCompatActivity() {
         val binding: ActivityAddItemOrderBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_item_order)
         handlers = AddItemOrderHandlers(this, viewModel)
         binding.handlers = handlers
-        binding.viewmodel = viewModel
+        binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         // Extract the given intent variables.

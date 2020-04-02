@@ -37,7 +37,7 @@ class OverviewGroupActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_overview_group)
         handlers = OverviewGroupHandlers(this, viewModel, binding.root)
         binding.handlers = handlers
-        binding.viewmodel = viewModel
+        binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         // Extract the "group_id" from the given intent variables.

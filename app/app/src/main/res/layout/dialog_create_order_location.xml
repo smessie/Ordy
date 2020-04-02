@@ -11,7 +11,7 @@
             type="com.ordy.app.ui.orders.create.location.CreateOrderLocationHandlers" />
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.ordy.app.ui.orders.create.location.CreateOrderLocationViewModel" />
     </data>
 
@@ -70,9 +70,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:text="@={viewmodel.searchValueData}" />
-
+                        android:text="@={viewModel.searchValueData}" />
                 </com.google.android.material.textfield.TextInputLayout>
             </RelativeLayout>
 

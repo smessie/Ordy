@@ -34,7 +34,9 @@ class CreateGroupActivity : AppCompatActivity() {
         val binding: ActivityCreateGroupBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_create_group)
         handlers = CreateGroupHandlers(this, viewModel, binding.root)
+        binding.lifecycleOwner = this
         binding.handlers = handlers
+        binding.viewModel = viewModel
 
         viewModel.createResult.observe(this, Observer {
 

@@ -48,7 +48,7 @@ class CreateOrderActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_create_order)
         binding.lifecycleOwner = this
         binding.handlers = handlers
-        binding.viewmodel = viewModel
+        binding.viewModel = viewModel
 
         // Set the values for the group input field.
         var groupValues: AutoCompleteTextView = binding.root.findViewById(R.id.input_group_values)
