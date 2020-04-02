@@ -25,7 +25,7 @@ class GroupsFragment : Fragment() {
         )
     }
 
-    private var listAdapter: GroupsListAdapter? = null
+    private lateinit var listAdapter: GroupsListAdapter
 
     /**
      * Called when view is created.
@@ -47,7 +47,7 @@ class GroupsFragment : Fragment() {
             viewModel.refreshGroups()
         }
 
-        // binding button to load new activity
+        // Binding button to load new activity
         val createButton = view.findViewById<Button>(R.id.create_group_button)
         createButton.setOnClickListener {
             val intent = Intent(context, CreateGroupActivity::class.java)
@@ -60,10 +60,7 @@ class GroupsFragment : Fragment() {
                 view.groups_refresh.isRefreshing = false
             }
 
-            val listAdapter =
-                this.listAdapter ?: throw IllegalStateException("List adapter should not be null!")
-
-            // notify changes to list view
+            // Notify changes to list view
             listAdapter.notifyDataSetChanged()
         })
 
