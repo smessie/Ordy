@@ -39,10 +39,16 @@ interface ApiService {
      * Groups
      */
     @POST("groups")
-    fun createGroup(@Body body: GroupCreate): Observable<Int>
+    fun createGroup(@Body body: GroupCreate): Observable<Group>
+
+    @GET("groups/{groupId}")
+    fun group(@Path("groupId") groupId: Int): Observable<Group>
 
     @PATCH("groups/{groupId}")
     fun updateGroup(@Path("groupId") groupId: Int, @Body body: GroupUpdate): Observable<Group>
+
+    @GET("groups/{groupId}/invites/search/{username}")
+    fun searchMatchingInviteUsers(@Path("groupId") groupId: Int, @Path("username") username: String): Observable<List<User>>
 
     @POST("groups/{groupId}/invites/{userId}")
     fun createInviteGroup(@Path("groupId") groupId: Int, @Path("userId") userId: Int): Observable<ResponseBody>
@@ -57,13 +63,13 @@ interface ApiService {
     fun userGroups(): Observable<List<Group>>
 
     @GET("user/invites")
-    fun userInvites(): Observable<List<Group>>
+    fun userInvites(): Observable<List<GroupInvite>>
 
     @POST("user/invites/{groupId}")
     fun userActionInvites(@Body inviteAction: InviteAction, @Path("groupId") groupId: Int): Observable<ResponseBody>
 
-    @POST("user/invites/{groupId}/leave")
-    fun userLeaveGroup(): Observable<ResponseBody>
+    @POST("user/groups/{groupId}/leave")
+    fun userLeaveGroup(@Path("groupId") groupId: Int): Observable<ResponseBody>
 
     /**
      * Orders

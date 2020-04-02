@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.InputField
@@ -48,8 +47,8 @@ class RegisterFragment : Fragment() {
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
-                        requireView(),
-                        "Creating account..."
+                        "Creating account...",
+                        requireView()
                     )
                 }
 

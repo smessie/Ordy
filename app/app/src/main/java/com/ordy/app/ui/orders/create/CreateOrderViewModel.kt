@@ -1,19 +1,14 @@
 package com.ordy.app.ui.orders.create
 
-import android.view.animation.Transformation
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.ordy.app.api.ApiService
 import com.ordy.app.api.ApiServiceViewModel
 import com.ordy.app.api.models.Group
-import com.ordy.app.api.models.Location
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
-import com.ordy.app.api.util.QueryStatus
 import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 
 class CreateOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
@@ -21,7 +16,8 @@ class CreateOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiServ
     /**
      * List of groups for the user
      */
-    val groups: MutableLiveData<Query<List<Group>>> = FetchHandler.handleLive(apiService.userGroups())
+    val groups: MutableLiveData<Query<List<Group>>> =
+        FetchHandler.handleLive(apiService.userGroups())
 
     /**
      * Value of the location input
@@ -50,10 +46,10 @@ class CreateOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiServ
     fun locationValueName() = Transformations.map(locationValueData) {
         return@map when {
             it.location != null -> {
-                it.location!!.name
+                it.location.name
             }
             it.customLocationName != null -> {
-                it.customLocationName!!
+                it.customLocationName
             }
             else -> {
                 ""

@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         // Check if the user is logged in.
         // If not, open the login activity
-        if(accessToken == null || accessToken.isBlank()) {
+        if (accessToken == null || accessToken.isBlank()) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
 
@@ -46,10 +46,14 @@ class MainActivity : AppCompatActivity() {
         // New order button
         speedDialView
             .addActionItem(
-                SpeedDialActionItem.Builder(R.id.speeddial_order, R.drawable.ic_library_books_black_24dp)
-                .setLabel(getString(R.string.speeddial_order))
-                .setFabImageTintColor(Color.WHITE)
-                .create())
+                SpeedDialActionItem.Builder(
+                    R.id.speeddial_order,
+                    R.drawable.ic_library_books_black_24dp
+                )
+                    .setLabel(getString(R.string.speeddial_order))
+                    .setFabImageTintColor(Color.WHITE)
+                    .create()
+            )
 
         // New group button
         speedDialView
@@ -57,7 +61,8 @@ class MainActivity : AppCompatActivity() {
                 SpeedDialActionItem.Builder(R.id.speeddial_group, R.drawable.ic_group_black_24dp)
                     .setLabel(getString(R.string.speeddial_group))
                     .setFabImageTintColor(Color.WHITE)
-                    .create())
+                    .create()
+            )
 
         // Click actions.
         speedDialView.setOnActionSelectedListener { actionItem ->
@@ -96,8 +101,14 @@ class MainActivity : AppCompatActivity() {
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_orders, R.id.navigation_groups, R.id.navigation_payments, R.id.navigation_locations))
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_orders,
+                R.id.navigation_groups,
+                R.id.navigation_payments,
+                R.id.navigation_locations
+            )
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }

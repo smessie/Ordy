@@ -1,6 +1,5 @@
 package com.ordy.app.ui.orders.overview.personal
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.widget.BaseAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import com.ordy.app.AppPreferences
 import com.ordy.app.R
 import com.ordy.app.api.models.Order
@@ -136,8 +134,8 @@ class OrderPersonalListAdapter(
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
-                        fragment.requireView(),
-                        "Attempting to update item..."
+                        "Attempting to update item...",
+                        fragment.requireView()
                     )
                 }
 
@@ -181,8 +179,8 @@ class OrderPersonalListAdapter(
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
-                        fragment.requireView(),
-                        "Attempting to delete item..."
+                        "Attempting to delete item...",
+                        fragment.requireView()
                     )
                 }
 

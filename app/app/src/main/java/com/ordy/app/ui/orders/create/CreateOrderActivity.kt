@@ -4,26 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputLayout
 import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.InputField
-import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityCreateOrderBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
 import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.activity_create_order.*
-import java.security.acl.Group
 
 class CreateOrderActivity : AppCompatActivity() {
 
@@ -48,7 +43,7 @@ class CreateOrderActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_create_order)
         binding.lifecycleOwner = this
         binding.handlers = handlers
-        binding.viewmodel = viewModel
+        binding.viewModel = viewModel
 
         // Set the values for the group input field.
         var groupValues: AutoCompleteTextView = binding.root.findViewById(R.id.input_group_values)
@@ -103,8 +98,8 @@ class CreateOrderActivity : AppCompatActivity() {
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
-                        binding.root,
-                        "Creating order..."
+                        "Creating order...",
+                        binding.root
                     )
                 }
 

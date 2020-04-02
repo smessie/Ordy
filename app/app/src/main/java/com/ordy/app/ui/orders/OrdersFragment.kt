@@ -41,18 +41,8 @@ class OrdersFragment : Fragment() {
         tabsAdapter.addTabsEntry(TabsEntry(ActiveOrdersFragment(), "Active orders"))
         tabsAdapter.addTabsEntry(TabsEntry(ArchivedOrdersFragment(), "Archived orders"))
 
-        // Swipe to refresh
-        view.orders_refresh.setOnRefreshListener {
-            viewModel.refreshOrders()
-        }
-
         // Observe the orders
         viewModel.orders.observe(viewLifecycleOwner, Observer {
-
-            // Stop refreshing on load
-            if(it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
-                view.orders_refresh.isRefreshing = false
-            }
 
             // Show an error when necessary
             if(it.status == QueryStatus.ERROR) {

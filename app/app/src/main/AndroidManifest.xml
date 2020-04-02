@@ -60,6 +60,17 @@
             android:label="@string/title_create_group"
             android:parentActivityName=".MainActivity" />
 
+        <!-- Invite member activity -->
+        <activity
+            android:name=".ui.groups.invite.InviteMemberActivity"
+            android:label="@string/title_invite_member"
+            android:parentActivityName=".MainActivity" />
+
+        <!-- Overview group activity -->
+        <activity
+            android:name=".ui.groups.overview.OverviewGroupActivity"
+            android:parentActivityName=".MainActivity" />
+
         <!-- Profile activity -->
         <activity
             android:name=".ui.profile.ProfileActivity"
