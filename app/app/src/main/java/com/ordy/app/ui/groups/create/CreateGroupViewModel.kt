@@ -8,4 +8,9 @@ import com.ordy.app.api.util.Query
 
 class CreateGroupViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
     val createResult: MutableLiveData<Query<Group>> = MutableLiveData(Query())
+    val nameValueData: MutableLiveData<String> = MutableLiveData("")
+
+    fun getNameValue(): String {
+        return nameValueData.value!!
+    }
 }
