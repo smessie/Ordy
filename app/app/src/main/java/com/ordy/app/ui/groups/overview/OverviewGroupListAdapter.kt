@@ -1,6 +1,6 @@
 package com.ordy.app.ui.groups.overview
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog;
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
