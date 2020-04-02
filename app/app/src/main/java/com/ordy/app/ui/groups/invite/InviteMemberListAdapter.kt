@@ -8,7 +8,6 @@ import android.widget.BaseAdapter
 import com.ordy.app.R
 import com.ordy.app.api.util.QueryStatus
 import kotlinx.android.synthetic.main.list_group_member_card.view.member_data
-import kotlinx.android.synthetic.main.list_group_member_card.view.member_email
 import kotlinx.android.synthetic.main.list_group_member_card.view.member_loading
 import kotlinx.android.synthetic.main.list_group_member_card.view.member_name
 import kotlinx.android.synthetic.main.list_invite_member_card.view.*
@@ -47,7 +46,6 @@ class InviteMemberListAdapter(
 
                 // Assign the data
                 view.member_name.text = member.username
-                view.member_email.text = member.email
 
                 // Set click handler on remove button
                 view.member_invite.setOnClickListener {
