@@ -11,7 +11,17 @@ class GroupsViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) 
     val groups: MutableLiveData<Query<List<Group>>> =
         FetchHandler.handleLive(apiService.userGroups())
 
+    /**
+     * Get a list of groups
+     */
     fun getGroups(): Query<List<Group>> {
         return groups.value!!
+    }
+
+    /**
+     * Refresh the list of groups
+     */
+    fun refreshGroups() {
+        FetchHandler.handle(groups, apiService.userGroups())
     }
 }

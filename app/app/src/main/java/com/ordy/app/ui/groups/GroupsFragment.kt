@@ -12,8 +12,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
-import com.ordy.app.databinding.FragmentGroupsBinding
+import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.groups.create.CreateGroupActivity
+import kotlinx.android.synthetic.main.fragment_groups.view.*
 
 
 class GroupsFragment : Fragment() {
@@ -37,33 +38,42 @@ class GroupsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_groups, container, false)
 
-        // Create binding for the fragment.
-        val binding = FragmentGroupsBinding.inflate(inflater, container, false)
-        binding.handlers = GroupsHandlers(this, viewModel)
-
         // list view adapter
         listAdapter = GroupsListAdapter(requireContext(), viewModel)
-        binding.root.findViewById<ListView>(R.id.groups).adapter = listAdapter
+        view.findViewById<ListView>(R.id.groups).adapter = listAdapter
+
+        // Swipe to refresh
+        view.groups_refresh.setOnRefreshListener {
+            viewModel.refreshGroups()
+        }
 
         // binding button to load new activity
-        val createButton = binding.root.findViewById<Button>(R.id.create_group_button)
+        val createButton = view.findViewById<Button>(R.id.create_group_button)
         createButton.setOnClickListener {
             val intent = Intent(context, CreateGroupActivity::class.java)
             startActivity(intent)
         }
 
-        return binding.root
-    }
+        viewModel.groups.observe(viewLifecycleOwner, Observer {
+            // Stop refreshing on load
+            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+                view.groups_refresh.isRefreshing = false
+            }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModel.groups.observe(this, Observer {
             val listAdapter =
                 this.listAdapter ?: throw IllegalStateException("List adapter should not be null!")
 
             // notify changes to list view
             listAdapter.notifyDataSetChanged()
         })
+
+        return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Update the groups.
+        viewModel.refreshGroups()
     }
 }

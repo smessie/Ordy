@@ -14,6 +14,8 @@ import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewGroupBinding
 import kotlinx.android.synthetic.main.activity_overview_group.*
+import kotlinx.android.synthetic.main.activity_overview_group.view.*
+import kotlin.properties.Delegates
 
 class OverviewGroupActivity : AppCompatActivity() {
 
@@ -25,6 +27,7 @@ class OverviewGroupActivity : AppCompatActivity() {
 
     private var listAdapter: OverviewGroupListAdapter? = null
     lateinit var handlers: OverviewGroupHandlers
+    private var groupId by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +43,15 @@ class OverviewGroupActivity : AppCompatActivity() {
         viewModel.rootView = binding.root
 
         // Extract the "group_id" from the given intent variables.
-        val groupId = intent.getIntExtra("group_id", -1)
+        groupId = intent.getIntExtra("group_id", -1)
 
         // Fetch the specific group.
         FetchHandler.handle(viewModel.group, viewModel.apiService.group(groupId))
+
+        // Swipe to refresh
+        binding.root.group_refresh.setOnRefreshListener {
+            viewModel.refreshGroup(groupId)
+        }
 
         // Create the list view adapter
         listAdapter = OverviewGroupListAdapter(applicationContext, viewModel, handlers)
@@ -60,6 +68,9 @@ class OverviewGroupActivity : AppCompatActivity() {
             when (it.status) {
 
                 QueryStatus.SUCCESS -> {
+                    // Stop the refreshing on load
+                    binding.root.group_refresh.isRefreshing = false
+
                     val group = it.requireData()
 
                     group_title.text = group.name
@@ -73,6 +84,9 @@ class OverviewGroupActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
+                    // Stop the refreshing on load
+                    binding.root.group_refresh.isRefreshing = false
+
                     ErrorHandler.handle(it.error, binding.root, emptyList())
                 }
             }
@@ -123,5 +137,12 @@ class OverviewGroupActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Update the group.
+        viewModel.refreshGroup(groupId)
     }
 }
