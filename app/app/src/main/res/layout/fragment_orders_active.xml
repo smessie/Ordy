@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.orders.active.ActiveOrdersFragment">
 
     <data>
-        <variable name="handlers" type="com.ordy.app.ui.orders.active.ActiveOrdersHandlers" />
+
+        <variable
+            name="handlers"
+            type="com.ordy.app.ui.orders.active.ActiveOrdersHandlers" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!-- Orders -->
-        <ListView
-            android:id="@+id/orders_active"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/orders_active_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-            android:drawSelectorOnTop="true" />
+            android:layout_height="match_parent">
+
+            <!-- Orders -->
+            <ListView
+                android:id="@+id/orders_active"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                android:drawSelectorOnTop="true" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <!-- Empty placeholder -->
         <LinearLayout
@@ -32,19 +40,17 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <TextView
-                android:text="@string/no_active_orders_title"
+                style="@style/Subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                style="@style/Subtitle"
-                />
+                android:text="@string/no_active_orders_title" />
 
             <TextView
-                android:text="@string/no_active_orders_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                />
+                android:text="@string/no_active_orders_description" />
         </LinearLayout>
-    </LinearLayout>
+    </FrameLayout>
 </layout>

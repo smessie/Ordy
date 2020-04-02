@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
@@ -57,6 +58,21 @@ class ActiveOrdersFragment : Fragment() {
             adapter = listAdapter
             emptyView = binding.root.findViewById(R.id.orders_active_empty)
         }
+
+        // Swipe to refresh
+        binding.root.orders_active_refresh.setOnRefreshListener {
+            viewModel.refreshOrders()
+        }
+
+        // Observe the orders
+        viewModel.orders.observe(viewLifecycleOwner, Observer {
+
+            // Stop refreshing on load
+            if(it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+                binding.root.orders_active_refresh.isRefreshing = false
+            }
+
+        })
 
         return binding.root
     }
