@@ -170,6 +170,12 @@ class ErrorHandler {
             // Create and show a snackbar with the error message.
             val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
             snackbar.view.setBackgroundColor(Color.parseColor("#e74c3c"))
+
+            // Dismiss the snackbar
+            snackbar.setAction("x") {
+                // Leave empty for dismiss of snackbar
+            }
+
             snackbar.show()
         }
 
