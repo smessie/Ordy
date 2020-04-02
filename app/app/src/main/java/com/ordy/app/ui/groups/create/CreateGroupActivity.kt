@@ -33,18 +33,14 @@ class CreateGroupActivity : AppCompatActivity() {
         // Create binding for the activity.
         val binding: ActivityCreateGroupBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_create_group)
-        handlers = CreateGroupHandlers(this, viewModel)
+        handlers = CreateGroupHandlers(this, viewModel, binding.root)
         binding.handlers = handlers
-
-        viewModel.rootView = binding.root
 
         viewModel.createResult.observe(this, Observer {
 
             when (it.status) {
 
                 QueryStatus.SUCCESS -> {
-                    viewModel.handlingCreateRequest = false
-
                     // Go to newly created group
                     val intent = Intent(this, OverviewGroupActivity::class.java)
                     // Pass the group id as extra information
@@ -53,8 +49,6 @@ class CreateGroupActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    viewModel.handlingCreateRequest = false
-
                     ErrorHandler.handle(
                         it.error, binding.root, listOf(
                             InputField("name", this.input_name)

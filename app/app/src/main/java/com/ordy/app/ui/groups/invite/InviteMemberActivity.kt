@@ -30,16 +30,14 @@ class InviteMemberActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Extract the "group_id" from the given intent variables.
+        val groupId = intent.getIntExtra("group_id", -1)
+
         // Create binding for the activity.
         val binding: ActivityInviteMemberBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_invite_member)
-        handlers = InviteMemberHandlers(this, viewModel)
+        handlers = InviteMemberHandlers(this, viewModel, binding.root, groupId)
         binding.handlers = handlers
-
-        viewModel.rootView = binding.root
-
-        // Extract the "group_id" from the given intent variables.
-        viewModel.groupId = intent.getIntExtra("group_id", -1)
 
         // Create the list view adapter
         listAdapter = InviteMemberListAdapter(applicationContext, viewModel, handlers)
@@ -75,13 +73,7 @@ class InviteMemberActivity : AppCompatActivity() {
 
             when (it.status) {
 
-                QueryStatus.SUCCESS -> {
-                    viewModel.handlingInviteRequest = false
-                }
-
                 QueryStatus.ERROR -> {
-                    viewModel.handlingInviteRequest = false
-
                     ErrorHandler.handle(
                         it.error, binding.root, listOf(
                             InputField("username", this.input_username)

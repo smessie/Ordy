@@ -35,12 +35,10 @@ class OverviewGroupActivity : AppCompatActivity() {
         // Create binding for the activity.
         val binding: ActivityOverviewGroupBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_overview_group)
-        handlers = OverviewGroupHandlers(this, viewModel)
+        handlers = OverviewGroupHandlers(this, viewModel, binding.root)
         binding.handlers = handlers
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
-
-        viewModel.rootView = binding.root
 
         // Extract the "group_id" from the given intent variables.
         groupId = intent.getIntExtra("group_id", -1)
@@ -98,13 +96,11 @@ class OverviewGroupActivity : AppCompatActivity() {
             when (it.status) {
 
                 QueryStatus.SUCCESS -> {
-                    viewModel.handlingRemoveRequest = false
                     // Update the specific group.
                     FetchHandler.handle(viewModel.group, viewModel.apiService.group(groupId))
                 }
 
                 QueryStatus.ERROR -> {
-                    viewModel.handlingRemoveRequest = false
                     ErrorHandler.handle(it.error, binding.root, listOf())
                 }
             }

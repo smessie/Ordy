@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.list_invite_member_card.view.*
 
 class InviteMemberListAdapter(
     val context: Context?,
-    var viewModel: InviteMemberViewModel,
+    val viewModel: InviteMemberViewModel,
     val handlers: InviteMemberHandlers
 ) :
     BaseAdapter() {

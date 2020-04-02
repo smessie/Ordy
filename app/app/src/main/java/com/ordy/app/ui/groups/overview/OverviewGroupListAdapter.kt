@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.list_group_member_card.view.*
 
 class OverviewGroupListAdapter(
     val context: Context?,
-    var viewModel: OverviewGroupViewModel,
+    val viewModel: OverviewGroupViewModel,
     val handlers: OverviewGroupHandlers,
     val activity: OverviewGroupActivity
 ) :
