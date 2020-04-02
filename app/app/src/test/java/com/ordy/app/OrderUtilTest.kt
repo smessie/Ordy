@@ -2,16 +2,12 @@ package com.ordy.app
 
 import com.ordy.app.api.models.*
 import com.ordy.app.ui.orders.OrdersStatus
-import com.ordy.app.util.OrderItemGroup
-import com.ordy.app.util.OrderItemUserGroup
 import com.ordy.app.util.OrderUtil.Companion.filterOrdersStatus
 import com.ordy.app.util.OrderUtil.Companion.groupItems
 import com.ordy.app.util.OrderUtil.Companion.userGroupItems
 import java.util.*
 import org.junit.Test
 import org.junit.Assert.*
-import org.junit.Before
-import kotlin.collections.ArrayList
 
 /**
  * Tests for the OrderUtil
