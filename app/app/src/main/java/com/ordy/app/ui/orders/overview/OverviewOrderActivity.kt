@@ -124,6 +124,6 @@ class OverviewOrderActivity : AppCompatActivity() {
         super.onResume()
 
         // Update the order.
-        FetchHandler.handle(viewModel.order, viewModel.apiService.order(orderId))
+        viewModel.refreshOrder(orderId)
     }
 }
