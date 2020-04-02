@@ -38,6 +38,7 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:longClickable="false"
+                android:inputType="text"
                 android:text="@{viewmodel.locationValueName}"
                 android:onClick="@{() -> handlers.openLocations()}" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -59,6 +60,7 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:longClickable="false"
+                android:inputType="text"
                 android:text="@{viewmodel.deadlineValueName}"
                 android:onClick="@{() -> handlers.openDeadline()}"
                 />

@@ -63,7 +63,7 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
                 }
 
                 // Set click handler.
-                view.order.setOnClickListener {
+                view.setOnClickListener {
 
                     val intent = Intent(view.context, OverviewOrderActivity::class.java)
 
@@ -84,6 +84,10 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
+    }
+
+    override fun isEnabled(position: Int): Boolean {
+        return viewModel.getOrders().status == QueryStatus.SUCCESS
     }
 
     override fun getCount(): Int {
