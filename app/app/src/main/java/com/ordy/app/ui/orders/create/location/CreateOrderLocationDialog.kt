@@ -44,7 +44,7 @@ class CreateOrderLocationDialog : DialogFragment() {
         // Create binding for the fragment.
         val binding = DialogCreateOrderLocationBinding.inflate(inflater, container, false)
         binding.handlers = CreateOrderLocationHandlers(this, viewModel)
-        binding.viewmodel = viewModel
+        binding.viewModel = viewModel
 
         // Setup the toolbar
         val toolbar: Toolbar = binding.root.findViewById(R.id.toolbar)
