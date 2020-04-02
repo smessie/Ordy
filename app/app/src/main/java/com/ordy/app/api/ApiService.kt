@@ -68,7 +68,7 @@ interface ApiService {
     @POST("user/invites/{groupId}")
     fun userActionInvites(@Body inviteAction: InviteAction, @Path("groupId") groupId: Int): Observable<ResponseBody>
 
-    @POST("user/invites/{groupId}/leave")
+    @POST("user/groups/{groupId}/leave")
     fun userLeaveGroup(@Path("groupId") groupId: Int): Observable<ResponseBody>
 
     /**
