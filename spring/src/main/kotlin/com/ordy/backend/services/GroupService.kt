@@ -218,7 +218,7 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
         val user = userRepository.findById(userId).get()
         val groupOptional = groupRepository.findById(groupId)
 
-        if(!groupOptional.isPresent){
+        if (!groupOptional.isPresent) {
             throwableList.addPropertyException("group", "The group $groupId was not found!")
         }
 
@@ -226,17 +226,17 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
 
             val groupMemberOptional = groupMemberRepository.findGroupMemberByUserAndGroup(user, groupOptional.get())
 
-            if (!groupMemberOptional.isPresent){
+            if (!groupMemberOptional.isPresent) {
                 throwableList.addPropertyException("groupMember", "You are not part of this group!")
             } else {
                 groupMemberRepository.delete(groupMemberOptional.get())
 
                 // we have to assign a new creator if the user was creator of the group
-                if(groupOptional.get().creator.id == userId){
+                if (groupOptional.get().creator.id == userId) {
                     val otherMembersOfGroup = groupMemberRepository.findGroupMembersByGroup(groupOptional.get())
 
                     // if there are no other users in the group, we delete the group
-                    if (otherMembersOfGroup.isEmpty()){
+                    if (otherMembersOfGroup.isEmpty()) {
                         groupRepository.delete(groupOptional.get())
                     } else {
                         groupOptional.get().creator = otherMembersOfGroup.first().user
@@ -257,32 +257,54 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
      */
 
     fun deleteMember(groupId: Int, userKickId: Int, userId: Int) {
-        val throwableList = ThrowableList()
+        if (userId == userKickId) { // leaving the group is the same as he want to kick himself
+            this.leaveGroup(groupId, userId)
+        } else {
+            val throwableList = ThrowableList()
 
-        val user = userRepository.findById(userId).get()
-        val groupMemberLogin = groupMemberRepository.findGroupMembersByUser(user).filter { it.group.id == groupId }
+            val user = userRepository.findById(userId).get()
+            val groupOptional = groupRepository.findById(groupId)
 
-        if (groupMemberLogin.isEmpty()) {
-            throw throwableList.also { it.addGenericException("You have to be in this group to kick someone!") }
+            if (!groupOptional.isPresent) {
+                throwableList.addPropertyException("group", "The group $groupId was not found!")
+            }
+
+            throwableList.ifEmpty {
+                val groupMemberLoginOptional = groupMemberRepository.findGroupMemberByUserAndGroup(user, groupOptional.get())
+
+                if (!groupMemberLoginOptional.isPresent) {
+                    throwableList.addPropertyException("user", "You have to be in the group $groupId if you want to kick someone!")
+                }
+
+                val userKickOptional = userRepository.findById(userKickId)
+
+                if (!userKickOptional.isPresent) {
+                    throwableList.addPropertyException("userKick", "The person $userKickId you want to kick was not found")
+                }
+
+                throwableList.ifEmpty {
+                    val groupMemberKickOptional = groupMemberRepository.findGroupMemberByUserAndGroup(userKickOptional.get(), groupOptional.get())
+
+                    if (!groupMemberKickOptional.isPresent) {
+                        throwableList.addPropertyException("userKick", "The person $userKickId you want to kick is not in group $groupId")
+                    } else {
+
+                        // if the kicked person was the creator of the group, then you become the creator of the group
+                        if (groupOptional.get().creator.id == userKickId) {
+                            groupOptional.get().creator = user
+                            groupRepository.save(groupOptional.get())
+                        }
+
+                        groupMemberRepository.delete(groupMemberKickOptional.get())
+                    }
+                }
+            }
+
+            throwableList.ifNotEmpty {
+                throwableList.addGenericException("The action to kick person $userKickId failed!")
+                throw throwableList
+            }
         }
-
-        val userKick = userRepository.findById(userKickId)
-
-        if (!userKick.isPresent) {
-            throw throwableList.also { it.addGenericException("The person you want to kick is not found!") }
-        }
-
-        val groupMemberKick = groupMemberRepository.findGroupMembersByUser(userKick.get()).filter { it.group.id == groupId }
-
-        if (groupMemberLogin.isEmpty()) {
-            throw throwableList.also { it.addGenericException("The person you want to kick is not in this group!") }
-        }
-
-        if (groupMemberKick.size > 1 || groupMemberLogin.size > 1) {
-            throw throwableList.also { it.addGenericException("Strange behaviour: someone is added more than 1 times in this group?") }
-        }
-
-        groupMemberRepository.delete(groupMemberKick.first())
     }
 
     /**
