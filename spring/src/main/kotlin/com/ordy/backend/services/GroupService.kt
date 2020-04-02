@@ -30,6 +30,11 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
 
     fun createGroup(userId: Int, groupWrapper: GroupCreateWrapper): Group {
         val throwableList = ThrowableList()
+
+        if (!groupWrapper.name.isPresent){
+            throw throwableList.also { it.addGenericException("GroupCreateWrapper has no name.") }
+        }
+
         checkGroupName(groupWrapper.name.get(), throwableList)
         throwableList.ifNotEmpty { throw throwableList }
 
@@ -46,6 +51,11 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
 
     fun updateGroup(groupId: Int, groupWrapper: GroupCreateWrapper): Group {
         val throwableList = ThrowableList()
+
+        if (!groupWrapper.name.isPresent){
+            throw throwableList.also { it.addGenericException("GroupCreateWrapper has no name.") }
+        }
+
         checkGroupName(groupWrapper.name.get(), throwableList)
 
         val group: Optional<Group> = groupRepository.findById(groupId)
@@ -186,33 +196,31 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
             throw throwableList.also { it.addGenericException("This group was not found.") }
         }
 
-        throwableList.ifEmpty {
-            val groupInviteOptional = groupInviteRepository.findGroupInviteByUserAndGroup(user, groupOptional.get())
-            if (!groupInviteOptional.isPresent) {
-                throw throwableList.also { it.addGenericException("You do not have an invite for this group.") }
-            }
-
-            val inviteAction: InviteAction
-            try {
-                inviteAction = InviteAction.valueOf(inviteActionWrapper.action.get().toUpperCase())
-            } catch (e: IllegalArgumentException) {
-                throw throwableList.also { it.addPropertyException("action", "Wrong action was passed! This must be ACCEPT or DENY") }
-            }
-
-            // accepting the invite means that you want to join the group
-            if (inviteAction == InviteAction.ACCEPT) {
-
-                if (groupMemberRepository.findGroupMemberByUserAndGroup(user, groupOptional.get()).isPresent) {
-                    throw throwableList.also { it.addGenericException("You are already in this group.") }
-                } else {
-                    val groupMember = GroupMember(user = user, group = groupOptional.get())
-                    groupMemberRepository.save(groupMember)
-                }
-            }
-
-            // the invite has to be deleted no matter if the action is equal to ACCEPT or DENY
-            groupInviteRepository.delete(groupInviteOptional.get())
+        val groupInviteOptional = groupInviteRepository.findGroupInviteByUserAndGroup(user, groupOptional.get())
+        if (!groupInviteOptional.isPresent) {
+            throw throwableList.also { it.addGenericException("You do not have an invite for this group.") }
         }
+
+        val inviteAction: InviteAction
+        try {
+            inviteAction = InviteAction.valueOf(inviteActionWrapper.action.get().toUpperCase())
+        } catch (e: IllegalArgumentException) {
+            throw throwableList.also { it.addPropertyException("action", "Wrong action was passed! This must be ACCEPT or DENY") }
+        }
+
+        // accepting the invite means that you want to join the group
+        if (inviteAction == InviteAction.ACCEPT) {
+
+            if (groupMemberRepository.findGroupMemberByUserAndGroup(user, groupOptional.get()).isPresent) {
+                throw throwableList.also { it.addGenericException("You are already in this group.") }
+            } else {
+                val groupMember = GroupMember(user = user, group = groupOptional.get())
+                groupMemberRepository.save(groupMember)
+            }
+        }
+
+        // the invite has to be deleted no matter if the action is equal to ACCEPT or DENY
+        groupInviteRepository.delete(groupInviteOptional.get())
     }
 
     /**
@@ -288,8 +296,7 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
 
                 // if the kicked person was the creator of the group, then you become the creator of the group
                 if (groupOptional.get().creator.id == userKickId) {
-                    groupOptional.get().creator = user
-                    groupRepository.save(groupOptional.get())
+                    throw throwableList.also { it.addGenericException("You can not kick the creator of a group.") }
                 }
 
                 groupMemberRepository.delete(groupMemberKickOptional.get())
@@ -316,9 +323,10 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
         }
 
         val alreadyInvitedUsers = groupInviteRepository.findGroupInvitesByGroup(groupOptional.get()).map { it.id }
+        val membersOfGroup = groupMemberRepository.findGroupMembersByGroup(groupOptional.get()).map { it.id }
         return userRepository.findAll()
                 .filter { it.username.contains(userName) }
-                .filter { !groupMemberRepository.findGroupMemberByUserAndGroup(it, groupOptional.get()).isPresent }
+                .filter { !membersOfGroup.contains(it.id) }
                 .filter { !alreadyInvitedUsers.contains(it.id) }
     }
 }
