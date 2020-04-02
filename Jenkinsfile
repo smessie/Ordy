@@ -1,28 +1,12 @@
 pipeline {
   agent any
   stages {
-    stage('Build-Android') {
-      when {
-        branch 'master'
-      }
-      steps {
-        sh 'cd app && ./gradlew build'
-      }
-    }
     stage('Build-Spring') {
       when {
         branch 'master'
       }
       steps {
         sh 'cd spring && ./mvnw compiler:compile'
-      }
-    }
-    stage('Test-Android') {
-      when {
-        branch 'master'
-      }
-      steps {
-        sh 'cd app && ./gradlew test'
       }
     }
     stage('Test-Spring') {
