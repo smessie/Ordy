@@ -16,11 +16,6 @@ class SnackbarUtil {
             val snackbar = Snackbar.make(view, text, duration)
             snackbars[view] = snackbar
 
-            // Dismiss the snackbar
-            snackbar.setAction("x") {
-                // Leave empty for dismiss of snackbar
-            }
-
             // Show the snackbar
             snackbar.show()
         }
