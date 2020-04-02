@@ -174,9 +174,15 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
      * gives all the invites from a user
      */
 
-    fun getInvites(userId: Int): List<GroupInvite> {
+    fun getInvites(userId: Int): List<GroupListWrapper> {
         val user = userRepository.findById(userId).get()
-        return groupInviteRepository.findGroupInvitesByUser(user)
+
+        return groupInviteRepository.findGroupInvitesByUser(user).map {
+            GroupListWrapper(
+                    it.group,
+                    groupMemberRepository.findGroupMembersByGroup(it.group).size
+            )
+        }
     }
 
     /**
