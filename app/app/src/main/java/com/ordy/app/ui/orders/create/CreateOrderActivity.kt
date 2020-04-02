@@ -111,6 +111,9 @@ class CreateOrderActivity : AppCompatActivity() {
                 QueryStatus.SUCCESS -> {
                     SnackbarUtil.closeSnackbar(binding.root)
 
+                    // Finish this activity
+                    finish()
+
                     // Go to the order overview activity.
                     val intent = Intent(applicationContext, OverviewOrderActivity::class.java)
 
