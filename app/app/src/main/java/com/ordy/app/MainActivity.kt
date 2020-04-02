@@ -64,19 +64,6 @@ class MainActivity : AppCompatActivity() {
                     .create()
             )
 
-        // Login button
-        // TODO: remove once implemented
-        speedDialView
-            .addActionItem(
-                SpeedDialActionItem.Builder(
-                    R.id.speeddial_login,
-                    R.drawable.ic_lock_outline_black_24dp
-                )
-                    .setLabel("Login")
-                    .setFabImageTintColor(Color.WHITE)
-                    .create()
-            )
-
         // Click actions.
         speedDialView.setOnActionSelectedListener { actionItem ->
             when (actionItem.id) {
