@@ -40,7 +40,7 @@ pipeline {
       }
       steps {
         echo 'Building War file for production ...'
-        sh 'spring/runapp.sh war:war'
+        sh 'spring/runapp.sh -Dmaven.test.skip=true package'
         sh 'sudo cp spring/target/*.war /home/ordy/ordy/production/app.war'
         sh 'sudo systemctl restart ordy.service'
       }
