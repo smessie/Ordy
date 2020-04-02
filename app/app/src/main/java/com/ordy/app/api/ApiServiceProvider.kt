@@ -1,6 +1,7 @@
 package com.ordy.app.api
 
 import android.content.Context
+import com.google.gson.GsonBuilder
 import com.ordy.app.AppPreferences
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -24,11 +25,14 @@ class ApiServiceProvider {
             chain.proceed(newRequest)
         }.build()
 
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ")
+            .create()
+
         val retrofit = Retrofit.Builder()
             .addCallAdapterFactory(
                 RxJava2CallAdapterFactory.create())
-            .addConverterFactory(
-                GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .baseUrl("http://dev.api.ordy.ga")
             .build()

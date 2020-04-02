@@ -1,7 +1,7 @@
 package com.ordy.app.api.models
 
 import com.google.gson.annotations.SerializedName
-import java.time.LocalTime
+import java.util.*
 
 data class Order(
 
@@ -9,7 +9,7 @@ data class Order(
     val id: Int,
 
     @SerializedName("deadline")
-    val deadline: LocalTime,
+    val deadline: Date,
 
     @SerializedName("billUrl")
     val billUrl: String,
@@ -21,5 +21,8 @@ data class Order(
     val location: Location,
 
     @SerializedName("courier")
-    val courier: User
+    val courier: User,
+
+    @SerializedName("orderItems")
+    val orderItems: MutableList<OrderItem> = mutableListOf()
 )

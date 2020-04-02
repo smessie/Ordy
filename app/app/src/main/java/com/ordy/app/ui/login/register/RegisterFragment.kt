@@ -14,6 +14,7 @@ import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentRegisterBinding
 import com.ordy.app.ui.login.LoginViewModel
+import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.fragment_register.*
 
 class RegisterFragment : Fragment() {
@@ -46,16 +47,22 @@ class RegisterFragment : Fragment() {
             when(it.status) {
 
                 QueryStatus.LOADING -> {
-                    Snackbar.make(requireView(), "Creating account...", Snackbar.LENGTH_INDEFINITE).show()
+                    SnackbarUtil.openSnackbar(
+                        requireView(),
+                        "Creating account..."
+                    )
                 }
 
                 QueryStatus.SUCCESS -> {
+                    SnackbarUtil.closeSnackbar(requireView())
 
                     // Go to the login fragment.
                     viewModel.isLogin.postValue(true)
                 }
 
                 QueryStatus.ERROR -> {
+                    SnackbarUtil.closeSnackbar(requireView())
+
                     ErrorHandler.handle(it.error, view, listOf(
                         InputField("username", this.input_register_username),
                         InputField("email", this.input_register_email),
