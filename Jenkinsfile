@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('alive') {
       steps {
-        echo 'Alive!! but does it update?'
+        echo 'Alive!! nope but now?'
       }
     }
   }
