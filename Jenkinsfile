@@ -33,10 +33,10 @@ pipeline {
         sh 'sudo systemctl restart ordy.service'
       }
     }
-    stage('Self Destruct') {
-      steps {
-        sh 'rm -rf .[!.]* *'
-      }
+  }
+  post {
+    always {
+      sh 'rm -rf .[!.]* *'
     }
   }
 }
