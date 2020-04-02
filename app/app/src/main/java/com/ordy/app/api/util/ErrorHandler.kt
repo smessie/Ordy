@@ -169,7 +169,7 @@ class ErrorHandler {
         fun handleRawGeneral(message: String, view: View) {
             // Create and show a snackbar with the error message.
             val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-            snackbar.view.setBackgroundColor(Color.parseColor("#e74c3c"))
+            snackbar.setBackgroundTint(Color.parseColor("#E74C3C"))
 
             snackbar.show()
         }
