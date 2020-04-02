@@ -1,19 +1,16 @@
 package com.ordy.app.ui.orders.overview.additem
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.ListView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import com.ordy.app.R
 import com.ordy.app.api.ApiServiceViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.FetchHandler
-import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityAddItemOrderBinding
 import com.ordy.app.util.SnackbarUtil
@@ -81,8 +78,8 @@ class AddItemOrderActivity : AppCompatActivity() {
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
-                        binding.root,
-                        "Adding item..."
+                        "Adding item...",
+                        binding.root
                     )
                 }
 

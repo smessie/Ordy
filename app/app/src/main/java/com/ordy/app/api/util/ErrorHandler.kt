@@ -1,12 +1,13 @@
 package com.ordy.app.api.util
 
-import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ordy.app.R
+import com.ordy.app.util.SnackbarType
+import com.ordy.app.util.SnackbarUtil
 import retrofit2.HttpException
 
 class ErrorHandler {
@@ -168,10 +169,7 @@ class ErrorHandler {
          */
         fun handleRawGeneral(message: String, view: View) {
             // Create and show a snackbar with the error message.
-            val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-            snackbar.setBackgroundTint(Color.parseColor("#E74C3C"))
-
-            snackbar.show()
+            SnackbarUtil.openSnackbar(message, view, Snackbar.LENGTH_LONG, SnackbarType.ERROR)
         }
 
         private data class ErrorResult(

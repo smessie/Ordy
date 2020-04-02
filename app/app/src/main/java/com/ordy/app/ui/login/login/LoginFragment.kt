@@ -46,8 +46,8 @@ class LoginFragment : Fragment() {
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
-                        requireView(),
-                        "Attempting to login..."
+                        "Attempting to login...",
+                        requireView()
                     )
                 }
 
