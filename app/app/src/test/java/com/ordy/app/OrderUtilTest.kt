@@ -26,7 +26,7 @@ class OrderUtilTest {
      * Check if orders are split into 3 groups
      */
     @Test
-    fun `Should be split in 3 groups per item-name`() {
+    fun `Should be split in 3 groups by item-name when there are 3 different items`() {
         val testItem1 = Item(1, "Pizza Calzone")
         val testItem2 = Item(2, "Spring rolls")
         val testItem3 = Item(3, "Small fries")
@@ -118,7 +118,7 @@ class OrderUtilTest {
      * Check if an empty list as parameter returns empty list
      */
     @Test
-    fun `userGroupItems should return empty list if param is empty list`() {
+    fun `userGroupItems should return empty list when param is empty list`() {
         assertEquals(userGroupItems(arrayListOf<OrderItem>()).size, 0)
     }
 
@@ -278,7 +278,7 @@ class OrderUtilTest {
      * Check if order 1 was correctly chosen as active
      */
     @Test
-    fun `Order 1 should be active`() {
+    fun `Order should be active when deadline is not expired`() {
         val testUser1 = User(1, "Ieben")
         val testUser2 = User(2, "Maarten")
 
@@ -298,7 +298,7 @@ class OrderUtilTest {
      * Check if order 2 was correctly chosen as archived
      */
     @Test
-    fun `Order 2 should be archived`() {
+    fun `Order should be archived when deadline expired`() {
         val testUser1 = User(1, "Ieben")
         val testUser2 = User(2, "Maarten")
 
