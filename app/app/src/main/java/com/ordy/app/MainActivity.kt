@@ -24,6 +24,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val accessToken = AppPreferences(applicationContext).accessToken
+
+        // Check if the user is logged in.
+        // If not, open the login activity
+        if(accessToken == null || accessToken.isBlank()) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+
+            return;
+        }
+
         // Set the activity layout.
         setContentView(R.layout.activity_main)
 
@@ -134,6 +145,17 @@ class MainActivity : AppCompatActivity() {
         R.id.navigation_settings -> {
             // Open the settings activity
             val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+
+            true
+        }
+
+        R.id.navigation_logout -> {
+            // Delete the accessToken
+            AppPreferences(applicationContext).accessToken = ""
+
+            // Go to the login activity
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
 
             true

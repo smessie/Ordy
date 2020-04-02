@@ -15,4 +15,11 @@
         android:icon="@drawable/ic_settings_white_24dp"
         android:title="@string/title_settings"
         app:showAsAction="ifRoom" />
+
+    <!-- Logout -->
+    <item
+        android:id="@+id/navigation_logout"
+        android:icon="@drawable/ic_settings_white_24dp"
+        android:title="@string/title_logout"
+        app:showAsAction="never" />
 </menu>
