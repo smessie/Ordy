@@ -216,17 +216,40 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
         val throwableList = ThrowableList()
 
         val user = userRepository.findById(userId).get()
-        val groupMember = groupMemberRepository.findGroupMembersByUser(user).filter { it.group.id == groupId }
+        val groupOptional = groupRepository.findById(groupId)
 
-        if (groupMember.isEmpty()) {
-            throw throwableList.also { it.addGenericException("You are not in this group!") }
+        if(!groupOptional.isPresent){
+            throwableList.addPropertyException("group", "The group $groupId was not found!")
         }
 
-        if (groupMember.size > 1) {
-            throw throwableList.also { it.addGenericException("Strange behaviour: you are added more than 1 times in this group?") }
+        throwableList.ifEmpty {
+
+            val groupMemberOptional = groupMemberRepository.findGroupMemberByUserAndGroup(user, groupOptional.get())
+
+            if (!groupMemberOptional.isPresent){
+                throwableList.addPropertyException("groupMember", "You are not part of this group!")
+            } else {
+                groupMemberRepository.delete(groupMemberOptional.get())
+
+                // we have to assign a new creator if the user was creator of the group
+                if(groupOptional.get().creator.id == userId){
+                    val otherMembersOfGroup = groupMemberRepository.findGroupMembersByGroup(groupOptional.get())
+
+                    // if there are no other users in the group, we delete the group
+                    if (otherMembersOfGroup.isEmpty()){
+                        groupRepository.delete(groupOptional.get())
+                    } else {
+                        groupOptional.get().creator = otherMembersOfGroup.first().user
+                        groupRepository.save(groupOptional.get())
+                    }
+                }
+            }
         }
 
-        groupMemberRepository.delete(groupMember.first())
+        throwableList.ifNotEmpty {
+            throwableList.addGenericException("Your try to leave the group failed!")
+            throw throwableList
+        }
     }
 
     /**
