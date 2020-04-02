@@ -47,7 +47,7 @@ class InvitesListAdapter(
             }
 
             QueryStatus.SUCCESS -> {
-                val group = viewModel.getInvites().requireData()[position]
+                val invite = viewModel.getInvites().requireData()[position]
 
                 // Stop the shimmer effect & hide.
                 view.group_loading.stopShimmer()
@@ -55,9 +55,9 @@ class InvitesListAdapter(
                 view.group_data.visibility = View.VISIBLE
 
                 // Assign data
-                view.group_name.text = group.name
-                view.group_creator.text = group.creator.username
-                view.group_member_count.text = "${group.membersCount}"
+                view.group_name.text = invite.group.name
+                view.group_creator.text = invite.group.creator.username
+                view.group_member_count.text = "${invite.group.membersCount}"
 
                 val actionInviteResult: MutableLiveData<Query<ResponseBody>> =
                     MutableLiveData(Query())
@@ -67,7 +67,7 @@ class InvitesListAdapter(
                     acceptRequest = true
                     handlers.handleClickInviteAction(
                         InviteActionOptions.ACCEPT,
-                        group.id,
+                        invite.group.id,
                         actionInviteResult
                     )
                 }
@@ -76,7 +76,7 @@ class InvitesListAdapter(
                     acceptRequest = false
                     handlers.handleClickInviteAction(
                         InviteActionOptions.DENY,
-                        group.id,
+                        invite.group.id,
                         actionInviteResult
                     )
                 }

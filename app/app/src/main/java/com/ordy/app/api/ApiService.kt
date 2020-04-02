@@ -63,7 +63,7 @@ interface ApiService {
     fun userGroups(): Observable<List<Group>>
 
     @GET("user/invites")
-    fun userInvites(): Observable<List<Group>>
+    fun userInvites(): Observable<List<GroupInvite>>
 
     @POST("user/invites/{groupId}")
     fun userActionInvites(@Body inviteAction: InviteAction, @Path("groupId") groupId: Int): Observable<ResponseBody>
