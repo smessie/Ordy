@@ -18,7 +18,8 @@ pipeline {
     }
     stage('Test-Spring') {
       steps {
-        sh 'cd spring && ./mvnw test'
+        sh 'cp spring/.env.template spring/.env'
+        sh 'cd spring && ./runapp.sh test'
       }
     }
     stage('Deploy-Production') {
