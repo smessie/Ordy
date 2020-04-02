@@ -25,6 +25,7 @@
     <string name="invite_title">Search for usernames</string>
     <string name="invite_subtitle">Use the searchbar above to search</string>
     <string name="invite_button">Invite</string>
+    <string name="invited_button">Invited!</string>
 
     <string name="speeddial_order">New order</string>
     <string name="speeddial_group">New group</string>

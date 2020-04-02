@@ -1,6 +1,8 @@
 package com.ordy.app.ui.groups.invite
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +52,8 @@ class InviteMemberListAdapter(
                 // Set click handler on remove button
                 view.member_invite.setOnClickListener {
                     handlers.onInviteButtonClick(member.id)
+                    view.member_invite.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+                    view.member_invite.text = context?.getString(R.string.invited_button)
                 }
             }
         }
