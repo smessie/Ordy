@@ -1,13 +1,14 @@
 package com.ordy.app
 
-import com.ordy.app.api.models.OrderItem
-import com.ordy.app.api.models.Item
-import com.ordy.app.api.models.User
+import com.ordy.app.api.models.*
+import com.ordy.app.ui.orders.OrdersStatus
+import com.ordy.app.util.OrderUtil.Companion.filterOrdersStatus
 import com.ordy.app.util.OrderUtil.Companion.groupItems
 import com.ordy.app.util.OrderUtil.Companion.userGroupItems
 import java.util.*
 import org.junit.Test
 import org.junit.Assert.*
+import java.time.temporal.ChronoUnit
 
 /**
  * Tests for the OrderUtil
@@ -93,7 +94,33 @@ class OrderUtilTest {
         assertEquals(orderItemUserGroup.get(1).items.size, 2)
         assertEquals(orderItemUserGroup.get(2).items.size, 1)
         assertEquals(orderItemUserGroup.get(3).items.size, 1)
-
     }
 
+    /**
+     * Test the filterOrdersStatus function
+     */
+    @Test
+    fun test_filterOrdersStatus() {
+        val testUser1 = User(1, "Ieben")
+        val testUser2 = User(2, "Maarten")
+        val testGroup = Group(1, "TestGroup", testUser1)
+        val testCuisine = Cuisine(1, "TestCuisine", arrayListOf<Item>())
+        val testLocation = Location(1, "TestLocation", 10.0, 10.0, "Krijgslaan 1", false, testCuisine)
+
+        val orderList = arrayListOf<Order>()
+        // Add Order without expired deadline
+        orderList.add(Order(1, Date(1685857554619), "TestUrl", testGroup, testLocation, testUser2))
+
+        // Add Order with expired deadline
+        orderList.add(Order(2, Date(1485857554619), "TestUrl", testGroup, testLocation, testUser2))
+
+        // Check if filter detects if deadline has expired or not
+        val filteredList1 = filterOrdersStatus(orderList, OrdersStatus.ACTIVE)
+        assertEquals(filteredList1.size, 1)
+        assertEquals(filteredList1.get(0).id, 1)
+
+        val filteredList2 = filterOrdersStatus(orderList, OrdersStatus.ARCHIVED)
+        assertEquals(filteredList2.size, 1)
+        assertEquals(filteredList2.get(0).id, 2)
+    }
 }
