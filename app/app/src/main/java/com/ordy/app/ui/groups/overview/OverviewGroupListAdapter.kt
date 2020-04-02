@@ -1,5 +1,6 @@
 package com.ordy.app.ui.groups.overview
 
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,8 @@ import kotlinx.android.synthetic.main.list_group_member_card.view.*
 class OverviewGroupListAdapter(
     val context: Context?,
     var viewModel: OverviewGroupViewModel,
-    val handlers: OverviewGroupHandlers
+    val handlers: OverviewGroupHandlers,
+    val activity: OverviewGroupActivity
 ) :
     BaseAdapter() {
 
@@ -48,7 +50,18 @@ class OverviewGroupListAdapter(
 
                 // Set click handler on remove button
                 view.member_remove.setOnClickListener {
-                    handlers.removeMember(viewModel.getGroup().requireData().id, member.id)
+                    AlertDialog.Builder(activity).apply {
+                        setTitle("Are you sure you want to remove this member?")
+                        setMessage("You are about to remove " + member.username + " from this group")
+
+                        setPositiveButton(android.R.string.ok) { _, _ ->
+                            handlers.removeMember(viewModel.getGroup().requireData().id, member.id)
+                        }
+
+                        setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                            dialog.cancel()
+                        }
+                    }.show()
                 }
 
                 // Hide the remove button if the member is the the creator

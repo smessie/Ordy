@@ -1,5 +1,6 @@
 package com.ordy.app.ui.groups.overview
 
+import android.app.AlertDialog
 import android.content.Intent
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.FetchHandler
@@ -14,10 +15,21 @@ class OverviewGroupHandlers(
      */
     fun onLeaveButtonClick() {
         if (viewModel.group.value != null) {
-            FetchHandler.handle(
-                viewModel.leaveResult,
-                viewModel.apiService.userLeaveGroup(viewModel.group.value!!.requireData().id)
-            )
+            AlertDialog.Builder(activity).apply {
+                setTitle("Are you sure?")
+                setMessage("You are about to leave this group")
+
+                setPositiveButton(android.R.string.ok) { _, _ ->
+                    FetchHandler.handle(
+                        viewModel.leaveResult,
+                        viewModel.apiService.userLeaveGroup(viewModel.group.value!!.requireData().id)
+                    )
+                }
+
+                setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
+            }.show()
         } else {
             ErrorHandler.handleRawGeneral(
                 "You already are no member of this group.",
