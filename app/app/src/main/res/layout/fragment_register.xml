@@ -31,12 +31,13 @@
             android:hint="@string/username"
             app:startIconDrawable="@drawable/ic_person_black_24dp"
             app:errorEnabled="true"
+            android:maxLines="1"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1" />
+                android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,7 +54,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1" />
+                android:inputType="textEmailAddress"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,12 +66,12 @@
             android:hint="@string/password"
             app:startIconDrawable="@drawable/ic_lock_outline_black_24dp"
             app:errorEnabled="true"
+            android:maxLines="1"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -82,12 +83,12 @@
             android:hint="@string/password_repeat"
             app:startIconDrawable="@drawable/ic_lock_outline_black_24dp"
             app:errorEnabled="true"
+            android:maxLines="1"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
