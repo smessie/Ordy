@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -48,6 +49,19 @@ class AddItemOrderActivity : AppCompatActivity() {
 
         // Update the list adapter when the "cuisine" query updates
         viewModel.cuisineItems.observe(this, Observer {
+
+            // Catch possible errors.
+            if(viewModel.getCuisineItems().status == QueryStatus.ERROR) {
+                    AlertDialog.Builder(this).apply {
+                        setTitle("Unable to fetch predefined items")
+                        setMessage(viewModel.getCuisineItems().requireError().message)
+                        setPositiveButton(android.R.string.ok) { _, _ ->
+
+                            // Close the activity
+                            finish()
+                        }
+                    }.show()
+            }
 
             // Update the orders
             listAdapter.update()

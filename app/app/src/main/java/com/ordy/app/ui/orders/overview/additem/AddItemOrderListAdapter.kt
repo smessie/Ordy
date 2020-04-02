@@ -1,6 +1,5 @@
 package com.ordy.app.ui.orders.overview.additem
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +7,6 @@ import android.widget.BaseAdapter
 import android.widget.ListView
 import com.ordy.app.R
 import com.ordy.app.api.models.Item
-import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import kotlinx.android.synthetic.main.list_order_cuisine_item.view.*
 import kotlinx.android.synthetic.main.list_order_cuisine_item_default.view.*
