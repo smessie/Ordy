@@ -70,4 +70,5 @@
     <string name="pick_custom">Pick Custom</string>
     <string name="location_item_default_title">Not in the list?</string>
     <string name="location_item_default_text">Add \"%1$s\" as location instead</string>
+    <string name="loading">Loading</string>
 </resources>

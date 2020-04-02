@@ -7,19 +7,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.ordy.app.R
+import com.ordy.app.api.util.ErrorHandler
+import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
-import kotlinx.android.synthetic.main.list_group_member_card.view.member_data
-import kotlinx.android.synthetic.main.list_group_member_card.view.member_loading
 import kotlinx.android.synthetic.main.list_group_member_card.view.member_name
 import kotlinx.android.synthetic.main.list_invite_member_card.view.*
+import okhttp3.ResponseBody
+
 
 class InviteMemberListAdapter(
-    val context: Context?,
+    val context: Context,
+    val activity: InviteMemberActivity,
     val viewModel: InviteMemberViewModel,
     val handlers: InviteMemberHandlers
 ) :
     BaseAdapter() {
+
+    private val successColor = ColorStateList.valueOf(Color.parseColor("#2ecc71"))
+    private val loadingColor = ColorStateList.valueOf(Color.parseColor("#3498db"))
+    private val defaultColor = ColorStateList.valueOf(
+        ContextCompat.getColor(context, R.color.colorPrimary)
+    )
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -30,31 +42,50 @@ class InviteMemberListAdapter(
         )
 
         when (viewModel.getUsers().status) {
-            QueryStatus.LOADING -> {
-
-                // Start the shimmer effect & show
-                view.member_loading.startShimmer()
-                view.member_loading.visibility = View.VISIBLE
-                view.member_data.visibility = View.GONE
-            }
 
             QueryStatus.SUCCESS -> {
                 val member = viewModel.getUsers().requireData()[position]
 
-                // Stop the shimmer effect & hide
-                view.member_loading.stopShimmer()
-                view.member_loading.visibility = View.GONE
-                view.member_data.visibility = View.VISIBLE
-
                 // Assign the data
                 view.member_name.text = member.username
 
+                val inviteResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+
                 // Set click handler on remove button
                 view.member_invite.setOnClickListener {
-                    handlers.onInviteButtonClick(member.id)
-                    view.member_invite.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-                    view.member_invite.text = context?.getString(R.string.invited_button)
+
+                    // Invite the user
+                    handlers.onInviteButtonClick(inviteResult, member.id)
                 }
+
+                // Watch the invite result.
+                inviteResult.observe(activity, Observer {
+
+                    when(it.status) {
+
+                        QueryStatus.LOADING -> {
+                            view.member_invite.backgroundTintList = loadingColor
+                            view.member_invite.text = context?.getString(R.string.loading)
+                        }
+
+                        QueryStatus.SUCCESS -> {
+                            val text = context.getString(R.string.invited_button)
+
+                            view.member_invite.backgroundTintList = successColor
+                            view.member_invite.text = text
+                        }
+
+                        QueryStatus.ERROR -> {
+                            // Handle error
+                            ErrorHandler.handle(it.error, view)
+
+                            val text = context.getString(R.string.invite_button)
+
+                            view.member_invite.backgroundTintList = defaultColor
+                            view.member_invite.text = text
+                        }
+                    }
+                })
             }
         }
 
@@ -71,7 +102,7 @@ class InviteMemberListAdapter(
 
     override fun getCount(): Int {
         return when (viewModel.getUsers().status) {
-            QueryStatus.LOADING -> 4
+            QueryStatus.LOADING -> 0
             QueryStatus.SUCCESS -> viewModel.getUsers().requireData().size
             else -> 0
         }

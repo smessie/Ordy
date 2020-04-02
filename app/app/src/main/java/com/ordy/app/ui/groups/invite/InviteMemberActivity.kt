@@ -3,7 +3,10 @@ package com.ordy.app.ui.groups.invite
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.ListView
+import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -15,6 +18,7 @@ import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityInviteMemberBinding
 import kotlinx.android.synthetic.main.activity_invite_member.*
+import kotlinx.android.synthetic.main.activity_invite_member.view.*
 
 class InviteMemberActivity : AppCompatActivity() {
 
@@ -24,7 +28,7 @@ class InviteMemberActivity : AppCompatActivity() {
         )
     }
 
-    private var listAdapter: InviteMemberListAdapter? = null
+    lateinit var listAdapter: InviteMemberListAdapter
     lateinit var handlers: InviteMemberHandlers
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,10 +42,16 @@ class InviteMemberActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_invite_member)
         handlers = InviteMemberHandlers(this, viewModel, binding.root, groupId)
         binding.handlers = handlers
+        binding.viewmodel = viewModel
+
+        val listView = binding.root.findViewById<ListView>(R.id.users)
+        val listViewEmpty = binding.root.findViewById<LinearLayout>(R.id.users_empty)
+        val searchLoading: ProgressBar =
+            binding.root.findViewById(R.id.username_search_loading)
 
         // Create the list view adapter
-        listAdapter = InviteMemberListAdapter(applicationContext, viewModel, handlers)
-        binding.root.findViewById<ListView>(R.id.users).apply {
+        listAdapter = InviteMemberListAdapter(applicationContext, this, viewModel, handlers)
+        listView.apply {
             adapter = listAdapter
             emptyView = binding.root.findViewById(R.id.users_empty)
         }
@@ -56,8 +66,6 @@ class InviteMemberActivity : AppCompatActivity() {
             when (it.status) {
 
                 QueryStatus.SUCCESS -> {
-                    val listAdapter = this.listAdapter
-                        ?: throw IllegalStateException("List adapter should not be null")
 
                     // Notify the changes to the list view (to re-render automatically)
                     listAdapter.notifyDataSetChanged()
@@ -69,25 +77,39 @@ class InviteMemberActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.inviteResult.observe(this, Observer {
+        // Watch changes to the the "search value"
+        viewModel.searchValueData.observe(this, Observer {
 
+            // Update the users
+            viewModel.updateUsers(groupId)
+        })
+
+        // Watch changes to the "users"
+        viewModel.users.observe(this, Observer {
+
+            // Show a loading indicator in the searchbox.
+            // Hide the list view while loading.
             when (it.status) {
+                QueryStatus.LOADING -> {
+                    searchLoading.visibility = View.VISIBLE
+                    listView.emptyView = null
+                }
+
+                QueryStatus.SUCCESS -> {
+                    searchLoading.visibility = View.INVISIBLE
+                    listView.emptyView = listViewEmpty
+                }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler.handle(
-                        it.error, binding.root, listOf(
-                            InputField("username", this.input_username)
-                        )
-                    )
+                    searchLoading.visibility = View.INVISIBLE
+
+                    ErrorHandler.handle(it.error, binding.root)
                 }
             }
-        })
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        // Add search menu to appbar.
-        menuInflater.inflate(R.menu.search_menu, menu)
-        return true
+            // Update the list adapter
+            listAdapter.notifyDataSetChanged()
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -95,12 +117,6 @@ class InviteMemberActivity : AppCompatActivity() {
         android.R.id.home -> {
             // Make the top back button go back to GroupsFragment.
             finish()
-            true
-        }
-
-        R.id.search -> {
-            // Call the function to save new group when button clicked.
-            handlers.onSearchButtonClick()
             true
         }
 
