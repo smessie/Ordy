@@ -65,11 +65,6 @@ class OverviewGroupHandlers(
             FetchHandler.handle(
                 viewModel.removeResult, viewModel.apiService.deleteMemberGroup(groupId, userId)
             )
-        } else {
-            ErrorHandler.handleRawGeneral(
-                "Calm down ;) another request is still processing...",
-                view
-            )
         }
     }
 }

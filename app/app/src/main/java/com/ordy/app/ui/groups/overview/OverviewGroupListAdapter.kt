@@ -52,7 +52,7 @@ class OverviewGroupListAdapter(
                 view.member_remove.setOnClickListener {
                     AlertDialog.Builder(activity).apply {
                         setTitle("Are you sure you want to remove this member?")
-                        setMessage("You are about to remove " + member.username + " from this group")
+                        setMessage("You are about to remove ${member.username} from this group")
 
                         setPositiveButton(android.R.string.ok) { _, _ ->
                             handlers.removeMember(viewModel.getGroup().requireData().id, member.id)

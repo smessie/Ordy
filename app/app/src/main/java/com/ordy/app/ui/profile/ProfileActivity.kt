@@ -20,8 +20,6 @@ class ProfileActivity : AppCompatActivity() {
         )
     }
 
-    private var listAdapter: InvitesListAdapter? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

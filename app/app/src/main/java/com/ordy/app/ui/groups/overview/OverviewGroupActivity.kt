@@ -25,7 +25,7 @@ class OverviewGroupActivity : AppCompatActivity() {
         )
     }
 
-    private var listAdapter: OverviewGroupListAdapter? = null
+    private lateinit var listAdapter: OverviewGroupListAdapter
     lateinit var handlers: OverviewGroupHandlers
     private var groupId by Delegates.notNull<Int>()
 
@@ -75,7 +75,6 @@ class OverviewGroupActivity : AppCompatActivity() {
                     group_members_amount.text = group.members.size.toString()
 
                     val listAdapter = this.listAdapter
-                        ?: throw IllegalStateException("List adapter should not be null")
 
                     // Notify the changes to the list view (to re-render automatically)
                     listAdapter.notifyDataSetChanged()

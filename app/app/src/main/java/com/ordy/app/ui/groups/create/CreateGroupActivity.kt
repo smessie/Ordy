@@ -46,7 +46,8 @@ class CreateGroupActivity : AppCompatActivity() {
                     // Go to newly created group
                     val intent = Intent(this, OverviewGroupActivity::class.java)
                     // Pass the group id as extra information
-                    intent.putExtra("group_id", it.data?.id)
+                    intent.putExtra("group_id", it.requireData().id)
+                    finish()
                     startActivity(intent)
                 }
 

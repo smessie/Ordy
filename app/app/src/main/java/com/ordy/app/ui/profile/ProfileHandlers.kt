@@ -4,7 +4,6 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.models.actions.InviteAction
 import com.ordy.app.api.models.actions.enums.InviteActionOptions
-import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
@@ -26,11 +25,6 @@ class ProfileHandlers(
                 actionInviteResult, viewModel.apiService.userActionInvites(
                     InviteAction(action), groupId
                 )
-            )
-        } else {
-            ErrorHandler.handleRawGeneral(
-                "Calm down ;) another request is still processing...",
-                view
             )
         }
     }

@@ -2,7 +2,6 @@ package com.ordy.app.ui.groups.create
 
 import android.view.View
 import com.ordy.app.api.models.actions.GroupCreate
-import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.QueryStatus
 
@@ -23,11 +22,6 @@ class CreateGroupHandlers(
                 viewModel.createResult, viewModel.apiService.createGroup(
                     GroupCreate(groupName)
                 )
-            )
-        } else {
-            ErrorHandler.handleRawGeneral(
-                "Calm down ;) another request is still processing...",
-                view
             )
         }
     }
