@@ -17,7 +17,7 @@ data class Location(
     val longitude: Double,
 
     @SerializedName("address")
-    val address: String,
+    val address: String?,
 
     @SerializedName("private")
     val private: Boolean,

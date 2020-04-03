@@ -25,7 +25,7 @@ class Location (
         var longitude: Double?,
 
         @Column(nullable = true)
-        @JsonView(View.Detail::class)
+        @JsonView(View.List::class)
         var address: String = "",
 
         @Column(nullable = true)

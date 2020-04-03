@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import com.ordy.app.AppPreferences
 import com.ordy.app.MainActivity
 import com.ordy.app.R
@@ -43,12 +42,12 @@ class LoginFragment : Fragment() {
 
         viewModel.loginResult.observe(this, Observer {
 
-            when(it.status) {
+            when (it.status) {
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
-                        requireView(),
-                        "Attempting to login..."
+                        "Attempting to login...",
+                        requireView()
                     )
                 }
 
@@ -71,10 +70,12 @@ class LoginFragment : Fragment() {
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(requireView())
 
-                    ErrorHandler.handle(it.error, view, listOf(
-                        InputField("email", this.input_email),
-                        InputField("password", this.input_password)
-                    ))
+                    ErrorHandler.handle(
+                        it.error, view, listOf(
+                            InputField("email", this.input_email),
+                            InputField("password", this.input_password)
+                        )
+                    )
                 }
             }
         })

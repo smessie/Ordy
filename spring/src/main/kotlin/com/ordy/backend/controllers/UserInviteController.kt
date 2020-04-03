@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView
 import com.ordy.backend.database.View
 import com.ordy.backend.database.models.GroupInvite
 import com.ordy.backend.services.GroupService
+import com.ordy.backend.wrappers.GroupInviteListWrapper
 import com.ordy.backend.wrappers.InviteActionWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -14,7 +15,7 @@ class UserInviteController(@Autowired val groupService: GroupService) {
 
     @GetMapping
     @JsonView(View.List::class)
-    fun getInvites(@RequestAttribute userId: Int): List<GroupInvite> {
+    fun getInvites(@RequestAttribute userId: Int): List<GroupInviteListWrapper> {
         return groupService.getInvites(userId)
     }
 

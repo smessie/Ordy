@@ -1,9 +1,0 @@
-<resources>
-    <declare-styleable name="OrderCardView">
-        <attr name="locationName" format="string" />
-        <attr name="groupName" format="string" />
-        <attr name="deadlineTime" format="string" />
-        <attr name="deadlineTimeLeft" format="string" />
-        <attr name="courierName" format="string" />
-    </declare-styleable>
-</resources>

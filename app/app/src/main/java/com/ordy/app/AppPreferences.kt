@@ -16,8 +16,8 @@ class AppPreferences (val context: Context) {
         }
 
     /**
-    * User ID of the logged in user
-    */
+     * User ID of the logged in user
+     */
     var userId: Int?
         get() = preferences.getInt("user_id", -1)
         set(value) {

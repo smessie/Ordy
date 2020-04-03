@@ -53,6 +53,11 @@ class CreateOrderLocationListAdapter(
 
                 // Assign the data.
                 view.location_item_name.text = location.name
+                view.location_item_address.text =
+                    when (location.address) {
+                        null -> "No address found"
+                        else -> location.address
+                    }
 
                 // Set click handler.
                 view.location_item_pick.setOnClickListener {

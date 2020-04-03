@@ -35,7 +35,7 @@ class CreateOrderHandlers(val activity: CreateOrderActivity, val viewModel: Crea
     fun createOrder() {
 
         var locationId: Int? = null
-        val customLocationName: String? = viewModel.getLocationValue().customLocationName ?: null
+        val customLocationName: String? = viewModel.getLocationValue().customLocationName
         var groupId: Int? = null
 
         // Check if the location exists.
