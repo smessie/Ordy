@@ -5,19 +5,19 @@ import androidx.annotation.NonNull
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-@Deprecated("Should be refactored now to use RepositoryViewModel.")
-open class ApiServiceViewModel(
-    val apiService: ApiService
+
+open class RepositoryViewModel(
+    val repository: Repository
 ) : ViewModel()
 
-@Deprecated("Should be refactored now to use RepositoryViewModelFactory.")
-class ApiServiceViewModelFactory(
+class RepositoryViewModelFactory(
     private val context: Context
 ) :
     ViewModelProvider.Factory {
 
     @NonNull
     override fun <T : ViewModel?> create(@NonNull modelClass: Class<T>): T {
-        return modelClass.getConstructor(ApiService::class.java).newInstance(ApiServiceProvider().create(context))
+        return modelClass.getConstructor(Repository::class.java)
+            .newInstance(RepositoryProvider().create(context))
     }
 }
