@@ -1,27 +1,20 @@
 package com.ordy.app.ui.groups.invite
 
 import androidx.lifecycle.MutableLiveData
-import com.ordy.app.api.ApiService
-import com.ordy.app.api.ApiServiceViewModel
+import com.ordy.app.api.Repository
+import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.User
-import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
-import okhttp3.ResponseBody
 
-class InviteMemberViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
+class InviteMemberViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
     /**
      * Value of the search input field.
      */
-    val searchValueData: MutableLiveData<String> = MutableLiveData("")
-
-    /**
-     * List with users in the group.
-     */
-    val users: MutableLiveData<Query<List<User>>> = MutableLiveData(Query())
+    private val searchValueData: MutableLiveData<String> = MutableLiveData("")
 
     fun getUsers(): Query<List<User>> {
-        return users.value!!
+        return repository.getInviteableUsers().value!!
     }
 
     /**
@@ -32,16 +25,16 @@ class InviteMemberViewModel(apiService: ApiService) : ApiServiceViewModel(apiSer
     }
 
     /**
-     * Update the locations by the given search query
+     * Update the inviteable users by the given search query
      */
     fun updateUsers(groupId: Int) {
-
         // Only update when the search value is not blank
-        if(!getSearchValue().isBlank()) {
-            FetchHandler.handle(
-                users,
-                apiService.searchMatchingInviteUsers(groupId, getSearchValue())
-            )
+        if (!getSearchValue().isBlank()) {
+            repository.searchMatchingInviteUsers(groupId, getSearchValue())
         }
+    }
+
+    fun getSearchValueData(): MutableLiveData<String> {
+        return searchValueData
     }
 }
