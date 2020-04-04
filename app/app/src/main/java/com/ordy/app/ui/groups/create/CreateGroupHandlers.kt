@@ -15,14 +15,10 @@ class CreateGroupHandlers(
      * Handle the leave button clicked
      */
     fun onCreateButtonClick() {
-        if (viewModel.createResult.value?.status != QueryStatus.LOADING) {
+        if (viewModel.repository.getCreateGroupResult().value?.status != QueryStatus.LOADING) {
             val groupName = viewModel.getNameValue()
 
-            FetchHandler.handle(
-                viewModel.createResult, viewModel.apiService.createGroup(
-                    GroupCreate(groupName)
-                )
-            )
+            viewModel.repository.createGroup(groupName)
         }
     }
 }

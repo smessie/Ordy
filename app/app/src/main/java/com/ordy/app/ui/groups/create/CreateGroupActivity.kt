@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_create_group.*
 class CreateGroupActivity : AppCompatActivity() {
 
     private val viewModel: CreateGroupViewModel by viewModels {
-        ApiServiceViewModelFactory(
+        RepositoryViewModelFactory(
             applicationContext
         )
     }
@@ -38,7 +38,7 @@ class CreateGroupActivity : AppCompatActivity() {
         binding.handlers = handlers
         binding.viewModel = viewModel
 
-        viewModel.createResult.observe(this, Observer {
+        viewModel.repository.getCreateGroupResult().observe(this, Observer {
 
             when (it.status) {
 
