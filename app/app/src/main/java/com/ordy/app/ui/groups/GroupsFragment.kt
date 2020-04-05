@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.groups.create.CreateGroupActivity
 import kotlinx.android.synthetic.main.fragment_groups.view.*
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_groups.view.*
 class GroupsFragment : Fragment() {
 
     private val viewModel: GroupsViewModel by activityViewModels {
-        ApiServiceViewModelFactory(
+        RepositoryViewModelFactory(
             requireContext()
         )
     }
@@ -48,9 +48,12 @@ class GroupsFragment : Fragment() {
             emptyView = emptyList
         }
 
+        // Fetch the list of groups
+        viewModel.repository.refreshGroups()
+
         // Swipe to refresh
         view.groups_refresh.setOnRefreshListener {
-            viewModel.refreshGroups()
+            viewModel.repository.refreshGroups()
         }
 
         // Binding button to load new activity
@@ -60,7 +63,7 @@ class GroupsFragment : Fragment() {
             startActivity(intent)
         }
 
-        viewModel.groups.observe(viewLifecycleOwner, Observer {
+        viewModel.repository.getGroups().observe(viewLifecycleOwner, Observer {
             // Stop refreshing on load
             if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
                 view.groups_refresh.isRefreshing = false
@@ -77,6 +80,6 @@ class GroupsFragment : Fragment() {
         super.onResume()
 
         // Update the groups.
-        viewModel.refreshGroups()
+        viewModel.repository.refreshGroups()
     }
 }

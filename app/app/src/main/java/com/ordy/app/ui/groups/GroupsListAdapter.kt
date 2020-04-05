@@ -19,7 +19,7 @@ class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) :
             false
         )
 
-        when (viewModel.getGroups().status) {
+        when (viewModel.repository.getGroups().value!!.status) {
 
             QueryStatus.LOADING -> {
 
@@ -30,7 +30,7 @@ class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) :
             }
 
             QueryStatus.SUCCESS -> {
-                val group = viewModel.getGroups().requireData()[position]
+                val group = viewModel.repository.getGroups().value!!.requireData()[position]
 
                 // Stop the shimmer effect & hide.
                 view.group_loading.stopShimmer()
@@ -66,9 +66,9 @@ class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) :
     }
 
     override fun getCount(): Int {
-        return when (viewModel.getGroups().status) {
+        return when (viewModel.repository.getGroups().value!!.status) {
             QueryStatus.LOADING -> 4
-            QueryStatus.SUCCESS -> viewModel.getGroups().requireData().size
+            QueryStatus.SUCCESS -> viewModel.repository.getGroups().value!!.requireData().size
             else -> 0
         }
     }

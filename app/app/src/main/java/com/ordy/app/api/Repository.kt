@@ -18,6 +18,7 @@ class Repository(val apiService: ApiService) {
     private val group: MutableLiveData<Query<Group>> = MutableLiveData(Query())
     private val leaveGroupResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
     private val removeMemberResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+    private val groups: MutableLiveData<Query<List<Group>>> = MutableLiveData(Query())
 
     /**
      * Create a new group.
@@ -61,6 +62,13 @@ class Repository(val apiService: ApiService) {
      */
     fun refreshGroup(groupId: Int) {
         FetchHandler.handle(group, apiService.group(groupId))
+    }
+
+    /**
+     * Refresh the list of groups the user is in.
+     */
+    fun refreshGroups() {
+        FetchHandler.handle(groups, apiService.userGroups())
     }
 
     /**
@@ -113,6 +121,13 @@ class Repository(val apiService: ApiService) {
      */
     fun getRemoveMemberResult(): MutableLiveData<Query<ResponseBody>> {
         return removeMemberResult
+    }
+
+    /**
+     * Get the MutableLiveData result of the Groups fetch.
+     */
+    fun getGroups(): MutableLiveData<Query<List<Group>>> {
+        return groups
     }
 
     /******************************
