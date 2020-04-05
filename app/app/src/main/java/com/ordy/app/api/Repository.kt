@@ -15,6 +15,9 @@ class Repository(val apiService: ApiService) {
      ******************************/
     private val createGroupResult: MutableLiveData<Query<Group>> = MutableLiveData(Query())
     private val inviteableUsers: MutableLiveData<Query<List<User>>> = MutableLiveData(Query())
+    private val group: MutableLiveData<Query<Group>> = MutableLiveData(Query())
+    private val leaveGroupResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+    private val removeMemberResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
 
     /**
      * Create a new group.
@@ -53,6 +56,31 @@ class Repository(val apiService: ApiService) {
     }
 
     /**
+     * Refresh the group with given id.
+     * @param groupId: ID of the group we want to fetch
+     */
+    fun refreshGroup(groupId: Int) {
+        FetchHandler.handle(group, apiService.group(groupId))
+    }
+
+    /**
+     * Let the user leave the given group.
+     * @param groupId: ID of the group the user is about to leave
+     */
+    fun userLeaveGroup(groupId: Int) {
+        FetchHandler.handle(
+            leaveGroupResult,
+            apiService.userLeaveGroup(groupId)
+        )
+    }
+
+    fun removeMemberFromGroup(userId: Int, groupId: Int) {
+        FetchHandler.handle(
+            removeMemberResult, apiService.deleteMemberGroup(groupId, userId)
+        )
+    }
+
+    /**
      * Get the MutableLiveData result of the Create group query.
      */
     fun getCreateGroupResult(): MutableLiveData<Query<Group>> {
@@ -64,6 +92,27 @@ class Repository(val apiService: ApiService) {
      */
     fun getInviteableUsers(): MutableLiveData<Query<List<User>>> {
         return inviteableUsers
+    }
+
+    /**
+     * Get the MutableLiveData result of the Group fetch.
+     */
+    fun getGroup(): MutableLiveData<Query<Group>> {
+        return group
+    }
+
+    /**
+     * Get the MutableLiveData result of the Leave group query.
+     */
+    fun getLeaveGroupResult(): MutableLiveData<Query<ResponseBody>> {
+        return leaveGroupResult
+    }
+
+    /**
+     * Get the MutableLiveData result of the Remove member from group query.
+     */
+    fun getRemoveMemberResult(): MutableLiveData<Query<ResponseBody>> {
+        return removeMemberResult
     }
 
     /******************************

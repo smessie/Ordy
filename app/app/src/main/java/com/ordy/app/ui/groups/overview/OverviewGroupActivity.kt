@@ -8,9 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
-import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewGroupBinding
 import kotlinx.android.synthetic.main.activity_overview_group.*
@@ -20,7 +19,7 @@ import kotlin.properties.Delegates
 class OverviewGroupActivity : AppCompatActivity() {
 
     private val viewModel: OverviewGroupViewModel by viewModels {
-        ApiServiceViewModelFactory(
+        RepositoryViewModelFactory(
             applicationContext
         )
     }
@@ -44,11 +43,11 @@ class OverviewGroupActivity : AppCompatActivity() {
         groupId = intent.getIntExtra("group_id", -1)
 
         // Fetch the specific group.
-        FetchHandler.handle(viewModel.group, viewModel.apiService.group(groupId))
+        viewModel.repository.refreshGroup(groupId)
 
         // Swipe to refresh
         binding.root.group_refresh.setOnRefreshListener {
-            viewModel.refreshGroup(groupId)
+            viewModel.repository.refreshGroup(groupId)
         }
 
         // Create the list view adapter
@@ -61,7 +60,7 @@ class OverviewGroupActivity : AppCompatActivity() {
         }
 
         // Observe the changes of the fetch.
-        viewModel.group.observe(this, Observer {
+        viewModel.repository.getGroup().observe(this, Observer {
 
             when (it.status) {
 
@@ -90,13 +89,13 @@ class OverviewGroupActivity : AppCompatActivity() {
         })
 
         // Observe the changes of the remove member request.
-        viewModel.removeResult.observe(this, Observer {
+        viewModel.repository.getRemoveMemberResult().observe(this, Observer {
 
             when (it.status) {
 
                 QueryStatus.SUCCESS -> {
                     // Update the specific group.
-                    FetchHandler.handle(viewModel.group, viewModel.apiService.group(groupId))
+                    viewModel.repository.refreshGroup(groupId)
                 }
 
                 QueryStatus.ERROR -> {
@@ -106,7 +105,7 @@ class OverviewGroupActivity : AppCompatActivity() {
         })
 
         // Observe the changes of the leave group request.
-        viewModel.leaveResult.observe(this, Observer {
+        viewModel.repository.getLeaveGroupResult().observe(this, Observer {
 
             when (it.status) {
 
@@ -138,6 +137,6 @@ class OverviewGroupActivity : AppCompatActivity() {
         super.onResume()
 
         // Update the group.
-        viewModel.refreshGroup(groupId)
+        viewModel.repository.refreshGroup(groupId)
     }
 }

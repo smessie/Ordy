@@ -1,11 +1,11 @@
 package com.ordy.app.ui.groups.overview
 
-import androidx.appcompat.app.AlertDialog;
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.appcompat.app.AlertDialog
 import com.ordy.app.AppPreferences
 import com.ordy.app.R
 import com.ordy.app.api.util.QueryStatus
@@ -27,7 +27,7 @@ class OverviewGroupListAdapter(
             false
         )
 
-        when (viewModel.getGroup().status) {
+        when (viewModel.repository.getGroup().value!!.status) {
             QueryStatus.LOADING -> {
 
                 // Start the shimmer effect & show
@@ -37,7 +37,7 @@ class OverviewGroupListAdapter(
             }
 
             QueryStatus.SUCCESS -> {
-                val member = viewModel.getGroup().requireData().members[position]
+                val member = viewModel.repository.getGroup().value!!.requireData().members[position]
 
                 // Stop the shimmer effect & hide
                 view.member_loading.stopShimmer()
@@ -55,7 +55,10 @@ class OverviewGroupListAdapter(
                         setMessage("You are about to remove ${member.username} from this group")
 
                         setPositiveButton(android.R.string.ok) { _, _ ->
-                            handlers.removeMember(viewModel.getGroup().requireData().id, member.id)
+                            handlers.removeMember(
+                                viewModel.repository.getGroup().value!!.requireData().id,
+                                member.id
+                            )
                         }
 
                         setNegativeButton(android.R.string.cancel) { dialog, _ ->
@@ -65,7 +68,7 @@ class OverviewGroupListAdapter(
                 }
 
                 // Hide the remove button if the member is the the creator
-                if (member.id == viewModel.group.value!!.requireData().creator.id) {
+                if (member.id == viewModel.repository.getGroup().value!!.requireData().creator.id) {
                     view.member_remove.visibility = View.INVISIBLE
                 }
 
@@ -92,9 +95,9 @@ class OverviewGroupListAdapter(
     }
 
     override fun getCount(): Int {
-        return when (viewModel.getGroup().status) {
+        return when (viewModel.repository.getGroup().value!!.status) {
             QueryStatus.LOADING -> 6
-            QueryStatus.SUCCESS -> viewModel.getGroup().requireData().members.size
+            QueryStatus.SUCCESS -> viewModel.repository.getGroup().value!!.requireData().members.size
             else -> 0
         }
     }
