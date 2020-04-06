@@ -82,6 +82,11 @@ class Repository(val apiService: ApiService) {
         )
     }
 
+    /**
+     * Remove a member from a group.
+     * @param userId: ID of the user that should be kicked
+     * @param groupId: ID of the group the user is removed from
+     */
     fun removeMemberFromGroup(userId: Int, groupId: Int) {
         FetchHandler.handle(
             removeMemberResult, apiService.deleteMemberGroup(groupId, userId)
