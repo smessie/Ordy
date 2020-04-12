@@ -53,7 +53,7 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
                 for (orderItem in orderItemUserGroup.items) {
 
                     val orderItemView =
-                        LayoutInflater.from(context).inflate(R.layout.list_order_item, parent)
+                        LayoutInflater.from(context).inflate(R.layout.list_order_item, null)
 
                     // Stop the shimmer effect & hide.
                     orderItemView.order_item_loading.stopShimmer()
