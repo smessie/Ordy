@@ -68,7 +68,7 @@ class LocationsFragment : Fragment() {
         })
 
         // Watch changes to the "locations"
-        viewModel.repository.getLocationsResult().observe(viewLifecycleOwner, Observer {
+        viewModel.getLocationsMLD().observe(viewLifecycleOwner, Observer {
 
             // Show a loading indicator in the searchbox.
             // Hide the list view while loading.
@@ -87,6 +87,9 @@ class LocationsFragment : Fragment() {
                     searchLoading.visibility = View.INVISIBLE
 
                     ErrorHandler.handle(it.error, view)
+                }
+
+                else -> {
                 }
             }
 

@@ -33,4 +33,11 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     fun updateLocations() {
         repository.updateLocations(getSearchValue())
     }
+
+    /**
+     * Get the MutableLiveData result of the Locations fetch.
+     */
+    fun getLocationsMLD(): MutableLiveData<Query<List<Location>>> {
+        return repository.getLocationsResult()
+    }
 }
