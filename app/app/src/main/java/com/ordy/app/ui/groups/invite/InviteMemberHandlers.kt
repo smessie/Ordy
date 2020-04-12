@@ -18,7 +18,7 @@ class InviteMemberHandlers(
      */
     fun onInviteButtonClick(liveData: MutableLiveData<Query<ResponseBody>>, userId: Int) {
         if (liveData.value?.status != QueryStatus.LOADING) {
-            viewModel.repository.sendInviteToUserFromGroup(userId, groupId, liveData)
+            viewModel.sendInviteToUserFromGroup(userId, groupId, liveData)
         }
     }
 }

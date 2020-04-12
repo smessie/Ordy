@@ -49,11 +49,11 @@ class GroupsFragment : Fragment() {
         }
 
         // Fetch the list of groups
-        viewModel.repository.refreshGroups()
+        viewModel.refreshGroups()
 
         // Swipe to refresh
         view.groups_refresh.setOnRefreshListener {
-            viewModel.repository.refreshGroups()
+            viewModel.refreshGroups()
         }
 
         // Binding button to load new activity
@@ -63,7 +63,7 @@ class GroupsFragment : Fragment() {
             startActivity(intent)
         }
 
-        viewModel.repository.getGroups().observe(viewLifecycleOwner, Observer {
+        viewModel.getGroupsMLD().observe(viewLifecycleOwner, Observer {
             // Stop refreshing on load
             if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
                 view.groups_refresh.isRefreshing = false
@@ -80,6 +80,6 @@ class GroupsFragment : Fragment() {
         super.onResume()
 
         // Update the groups.
-        viewModel.repository.refreshGroups()
+        viewModel.refreshGroups()
     }
 }

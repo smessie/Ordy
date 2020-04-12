@@ -5,6 +5,7 @@ import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.User
 import com.ordy.app.api.util.Query
+import okhttp3.ResponseBody
 
 class InviteMemberViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
@@ -36,5 +37,26 @@ class InviteMemberViewModel(repository: Repository) : RepositoryViewModel(reposi
 
     fun getSearchValueData(): MutableLiveData<String> {
         return searchValueData
+    }
+
+    /**
+     * Get the MutableLiveData result of all users matched that are able to invite.
+     */
+    fun getInviteableUsersMLD(): MutableLiveData<Query<List<User>>> {
+        return repository.getInviteableUsers()
+    }
+
+    /**
+     * Send an invite for a group to an user.
+     * @param userId: ID of the user we want to invite
+     * @param groupId: ID of the group we want to send an invite for
+     * @param liveData: Object where we want to store the result of our query in
+     */
+    fun sendInviteToUserFromGroup(
+        userId: Int,
+        groupId: Int,
+        liveData: MutableLiveData<Query<ResponseBody>>
+    ) {
+        repository.sendInviteToUserFromGroup(userId, groupId, liveData)
     }
 }

@@ -43,11 +43,11 @@ class OverviewGroupActivity : AppCompatActivity() {
         groupId = intent.getIntExtra("group_id", -1)
 
         // Fetch the specific group.
-        viewModel.repository.refreshGroup(groupId)
+        viewModel.refreshGroup(groupId)
 
         // Swipe to refresh
         binding.root.group_refresh.setOnRefreshListener {
-            viewModel.repository.refreshGroup(groupId)
+            viewModel.refreshGroup(groupId)
         }
 
         // Create the list view adapter
@@ -60,7 +60,7 @@ class OverviewGroupActivity : AppCompatActivity() {
         }
 
         // Observe the changes of the fetch.
-        viewModel.repository.getGroup().observe(this, Observer {
+        viewModel.getGroupMLD().observe(this, Observer {
 
             when (it.status) {
 
@@ -85,27 +85,33 @@ class OverviewGroupActivity : AppCompatActivity() {
 
                     ErrorHandler.handle(it.error, binding.root, emptyList())
                 }
+
+                else -> {
+                }
             }
         })
 
         // Observe the changes of the remove member request.
-        viewModel.repository.getRemoveMemberResult().observe(this, Observer {
+        viewModel.getRemoveMemberMLD().observe(this, Observer {
 
             when (it.status) {
 
                 QueryStatus.SUCCESS -> {
                     // Update the specific group.
-                    viewModel.repository.refreshGroup(groupId)
+                    viewModel.refreshGroup(groupId)
                 }
 
                 QueryStatus.ERROR -> {
                     ErrorHandler.handle(it.error, binding.root, listOf())
                 }
+
+                else -> {
+                }
             }
         })
 
         // Observe the changes of the leave group request.
-        viewModel.repository.getLeaveGroupResult().observe(this, Observer {
+        viewModel.getLeaveGroupMLD().observe(this, Observer {
 
             when (it.status) {
 
@@ -116,6 +122,9 @@ class OverviewGroupActivity : AppCompatActivity() {
 
                 QueryStatus.ERROR -> {
                     ErrorHandler.handle(it.error, binding.root, listOf())
+                }
+
+                else -> {
                 }
             }
         })
@@ -137,6 +146,6 @@ class OverviewGroupActivity : AppCompatActivity() {
         super.onResume()
 
         // Update the group.
-        viewModel.repository.refreshGroup(groupId)
+        viewModel.refreshGroup(groupId)
     }
 }

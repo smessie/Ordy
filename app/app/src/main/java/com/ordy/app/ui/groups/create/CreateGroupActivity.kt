@@ -38,7 +38,7 @@ class CreateGroupActivity : AppCompatActivity() {
         binding.handlers = handlers
         binding.viewModel = viewModel
 
-        viewModel.repository.getCreateGroupResult().observe(this, Observer {
+        viewModel.getCreateGroupMLD().observe(this, Observer {
 
             when (it.status) {
 
@@ -57,6 +57,9 @@ class CreateGroupActivity : AppCompatActivity() {
                             InputField("name", this.input_name)
                         )
                     )
+                }
+
+                else -> {
                 }
             }
         })

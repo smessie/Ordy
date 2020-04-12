@@ -57,7 +57,7 @@ class InviteMemberActivity : AppCompatActivity() {
             supportActionBar!!.elevation = 0F
         }
 
-        viewModel.repository.getInviteableUsers().observe(this, Observer {
+        viewModel.getInviteableUsersMLD().observe(this, Observer {
 
             when (it.status) {
 
@@ -70,6 +70,9 @@ class InviteMemberActivity : AppCompatActivity() {
                 QueryStatus.ERROR -> {
                     ErrorHandler.handle(it.error, binding.root, emptyList())
                 }
+
+                else -> {
+                }
             }
         })
 
@@ -81,7 +84,7 @@ class InviteMemberActivity : AppCompatActivity() {
         })
 
         // Watch changes to the "users"
-        viewModel.repository.getInviteableUsers().observe(this, Observer {
+        viewModel.getInviteableUsersMLD().observe(this, Observer {
 
             // Show a loading indicator in the searchbox.
             // Hide the list view while loading.
@@ -100,6 +103,9 @@ class InviteMemberActivity : AppCompatActivity() {
                     searchLoading.visibility = View.INVISIBLE
 
                     ErrorHandler.handle(it.error, binding.root)
+                }
+
+                else -> {
                 }
             }
 

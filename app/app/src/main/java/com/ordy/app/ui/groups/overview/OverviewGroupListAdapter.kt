@@ -27,7 +27,7 @@ class OverviewGroupListAdapter(
             false
         )
 
-        when (viewModel.repository.getGroup().value!!.status) {
+        when (viewModel.getGroup().status) {
             QueryStatus.LOADING -> {
 
                 // Start the shimmer effect & show
@@ -37,7 +37,7 @@ class OverviewGroupListAdapter(
             }
 
             QueryStatus.SUCCESS -> {
-                val member = viewModel.repository.getGroup().value!!.requireData().members[position]
+                val member = viewModel.getGroup().requireData().members[position]
 
                 // Stop the shimmer effect & hide
                 view.member_loading.stopShimmer()
@@ -56,7 +56,7 @@ class OverviewGroupListAdapter(
 
                         setPositiveButton(android.R.string.ok) { _, _ ->
                             handlers.removeMember(
-                                viewModel.repository.getGroup().value!!.requireData().id,
+                                viewModel.getGroup().requireData().id,
                                 member.id
                             )
                         }
@@ -68,7 +68,7 @@ class OverviewGroupListAdapter(
                 }
 
                 // Hide the remove button if the member is the the creator
-                if (member.id == viewModel.repository.getGroup().value!!.requireData().creator.id) {
+                if (member.id == viewModel.getGroup().requireData().creator.id) {
                     view.member_remove.visibility = View.INVISIBLE
                 }
 
@@ -76,6 +76,9 @@ class OverviewGroupListAdapter(
                 if (member.id == AppPreferences(context!!).userId) {
                     view.member_remove.visibility = View.INVISIBLE
                 }
+            }
+
+            else -> {
             }
         }
 
@@ -95,9 +98,9 @@ class OverviewGroupListAdapter(
     }
 
     override fun getCount(): Int {
-        return when (viewModel.repository.getGroup().value!!.status) {
+        return when (viewModel.getGroup().status) {
             QueryStatus.LOADING -> 6
-            QueryStatus.SUCCESS -> viewModel.repository.getGroup().value!!.requireData().members.size
+            QueryStatus.SUCCESS -> viewModel.getGroup().requireData().members.size
             else -> 0
         }
     }
