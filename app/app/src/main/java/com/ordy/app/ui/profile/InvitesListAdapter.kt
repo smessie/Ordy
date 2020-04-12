@@ -79,8 +79,7 @@ class InvitesListAdapter(
                 actionInviteResult.observe(activity, Observer {
                     when (it.status) {
                         QueryStatus.SUCCESS -> {
-                            var message = ""
-                            message = if (acceptRequest) {
+                            val message: String = if (acceptRequest) {
                                 "Successfully accepted group invite."
                             } else {
                                 "Successfully declined group invite."
@@ -97,8 +96,14 @@ class InvitesListAdapter(
                         QueryStatus.ERROR -> {
                             ErrorHandler.handle(it.error, view, listOf())
                         }
+
+                        else -> {
+                        }
                     }
                 })
+            }
+
+            else -> {
             }
         }
 

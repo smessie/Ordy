@@ -9,9 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
-import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewOrderBinding
 import com.ordy.app.ui.orders.overview.general.OrderGeneralFragment
@@ -30,7 +29,7 @@ import kotlin.properties.Delegates
 class OverviewOrderActivity : AppCompatActivity() {
 
     private val viewModel: OverviewOrderViewModel by viewModels {
-        ApiServiceViewModelFactory(
+        RepositoryViewModelFactory(
             applicationContext
         )
     }
@@ -74,7 +73,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         orderId = intent.getIntExtra("order_id", -1)
 
         // Fetch the specific order.
-        FetchHandler.handle(viewModel.order, viewModel.apiService.order(orderId))
+        viewModel.refreshOrder(orderId)
 
         // Swipe to refresh
         binding.root.order_refresh.setOnRefreshListener {
@@ -82,14 +81,14 @@ class OverviewOrderActivity : AppCompatActivity() {
         }
 
         // Stop refreshing on load
-        viewModel.order.observe(this, Observer {
+        viewModel.getOrderMLD().observe(this, Observer {
             if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
                 binding.root.order_refresh.isRefreshing = false
             }
         })
 
         // Observe the changes of the fetch.
-        viewModel.order.observe(this, Observer {
+        viewModel.getOrderMLD().observe(this, Observer {
 
             when (it.status) {
 
@@ -115,6 +114,9 @@ class OverviewOrderActivity : AppCompatActivity() {
 
                 QueryStatus.ERROR -> {
                     ErrorHandler.handle(it.error, binding.root)
+                }
+
+                else -> {
                 }
             }
         })

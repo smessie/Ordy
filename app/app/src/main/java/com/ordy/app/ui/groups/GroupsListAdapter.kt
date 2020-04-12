@@ -52,6 +52,9 @@ class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) :
                     view.context.startActivity(intent)
                 }
             }
+
+            else -> {
+            }
         }
 
         return view

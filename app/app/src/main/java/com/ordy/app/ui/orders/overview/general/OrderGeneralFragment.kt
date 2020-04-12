@@ -4,19 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.util.Query
-import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentOrderGeneralBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
-import com.ordy.app.util.OrderUtil
-import kotlinx.android.synthetic.main.fragment_order_general.view.*
 
 class OrderGeneralFragment : Fragment() {
 
@@ -47,7 +41,7 @@ class OrderGeneralFragment : Fragment() {
         }
 
         // Update the list adapter when the "order" query updates
-        viewModel.order.observe(viewLifecycleOwner, Observer {
+        viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
 
             // Update the list view
             listAdapter.update()

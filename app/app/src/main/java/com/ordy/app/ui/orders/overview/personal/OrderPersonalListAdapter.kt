@@ -84,6 +84,9 @@ class OrderPersonalListAdapter(
                     view.order_item_actions.visibility = View.INVISIBLE
                 }
             }
+
+            else -> {
+            }
         }
 
         return view
@@ -109,7 +112,7 @@ class OrderPersonalListAdapter(
         return false
     }
 
-    fun addUpdateAction(order: Order, orderItem: OrderItem, view: View) {
+    private fun addUpdateAction(order: Order, orderItem: OrderItem, view: View) {
         // Result of the update item query
         val updateResult = MutableLiveData<Query<ResponseBody>>(Query())
 
@@ -121,7 +124,7 @@ class OrderPersonalListAdapter(
                 order = order,
                 orderItem = orderItem,
                 updateResult = updateResult,
-                handlers = handlers
+                viewModel = viewModel
             )
 
             dialog.show(manager, "AddCommentDialog")
@@ -151,11 +154,14 @@ class OrderPersonalListAdapter(
 
                     ErrorHandler.handle(it.error, fragment.requireView(), listOf())
                 }
+
+                else -> {
+                }
             }
         })
     }
 
-    fun addDeleteAction(order: Order, orderItem: OrderItem, view: View) {
+    private fun addDeleteAction(order: Order, orderItem: OrderItem, view: View) {
         // Result of the delete item query
         val deleteResult = MutableLiveData<Query<ResponseBody>>(Query())
 
@@ -164,7 +170,7 @@ class OrderPersonalListAdapter(
 
             // Prevent multiple delete requests from sending.
             if (deleteResult.value!!.status != QueryStatus.LOADING) {
-                handlers.removeItem(
+                viewModel.removeItem(
                     deleteResult,
                     order.id,
                     orderItem.id
@@ -191,13 +197,16 @@ class OrderPersonalListAdapter(
                     viewModel.getOrder().requireData().orderItems.remove(orderItem)
 
                     // Update the query.
-                    viewModel.order.postValue(viewModel.getOrder())
+                    viewModel.getOrderMLD().postValue(viewModel.getOrder())
                 }
 
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(fragment.requireView())
 
                     ErrorHandler.handle(it.error, fragment.requireView(), listOf())
+                }
+
+                else -> {
                 }
             }
         })
@@ -209,7 +218,7 @@ class OrderPersonalListAdapter(
 
             // Only show the items with the same user id as the logged in user.
             orderItems = viewModel.getOrder().requireData().orderItems.filter {
-                it.user.id == AppPreferences(context!!).userId
+                it.user.id == AppPreferences(context).userId
             }
 
             // Stop the previous timer.

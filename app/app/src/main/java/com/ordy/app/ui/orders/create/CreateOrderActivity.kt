@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_create_order.*
 class CreateOrderActivity : AppCompatActivity() {
 
     private val viewModel: CreateOrderViewModel by viewModels {
-        ApiServiceViewModelFactory(
+        RepositoryViewModelFactory(
             applicationContext
         )
     }
@@ -46,7 +46,7 @@ class CreateOrderActivity : AppCompatActivity() {
         binding.viewModel = viewModel
 
         // Set the values for the group input field.
-        var groupValues: AutoCompleteTextView = binding.root.findViewById(R.id.input_group_values)
+        val groupValues: AutoCompleteTextView = binding.root.findViewById(R.id.input_group_values)
         adapter = CreateOrderGroupAdapter(applicationContext, viewModel)
         groupValues.setAdapter(adapter)
 
@@ -58,8 +58,10 @@ class CreateOrderActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.refreshGroups()
+
         // Set the groups of the spinner.
-        viewModel.groups.observe(this, Observer {
+        viewModel.getGroupsMLD().observe(this, Observer {
             adapter.notifyDataSetChanged()
 
             // Show an error dialog when the user is not part of any group.
@@ -92,7 +94,7 @@ class CreateOrderActivity : AppCompatActivity() {
         })
 
         // Observe the result of adding an item to the order.
-        viewModel.createOrderResult.observe(this, Observer {
+        viewModel.getCreateOrderMLD().observe(this, Observer {
 
             when (it.status) {
 
@@ -129,6 +131,9 @@ class CreateOrderActivity : AppCompatActivity() {
                             InputField("groupId", this.input_group)
                         )
                     )
+                }
+
+                else -> {
                 }
             }
         })

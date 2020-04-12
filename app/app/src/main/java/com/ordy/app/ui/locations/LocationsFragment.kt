@@ -11,14 +11,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentLocationsBinding
 
 class LocationsFragment : Fragment() {
 
-    private val viewModel: LocationsViewModel by activityViewModels { ApiServiceViewModelFactory(requireContext()) }
+    private val viewModel: LocationsViewModel by activityViewModels {
+        RepositoryViewModelFactory(
+            requireContext()
+        )
+    }
 
     private lateinit var listAdapter: LocationsListAdapter
 
@@ -64,7 +68,7 @@ class LocationsFragment : Fragment() {
         })
 
         // Watch changes to the "locations"
-        viewModel.locations.observe(viewLifecycleOwner, Observer {
+        viewModel.getLocationsMLD().observe(viewLifecycleOwner, Observer {
 
             // Show a loading indicator in the searchbox.
             // Hide the list view while loading.
@@ -83,6 +87,9 @@ class LocationsFragment : Fragment() {
                     searchLoading.visibility = View.INVISIBLE
 
                     ErrorHandler.handle(it.error, view)
+                }
+
+                else -> {
                 }
             }
 

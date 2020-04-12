@@ -1,14 +1,11 @@
 package com.ordy.app.ui.orders.overview.users
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.ordy.app.R
-import com.ordy.app.api.models.Order
-import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import com.ordy.app.util.OrderItemUserGroup
@@ -16,14 +13,19 @@ import com.ordy.app.util.OrderUtil
 import kotlinx.android.synthetic.main.list_order_item.view.*
 import kotlinx.android.synthetic.main.list_order_item_user.view.*
 
-class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderViewModel): BaseAdapter() {
+class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderViewModel) :
+    BaseAdapter() {
 
     private var orderItemUserGroups: List<OrderItemUserGroup> = emptyList()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_order_item_user, parent, false)
+        val view = convertView ?: LayoutInflater.from(context).inflate(
+            R.layout.list_order_item_user,
+            parent,
+            false
+        )
 
-        when(viewModel.getOrder().status) {
+        when (viewModel.getOrder().status) {
 
             QueryStatus.LOADING -> {
 
@@ -48,9 +50,10 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
                 view.order_item_user_items.removeAllViews()
 
                 // Add all the items
-                for(orderItem in orderItemUserGroup.items) {
+                for (orderItem in orderItemUserGroup.items) {
 
-                    val orderItemView = LayoutInflater.from(context).inflate(R.layout.list_order_item, null)
+                    val orderItemView =
+                        LayoutInflater.from(context).inflate(R.layout.list_order_item, null)
 
                     // Stop the shimmer effect & hide.
                     orderItemView.order_item_loading.stopShimmer()
@@ -63,7 +66,7 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
                     orderItemView.order_item_comment.text = orderItem.comment
 
                     // Hide the comment area when comment is empty.
-                    if(orderItemView.order_item_comment.text == "") {
+                    if (orderItemView.order_item_comment.text == "") {
                         orderItemView.order_item_comment.visibility = View.GONE
                     }
 
@@ -72,6 +75,9 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
 
                     view.order_item_user_items.addView(orderItemView)
                 }
+            }
+
+            else -> {
             }
         }
 
@@ -87,7 +93,7 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
     }
 
     override fun getCount(): Int {
-        return when(viewModel.getOrder().status) {
+        return when (viewModel.getOrder().status) {
             QueryStatus.LOADING -> 4
             QueryStatus.SUCCESS -> orderItemUserGroups.size
             else -> 0
@@ -101,7 +107,7 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
     fun update() {
 
         // Update the order item groups, when the query succeeded.
-        if(viewModel.getOrder().status == QueryStatus.SUCCESS) {
+        if (viewModel.getOrder().status == QueryStatus.SUCCESS) {
 
             val orderItems = viewModel.getOrder().requireData().orderItems
 

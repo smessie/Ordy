@@ -8,22 +8,23 @@ import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
-import com.ordy.app.api.util.Query
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentOrdersArchivedBinding
 import com.ordy.app.ui.orders.OrdersListAdapter
 import com.ordy.app.ui.orders.OrdersStatus
 import com.ordy.app.ui.orders.OrdersViewModel
-import kotlinx.android.synthetic.main.fragment_orders_active.view.*
 import kotlinx.android.synthetic.main.fragment_orders_archived.view.*
 
 class ArchivedOrdersFragment : Fragment() {
 
-    private val viewModel: OrdersViewModel by activityViewModels { ApiServiceViewModelFactory(requireContext()) }
+    private val viewModel: OrdersViewModel by activityViewModels {
+        RepositoryViewModelFactory(
+            requireContext()
+        )
+    }
 
     private lateinit var listAdapter: OrdersListAdapter
 
@@ -53,16 +54,18 @@ class ArchivedOrdersFragment : Fragment() {
             emptyView = binding.root.findViewById(R.id.orders_archived_empty)
         }
 
+        viewModel.refreshOrders()
+
         // Swipe to refresh
         binding.root.orders_archived_refresh.setOnRefreshListener {
             viewModel.refreshOrders()
         }
 
         // Observe the orders
-        viewModel.orders.observe(viewLifecycleOwner, Observer {
+        viewModel.getOrdersMLD().observe(viewLifecycleOwner, Observer {
 
             // Stop refreshing on load
-            if(it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
                 binding.root.orders_archived_refresh.isRefreshing = false
             }
 
@@ -75,7 +78,7 @@ class ArchivedOrdersFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         // Update the list adapter when the "orders" query updates
-        viewModel.orders.observe(this, Observer {
+        viewModel.getOrdersMLD().observe(this, Observer {
             // Notify the changes to the list view (to re-render automatically)
             listAdapter.update()
         })
