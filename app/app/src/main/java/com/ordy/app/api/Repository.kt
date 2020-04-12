@@ -129,6 +129,13 @@ class Repository(val apiService: ApiService) {
     }
 
     /**
+     * Get the MutableLiveData result of the Rename group query.
+     */
+    fun getRenameGroupResult(): MutableLiveData<Query<Group>> {
+        return renameGroupResult
+    }
+
+    /**
      * Get the MutableLiveData result of the Leave group query.
      */
     fun getLeaveGroupResult(): MutableLiveData<Query<ResponseBody>> {

@@ -3,6 +3,7 @@ package com.ordy.app.ui.groups.overview
 import android.app.AlertDialog
 import android.content.Intent
 import android.view.View
+import androidx.lifecycle.Observer
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.groups.invite.InviteMemberActivity
@@ -68,6 +69,12 @@ class OverviewGroupHandlers(
                 viewModel = viewModel
             )
             dialog.show(manager, "New name")
+            viewModel.getRenameGroupMLD().observe(this.activity, Observer {
+                // Refresh when query is succesful
+                if (it.status === QueryStatus.SUCCESS) {
+                    viewModel.refreshGroup(viewModel.getGroup().requireData().id)
+                }
+            })
         } else {
             ErrorHandler.handleRawGeneral(
                 "Request failed. Please try again...",

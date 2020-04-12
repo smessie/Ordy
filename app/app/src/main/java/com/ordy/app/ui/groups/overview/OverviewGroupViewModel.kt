@@ -38,6 +38,13 @@ class OverviewGroupViewModel(repository: Repository) : RepositoryViewModel(repos
         return repository.getLeaveGroupResult()
     }
 
+    /**
+     * Get the MutableLiveData result of the Rename group query.
+     */
+    fun getRenameGroupMLD(): MutableLiveData<Query<Group>> {
+        return repository.getRenameGroupResult()
+    }
+
     fun getGroup(): Query<Group> {
         return getGroupMLD().value!!
     }

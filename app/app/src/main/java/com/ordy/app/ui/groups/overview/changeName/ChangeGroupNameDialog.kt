@@ -11,7 +11,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.ordy.app.R
 import com.ordy.app.api.models.Group
 import com.ordy.app.ui.groups.overview.OverviewGroupViewModel
-import com.ordy.app.util.InputUtil
+import kotlinx.android.synthetic.main.fragment_groups.view.*
 
 
 class ChangeGroupNameDialog(
@@ -37,7 +37,6 @@ class ChangeGroupNameDialog(
                     // Update group name
                     viewModel.renameGroup(group.id, newName)
                 }
-                viewModel.refreshGroup(group.id)
             }
             setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
                 // Do nothing
