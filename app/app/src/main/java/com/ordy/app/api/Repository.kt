@@ -3,8 +3,11 @@ package com.ordy.app.api
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.models.Group
 import com.ordy.app.api.models.Location
+import com.ordy.app.api.models.LoginResponse
 import com.ordy.app.api.models.User
 import com.ordy.app.api.models.actions.GroupCreate
+import com.ordy.app.api.models.actions.UserLogin
+import com.ordy.app.api.models.actions.UserRegister
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 import okhttp3.ResponseBody
@@ -141,7 +144,6 @@ class Repository(val apiService: ApiService) {
      ******************************/
     private val locations: MutableLiveData<Query<List<Location>>> = MutableLiveData(Query())
 
-
     /**
      * Update the locations by the given search query.
      * @param searchValue: The name we want to match on in our search query
@@ -161,7 +163,56 @@ class Repository(val apiService: ApiService) {
     /******************************
      ***         LOGIN          ***
      ******************************/
+    private val loginResult: MutableLiveData<Query<LoginResponse>> = MutableLiveData(Query())
+    private val registerResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
 
+    /**
+     * Attempt to login a user.
+     * @param email: Email entered by the user
+     * @param password: Password entered by the user
+     */
+    fun login(email: String, password: String) {
+        FetchHandler.handle(
+            loginResult, apiService.login(
+                UserLogin(
+                    email,
+                    password
+                )
+            )
+        )
+    }
+
+    /**
+     * Attempt to register a user.
+     * @param username: Username entered by the user
+     * @param email: Email entered by the user
+     * @param password: Password entered by the user
+     */
+    fun register(username: String, email: String, password: String) {
+        FetchHandler.handle(
+            registerResult, apiService.register(
+                UserRegister(
+                    username,
+                    email,
+                    password
+                )
+            )
+        )
+    }
+
+    /**
+     * Get the MutableLiveData result of the Login query.
+     */
+    fun getLoginResult(): MutableLiveData<Query<LoginResponse>> {
+        return loginResult
+    }
+
+    /**
+     * Get the MutableLiveData result of the Register query.
+     */
+    fun getRegisterResult(): MutableLiveData<Query<ResponseBody>> {
+        return registerResult
+    }
 
     /******************************
      ***        ORDERS          ***

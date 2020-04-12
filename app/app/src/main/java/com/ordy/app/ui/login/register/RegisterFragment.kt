@@ -41,9 +41,9 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.registerResult.observe(this, Observer {
+        viewModel.getRegisterMLD().observe(this, Observer {
 
-            when(it.status) {
+            when (it.status) {
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
@@ -62,11 +62,13 @@ class RegisterFragment : Fragment() {
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(requireView())
 
-                    ErrorHandler.handle(it.error, view, listOf(
-                        InputField("username", this.input_register_username),
-                        InputField("email", this.input_register_email),
-                        InputField("password", this.input_register_password)
-                    ))
+                    ErrorHandler.handle(
+                        it.error, view, listOf(
+                            InputField("username", this.input_register_username),
+                            InputField("email", this.input_register_email),
+                            InputField("password", this.input_register_password)
+                        )
+                    )
                 }
             }
         })

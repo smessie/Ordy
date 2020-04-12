@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.loginResult.observe(this, Observer {
+        viewModel.getLoginMLD().observe(this, Observer {
 
             when (it.status) {
 
