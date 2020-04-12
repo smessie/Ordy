@@ -364,7 +364,39 @@ class Repository(val apiService: ApiService) {
     /******************************
      ***        PROFILE         ***
      ******************************/
+    private val invites: MutableLiveData<Query<List<GroupInvite>>> = MutableLiveData(Query())
 
+    /**
+     * Refresh the invites.
+     */
+    fun refreshInvites() {
+        FetchHandler.handle(invites, apiService.userInvites())
+    }
+
+    /**
+     * Accept or decline an invite.
+     * @param inviteAction: The action that should be executed (accept/decline)
+     * @param groupId: ID of the group of the invite
+     * @param actionInviteResult: Object where we want to store the result of our query in
+     */
+    fun userActionInvites(
+        inviteAction: InviteAction,
+        groupId: Int,
+        actionInviteResult: MutableLiveData<Query<ResponseBody>>
+    ) {
+        FetchHandler.handle(
+            actionInviteResult, apiService.userActionInvites(
+                inviteAction, groupId
+            )
+        )
+    }
+
+    /**
+     * Get the MutableLiveData result of the Invites fetch.
+     */
+    fun getInvites(): MutableLiveData<Query<List<GroupInvite>>> {
+        return invites
+    }
 
     /******************************
      ***        SETTINGS        ***
