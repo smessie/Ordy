@@ -6,6 +6,7 @@ import android.view.View
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.groups.invite.InviteMemberActivity
+import com.ordy.app.ui.groups.overview.changeName.ChangeGroupNameDialog
 
 class OverviewGroupHandlers(
     val activity: OverviewGroupActivity,
@@ -48,6 +49,25 @@ class OverviewGroupHandlers(
             intent.putExtra("group_id", viewModel.getGroup().requireData().id)
 
             activity.startActivity(intent)
+        } else {
+            ErrorHandler.handleRawGeneral(
+                "Request failed. Please try again...",
+                view
+            )
+        }
+    }
+
+    /**
+     * Handle the rename button clicked
+     */
+    fun onRenameButtonClick() {
+        if (viewModel.getGroupMLD().value != null) {
+            val manager = this.activity.supportFragmentManager
+
+            val dialog = ChangeGroupNameDialog(
+                viewModel = viewModel
+            )
+            dialog.show(manager, "New name")
         } else {
             ErrorHandler.handleRawGeneral(
                 "Request failed. Please try again...",

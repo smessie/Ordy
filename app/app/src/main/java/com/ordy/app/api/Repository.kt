@@ -17,6 +17,7 @@ class Repository(val apiService: ApiService) {
     private val createGroupResult: MutableLiveData<Query<Group>> = MutableLiveData(Query())
     private val inviteableUsers: MutableLiveData<Query<List<User>>> = MutableLiveData(Query())
     private val group: MutableLiveData<Query<Group>> = MutableLiveData(Query())
+    private val renameGroupResult: MutableLiveData<Query<Group>> = MutableLiveData(Query())
     private val leaveGroupResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
     private val removeMemberResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
     private val groups: MutableLiveData<Query<List<Group>>> = MutableLiveData(Query())
@@ -80,6 +81,18 @@ class Repository(val apiService: ApiService) {
         FetchHandler.handle(
             leaveGroupResult,
             apiService.userLeaveGroup(groupId)
+        )
+    }
+
+    /**
+     * Change the name of a group
+     * @param groupId: ID of the group of which the name will be changed
+     * @param newName: The new name that will be given to the group
+     */
+    fun renameGroup(groupId: Int, newName: String) {
+        FetchHandler.handle(
+            renameGroupResult,
+            apiService.updateGroup(groupId, GroupUpdate(newName))
         )
     }
 

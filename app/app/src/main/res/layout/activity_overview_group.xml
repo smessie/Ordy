@@ -5,7 +5,6 @@
     tools:context=".ui.groups.overview.OverviewGroupActivity">
 
     <data>
-
         <variable
             name="handlers"
             type="com.ordy.app.ui.groups.overview.OverviewGroupHandlers" />
@@ -96,6 +95,14 @@
                         android:onClick="@{() -> handlers.onInviteButtonClick()}"
                         android:text="@string/group_invite_user"
                         android:elevation="0dp"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:backgroundTint="@color/colorAccent"
+                        android:onClick="@{() -> handlers.onRenameButtonClick()}"
+                        android:text="@string/group_rename"
+                        android:elevation="0dp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -105,14 +112,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <!-- Members -->
-        <ListView
-            android:id="@+id/group_members"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-            android:drawSelectorOnTop="true"/>
+            <!-- Members -->
+            <ListView
+                android:id="@+id/group_members"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                android:drawSelectorOnTop="true"/>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 </layout>

@@ -51,6 +51,15 @@ class OverviewGroupViewModel(repository: Repository) : RepositoryViewModel(repos
     }
 
     /**
+     * Change the name of a group
+     * @param groupId: ID of the group of which the name will be changed
+     * @param newName: The new name that will be given to the group
+     */
+    fun renameGroup(groupId: Int, newName: String) {
+        repository.renameGroup(groupId, newName)
+    }
+
+    /**
      * Remove a member from a group.
      * @param userId: ID of the user that should be kicked
      * @param groupId: ID of the group the user is removed from
