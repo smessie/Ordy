@@ -1,15 +1,12 @@
 package com.ordy.app.ui.locations
 
 import androidx.lifecycle.MutableLiveData
-import com.ordy.app.api.ApiService
-import com.ordy.app.api.ApiServiceViewModel
+import com.ordy.app.api.Repository
+import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.Location
-import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 
-class LocationsViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
-
-    val locations: MutableLiveData<Query<List<Location>>> = MutableLiveData(Query())
+class LocationsViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
     /**
      * Value of the search input field.
@@ -20,7 +17,7 @@ class LocationsViewModel(apiService: ApiService) : ApiServiceViewModel(apiServic
      * Get a list with locations
      */
     fun getLocations(): Query<List<Location>> {
-        return locations.value!!
+        return repository.getLocationsResult().value!!
     }
 
     /**
@@ -34,9 +31,6 @@ class LocationsViewModel(apiService: ApiService) : ApiServiceViewModel(apiServic
      * Update the locations by the given search query
      */
     fun updateLocations() {
-        FetchHandler.handle(
-            locations,
-            apiService.locations(getSearchValue())
-        )
+        repository.updateLocations(getSearchValue())
     }
 }

@@ -56,14 +56,9 @@ class LocationsListAdapter(
         return when (viewModel.getLocations().status) {
             QueryStatus.LOADING -> 0
             QueryStatus.SUCCESS -> return when {
-
                 // Do not show any results for a blank search query.
-                viewModel.getSearchValue().isEmpty() -> {
-                    0
-                }
-                else -> {
-                    viewModel.getLocations().requireData().size
-                }
+                viewModel.getSearchValue().isEmpty() -> 0
+                else -> viewModel.getLocations().requireData().size
             }
             else -> 0
         }

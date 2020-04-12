@@ -2,6 +2,7 @@ package com.ordy.app.api
 
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.models.Group
+import com.ordy.app.api.models.Location
 import com.ordy.app.api.models.User
 import com.ordy.app.api.models.actions.GroupCreate
 import com.ordy.app.api.util.FetchHandler
@@ -138,6 +139,23 @@ class Repository(val apiService: ApiService) {
     /******************************
      ***       LOCATIONS        ***
      ******************************/
+    private val locations: MutableLiveData<Query<List<Location>>> = MutableLiveData(Query())
+
+
+    /**
+     * Update the locations by the given search query.
+     * @param searchValue: The name we want to match on in our search query
+     */
+    fun updateLocations(searchValue: String) {
+        FetchHandler.handle(locations, apiService.locations(searchValue))
+    }
+
+    /**
+     * Get the MutableLiveData result of the Locations fetch.
+     */
+    fun getLocationsResult(): MutableLiveData<Query<List<Location>>> {
+        return locations
+    }
 
 
     /******************************
