@@ -93,6 +93,16 @@ class ErrorHandler {
          */
         fun handle(queryError: QueryError?, view: View?, fields: List<InputField> = emptyList()) {
 
+            // Do not handle the error when it was already displayed before.
+            if(queryError != null) {
+                if(queryError.displayedError) {
+                    return
+                } else {
+                    // Set the error as displayed.
+                    queryError.displayedError = true;
+                }
+            }
+
             // Handle input errors.
             this.handleInputs(queryError, view, fields)
 
@@ -119,7 +129,7 @@ class ErrorHandler {
          * @param view Current view
          * @param fields List of input fields
          */
-        fun handleInputs(queryError: QueryError?, view: View?, fields: List<InputField>) {
+        private fun handleInputs(queryError: QueryError?, view: View?, fields: List<InputField>) {
 
             if (queryError != null) {
 
@@ -153,7 +163,7 @@ class ErrorHandler {
          * @param queryError QueryError object
          * @param view Current view to display the toast
          */
-        fun handleGeneral(queryError: QueryError?, view: View?) {
+        private fun handleGeneral(queryError: QueryError?, view: View?) {
 
             if (queryError != null && view != null && queryError.generalErrors.isNotEmpty()) {
                 handleRawGeneral(queryError.generalErrors[0].message, view)
