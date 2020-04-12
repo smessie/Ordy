@@ -1,7 +1,6 @@
 package com.ordy.app.ui.groups.invite
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
@@ -12,18 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
-import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityInviteMemberBinding
-import kotlinx.android.synthetic.main.activity_invite_member.*
-import kotlinx.android.synthetic.main.activity_invite_member.view.*
 
 class InviteMemberActivity : AppCompatActivity() {
 
     private val viewModel: InviteMemberViewModel by viewModels {
-        ApiServiceViewModelFactory(
+        RepositoryViewModelFactory(
             applicationContext
         )
     }
@@ -61,7 +57,7 @@ class InviteMemberActivity : AppCompatActivity() {
             supportActionBar!!.elevation = 0F
         }
 
-        viewModel.users.observe(this, Observer {
+        viewModel.getInviteableUsersMLD().observe(this, Observer {
 
             when (it.status) {
 
@@ -74,18 +70,21 @@ class InviteMemberActivity : AppCompatActivity() {
                 QueryStatus.ERROR -> {
                     ErrorHandler.handle(it.error, binding.root, emptyList())
                 }
+
+                else -> {
+                }
             }
         })
 
         // Watch changes to the the "search value"
-        viewModel.searchValueData.observe(this, Observer {
+        viewModel.getSearchValueData().observe(this, Observer {
 
             // Update the users
             viewModel.updateUsers(groupId)
         })
 
         // Watch changes to the "users"
-        viewModel.users.observe(this, Observer {
+        viewModel.getInviteableUsersMLD().observe(this, Observer {
 
             // Show a loading indicator in the searchbox.
             // Hide the list view while loading.
@@ -104,6 +103,9 @@ class InviteMemberActivity : AppCompatActivity() {
                     searchLoading.visibility = View.INVISIBLE
 
                     ErrorHandler.handle(it.error, binding.root)
+                }
+
+                else -> {
                 }
             }
 

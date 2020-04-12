@@ -27,7 +27,7 @@ class AddItemOrderListAdapter(
         // Set click handler for default view.
         defaultItemView.add_item_order_default_add.setOnClickListener {
             if (viewModel.getAddItemResult().status != QueryStatus.LOADING) {
-                activity.handlers.addItem(orderId, null, viewModel.getSearchValue())
+                activity.viewModel.addItem(orderId, null, viewModel.getSearchValue())
             }
         }
     }
@@ -61,9 +61,12 @@ class AddItemOrderListAdapter(
                 // Set click handler.
                 view.order_cuisine_add.setOnClickListener {
                     if (viewModel.getAddItemResult().status != QueryStatus.LOADING) {
-                        activity.handlers.addItem(orderId, cuisineItem.id, null)
+                        activity.viewModel.addItem(orderId, cuisineItem.id, null)
                     }
                 }
+            }
+
+            else -> {
             }
         }
 

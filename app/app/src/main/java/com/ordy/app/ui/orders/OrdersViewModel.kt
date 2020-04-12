@@ -1,27 +1,31 @@
 package com.ordy.app.ui.orders
 
 import androidx.lifecycle.MutableLiveData
-import com.ordy.app.api.ApiService
-import com.ordy.app.api.ApiServiceViewModel
+import com.ordy.app.api.Repository
+import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.Order
-import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 
-class OrdersViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
-
-    val orders: MutableLiveData<Query<List<Order>>> = FetchHandler.handleLive(apiService.userOrders())
+class OrdersViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
     /**
-     * Get a list of orders
+     * Get the MutableLiveData result of the Orders query.
+     */
+    fun getOrdersMLD(): MutableLiveData<Query<List<Order>>> {
+        return repository.getOrdersResult()
+    }
+
+    /**
+     * Get a list of orders.
      */
     fun getOrders(): Query<List<Order>> {
-        return orders.value!!
+        return getOrdersMLD().value!!
     }
 
     /**
      * Refresh the list of orders
      */
     fun refreshOrders() {
-        FetchHandler.handle(orders, apiService.userOrders())
+        repository.refreshOrders()
     }
 }

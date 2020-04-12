@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityProfileBinding
 import kotlinx.android.synthetic.main.activity_profile.view.*
@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_profile.view.*
 class ProfileActivity : AppCompatActivity() {
 
     private val viewModel: ProfileViewModel by viewModels {
-        ApiServiceViewModelFactory(
+        RepositoryViewModelFactory(
             applicationContext
         )
     }
@@ -28,6 +28,8 @@ class ProfileActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_profile)
         val handlers = ProfileHandlers(this, viewModel, binding.root)
         binding.handlers = handlers
+
+        viewModel.refreshInvites()
 
         // Swipe to refresh
         binding.root.group_invites_refresh.setOnRefreshListener {
@@ -45,7 +47,7 @@ class ProfileActivity : AppCompatActivity() {
             supportActionBar!!.elevation = 0F
         }
 
-        viewModel.invites.observe(this, Observer {
+        viewModel.getInvitesMLD().observe(this, Observer {
             // Stop refreshing on load
             if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
                 binding.root.group_invites_refresh.isRefreshing = false

@@ -1,28 +1,47 @@
 package com.ordy.app.ui.profile
 
 import androidx.lifecycle.MutableLiveData
-import com.ordy.app.api.ApiService
-import com.ordy.app.api.ApiServiceViewModel
+import com.ordy.app.api.Repository
+import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.GroupInvite
-import com.ordy.app.api.util.FetchHandler
+import com.ordy.app.api.models.actions.InviteAction
 import com.ordy.app.api.util.Query
+import okhttp3.ResponseBody
 
-class ProfileViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
-
-    val invites: MutableLiveData<Query<List<GroupInvite>>> =
-        FetchHandler.handleLive(apiService.userInvites())
+class ProfileViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
     /**
-     * Get the invites value
+     * Get the MutableLiveData result of the Invites fetch.
      */
-    fun getInvites(): Query<List<GroupInvite>> {
-        return invites.value!!
+    fun getInvitesMLD(): MutableLiveData<Query<List<GroupInvite>>> {
+        return repository.getInvites()
     }
 
     /**
-     * Refresh the invites
+     * Get the invites value.
+     */
+    fun getInvites(): Query<List<GroupInvite>> {
+        return getInvitesMLD().value!!
+    }
+
+    /**
+     * Refresh the invites.
      */
     fun refreshInvites() {
-        FetchHandler.handle(invites, apiService.userInvites())
+        repository.refreshInvites()
+    }
+
+    /**
+     * Accept or decline an invite.
+     * @param inviteAction: The action that should be executed (accept/decline)
+     * @param groupId: ID of the group of the invite
+     * @param actionInviteResult: Object where we want to store the result of our query in
+     */
+    fun userActionInvites(
+        inviteAction: InviteAction,
+        groupId: Int,
+        actionInviteResult: MutableLiveData<Query<ResponseBody>>
+    ) {
+        repository.userActionInvites(inviteAction, groupId, actionInviteResult)
     }
 }

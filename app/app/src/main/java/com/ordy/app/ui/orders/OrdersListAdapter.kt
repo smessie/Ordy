@@ -9,26 +9,31 @@ import android.widget.BaseAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.ordy.app.R
 import com.ordy.app.api.models.Order
-import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
 import com.ordy.app.util.OrderUtil
 import com.ordy.app.util.TimerUtil
-import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.list_order_card.view.*
-import kotlinx.android.synthetic.main.list_order_card.view.order_deadline_time_left
-import java.text.SimpleDateFormat
 import java.text.DateFormat
 
-class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, val viewModel: OrdersViewModel, val  orderStatus: OrdersStatus): BaseAdapter() {
+class OrdersListAdapter(
+    val activity: AppCompatActivity,
+    val context: Context,
+    val viewModel: OrdersViewModel,
+    val orderStatus: OrdersStatus
+) : BaseAdapter() {
 
     var ordersFiltered: List<Order> = emptyList()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_order_card, parent, false)
+        val view = convertView ?: LayoutInflater.from(context).inflate(
+            R.layout.list_order_card,
+            parent,
+            false
+        )
 
-        when(viewModel.getOrders().status) {
+        when (viewModel.getOrders().status) {
 
             QueryStatus.LOADING -> {
 
@@ -47,8 +52,9 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
                 view.order_data.visibility = View.VISIBLE
 
                 // Formatting deadline
-                val deadlineFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
-                    .format(order.deadline)
+                val deadlineFormat =
+                    DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+                        .format(order.deadline)
 
                 // Assign the data.
                 view.order_location_name.text = order.location.name
@@ -73,6 +79,9 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
                     view.context.startActivity(intent)
                 }
             }
+
+            else -> {
+            }
         }
 
         return view
@@ -91,9 +100,12 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
     }
 
     override fun getCount(): Int {
-        return when(viewModel.getOrders().status) {
+        return when (viewModel.getOrders().status) {
             QueryStatus.LOADING -> 4
-            QueryStatus.SUCCESS -> OrderUtil.filterOrdersStatus(viewModel.getOrders().requireData(), orderStatus).size
+            QueryStatus.SUCCESS -> OrderUtil.filterOrdersStatus(
+                viewModel.getOrders().requireData(),
+                orderStatus
+            ).size
             else -> 0
         }
     }
@@ -101,7 +113,7 @@ class OrdersListAdapter(val activity: AppCompatActivity, val context: Context, v
     fun update() {
 
         // Update the filtered orders, when the query succeeded.
-        if(viewModel.getOrders().status == QueryStatus.SUCCESS) {
+        if (viewModel.getOrders().status == QueryStatus.SUCCESS) {
             ordersFiltered = OrderUtil.filterOrdersStatus(
                 viewModel.getOrders().requireData(),
                 orderStatus

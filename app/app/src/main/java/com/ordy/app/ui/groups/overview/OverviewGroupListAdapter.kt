@@ -1,11 +1,11 @@
 package com.ordy.app.ui.groups.overview
 
-import androidx.appcompat.app.AlertDialog;
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.appcompat.app.AlertDialog
 import com.ordy.app.AppPreferences
 import com.ordy.app.R
 import com.ordy.app.api.util.QueryStatus
@@ -55,7 +55,10 @@ class OverviewGroupListAdapter(
                         setMessage("You are about to remove ${member.username} from this group")
 
                         setPositiveButton(android.R.string.ok) { _, _ ->
-                            handlers.removeMember(viewModel.getGroup().requireData().id, member.id)
+                            handlers.removeMember(
+                                viewModel.getGroup().requireData().id,
+                                member.id
+                            )
                         }
 
                         setNegativeButton(android.R.string.cancel) { dialog, _ ->
@@ -65,7 +68,7 @@ class OverviewGroupListAdapter(
                 }
 
                 // Hide the remove button if the member is the the creator
-                if (member.id == viewModel.group.value!!.requireData().creator.id) {
+                if (member.id == viewModel.getGroup().requireData().creator.id) {
                     view.member_remove.visibility = View.INVISIBLE
                 }
 
@@ -73,6 +76,9 @@ class OverviewGroupListAdapter(
                 if (member.id == AppPreferences(context!!).userId) {
                     view.member_remove.visibility = View.INVISIBLE
                 }
+            }
+
+            else -> {
             }
         }
 

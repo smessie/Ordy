@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.view.View
 import com.ordy.app.api.util.ErrorHandler
-import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.groups.invite.InviteMemberActivity
 
@@ -17,16 +16,13 @@ class OverviewGroupHandlers(
      * Handle the leave button clicked
      */
     fun onLeaveButtonClick() {
-        if (viewModel.group.value != null) {
+        if (viewModel.getGroupMLD().value != null) {
             AlertDialog.Builder(activity).apply {
                 setTitle("Are you sure?")
                 setMessage("You are about to leave this group")
 
                 setPositiveButton(android.R.string.ok) { _, _ ->
-                    FetchHandler.handle(
-                        viewModel.leaveResult,
-                        viewModel.apiService.userLeaveGroup(viewModel.group.value!!.requireData().id)
-                    )
+                    viewModel.userLeaveGroup(viewModel.getGroup().requireData().id)
                 }
 
                 setNegativeButton(android.R.string.cancel) { dialog, _ ->
@@ -45,11 +41,11 @@ class OverviewGroupHandlers(
      * Handle the invite button clicked
      */
     fun onInviteButtonClick() {
-        if (viewModel.group.value != null) {
+        if (viewModel.getGroupMLD().value != null) {
             val intent = Intent(activity, InviteMemberActivity::class.java)
 
             // Pass the group as extra information
-            intent.putExtra("group_id", viewModel.group.value!!.requireData().id)
+            intent.putExtra("group_id", viewModel.getGroup().requireData().id)
 
             activity.startActivity(intent)
         } else {
@@ -61,10 +57,8 @@ class OverviewGroupHandlers(
     }
 
     fun removeMember(groupId: Int, userId: Int) {
-        if (viewModel.removeResult.value?.status != QueryStatus.LOADING) {
-            FetchHandler.handle(
-                viewModel.removeResult, viewModel.apiService.deleteMemberGroup(groupId, userId)
-            )
+        if (viewModel.getRemoveMemberMLD().value?.status != QueryStatus.LOADING) {
+            viewModel.removeMemberFromGroup(userId, groupId)
         }
     }
 }

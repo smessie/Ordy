@@ -61,11 +61,11 @@ class InviteMemberListAdapter(
                 // Watch the invite result.
                 inviteResult.observe(activity, Observer {
 
-                    when(it.status) {
+                    when (it.status) {
 
                         QueryStatus.LOADING -> {
                             view.member_invite.backgroundTintList = loadingColor
-                            view.member_invite.text = context?.getString(R.string.loading)
+                            view.member_invite.text = context.getString(R.string.loading)
                         }
 
                         QueryStatus.SUCCESS -> {
@@ -84,8 +84,14 @@ class InviteMemberListAdapter(
                             view.member_invite.backgroundTintList = defaultColor
                             view.member_invite.text = text
                         }
+
+                        else -> {
+                        }
                     }
                 })
+            }
+
+            else -> {
             }
         }
 

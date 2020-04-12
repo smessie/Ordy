@@ -1,33 +1,58 @@
 package com.ordy.app.ui.orders.overview
 
 import androidx.lifecycle.MutableLiveData
-import com.ordy.app.api.ApiService
-import com.ordy.app.api.ApiServiceViewModel
+import com.ordy.app.api.Repository
+import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.Order
-import com.ordy.app.api.models.OrderItem
-import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
-import com.ordy.app.api.util.QueryStatus
 import okhttp3.ResponseBody
 
-class OverviewOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
+class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
     /**
-     * Specific order
+     * Get the MutableLiveData result of the Order fetch.
      */
-    val order: MutableLiveData<Query<Order>> = MutableLiveData(Query(QueryStatus.LOADING))
+    fun getOrderMLD(): MutableLiveData<Query<Order>> {
+        return repository.getOrder()
+    }
 
     /**
      * Get the order value
      */
     fun getOrder(): Query<Order> {
-        return order.value!!
+        return getOrderMLD().value!!
     }
 
     /**
      * Refresh the order
      */
     fun refreshOrder(orderId: Int) {
-        FetchHandler.handle(order, apiService.order(orderId))
+        repository.refreshOrder(orderId)
+    }
+
+    /**
+     * Remove an item from a given order.
+     * @param liveData: Object to bind result to
+     * @param orderId: Id of the order
+     * @param orderItemId: Id of the order item
+     */
+    fun removeItem(liveData: MutableLiveData<Query<ResponseBody>>, orderId: Int, orderItemId: Int) {
+        repository.removeItem(liveData, orderId, orderItemId)
+    }
+
+    /**
+     * Update the comment of a given order.
+     * @param liveData: Object to bind result to
+     * @param orderId: Id of the order
+     * @param orderItemId: Id of the order item
+     * @param comment: Comment to set for the item
+     */
+    fun updateItem(
+        liveData: MutableLiveData<Query<ResponseBody>>,
+        orderId: Int,
+        orderItemId: Int,
+        comment: String
+    ) {
+        repository.updateItem(liveData, orderId, orderItemId, comment)
     }
 }

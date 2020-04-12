@@ -13,7 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.DialogCreateOrderLocationBinding
@@ -22,7 +22,7 @@ import com.ordy.app.ui.orders.create.CreateOrderViewModel
 class CreateOrderLocationDialog : DialogFragment() {
 
     private val viewModel: CreateOrderLocationViewModel by viewModels {
-        ApiServiceViewModelFactory(
+        RepositoryViewModelFactory(
             requireContext()
         )
     }
@@ -79,7 +79,7 @@ class CreateOrderLocationDialog : DialogFragment() {
         })
 
         // Watch changes to the "locations"
-        viewModel.locations.observe(viewLifecycleOwner, Observer {
+        viewModel.getLocationsMLD().observe(viewLifecycleOwner, Observer {
 
             // Show a loading indicator in the searchbox.
             // Hide the list view while loading.
@@ -98,6 +98,9 @@ class CreateOrderLocationDialog : DialogFragment() {
                     searchLoading.visibility = View.INVISIBLE
 
                     ErrorHandler.handle(it.error, view)
+                }
+
+                else -> {
                 }
             }
 

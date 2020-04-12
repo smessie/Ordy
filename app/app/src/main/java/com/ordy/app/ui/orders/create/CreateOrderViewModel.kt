@@ -2,22 +2,15 @@ package com.ordy.app.ui.orders.create
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.ordy.app.api.ApiService
-import com.ordy.app.api.ApiServiceViewModel
+import com.ordy.app.api.Repository
+import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.Group
 import com.ordy.app.api.models.Order
-import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 import java.text.DateFormat
 import java.util.*
 
-class CreateOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
-
-    /**
-     * List of groups for the user
-     */
-    val groups: MutableLiveData<Query<List<Group>>> =
-        FetchHandler.handleLive(apiService.userGroups())
+class CreateOrderViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
     /**
      * Value of the location input
@@ -34,10 +27,6 @@ class CreateOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiServ
      */
     val groupValueData: MutableLiveData<Group> = MutableLiveData()
 
-    /**
-     * Result of the "create order" query
-     */
-    val createOrderResult: MutableLiveData<Query<Order>> = MutableLiveData(Query())
 
     /**
      * Get the name of the location value.
@@ -65,10 +54,17 @@ class CreateOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiServ
     }
 
     /**
+     * Get the MutableLiveData result of the Groups fetch.
+     */
+    fun getGroupsMLD(): MutableLiveData<Query<List<Group>>> {
+        return repository.getGroups()
+    }
+
+    /**
      * Get the list of groups.
      */
     fun getGroups(): Query<List<Group>> {
-        return groups.value!!
+        return getGroupsMLD().value!!
     }
 
     /**
@@ -76,6 +72,13 @@ class CreateOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiServ
      */
     fun getLocationValue(): LocationInput {
         return locationValueData.value!!
+    }
+
+    /**
+     * Refresh the list of groups the user is in.
+     */
+    fun refreshGroups() {
+        repository.refreshGroups()
     }
 
     /**
@@ -104,5 +107,23 @@ class CreateOrderViewModel(apiService: ApiService) : ApiServiceViewModel(apiServ
      */
     fun setGroupValue(group: Group) {
         groupValueData.postValue(group)
+    }
+
+    /**
+     * Get the MutableLiveData result of the Create order query.
+     */
+    fun getCreateOrderMLD(): MutableLiveData<Query<Order>> {
+        return repository.getCreateOrderResult()
+    }
+
+    /**
+     * Create a new order.
+     * @param locationId: ID of the existing location for the order if applicable
+     * @param customLocationName: Name of the custom location if applicable
+     * @param deadline: Date of the deadline for new items to the order
+     * @param groupId: ID of the group where the order belongs to
+     */
+    fun createOrder(locationId: Int?, customLocationName: String?, deadline: Date, groupId: Int?) {
+        repository.createOrder(locationId, customLocationName, deadline, groupId)
     }
 }
