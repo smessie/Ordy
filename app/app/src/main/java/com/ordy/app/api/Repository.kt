@@ -1,16 +1,13 @@
 package com.ordy.app.api
 
 import androidx.lifecycle.MutableLiveData
-import com.ordy.app.api.models.Group
-import com.ordy.app.api.models.Location
-import com.ordy.app.api.models.LoginResponse
-import com.ordy.app.api.models.User
-import com.ordy.app.api.models.actions.GroupCreate
-import com.ordy.app.api.models.actions.UserLogin
-import com.ordy.app.api.models.actions.UserRegister
+import com.ordy.app.api.models.*
+import com.ordy.app.api.models.actions.*
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
+import com.ordy.app.api.util.QueryStatus
 import okhttp3.ResponseBody
+import java.util.*
 
 class Repository(val apiService: ApiService) {
 
@@ -159,7 +156,6 @@ class Repository(val apiService: ApiService) {
         return locations
     }
 
-
     /******************************
      ***         LOGIN          ***
      ******************************/
@@ -217,7 +213,148 @@ class Repository(val apiService: ApiService) {
     /******************************
      ***        ORDERS          ***
      ******************************/
+    private val orders: MutableLiveData<Query<List<Order>>> = MutableLiveData(Query())
+    private val createOrderResult: MutableLiveData<Query<Order>> = MutableLiveData(Query())
+    private val order: MutableLiveData<Query<Order>> = MutableLiveData(Query(QueryStatus.LOADING))
+    private val cuisineItems: MutableLiveData<Query<List<Item>>> = MutableLiveData(Query())
+    private val addItemResult: MutableLiveData<Query<OrderItem>> = MutableLiveData(Query())
 
+    /**
+     * Refresh the list of orders.
+     */
+    fun refreshOrders() {
+        FetchHandler.handle(orders, apiService.userOrders())
+    }
+
+    /**
+     * Create a new order.
+     * @param locationId: ID of the existing location for the order if applicable
+     * @param customLocationName: Name of the custom location if applicable
+     * @param deadline: Date of the deadline for new items to the order
+     * @param groupId: ID of the group where the order belongs to
+     */
+    fun createOrder(locationId: Int?, customLocationName: String?, deadline: Date, groupId: Int?) {
+        FetchHandler.handle(
+            createOrderResult,
+            apiService.createOrder(
+                OrderCreate(
+                    locationId = locationId,
+                    customLocationName = customLocationName,
+                    deadline = deadline,
+                    groupId = groupId
+                )
+            )
+        )
+    }
+
+    /**
+     * Refresh the order.
+     */
+    fun refreshOrder(orderId: Int) {
+        FetchHandler.handle(order, apiService.order(orderId))
+    }
+
+    /**
+     * Refresh the cuisine items.
+     */
+    fun refreshCuisineItems(locationId: Int) {
+        FetchHandler.handle(cuisineItems, apiService.locationItems(locationId))
+    }
+
+    /**
+     * Add a new item to a given order.
+     * @param orderId: Id of the order to add the item to
+     * @param cuisineItemId: Id of the cuisine item (or null when a custom item name is given)
+     * @param name: Custom item name (ignored when cuisineItemId is present)
+     */
+    fun addItem(orderId: Int, cuisineItemId: Int?, name: String?) {
+        FetchHandler.handle(
+            addItemResult,
+            apiService.userAddOrderItem(
+                orderId,
+                OrderAddItem(
+                    cuisineItemId,
+                    name
+                )
+            )
+        )
+    }
+
+    /**
+     * Remove an item from a given order.
+     * @param liveData: Object to bind result to
+     * @param orderId: Id of the order
+     * @param orderItemId: Id of the order item
+     */
+    fun removeItem(liveData: MutableLiveData<Query<ResponseBody>>, orderId: Int, orderItemId: Int) {
+        FetchHandler.handle(
+            liveData,
+            apiService.userDeleteOrderItem(
+                orderId,
+                orderItemId
+            )
+        )
+    }
+
+    /**
+     * Update the comment of a given order.
+     * @param liveData: Object to bind result to
+     * @param orderId: Id of the order
+     * @param orderItemId: Id of the order item
+     * @param comment: Comment to set for the item
+     */
+    fun updateItem(
+        liveData: MutableLiveData<Query<ResponseBody>>,
+        orderId: Int,
+        orderItemId: Int,
+        comment: String
+    ) {
+        FetchHandler.handle(
+            liveData,
+            apiService.userUpdateOrderItem(
+                orderId,
+                orderItemId,
+                OrderUpdateItem(
+                    comment
+                )
+            )
+        )
+    }
+
+    /**
+     * Get the MutableLiveData result of the Orders query.
+     */
+    fun getOrdersResult(): MutableLiveData<Query<List<Order>>> {
+        return orders
+    }
+
+    /**
+     * Get the MutableLiveData result of the Create order query.
+     */
+    fun getCreateOrderResult(): MutableLiveData<Query<Order>> {
+        return createOrderResult
+    }
+
+    /**
+     * Get the MutableLiveData result of the Order fetch.
+     */
+    fun getOrder(): MutableLiveData<Query<Order>> {
+        return order
+    }
+
+    /**
+     * Get the MutableLiveData result of the Cuisine items fetch.
+     */
+    fun getCuisineItems(): MutableLiveData<Query<List<Item>>> {
+        return cuisineItems
+    }
+
+    /**
+     * Get the MutableLiveData result of the Add item query.
+     */
+    fun getAddItemResult(): MutableLiveData<Query<OrderItem>> {
+        return addItemResult
+    }
 
     /******************************
      ***       PAYMENTS         ***

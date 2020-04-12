@@ -8,16 +8,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
-import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityAddItemOrderBinding
 import com.ordy.app.util.SnackbarUtil
 
 class AddItemOrderActivity : AppCompatActivity() {
 
-    val viewModel: AddItemOrderViewModel by viewModels { ApiServiceViewModelFactory(applicationContext) }
+    val viewModel: AddItemOrderViewModel by viewModels {
+        RepositoryViewModelFactory(
+            applicationContext
+        )
+    }
 
     lateinit var listAdapter: AddItemOrderListAdapter
 
@@ -27,7 +30,8 @@ class AddItemOrderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Create binding for the activity.
-        val binding: ActivityAddItemOrderBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_item_order)
+        val binding: ActivityAddItemOrderBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_add_item_order)
         handlers = AddItemOrderHandlers(this, viewModel)
         binding.handlers = handlers
         binding.viewModel = viewModel
@@ -38,26 +42,26 @@ class AddItemOrderActivity : AppCompatActivity() {
         val orderId = intent.getIntExtra("order_id", -1)
 
         // Fetch the specific cuisine items.
-        FetchHandler.handle(viewModel.cuisineItems, viewModel.apiService.locationItems(locationId))
+        viewModel.refreshCuisineItems(locationId)
 
         // Create the list view adapter
         listAdapter = AddItemOrderListAdapter(this, orderId, viewModel)
         binding.root.findViewById<ListView>(R.id.order_cuisine_items).adapter = listAdapter
 
         // Update the list adapter when the "cuisine" query updates
-        viewModel.cuisineItems.observe(this, Observer {
+        viewModel.getCuisineItemsMLD().observe(this, Observer {
 
             // Catch possible errors.
-            if(viewModel.getCuisineItems().status == QueryStatus.ERROR) {
-                    AlertDialog.Builder(this).apply {
-                        setTitle("Unable to fetch predefined items")
-                        setMessage(viewModel.getCuisineItems().requireError().message)
-                        setPositiveButton(android.R.string.ok) { _, _ ->
+            if (viewModel.getCuisineItems().status == QueryStatus.ERROR) {
+                AlertDialog.Builder(this).apply {
+                    setTitle("Unable to fetch predefined items")
+                    setMessage(viewModel.getCuisineItems().requireError().message)
+                    setPositiveButton(android.R.string.ok) { _, _ ->
 
-                            // Close the activity
-                            finish()
-                        }
-                    }.show()
+                        // Close the activity
+                        finish()
+                    }
+                }.show()
             }
 
             // Update the orders
@@ -72,9 +76,9 @@ class AddItemOrderActivity : AppCompatActivity() {
         })
 
         // Observe the result of adding an item to the order.
-        viewModel.addItemResult.observe(this, Observer {
+        viewModel.getAddItemMLD().observe(this, Observer {
 
-            when(it.status) {
+            when (it.status) {
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
@@ -94,6 +98,9 @@ class AddItemOrderActivity : AppCompatActivity() {
                     SnackbarUtil.closeSnackbar(binding.root)
 
                     ErrorHandler.handle(it.error, binding.root)
+                }
+
+                else -> {
                 }
             }
         })

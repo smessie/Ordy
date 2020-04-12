@@ -9,11 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.util.Query
-import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentOrderUsersBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
-import com.ordy.app.util.OrderUtil
 
 class OrderUsersFragment : Fragment() {
 
@@ -44,7 +41,7 @@ class OrderUsersFragment : Fragment() {
         }
 
         // Update the list adapter when the "order" query updates
-        viewModel.order.observe(viewLifecycleOwner, Observer {
+        viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
 
             // Update the list view
             listAdapter.update()
