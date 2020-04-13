@@ -102,10 +102,7 @@ class OrdersListAdapter(
     override fun getCount(): Int {
         return when (viewModel.getOrders().status) {
             QueryStatus.LOADING -> 4
-            QueryStatus.SUCCESS -> OrderUtil.filterOrdersStatus(
-                viewModel.getOrders().requireData(),
-                orderStatus
-            ).size
+            QueryStatus.SUCCESS -> ordersFiltered.size
             else -> 0
         }
     }
