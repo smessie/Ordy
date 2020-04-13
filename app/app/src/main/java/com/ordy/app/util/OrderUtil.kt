@@ -24,7 +24,7 @@ class OrderUtil {
             val seconds = TimeUnit.MILLISECONDS.toSeconds(difference) % 60
 
             return when {
-                hours >= 24 -> {
+                days >= 1 -> {
                     "${days}d ${hours}h ${minutes}m"
                 }
                 hours >= 1 -> {
