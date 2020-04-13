@@ -117,8 +117,10 @@ class OrdersListAdapter(
             )
 
             // If the active orders are displayed, order from most soon to least soon.
-            ordersFiltered = ordersFiltered.sortedBy {
-                it.deadline
+            if(orderStatus == OrdersStatus.ACTIVE) {
+                ordersFiltered = ordersFiltered.sortedBy {
+                    it.deadline
+                }
             }
         }
 
