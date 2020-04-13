@@ -66,7 +66,8 @@ class OverviewGroupHandlers(
             val manager = this.activity.supportFragmentManager
 
             val dialog = ChangeGroupNameDialog(
-                viewModel = viewModel
+                viewModel = viewModel,
+                activityView = view
             )
             dialog.show(manager, "New name")
             viewModel.getRenameGroupMLD().observe(this.activity, Observer {
@@ -75,11 +76,6 @@ class OverviewGroupHandlers(
                     viewModel.refreshGroup(viewModel.getGroup().requireData().id)
                 }
             })
-        } else {
-            ErrorHandler.handleRawGeneral(
-                "Request failed. Please try again...",
-                view
-            )
         }
     }
 
