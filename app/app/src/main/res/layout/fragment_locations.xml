@@ -17,74 +17,69 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
 
-        <LinearLayout
+        <!-- Search field -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+            <ProgressBar
+                android:id="@+id/locations_search_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:indeterminate="true" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/locations_search"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/order_location_input_search"
+                android:maxLines="1"
+                android:textColor="@android:color/primary_text_dark"
+                app:startIconDrawable="@drawable/ic_search_black_24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="@={viewmodel.searchValueData}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+        <!-- List with locations -->
+        <ListView
+            android:id="@+id/locations"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Empty placeholder -->
+        <LinearLayout
+            android:id="@+id/locations_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/activity_horizontal_margin">
 
-            <!-- Search field -->
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin">
-
-                <ProgressBar
-                    android:id="@+id/locations_search_loading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:indeterminate="true" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/locations_search"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/order_location_input_search"
-                    android:maxLines="1"
-                    android:textColor="@android:color/primary_text_dark"
-                    app:startIconDrawable="@drawable/ic_search_black_24dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:text="@={viewmodel.searchValueData}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-            </RelativeLayout>
-
-            <!-- List with locations -->
-            <ListView
-                android:id="@+id/locations"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <!-- Empty placeholder -->
-            <LinearLayout
-                android:id="@+id/locations_empty"
+            <TextView
+                style="@style/Subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/activity_horizontal_margin">
+                android:gravity="center"
+                android:text="@string/no_locations_title" />
 
-                <TextView
-                    style="@style/Subtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/no_locations_title" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/no_locations_description" />
-            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_locations_description" />
         </LinearLayout>
     </LinearLayout>
 </layout>

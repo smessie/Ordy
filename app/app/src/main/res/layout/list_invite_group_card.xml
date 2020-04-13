@@ -47,7 +47,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Group creator: "
@@ -92,13 +92,13 @@
                     android:id="@+id/decline_invite"
                     style="@style/Widget.AppTheme.Button.IconButton"
                     android:layout_width="wrap_content"
-                    android:drawableLeft="@drawable/ic_delete_forever_red_24dp" />
+                    android:drawableEnd="@drawable/ic_delete_forever_red_24dp" />
 
                 <Button
                     android:id="@+id/accept_invite"
                     style="@style/Widget.AppTheme.Button.IconButton"
                     android:layout_width="wrap_content"
-                    android:drawableLeft="@drawable/ic_done_green_24dp" />
+                    android:drawableEnd="@drawable/ic_done_green_24dp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
