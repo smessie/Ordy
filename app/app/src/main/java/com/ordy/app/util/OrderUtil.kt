@@ -118,7 +118,7 @@ class OrderUtil {
          */
         fun filterOrdersStatus(orders: List<Order>, ordersStatus: OrdersStatus): List<Order> {
 
-            val archivedDelay = 12 * 60 * 60 * 1000
+            val archivedDelay = 2 * 60 * 60 * 1000
 
             return if(ordersStatus == OrdersStatus.ACTIVE) {
                 orders.filter { this.timeUntil(it.deadline) < archivedDelay }
