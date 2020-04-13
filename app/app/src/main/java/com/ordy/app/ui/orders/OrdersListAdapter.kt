@@ -115,6 +115,11 @@ class OrdersListAdapter(
                 viewModel.getOrders().requireData(),
                 orderStatus
             )
+
+            // If the active orders are displayed, order from most soon to least soon.
+            ordersFiltered = ordersFiltered.sortedBy {
+                it.deadline
+            }
         }
 
         // Notify the changes to the list view (to re-render automatically)
