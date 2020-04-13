@@ -33,7 +33,7 @@ class AddCommentDialog(
         commentView.editText!!.text = SpannableStringBuilder(orderItem.comment)
 
 
-        val alert = AlertDialog.Builder(requireContext()).apply {
+        return AlertDialog.Builder(requireContext()).apply {
             setTitle("Edit comment of item")
             setMessage("Enter the extra comment for '${orderItem.item.name}'")
             setView(view)
@@ -52,7 +52,5 @@ class AddCommentDialog(
                 // Do nothing
             }
         }.create()
-
-        return alert
     }
 }

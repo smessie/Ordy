@@ -20,10 +20,10 @@ class OrdersListAdapter(
     val activity: AppCompatActivity,
     val context: Context,
     val viewModel: OrdersViewModel,
-    val orderStatus: OrdersStatus
+    private val orderStatus: OrdersStatus
 ) : BaseAdapter() {
 
-    var ordersFiltered: List<Order> = emptyList()
+    private var ordersFiltered: List<Order> = emptyList()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 

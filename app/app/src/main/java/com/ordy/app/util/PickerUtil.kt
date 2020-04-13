@@ -6,7 +6,7 @@ import android.content.Context
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.lifecycle.MutableLiveData
-import android.text.format.DateFormat;
+import android.text.format.DateFormat
 import java.util.*
 
 class PickerUtil {

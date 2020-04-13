@@ -16,10 +16,10 @@ import kotlinx.android.synthetic.main.list_location_item_default.view.*
 
 class CreateOrderLocationListAdapter(
     val context: Context,
-    val dialog: DialogFragment,
+    private val dialog: DialogFragment,
     val viewModel: CreateOrderLocationViewModel,
-    val activityViewModel: CreateOrderViewModel,
-    val listView: ListView
+    private val activityViewModel: CreateOrderViewModel,
+    private val listView: ListView
 ) : BaseAdapter() {
 
     private var defaultItemView = LayoutInflater.from(context)

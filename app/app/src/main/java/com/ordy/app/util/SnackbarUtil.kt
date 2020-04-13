@@ -8,7 +8,7 @@ class SnackbarUtil {
 
     companion object {
 
-        var snackbars: MutableMap<View, Snackbar> = mutableMapOf()
+        private var snackbars: MutableMap<View, Snackbar> = mutableMapOf()
 
         /**
          * Open a snackbar

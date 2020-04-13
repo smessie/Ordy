@@ -119,7 +119,7 @@ class ErrorHandler {
          * @param view Current view
          * @param fields List of input fields
          */
-        fun handleInputs(queryError: QueryError?, view: View?, fields: List<InputField>) {
+        private fun handleInputs(queryError: QueryError?, view: View?, fields: List<InputField>) {
 
             if (queryError != null) {
 
@@ -153,7 +153,7 @@ class ErrorHandler {
          * @param queryError QueryError object
          * @param view Current view to display the toast
          */
-        fun handleGeneral(queryError: QueryError?, view: View?) {
+        private fun handleGeneral(queryError: QueryError?, view: View?) {
 
             if (queryError != null && view != null && queryError.generalErrors.isNotEmpty()) {
                 handleRawGeneral(queryError.generalErrors[0].message, view)

@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.list_order_cuisine_item_default.view.*
 
 class AddItemOrderListAdapter(
     val activity: AddItemOrderActivity,
-    val orderId: Int,
+    private val orderId: Int,
     val viewModel: AddItemOrderViewModel
 ) : BaseAdapter() {
 

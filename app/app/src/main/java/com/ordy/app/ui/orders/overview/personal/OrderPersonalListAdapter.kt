@@ -27,7 +27,7 @@ import java.util.*
 
 class OrderPersonalListAdapter(
     val context: Context,
-    val parentView: View,
+    private val parentView: View,
     val handlers: OrderPersonalHandlers,
     val fragment: OrderPersonalFragment,
     val viewModel: OverviewOrderViewModel

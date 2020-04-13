@@ -1,6 +1,5 @@
 package com.ordy.app.util
 
-import android.util.Log
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.models.OrderItem
 import com.ordy.app.ui.orders.OrdersStatus
@@ -54,7 +53,7 @@ class OrderUtil {
          * Get the time until in milliseconds for a specific date.
          * @param date Date
          */
-        fun timeUntil(date: Date): Long {
+        private fun timeUntil(date: Date): Long {
             return System.currentTimeMillis() - date.time
         }
 
