@@ -5,6 +5,7 @@
     tools:context=".ui.groups.overview.OverviewGroupActivity">
 
     <data>
+
         <variable
             name="handlers"
             type="com.ordy.app.ui.groups.overview.OverviewGroupHandlers" />
@@ -35,20 +36,29 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/group_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/white"
-                            android:textSize="25dp"
+                            android:textSize="25sp"
                             android:textStyle="bold" />
+
+                        <Button
+                            style="@style/Widget.AppTheme.Button.IconButton"
+                            android:layout_width="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:drawableLeft="@drawable/ic_pencil_white_24dp"
+                            android:onClick="@{() -> handlers.onRenameButtonClick()}" />
                     </LinearLayout>
 
                     <!-- Member amount -->
@@ -83,26 +93,18 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:backgroundTint="@android:color/darker_gray"
+                        android:elevation="0dp"
                         android:onClick="@{() -> handlers.onLeaveButtonClick()}"
-                        android:text="@string/group_leave"
-                        android:elevation="0dp" />
+                        android:text="@string/group_leave" />
 
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:backgroundTint="@color/colorAccent"
+                        android:elevation="0dp"
                         android:onClick="@{() -> handlers.onInviteButtonClick()}"
-                        android:text="@string/group_invite_user"
-                        android:elevation="0dp"/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:backgroundTint="@color/colorAccent"
-                        android:onClick="@{() -> handlers.onRenameButtonClick()}"
-                        android:text="@string/group_rename"
-                        android:elevation="0dp"/>
+                        android:text="@string/group_invite_user" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -119,7 +121,7 @@
                 android:layout_height="match_parent"
                 android:divider="@null"
                 android:dividerHeight="0dp"
-                android:drawSelectorOnTop="true"/>
+                android:drawSelectorOnTop="true" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 </layout>

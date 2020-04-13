@@ -1,6 +1,6 @@
 package com.ordy.app.ui.groups.overview
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.view.View
 import androidx.lifecycle.Observer
@@ -72,8 +72,18 @@ class OverviewGroupHandlers(
             dialog.show(manager, "New name")
             viewModel.getRenameGroupMLD().observe(this.activity, Observer {
                 // Refresh when query is succesful
-                if (it.status === QueryStatus.SUCCESS) {
-                    viewModel.refreshGroup(viewModel.getGroup().requireData().id)
+                when (it.status) {
+                    QueryStatus.SUCCESS -> {
+                        viewModel.refreshGroup(viewModel.getGroup().requireData().id)
+                    }
+
+                    QueryStatus.ERROR -> {
+                        ErrorHandler.handle(it.error, view)
+                    }
+
+                    else -> {
+                        // Do nothing
+                    }
                 }
             })
         }
