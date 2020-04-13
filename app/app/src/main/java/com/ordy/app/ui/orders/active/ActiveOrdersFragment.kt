@@ -70,7 +70,6 @@ class ActiveOrdersFragment : Fragment() {
             if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
                 binding.root.orders_active_refresh.isRefreshing = false
             }
-
         })
 
         return binding.root
