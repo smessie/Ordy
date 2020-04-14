@@ -102,10 +102,7 @@ class OrdersListAdapter(
     override fun getCount(): Int {
         return when (viewModel.getOrders().status) {
             QueryStatus.LOADING -> 4
-            QueryStatus.SUCCESS -> OrderUtil.filterOrdersStatus(
-                viewModel.getOrders().requireData(),
-                orderStatus
-            ).size
+            QueryStatus.SUCCESS -> ordersFiltered.size
             else -> 0
         }
     }
@@ -118,6 +115,13 @@ class OrdersListAdapter(
                 viewModel.getOrders().requireData(),
                 orderStatus
             )
+
+            // If the active orders are displayed, order from most soon to least soon.
+            if (orderStatus == OrdersStatus.ACTIVE) {
+                ordersFiltered = ordersFiltered.sortedBy {
+                    it.deadline
+                }
+            }
         }
 
         // Notify the changes to the list view (to re-render automatically)

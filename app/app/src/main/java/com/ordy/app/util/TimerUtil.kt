@@ -10,11 +10,11 @@ class TimerUtil {
         /**
          * Update the UI every given interval.
          * @param activity Activity to update
-         * @param offset Initial delay for first execution
-         * @param delay Delay between executions
+         * @param delay Initial delay for first execution
+         * @param period Period between executions
          * @param action Action to execute
          */
-        fun updateUI(activity: AppCompatActivity, offset: Int, delay: Int, action: () -> Unit): Timer {
+        fun updateUI(activity: AppCompatActivity, delay: Long, period: Long, action: () -> Unit): Timer {
 
             val timer = Timer()
 
@@ -24,7 +24,7 @@ class TimerUtil {
                         action()
                     }
                 }
-            }, 0, 1000)
+            }, delay, period);
 
             return timer
         }

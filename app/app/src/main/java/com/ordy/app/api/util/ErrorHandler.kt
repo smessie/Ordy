@@ -93,6 +93,16 @@ class ErrorHandler {
          */
         fun handle(queryError: QueryError?, view: View?, fields: List<InputField> = emptyList()) {
 
+            // Do not handle the error when it was already displayed before.
+            if(queryError != null) {
+                if(queryError.displayedError) {
+                    return
+                } else {
+                    // Set the error as displayed.
+                    queryError.displayedError = true;
+                }
+            }
+
             // Handle input errors.
             this.handleInputs(queryError, view, fields)
 

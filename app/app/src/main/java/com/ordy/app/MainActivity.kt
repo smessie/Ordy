@@ -30,7 +30,12 @@ class MainActivity : AppCompatActivity() {
         // If not, open the login activity
         if (accessToken == null || accessToken.isBlank()) {
             val intent = Intent(this, LoginActivity::class.java)
+
+            // Reset the back stack.
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+
             startActivity(intent)
+            finish()
 
             return
         }
@@ -146,7 +151,13 @@ class MainActivity : AppCompatActivity() {
 
             // Go to the login activity
             val intent = Intent(this, LoginActivity::class.java)
+
+            // Reset the back stack.
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+
             startActivity(intent)
+
+            finish()
 
             true
         }

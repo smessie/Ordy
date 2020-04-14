@@ -23,7 +23,7 @@ class OrderUtil {
             val seconds = TimeUnit.MILLISECONDS.toSeconds(difference) % 60
 
             return when {
-                hours >= 24 -> {
+                days >= 1 -> {
                     "${days}d ${hours}h ${minutes}m"
                 }
                 hours >= 1 -> {
@@ -117,7 +117,7 @@ class OrderUtil {
          */
         fun filterOrdersStatus(orders: List<Order>, ordersStatus: OrdersStatus): List<Order> {
 
-            val archivedDelay = 12 * 60 * 60 * 1000
+            val archivedDelay = 2 * 60 * 60 * 1000
 
             return if(ordersStatus == OrdersStatus.ACTIVE) {
                 orders.filter { this.timeUntil(it.deadline) < archivedDelay }

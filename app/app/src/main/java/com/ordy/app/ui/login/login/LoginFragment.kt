@@ -65,6 +65,9 @@ class LoginFragment : Fragment() {
                     // Open the main activity
                     val intent = Intent(this.context, MainActivity::class.java)
                     startActivity(intent)
+
+                    // Finish the current activity.
+                    activity?.finish();
                 }
 
                 QueryStatus.ERROR -> {

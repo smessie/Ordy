@@ -26,7 +26,7 @@ class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) :
                 // Start the shimmer effect & show
                 view.group_loading.startShimmer()
                 view.group_loading.visibility = View.VISIBLE
-                view.group_data.visibility = View.GONE
+                view.group_data.visibility = View.INVISIBLE
             }
 
             QueryStatus.SUCCESS -> {
