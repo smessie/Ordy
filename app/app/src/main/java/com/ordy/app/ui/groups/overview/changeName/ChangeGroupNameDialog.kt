@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.SpannableStringBuilder
-import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
@@ -14,7 +13,6 @@ import com.ordy.app.api.models.Group
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.ui.groups.overview.OverviewGroupViewModel
 import com.ordy.app.util.InputUtil
-import kotlinx.android.synthetic.main.fragment_groups.view.*
 
 
 class ChangeGroupNameDialog(
@@ -24,15 +22,16 @@ class ChangeGroupNameDialog(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val group: Group = viewModel.getGroup().requireData()
-        val dialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_change_group_name, null)
+        val dialogView =
+            View.inflate(context, R.layout.dialog_change_group_name, null)
         val newNameView: TextInputLayout = dialogView.findViewById(R.id.new_group_name)
 
         // Initial text for the "New name"-field view
         newNameView.editText!!.text = SpannableStringBuilder(group.name)
 
         return AlertDialog.Builder(requireContext()).apply {
-            setTitle("New group-name")
-            setMessage("Enter a new name:")
+            setTitle(R.string.group_rename_dialog_title)
+            setMessage(R.string.group_rename_dialog_message)
             setView(dialogView)
             setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
                 val newName: String = InputUtil.extractText(newNameView)
@@ -40,7 +39,10 @@ class ChangeGroupNameDialog(
                     // Update group name
                     viewModel.renameGroup(group.id, newName)
                 } else {
-                    ErrorHandler.handleRawGeneral("Name cannot be empty.", activityView)
+                    ErrorHandler.handleRawGeneral(
+                        getString(R.string.group_rename_dialog_is_empty),
+                        activityView
+                    )
                 }
             }
             setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->

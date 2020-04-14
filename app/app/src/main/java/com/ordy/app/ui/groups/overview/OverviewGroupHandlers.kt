@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.view.View
 import androidx.lifecycle.Observer
+import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.groups.invite.InviteMemberActivity
@@ -69,9 +70,9 @@ class OverviewGroupHandlers(
                 viewModel = viewModel,
                 activityView = view
             )
-            dialog.show(manager, "New name")
+            dialog.show(manager, activity.getString(R.string.group_rename_dialog_tag))
             viewModel.getRenameGroupMLD().observe(this.activity, Observer {
-                // Refresh when query is succesful
+                // Refresh when query is successful
                 when (it.status) {
                     QueryStatus.SUCCESS -> {
                         viewModel.refreshGroup(viewModel.getGroup().requireData().id)

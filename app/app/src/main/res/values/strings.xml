@@ -22,6 +22,11 @@
     <string name="group_invite_user">Invite</string>
     <string name="group_leave">Leave</string>
     <string name="group_rename">Rename</string>
+    <string name="group_rename_dialog_tag">New name</string>
+    <string name="group_rename_dialog_title">New group-name</string>
+    <string name="group_rename_dialog_message">Enter a new name:</string>
+    <string name="group_rename_dialog_is_empty">Name cannot be empty.</string>
+
     <string name="group_new_name">Enter new name</string>
     <string name="create_group_name">Group name</string>
 
