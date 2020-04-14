@@ -3,6 +3,8 @@ package com.ordy.backend.services
 import com.ordy.backend.database.repositories.OrderItemRepository
 import com.ordy.backend.database.repositories.OrderRepository
 import com.ordy.backend.database.repositories.UserRepository
+import com.ordy.backend.exceptions.ThrowableList
+import com.ordy.backend.wrappers.PaymentUpdateWrapper
 import com.ordy.backend.wrappers.PaymentWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -64,5 +66,39 @@ class PaymentService(
                     orderItems = order.orderItems.filter { it.user.id == userId }.toSet()
             )
         }
+    }
+
+    /**
+     * Mark all OrderItems in an Order for a User as paid or not paid.
+     */
+    fun patchOrderPayed(courier: Int, orderId: Int, userId: Int, paymentUpdateWrapper: PaymentUpdateWrapper) {
+        val throwableList = ThrowableList()
+
+        val optionalOrder = orderRepository.findById(orderId)
+        if (!optionalOrder.isPresent) {
+            throw throwableList.also { it.addGenericException("Order does not exist.") }
+        }
+        val order = optionalOrder.get()
+        if (order.courier.id != courier) {
+            throw throwableList.also { it.addGenericException("You cannot do this as you are not the courier.") }
+        }
+
+        if (order.orderItems.none { it.user.id == userId }) {
+            throw throwableList.also { it.addGenericException("This user has not ordered anything in this order.") }
+        }
+
+        if (order.deadline.after(Date())) {
+            throw throwableList.also { it.addGenericException("You cannot mark as paid before order deadline has expired.") }
+        }
+
+        // Set all OrderItem paid booleans of the given user equal to the paid value of PaymentUpdateWrapper
+        val updatedOrderItems = order.orderItems.map {
+            if (it.user.id == userId) {
+                it.paid = paymentUpdateWrapper.paid
+            }
+            it
+        }
+        order.orderItems = updatedOrderItems.toSet()
+        orderRepository.save(order)
     }
 }

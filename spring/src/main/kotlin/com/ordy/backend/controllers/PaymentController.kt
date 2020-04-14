@@ -3,6 +3,7 @@ package com.ordy.backend.controllers
 import com.fasterxml.jackson.annotation.JsonView
 import com.ordy.backend.database.View
 import com.ordy.backend.services.PaymentService
+import com.ordy.backend.wrappers.PaymentUpdateWrapper
 import com.ordy.backend.wrappers.PaymentWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -23,9 +24,10 @@ class PaymentController(@Autowired val paymentService: PaymentService) {
         return paymentService.getDebts(userId)
     }
 
-    @PatchMapping("/{orderId}/{userId}")
-    fun patchOrderPayed(@PathVariable orderId: Int, @PathVariable userId: Int) {
-
+    @PatchMapping("/{orderId}/{userPaidId}")
+    @JsonView(View.Empty::class)
+    fun patchOrderPayed(@PathVariable orderId: Int, @PathVariable userPaidId: Int, @RequestAttribute userId: Int, @RequestBody paymentUpdateWrapper: PaymentUpdateWrapper) {
+        paymentService.patchOrderPayed(userId, orderId, userPaidId, paymentUpdateWrapper)
     }
 
     @PatchMapping("/{orderId}/{userId}/notification")

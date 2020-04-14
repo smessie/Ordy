@@ -14,3 +14,7 @@ class PaymentWrapper(
         @JsonView(View.List::class)
         val orderItems: Set<OrderItem>
 )
+
+class PaymentUpdateWrapper(
+        val paid: Boolean
+)
