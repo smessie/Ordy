@@ -99,7 +99,7 @@ class ErrorHandler {
                     return
                 } else {
                     // Set the error as displayed.
-                    queryError.displayedError = true;
+                    queryError.displayedError = true
                 }
             }
 

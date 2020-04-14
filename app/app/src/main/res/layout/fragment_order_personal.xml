@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/order_items_add"
                 style="@style/Title"
                 android:text="@string/your_items_title"/>
 

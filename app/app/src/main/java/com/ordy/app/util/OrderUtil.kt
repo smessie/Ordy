@@ -69,7 +69,7 @@ class OrderUtil {
             for(orderItem in orderItems) {
 
                 // Check if the order item already has a corresponding group.
-                val match = itemGroups.find { it.name.toLowerCase() == orderItem.item.name.toLowerCase() }
+                val match = itemGroups.find { it.name.toLowerCase(Locale.US) == orderItem.item.name.toLowerCase(Locale.US) }
 
                 if(match !== null) {
                     match.quantity += 1

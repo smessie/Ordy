@@ -33,7 +33,7 @@ class QueryError {
     /**
      * If the current error is already displayed before.
      */
-    var displayedError: Boolean = false;
+    var displayedError: Boolean = false
 
     /**
      * List with general errors.

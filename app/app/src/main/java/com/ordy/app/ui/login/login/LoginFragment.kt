@@ -67,7 +67,7 @@ class LoginFragment : Fragment() {
                     startActivity(intent)
 
                     // Finish the current activity.
-                    activity?.finish();
+                    activity?.finish()
                 }
 
                 QueryStatus.ERROR -> {

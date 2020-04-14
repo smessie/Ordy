@@ -22,8 +22,7 @@ class CreateOrderLocationListAdapter(
     private val listView: ListView
 ) : BaseAdapter() {
 
-    private var defaultItemView = LayoutInflater.from(context)
-        .inflate(R.layout.list_location_item_default, null)
+    private var defaultItemView = View.inflate(context, R.layout.list_location_item_default, null)
 
     init {
         // Set click handler for default view.
