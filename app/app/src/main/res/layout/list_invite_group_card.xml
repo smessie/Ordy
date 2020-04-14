@@ -39,7 +39,7 @@
                     style="@style/Subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Group Name" />
+                    android:text="@string/placeholder_group_name" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -50,14 +50,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Group creator: "
+                        android:text="@string/list_item_group_creator"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/group_creator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bart" />
+                        android:text="@string/placeholder_name" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -69,12 +69,12 @@
                         android:id="@+id/group_member_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12" />
+                        android:text="@string/placeholder_member_count" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" members in group" />
+                        android:text="@string/list_item_group_member_count" />
                 </LinearLayout>
             </LinearLayout>
 

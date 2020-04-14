@@ -59,7 +59,7 @@ class OrdersListAdapter(
                 // Assign the data.
                 view.order_location_name.text = order.location.name
                 view.order_group_name.text = order.group.name
-                view.order_deadline_time.text = "Closing on: $deadlineFormat"
+                view.order_deadline_time.text = deadlineFormat
                 view.order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
                 view.order_courier_name.text = order.courier.username
 

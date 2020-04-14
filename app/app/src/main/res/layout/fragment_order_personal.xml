@@ -25,7 +25,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 style="@style/Title"
-                android:text="Your items"/>
+                android:text="@string/your_items_title"/>
 
             <Button
                 android:id="@+id/order_items_add"
@@ -34,7 +34,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:elevation="0dp"
-                android:text="Add item"
+                android:text="@string/add_item_button"
                 style="?android:attr/borderlessButtonStyle"
                 android:onClick="@{() -> handlers.onAddItemClick()}"/>
         </RelativeLayout>

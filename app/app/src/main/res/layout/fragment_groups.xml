@@ -30,14 +30,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="Your groups" />
+                android:text="@string/your_groups_title" />
 
             <Button
                 android:id="@+id/create_group_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="new group" />
+                android:text="@string/new_group_button" />
         </LinearLayout>
 
         <FrameLayout
