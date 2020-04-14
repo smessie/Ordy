@@ -25,7 +25,7 @@ class GroupController(@Autowired val groupService: GroupService) {
 
     @GetMapping("/{groupId}")
     @JsonView(View.Detail::class)
-    fun getGroups(@RequestAttribute userId: Int, @PathVariable groupId: Int) : GroupWrapper {
+    fun getGroup(@RequestAttribute userId: Int, @PathVariable groupId: Int) : GroupWrapper {
         return groupService.getGroup(userId, groupId)
     }
 
