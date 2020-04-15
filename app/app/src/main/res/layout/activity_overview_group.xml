@@ -45,14 +45,15 @@
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/white"
                         android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:text="@string/placeholder_group_name"/>
 
                     <Button
                         style="@style/Widget.AppTheme.Button.IconButton"
                         android:layout_width="wrap_content"
                         android:layout_marginStart="5dp"
                         android:backgroundTint="@color/colorPrimary"
-                        android:drawableLeft="@drawable/ic_pencil_white_24dp"
+                        android:drawableEnd="@drawable/ic_pencil_white_24dp"
                         android:onClick="@{() -> handlers.onRenameButtonClick()}" />
                  </LinearLayout>
 
