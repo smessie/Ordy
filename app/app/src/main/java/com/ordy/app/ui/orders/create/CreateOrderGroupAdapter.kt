@@ -22,7 +22,7 @@ class CreateOrderGroupAdapter(
         when (viewModel.getGroups().status) {
 
             QueryStatus.LOADING -> {
-                view.list_item_text.text = "Loading..."
+                view.list_item_text.text = context.getString(R.string.loading)
             }
 
             QueryStatus.SUCCESS -> {

@@ -9,7 +9,7 @@ import com.ordy.app.api.util.QueryStatus
 import okhttp3.ResponseBody
 import java.util.*
 
-class Repository(val apiService: ApiService) {
+class Repository(private val apiService: ApiService) {
 
     /******************************
      ***        GROUPS          ***

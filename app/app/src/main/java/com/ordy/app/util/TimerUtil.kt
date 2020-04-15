@@ -24,7 +24,7 @@ class TimerUtil {
                         action()
                     }
                 }
-            }, delay, period);
+            }, delay, period)
 
             return timer
         }

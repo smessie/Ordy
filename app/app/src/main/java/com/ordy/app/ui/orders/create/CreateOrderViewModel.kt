@@ -15,7 +15,7 @@ class CreateOrderViewModel(repository: Repository) : RepositoryViewModel(reposit
     /**
      * Value of the location input
      */
-    val locationValueData: MutableLiveData<LocationInput> = MutableLiveData(LocationInput())
+    private val locationValueData: MutableLiveData<LocationInput> = MutableLiveData(LocationInput())
 
     /**
      * Value of the deadline input

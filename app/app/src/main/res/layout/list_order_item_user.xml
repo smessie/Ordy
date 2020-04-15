@@ -26,10 +26,8 @@
             android:id="@+id/order_item_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:text="Username:"
+            android:layout_marginEnd="10dp"
+            android:text="@string/placeholder_group_name"
             android:textSize="16sp"
             android:textStyle="bold" />
 

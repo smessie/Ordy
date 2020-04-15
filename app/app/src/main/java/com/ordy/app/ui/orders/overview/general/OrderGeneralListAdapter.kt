@@ -1,5 +1,6 @@
 package com.ordy.app.ui.orders.overview.general
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,8 @@ class OrderGeneralListAdapter(val context: Context?, var viewModel: OverviewOrde
 
     private var orderItemGroups: List<OrderItemGroup> = emptyList()
 
+    // suppress the warning for "${orderItemGroup.quantity}x"
+    @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(
             R.layout.list_order_item,

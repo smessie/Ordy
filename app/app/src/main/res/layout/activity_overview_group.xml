@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.groups.overview.OverviewGroupActivity">
 
@@ -21,91 +20,87 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:baselineAligned="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:divider="@drawable/divider_6dp"
             android:background="@color/colorPrimary"
-            android:padding="@dimen/activity_horizontal_margin">
+            android:padding="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal"
+            android:showDividers="middle">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:divider="@drawable/divider_6dp"
-                android:orientation="horizontal"
-                android:showDividers="middle">
+                android:orientation="vertical"
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/group_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:textColor="@android:color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:text="@string/placeholder_group_name"/>
 
-                        <TextView
-                            android:id="@+id/group_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"
-                            android:textSize="25sp"
-                            android:textStyle="bold" />
-
-                        <Button
-                            style="@style/Widget.AppTheme.Button.IconButton"
-                            android:layout_width="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:backgroundTint="@color/colorPrimary"
-                            android:drawableLeft="@drawable/ic_pencil_white_24dp"
-                            android:onClick="@{() -> handlers.onRenameButtonClick()}" />
-                    </LinearLayout>
-
-                    <!-- Member amount -->
-                    <LinearLayout
+                    <Button
+                        style="@style/Widget.AppTheme.Button.IconButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_marginStart="5dp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:drawableEnd="@drawable/ic_pencil_white_24dp"
+                        android:onClick="@{() -> handlers.onRenameButtonClick()}" />
+                 </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/members"
-                            android:textColor="@android:color/white"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/group_members_amount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textColor="@android:color/white" />
-                    </LinearLayout>
-                </LinearLayout>
-
+                <!-- Member amount -->
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
-                    <Button
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:backgroundTint="@android:color/darker_gray"
-                        android:elevation="0dp"
-                        android:onClick="@{() -> handlers.onLeaveButtonClick()}"
-                        android:text="@string/group_leave" />
+                        android:text="@string/members"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
 
-                    <Button
+                    <TextView
+                        android:id="@+id/group_members_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:backgroundTint="@color/colorAccent"
-                        android:elevation="0dp"
-                        android:onClick="@{() -> handlers.onInviteButtonClick()}"
-                        android:text="@string/group_invite_user" />
+                        android:text=""
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="@android:color/darker_gray"
+                    android:onClick="@{() -> handlers.onLeaveButtonClick()}"
+                    android:text="@string/group_leave"
+                    android:elevation="0dp" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="@color/colorAccent"
+                    android:onClick="@{() -> handlers.onInviteButtonClick()}"
+                    android:text="@string/group_invite_user"
+                    android:elevation="0dp"/>
             </LinearLayout>
         </LinearLayout>
 

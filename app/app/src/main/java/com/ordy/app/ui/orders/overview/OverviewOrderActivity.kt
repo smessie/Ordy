@@ -102,7 +102,7 @@ class OverviewOrderActivity : AppCompatActivity() {
                     order_deadline_time.text =
                         DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
                             .format(order.deadline)
-                    order_title.text = "Order: ${order.location.name}"
+                    order_title.text = order.location.name
                     order_location_name.text = order.location.name
                     order_courier_name.text = order.courier.username
 

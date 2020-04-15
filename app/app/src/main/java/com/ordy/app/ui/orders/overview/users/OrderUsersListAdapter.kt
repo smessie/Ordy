@@ -52,8 +52,7 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
                 // Add all the items
                 for (orderItem in orderItemUserGroup.items) {
 
-                    val orderItemView =
-                        LayoutInflater.from(context).inflate(R.layout.list_order_item, null)
+                    val orderItemView = View.inflate(context, R.layout.list_order_item, null)
 
                     // Stop the shimmer effect & hide.
                     orderItemView.order_item_loading.stopShimmer()
@@ -61,7 +60,7 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
                     orderItemView.order_item_data.visibility = View.VISIBLE
 
                     // Assign the data.
-                    orderItemView.order_item_quantity.text = "1x"
+                    orderItemView.order_item_quantity.text = context?.getString(R.string.placeholder_item_quantity)
                     orderItemView.order_item_name.text = orderItem.item.name
                     orderItemView.order_item_comment.text = orderItem.comment
 

@@ -21,7 +21,7 @@ class InviteMemberViewModel(repository: Repository) : RepositoryViewModel(reposi
     /**
      * Get the value of the search input field.
      */
-    fun getSearchValue(): String {
+    private fun getSearchValue(): String {
         return searchValueData.value!!
     }
 

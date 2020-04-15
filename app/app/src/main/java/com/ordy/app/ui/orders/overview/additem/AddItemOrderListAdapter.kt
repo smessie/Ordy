@@ -10,18 +10,18 @@ import com.ordy.app.api.models.Item
 import com.ordy.app.api.util.QueryStatus
 import kotlinx.android.synthetic.main.list_order_cuisine_item.view.*
 import kotlinx.android.synthetic.main.list_order_cuisine_item_default.view.*
+import java.util.*
 
 class AddItemOrderListAdapter(
     val activity: AddItemOrderActivity,
-    val orderId: Int,
+    private val orderId: Int,
     val viewModel: AddItemOrderViewModel
 ) : BaseAdapter() {
 
     private var cuisineFiltered: List<Item> = emptyList()
 
     private val listView: ListView = activity.findViewById(R.id.order_cuisine_items)
-    private var defaultItemView = LayoutInflater.from(activity.applicationContext)
-        .inflate(R.layout.list_order_cuisine_item_default, null)
+    private var defaultItemView = View.inflate(activity.applicationContext, R.layout.list_order_cuisine_item_default, null)
 
     init {
         // Set click handler for default view.
@@ -95,8 +95,8 @@ class AddItemOrderListAdapter(
 
             // Create a filtered list that complies with the given search result.
             cuisineFiltered = viewModel.getCuisineItems().requireData().filter {
-                it.name.toLowerCase()
-                    .matches(Regex(".*${viewModel.getSearchValue().toLowerCase()}.*"))
+                it.name.toLowerCase(Locale.US)
+                    .matches(Regex(".*${viewModel.getSearchValue().toLowerCase(Locale.US)}.*"))
             }
 
             // Add the "default" item to the bottom of the listview
