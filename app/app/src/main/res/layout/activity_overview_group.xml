@@ -46,7 +46,15 @@
                         android:textColor="@android:color/white"
                         android:textSize="25sp"
                         android:textStyle="bold" />
-                </LinearLayout>
+
+                    <Button
+                        style="@style/Widget.AppTheme.Button.IconButton"
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:drawableLeft="@drawable/ic_pencil_white_24dp"
+                        android:onClick="@{() -> handlers.onRenameButtonClick()}" />
+                 </LinearLayout>
 
                 <!-- Member amount -->
                 <LinearLayout
@@ -100,14 +108,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <!-- Members -->
-        <ListView
-            android:id="@+id/group_members"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-            android:drawSelectorOnTop="true"/>
+            <!-- Members -->
+            <ListView
+                android:id="@+id/group_members"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                android:drawSelectorOnTop="true" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 </layout>
