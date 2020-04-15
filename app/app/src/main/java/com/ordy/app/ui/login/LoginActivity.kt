@@ -44,4 +44,18 @@ class LoginActivity : AppCompatActivity() {
             fragmentTransaction.commit()
         })
     }
+
+    override fun onBackPressed() {
+
+        // If the register screen is showed, clicking on back will open the login screen again.
+        if(viewModel.isLogin.value == false) {
+            viewModel.isLogin.postValue(true)
+        }
+        // If the login screen is showed, clicking on back will close the app.
+        else {
+
+            // Close the app.
+            finishAffinity()
+        }
+    }
 }
