@@ -17,10 +17,9 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:text="@string/add_item_order_default_title"
-            android:layout_weight="1" />
+            android:text="@string/add_item_order_default_title" />
 
         <TextView
             android:id="@+id/add_item_order_default_text"
@@ -33,7 +32,7 @@
         android:id="@+id/add_item_order_default_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add"
+        android:text="@string/add_button"
         android:backgroundTint="@color/colorPrimary"
         style="@style/TextAppearance.AppCompat.Widget.Button.Inverse"/>
 </LinearLayout>

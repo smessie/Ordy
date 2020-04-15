@@ -6,13 +6,25 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
-    <TextView
-        android:id="@+id/location_item_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_weight="1"
-        android:textStyle="bold" />
+   <LinearLayout
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:layout_weight="1">
+
+       <!-- Location -->
+       <TextView
+           android:id="@+id/location_item_name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textStyle="bold" />
+
+       <!-- Address -->
+       <TextView
+           android:id="@+id/location_item_address"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+   </LinearLayout>
 
     <Button
         android:id="@+id/location_item_pick"

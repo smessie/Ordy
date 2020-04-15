@@ -31,6 +31,11 @@ class QueryError {
     var error: Throwable? = null
 
     /**
+     * If the current error is already displayed before.
+     */
+    var displayedError: Boolean = false
+
+    /**
      * List with general errors.
      */
     var generalErrors: List<QueryGeneralError> = emptyList()

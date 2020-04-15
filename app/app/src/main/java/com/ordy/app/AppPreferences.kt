@@ -1,7 +1,9 @@
 package com.ordy.app
 
+import android.annotation.SuppressLint
 import android.content.Context
 
+@SuppressLint("ApplySharedPref")
 class AppPreferences (val context: Context) {
 
     private val preferences = context.getSharedPreferences("ordy", 0)
@@ -16,8 +18,8 @@ class AppPreferences (val context: Context) {
         }
 
     /**
-    * User ID of the logged in user
-    */
+     * User ID of the logged in user
+     */
     var userId: Int?
         get() = preferences.getInt("user_id", -1)
         set(value) {

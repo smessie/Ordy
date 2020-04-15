@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.InputField
@@ -42,14 +41,14 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.registerResult.observe(this, Observer {
+        viewModel.getRegisterMLD().observe(this, Observer {
 
-            when(it.status) {
+            when (it.status) {
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
-                        requireView(),
-                        "Creating account..."
+                        "Creating account...",
+                        requireView()
                     )
                 }
 
@@ -63,11 +62,13 @@ class RegisterFragment : Fragment() {
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(requireView())
 
-                    ErrorHandler.handle(it.error, view, listOf(
-                        InputField("username", this.input_register_username),
-                        InputField("email", this.input_register_email),
-                        InputField("password", this.input_register_password)
-                    ))
+                    ErrorHandler.handle(
+                        it.error, view, listOf(
+                            InputField("username", this.input_register_username),
+                            InputField("email", this.input_register_email),
+                            InputField("password", this.input_register_password)
+                        )
+                    )
                 }
             }
         })

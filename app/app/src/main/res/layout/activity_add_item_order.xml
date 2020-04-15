@@ -7,7 +7,7 @@
 
     <data>
         <variable name="handlers" type="com.ordy.app.ui.orders.overview.additem.AddItemOrderHandlers" />
-        <variable name="viewmodel" type="com.ordy.app.ui.orders.overview.additem.AddItemOrderViewModel" />
+        <variable name="viewModel" type="com.ordy.app.ui.orders.overview.additem.AddItemOrderViewModel" />
     </data>
 
     <LinearLayout
@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:text="@={viewmodel.searchValueData}" />
+                android:text="@={viewModel.searchValueData}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

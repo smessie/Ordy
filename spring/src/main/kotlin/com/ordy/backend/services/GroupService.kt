@@ -4,10 +4,7 @@ import com.ordy.backend.database.models.Group
 import com.ordy.backend.database.models.GroupInvite
 import com.ordy.backend.database.models.GroupMember
 import com.ordy.backend.database.models.User
-import com.ordy.backend.database.repositories.GroupInviteRepository
-import com.ordy.backend.database.repositories.GroupMemberRepository
-import com.ordy.backend.database.repositories.GroupRepository
-import com.ordy.backend.database.repositories.UserRepository
+import com.ordy.backend.database.repositories.*
 import com.ordy.backend.exceptions.ThrowableList
 import com.ordy.backend.wrappers.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +15,9 @@ import java.util.*
 class GroupService(@Autowired val groupRepository: GroupRepository,
                    @Autowired val userRepository: UserRepository,
                    @Autowired val groupMemberRepository: GroupMemberRepository,
-                   @Autowired val groupInviteRepository: GroupInviteRepository) {
+                   @Autowired val groupInviteRepository: GroupInviteRepository,
+                   @Autowired val orderRepository: OrderRepository,
+                   @Autowired val orderItemRepository: OrderItemRepository) {
 
     private val groupNameRegex = Regex("^[A-z0-9 ]+$")
 
@@ -173,10 +172,18 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
     /**
      * gives all the invites from a user
      */
-
-    fun getInvites(userId: Int): List<GroupInvite> {
+    fun getInvites(userId: Int): List<GroupInviteListWrapper> {
         val user = userRepository.findById(userId).get()
-        return groupInviteRepository.findGroupInvitesByUser(user)
+        return groupInviteRepository.findGroupInvitesByUser(user).map {
+            GroupInviteListWrapper(
+                    id = it.id,
+                    user = it.user,
+                    group = GroupListWrapper(
+                            group = it.group,
+                            membersCount = groupMemberRepository.findGroupMembersByGroup(it.group).size
+                    )
+            )
+        }
     }
 
     /**
@@ -248,8 +255,16 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
             if (groupOptional.get().creator.id == userId) {
                 val otherMembersOfGroup = groupMemberRepository.findGroupMembersByGroup(groupOptional.get())
 
-                // if there are no other users in the group, we delete the group
+                // if there are no other users in the group, we delete the group and the orders in the group
                 if (otherMembersOfGroup.isEmpty()) {
+
+                    orderRepository.findAllByGroup(groupOptional.get()).map {
+                        orderItemRepository.deleteAll(orderItemRepository.findAllByOrder(it))
+                        orderRepository.delete(it)
+                    }
+
+                    groupInviteRepository.deleteAll(groupInviteRepository.findGroupInvitesByGroup(groupOptional.get()))
+
                     groupRepository.delete(groupOptional.get())
                 } else {
                     groupOptional.get().creator = otherMembersOfGroup.first().user

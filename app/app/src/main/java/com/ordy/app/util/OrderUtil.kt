@@ -1,6 +1,5 @@
 package com.ordy.app.util
 
-import android.util.Log
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.models.OrderItem
 import com.ordy.app.ui.orders.OrdersStatus
@@ -24,7 +23,7 @@ class OrderUtil {
             val seconds = TimeUnit.MILLISECONDS.toSeconds(difference) % 60
 
             return when {
-                hours >= 24 -> {
+                days >= 1 -> {
                     "${days}d ${hours}h ${minutes}m"
                 }
                 hours >= 1 -> {
@@ -54,7 +53,7 @@ class OrderUtil {
          * Get the time until in milliseconds for a specific date.
          * @param date Date
          */
-        fun timeUntil(date: Date): Long {
+        private fun timeUntil(date: Date): Long {
             return System.currentTimeMillis() - date.time
         }
 
@@ -70,7 +69,7 @@ class OrderUtil {
             for(orderItem in orderItems) {
 
                 // Check if the order item already has a corresponding group.
-                val match = itemGroups.find { it.name.toLowerCase() == orderItem.item.name.toLowerCase() }
+                val match = itemGroups.find { it.name.toLowerCase(Locale.US) == orderItem.item.name.toLowerCase(Locale.US) }
 
                 if(match !== null) {
                     match.quantity += 1
@@ -118,7 +117,7 @@ class OrderUtil {
          */
         fun filterOrdersStatus(orders: List<Order>, ordersStatus: OrdersStatus): List<Order> {
 
-            val archivedDelay = 12 * 60 * 60 * 1000
+            val archivedDelay = 2 * 60 * 60 * 1000
 
             return if(ordersStatus == OrdersStatus.ACTIVE) {
                 orders.filter { this.timeUntil(it.deadline) < archivedDelay }

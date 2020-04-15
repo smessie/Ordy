@@ -1,7 +1,6 @@
 package com.ordy.app.ui.payments
 
-import com.ordy.app.api.ApiService
-import com.ordy.app.api.ApiServiceViewModel
+import com.ordy.app.api.Repository
+import com.ordy.app.api.RepositoryViewModel
 
-class PaymentsViewModel(apiService: ApiService) : ApiServiceViewModel(apiService) {
-}
+class PaymentsViewModel(repository: Repository) : RepositoryViewModel(repository)

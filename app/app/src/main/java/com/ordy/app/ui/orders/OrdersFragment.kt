@@ -6,25 +6,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.active.ActiveOrdersFragment
 import com.ordy.app.ui.orders.archived.ArchivedOrdersFragment
 import com.ordy.app.util.TabsAdapter
 import com.ordy.app.util.TabsEntry
-import kotlinx.android.synthetic.main.fragment_orders.view.*
 
 class OrdersFragment : Fragment() {
 
     private lateinit var tabsAdapter: TabsAdapter
 
-    private val viewModel: OrdersViewModel by activityViewModels { ApiServiceViewModelFactory(requireContext()) }
+    private val viewModel: OrdersViewModel by activityViewModels {
+        RepositoryViewModelFactory(
+            requireContext()
+        )
+    }
 
     /**
      * Called when view is created.
@@ -41,21 +43,11 @@ class OrdersFragment : Fragment() {
         tabsAdapter.addTabsEntry(TabsEntry(ActiveOrdersFragment(), "Active orders"))
         tabsAdapter.addTabsEntry(TabsEntry(ArchivedOrdersFragment(), "Archived orders"))
 
-        // Swipe to refresh
-        view.orders_refresh.setOnRefreshListener {
-            viewModel.refreshOrders()
-        }
-
         // Observe the orders
-        viewModel.orders.observe(viewLifecycleOwner, Observer {
-
-            // Stop refreshing on load
-            if(it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
-                view.orders_refresh.isRefreshing = false
-            }
+        viewModel.getOrdersMLD().observe(viewLifecycleOwner, Observer {
 
             // Show an error when necessary
-            if(it.status == QueryStatus.ERROR) {
+            if (it.status == QueryStatus.ERROR) {
                 ErrorHandler.handle(it.error, view)
             }
         })

@@ -1,25 +1,16 @@
 package com.ordy.app.ui.orders.overview.personal
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.ordy.app.AppPreferences
 import com.ordy.app.R
-import com.ordy.app.api.util.Query
-import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentOrderPersonalBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
-import com.ordy.app.util.OrderUtil
-import com.ordy.app.util.TimerUtil
-import kotlinx.android.synthetic.main.fragment_order_personal.*
-import kotlinx.android.synthetic.main.fragment_order_personal.view.*
 
 class OrderPersonalFragment : Fragment() {
 
@@ -59,7 +50,7 @@ class OrderPersonalFragment : Fragment() {
         }
 
         // Update the list adapter when the "order" query updates
-        viewModel.order.observe(viewLifecycleOwner, Observer {
+        viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
             listAdapter.update()
         })
 

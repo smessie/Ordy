@@ -16,14 +16,13 @@ import kotlinx.android.synthetic.main.list_location_item_default.view.*
 
 class CreateOrderLocationListAdapter(
     val context: Context,
-    val dialog: DialogFragment,
+    private val dialog: DialogFragment,
     val viewModel: CreateOrderLocationViewModel,
-    val activityViewModel: CreateOrderViewModel,
-    val listView: ListView
+    private val activityViewModel: CreateOrderViewModel,
+    private val listView: ListView
 ) : BaseAdapter() {
 
-    private var defaultItemView = LayoutInflater.from(context)
-        .inflate(R.layout.list_location_item_default, null)
+    private var defaultItemView = View.inflate(context, R.layout.list_location_item_default, null)
 
     init {
         // Set click handler for default view.
@@ -53,6 +52,11 @@ class CreateOrderLocationListAdapter(
 
                 // Assign the data.
                 view.location_item_name.text = location.name
+                view.location_item_address.text =
+                    when (location.address) {
+                        null -> "No address found"
+                        else -> location.address
+                    }
 
                 // Set click handler.
                 view.location_item_pick.setOnClickListener {
@@ -67,6 +71,9 @@ class CreateOrderLocationListAdapter(
                     // Dismiss the dialog
                     dialog.dismiss()
                 }
+            }
+
+            else -> {
             }
         }
 

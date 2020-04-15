@@ -1,9 +1,9 @@
 package com.ordy.app.ui.orders.create.location
 
-import android.app.Dialog
 import android.os.Bundle
-import android.view.*
-import android.widget.ImageButton
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.ProgressBar
@@ -13,9 +13,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
-import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.DialogCreateOrderLocationBinding
 import com.ordy.app.ui.orders.create.CreateOrderViewModel
@@ -23,7 +22,7 @@ import com.ordy.app.ui.orders.create.CreateOrderViewModel
 class CreateOrderLocationDialog : DialogFragment() {
 
     private val viewModel: CreateOrderLocationViewModel by viewModels {
-        ApiServiceViewModelFactory(
+        RepositoryViewModelFactory(
             requireContext()
         )
     }
@@ -44,7 +43,7 @@ class CreateOrderLocationDialog : DialogFragment() {
         // Create binding for the fragment.
         val binding = DialogCreateOrderLocationBinding.inflate(inflater, container, false)
         binding.handlers = CreateOrderLocationHandlers(this, viewModel)
-        binding.viewmodel = viewModel
+        binding.viewModel = viewModel
 
         // Setup the toolbar
         val toolbar: Toolbar = binding.root.findViewById(R.id.toolbar)
@@ -80,7 +79,7 @@ class CreateOrderLocationDialog : DialogFragment() {
         })
 
         // Watch changes to the "locations"
-        viewModel.locations.observe(viewLifecycleOwner, Observer {
+        viewModel.getLocationsMLD().observe(viewLifecycleOwner, Observer {
 
             // Show a loading indicator in the searchbox.
             // Hide the list view while loading.
@@ -99,6 +98,9 @@ class CreateOrderLocationDialog : DialogFragment() {
                     searchLoading.visibility = View.INVISIBLE
 
                     ErrorHandler.handle(it.error, view)
+                }
+
+                else -> {
                 }
             }
 

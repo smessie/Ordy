@@ -11,7 +11,7 @@
             type="com.ordy.app.ui.orders.create.CreateOrderHandlers" />
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.ordy.app.ui.orders.create.CreateOrderViewModel" />
     </data>
 
@@ -38,8 +38,7 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:longClickable="false"
-                android:inputType="text"
-                android:text="@{viewmodel.locationValueName}"
+                android:text="@{viewModel.locationValueName}"
                 android:onClick="@{() -> handlers.openLocations()}" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,7 +60,7 @@
                 android:focusable="false"
                 android:longClickable="false"
                 android:inputType="text"
-                android:text="@{viewmodel.deadlineValueName}"
+                android:text="@{viewModel.deadlineValueName}"
                 android:onClick="@{() -> handlers.openDeadline()}"
                 />
 
@@ -80,6 +79,7 @@
 
             <AutoCompleteTextView
                 android:id="@+id/input_group_values"
+                android:hint="@string/create_order_input_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="false"

@@ -2,9 +2,6 @@ package com.ordy.app.ui.orders.create
 
 import androidx.fragment.app.DialogFragment
 import com.ordy.app.R
-import com.ordy.app.api.models.actions.OrderCreate
-import com.ordy.app.api.util.ErrorHandler
-import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.ui.orders.create.location.CreateOrderLocationDialog
 import com.ordy.app.util.PickerUtil
 
@@ -35,29 +32,19 @@ class CreateOrderHandlers(val activity: CreateOrderActivity, val viewModel: Crea
     fun createOrder() {
 
         var locationId: Int? = null
-        val customLocationName: String? = viewModel.getLocationValue().customLocationName ?: null
+        val customLocationName: String? = viewModel.getLocationValue().customLocationName
         var groupId: Int? = null
 
         // Check if the location exists.
-        if(viewModel.getLocationValue().location != null) {
+        if (viewModel.getLocationValue().location != null) {
             locationId = viewModel.getLocationValue().location!!.id
         }
 
         // Check if the group exists.
-        if(viewModel.groupValueData.value != null) {
+        if (viewModel.groupValueData.value != null) {
             groupId = viewModel.getGroupValue().id
         }
 
-        FetchHandler.handle(
-            viewModel.createOrderResult,
-            viewModel.apiService.createOrder(
-                OrderCreate(
-                    locationId = locationId,
-                    customLocationName = customLocationName,
-                    deadline = viewModel.getDeadlineValue(),
-                    groupId = groupId
-                )
-            )
-        )
+        viewModel.createOrder(locationId, customLocationName, viewModel.getDeadlineValue(), groupId)
     }
 }

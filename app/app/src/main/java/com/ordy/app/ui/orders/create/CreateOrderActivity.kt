@@ -4,31 +4,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputLayout
 import com.ordy.app.R
-import com.ordy.app.api.ApiServiceViewModelFactory
+import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.InputField
-import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityCreateOrderBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
 import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.activity_create_order.*
-import java.security.acl.Group
 
 class CreateOrderActivity : AppCompatActivity() {
 
     private val viewModel: CreateOrderViewModel by viewModels {
-        ApiServiceViewModelFactory(
+        RepositoryViewModelFactory(
             applicationContext
         )
     }
@@ -48,10 +43,10 @@ class CreateOrderActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_create_order)
         binding.lifecycleOwner = this
         binding.handlers = handlers
-        binding.viewmodel = viewModel
+        binding.viewModel = viewModel
 
         // Set the values for the group input field.
-        var groupValues: AutoCompleteTextView = binding.root.findViewById(R.id.input_group_values)
+        val groupValues: AutoCompleteTextView = binding.root.findViewById(R.id.input_group_values)
         adapter = CreateOrderGroupAdapter(applicationContext, viewModel)
         groupValues.setAdapter(adapter)
 
@@ -63,8 +58,10 @@ class CreateOrderActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.refreshGroups()
+
         // Set the groups of the spinner.
-        viewModel.groups.observe(this, Observer {
+        viewModel.getGroupsMLD().observe(this, Observer {
             adapter.notifyDataSetChanged()
 
             // Show an error dialog when the user is not part of any group.
@@ -97,14 +94,14 @@ class CreateOrderActivity : AppCompatActivity() {
         })
 
         // Observe the result of adding an item to the order.
-        viewModel.createOrderResult.observe(this, Observer {
+        viewModel.getCreateOrderMLD().observe(this, Observer {
 
             when (it.status) {
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
-                        binding.root,
-                        "Creating order..."
+                        "Creating order...",
+                        binding.root
                     )
                 }
 
@@ -134,6 +131,9 @@ class CreateOrderActivity : AppCompatActivity() {
                             InputField("groupId", this.input_group)
                         )
                     )
+                }
+
+                else -> {
                 }
             }
         })

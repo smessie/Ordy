@@ -3,10 +3,8 @@ package com.ordy.app.ui.orders.overview.addcomment
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.text.Editable
 import android.text.SpannableStringBuilder
-import android.view.LayoutInflater
-import android.widget.TextView
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +13,7 @@ import com.ordy.app.R
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.models.OrderItem
 import com.ordy.app.api.util.Query
-import com.ordy.app.ui.orders.overview.personal.OrderPersonalHandlers
+import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import com.ordy.app.util.InputUtil
 import okhttp3.ResponseBody
 
@@ -23,11 +21,11 @@ class AddCommentDialog(
     val order: Order,
     val orderItem: OrderItem,
     val updateResult: MutableLiveData<Query<ResponseBody>>,
-    val handlers: OrderPersonalHandlers
+    val viewModel: OverviewOrderViewModel
 ) : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_order_item_comment, null)
+        val view = View.inflate(context, R.layout.dialog_order_item_comment, null)
 
         val commentView: TextInputLayout = view.findViewById(R.id.order_item_comment)
 
@@ -35,7 +33,7 @@ class AddCommentDialog(
         commentView.editText!!.text = SpannableStringBuilder(orderItem.comment)
 
 
-        val alert = AlertDialog.Builder(requireContext()).apply {
+        return AlertDialog.Builder(requireContext()).apply {
             setTitle("Edit comment of item")
             setMessage("Enter the extra comment for '${orderItem.item.name}'")
             setView(view)
@@ -43,7 +41,7 @@ class AddCommentDialog(
                 val comment = InputUtil.extractText(view.findViewById(R.id.order_item_comment))
 
                 // Update the item
-                handlers.updateItem(
+                viewModel.updateItem(
                     updateResult,
                     order.id,
                     orderItem.id,
@@ -54,7 +52,5 @@ class AddCommentDialog(
                 // Do nothing
             }
         }.create()
-
-        return alert
     }
 }

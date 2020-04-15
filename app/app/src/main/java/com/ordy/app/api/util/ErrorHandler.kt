@@ -1,12 +1,13 @@
 package com.ordy.app.api.util
 
-import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ordy.app.R
+import com.ordy.app.util.SnackbarType
+import com.ordy.app.util.SnackbarUtil
 import retrofit2.HttpException
 
 class ErrorHandler {
@@ -32,8 +33,8 @@ class ErrorHandler {
             // Handle HTTP Exceptions.
             if (error is HttpException) {
                 queryError.message = if (error.message().isEmpty())
-                                        "An unknown error has occurred"
-                                        else error.message()
+                    "An unknown error has occurred"
+                else error.message()
                 queryError.description = ""
                 queryError.code = error.code().toString()
                 queryError.response = error.response()
@@ -92,6 +93,16 @@ class ErrorHandler {
          */
         fun handle(queryError: QueryError?, view: View?, fields: List<InputField> = emptyList()) {
 
+            // Do not handle the error when it was already displayed before.
+            if(queryError != null) {
+                if(queryError.displayedError) {
+                    return
+                } else {
+                    // Set the error as displayed.
+                    queryError.displayedError = true
+                }
+            }
+
             // Handle input errors.
             this.handleInputs(queryError, view, fields)
 
@@ -118,7 +129,7 @@ class ErrorHandler {
          * @param view Current view
          * @param fields List of input fields
          */
-        fun handleInputs(queryError: QueryError?, view: View?, fields: List<InputField>) {
+        private fun handleInputs(queryError: QueryError?, view: View?, fields: List<InputField>) {
 
             if (queryError != null) {
 
@@ -152,7 +163,7 @@ class ErrorHandler {
          * @param queryError QueryError object
          * @param view Current view to display the toast
          */
-        fun handleGeneral(queryError: QueryError?, view: View?) {
+        private fun handleGeneral(queryError: QueryError?, view: View?) {
 
             if (queryError != null && view != null && queryError.generalErrors.isNotEmpty()) {
                 handleRawGeneral(queryError.generalErrors[0].message, view)
@@ -168,10 +179,7 @@ class ErrorHandler {
          */
         fun handleRawGeneral(message: String, view: View) {
             // Create and show a snackbar with the error message.
-            val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-            snackbar.setBackgroundTint(Color.parseColor("#E74C3C"))
-
-            snackbar.show()
+            SnackbarUtil.openSnackbar(message, view, Snackbar.LENGTH_LONG, SnackbarType.ERROR)
         }
 
         private data class ErrorResult(
