@@ -337,11 +337,10 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
             throw throwableList.also { it.addGenericException("You have to be in this group before you can invite others.") }
         }
 
-        val alreadyInvitedUsers = groupInviteRepository.findGroupInvitesByGroup(groupOptional.get()).map { it.id }
-        val membersOfGroup = groupMemberRepository.findGroupMembersByGroup(groupOptional.get()).map { it.id }
+        val alreadyInvitedUsers = groupInviteRepository.findGroupInvitesByGroup(groupOptional.get()).map { it.user.id }
+        val membersOfGroup = groupMemberRepository.findGroupMembersByGroup(groupOptional.get()).map { it.user.id }
+
         return userRepository.findAll()
-                .filter { it.username.contains(userName) }
-                .filter { !membersOfGroup.contains(it.id) }
-                .filter { !alreadyInvitedUsers.contains(it.id) }
+                .filter { it.username.contains(userName, ignoreCase = true) && !membersOfGroup.contains(it.id) && !alreadyInvitedUsers.contains(it.id) }
     }
 }
