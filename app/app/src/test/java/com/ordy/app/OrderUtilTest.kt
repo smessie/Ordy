@@ -26,13 +26,13 @@ class OrderUtilTest {
     }
 
     /**
-     * Check if orders are split into 3 groups
+     * Check if items are ordered the correct number of times
      */
     @Test
-    fun `Should be split in 3 groups by item-name when there are 3 different items`() {
+    fun `Number of instances per item should be the same after grouping`() {
         val testItems = arrayListOf<Item>()
 
-        // Make sure there are three different items
+        // Make sure we have 3 items
         while (testItems.size < 3) {
             val newFood = faker.food().dish()
             val filtered = testItems.filter {it.name == newFood}
@@ -41,111 +41,25 @@ class OrderUtilTest {
             }
         }
 
-        val testUser1 = User(faker.number().randomDigit(), faker.name().username())
+        val testUser1 = User(faker.number().randomDigit(), faker.name().username(), faker.internet().emailAddress())
         val itemsPerItem = arrayListOf<OrderItem>()
-        val randomAmount = faker.number().numberBetween(4, 50)
 
-        for (i in 0..randomAmount) {
-            itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[i % 3], faker.food().ingredient(), testUser1))
+        for (i in 0..2) {
+            itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[0], faker.food().ingredient(), testUser1))
         }
 
+        for (i in 0..1) {
+            itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[1], faker.food().ingredient(), testUser1))
+        }
+
+        itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[2], faker.food().ingredient(), testUser1))
+
         val orderItemsPerItem = groupItems(itemsPerItem)
+
         assertEquals(orderItemsPerItem.size, 3)
-    }
 
-    /**
-     * Check if testItem1 was ordered 3 times
-     */
-    @Test
-    fun `Item 0 should be ordered 3 times`() {
-        val testItems = arrayListOf<Item>()
-
-        while (testItems.size < 3) {
-            val newFood = faker.food().dish()
-            val filtered = testItems.filter {it.name == newFood}
-            if (filtered.isEmpty()) {
-                testItems.add(Item(faker.number().randomDigit(), newFood))
-            }
-        }
-
-        val testUser1 = User(faker.number().randomDigit(), faker.name().username())
-        val itemsPerItem = arrayListOf<OrderItem>()
-
-        for (i in 0..2) {
-            itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[0], faker.food().ingredient(), testUser1))
-        }
-
-        for (i in 0..1) {
-            itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[1], faker.food().ingredient(), testUser1))
-        }
-
-        itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[2], faker.food().ingredient(), testUser1))
-
-        val orderItemsPerItem = groupItems(itemsPerItem)
         assertEquals(orderItemsPerItem[0].quantity, 3)
-    }
-
-    /**
-     * Check if testItem2 was ordered 2 times
-     */
-    @Test
-    fun `Item 1 should be ordered 2 times`() {
-        val testItems = arrayListOf<Item>()
-
-        while (testItems.size < 3) {
-            val newFood = faker.food().dish()
-            val filtered = testItems.filter {it.name == newFood}
-            if (filtered.isEmpty()) {
-                testItems.add(Item(faker.number().randomDigit(), newFood))
-            }
-        }
-
-        val testUser1 = User(faker.number().randomDigit(), faker.name().username())
-        val itemsPerItem = arrayListOf<OrderItem>()
-
-        for (i in 0..2) {
-            itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[0], faker.food().ingredient(), testUser1))
-        }
-
-        for (i in 0..1) {
-            itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[1], faker.food().ingredient(), testUser1))
-        }
-
-        itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[2], faker.food().ingredient(), testUser1))
-
-        val orderItemsPerItem = groupItems(itemsPerItem)
         assertEquals(orderItemsPerItem[1].quantity, 2)
-    }
-
-    /**
-     * Check if testItem3 was ordered 1 time
-     */
-    @Test
-    fun `Item 2 should be ordered 1 time`() {
-        val testItems = arrayListOf<Item>()
-
-        while (testItems.size < 3) {
-            val newFood = faker.food().dish()
-            val filtered = testItems.filter {it.name == newFood}
-            if (filtered.isEmpty()) {
-                testItems.add(Item(faker.number().randomDigit(), newFood))
-            }
-        }
-
-        val testUser1 = User(faker.number().randomDigit(), faker.name().username())
-        val itemsPerItem = arrayListOf<OrderItem>()
-
-        for (i in 0..2) {
-            itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[0], faker.food().ingredient(), testUser1))
-        }
-
-        for (i in 0..1) {
-            itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[1], faker.food().ingredient(), testUser1))
-        }
-
-        itemsPerItem.add(OrderItem(faker.number().randomDigit(), testItems[2], faker.food().ingredient(), testUser1))
-
-        val orderItemsPerItem = groupItems(itemsPerItem)
         assertEquals(orderItemsPerItem[2].quantity, 1)
     }
 
@@ -158,10 +72,10 @@ class OrderUtilTest {
     }
 
     /**
-     * Check if first test user still has 3 orders to his name
+     * Check if all users have the correct number of items
      */
     @Test
-    fun `Test user 0 should have 3 orders`() {
+    fun `Users should have same number of items after grouping them`() {
         val testItems = arrayListOf<Item>()
 
         // Create fake items to choose from
@@ -178,7 +92,7 @@ class OrderUtilTest {
             val fakeName = faker.name().firstName()
             val filtered = userList.filter { it.username == fakeName }
             if (filtered.isEmpty()) {
-                userList.add(User(faker.number().randomDigit(), fakeName))
+                userList.add(User(faker.number().randomDigit(), fakeName, faker.internet().emailAddress()))
             }
         }
 
@@ -216,137 +130,21 @@ class OrderUtilTest {
         )
 
         val orderItemsPerUser = userGroupItems(itemsPerUser)
+
+        assertEquals(orderItemsPerUser.size, 3)
+
         assertEquals(orderItemsPerUser[0].items.size, 3)
-    }
-
-    /**
-     * Check if second test user still has 2 orders to his name
-     */
-    @Test
-    fun `Test user 1 should have 2 orders`() {
-        val testItems = arrayListOf<Item>()
-
-        for (i in 0..faker.number().numberBetween(4, 40)) {
-            testItems.add(Item(faker.number().randomDigit(), faker.food().dish()))
-        }
-
-        val itemsAmount = testItems.size
-
-        val userList = arrayListOf<User>()
-
-        while (userList.size < 3) {
-            val fakeName = faker.name().firstName()
-            val filtered = userList.filter { it.username == fakeName }
-            if (filtered.isEmpty()) {
-                userList.add(User(faker.number().randomDigit(), fakeName))
-            }
-        }
-
-        val itemsPerUser = arrayListOf<OrderItem>()
-
-        for (i in 0..2) {
-            itemsPerUser.add(
-                OrderItem(
-                    faker.number().randomDigit(),
-                    testItems[faker.number().numberBetween(0, itemsAmount - 1)],
-                    faker.food().ingredient(),
-                    userList[0]
-                )
-            )
-        }
-
-        for (i in 0..1) {
-            itemsPerUser.add(
-                OrderItem(
-                    faker.number().randomDigit(),
-                    testItems[faker.number().numberBetween(0, itemsAmount - 1)],
-                    faker.food().ingredient(),
-                    userList[1]
-                )
-            )
-        }
-
-        itemsPerUser.add(
-            OrderItem(
-                faker.number().randomDigit(),
-                testItems[faker.number().numberBetween(0, itemsAmount - 1)],
-                faker.food().ingredient(),
-                userList[2]
-            )
-        )
-
-        val orderItemsPerUser = userGroupItems(itemsPerUser)
         assertEquals(orderItemsPerUser[1].items.size, 2)
-    }
-
-    /**
-     * Check if third test user still has 1 order to his name
-     */
-    @Test
-    fun `Test user 2 should have 1 order`() {
-        val testItems = arrayListOf<Item>()
-
-        for (i in 0..faker.number().numberBetween(4, 40)) {
-            testItems.add(Item(faker.number().randomDigit(), faker.food().dish()))
-        }
-
-        val itemsAmount = testItems.size
-
-        val userList = arrayListOf<User>()
-
-        while (userList.size < 3) {
-            val fakeName = faker.name().firstName()
-            val filtered = userList.filter { it.username == fakeName }
-            if (filtered.isEmpty()) {
-                userList.add(User(faker.number().randomDigit(), fakeName))
-            }
-        }
-
-        val itemsPerUser = arrayListOf<OrderItem>()
-
-        for (i in 0..2) {
-            itemsPerUser.add(
-                OrderItem(
-                    faker.number().randomDigit(),
-                    testItems[faker.number().numberBetween(0, itemsAmount - 1)],
-                    faker.food().ingredient(),
-                    userList[0]
-                )
-            )
-        }
-
-        for (i in 0..1) {
-            itemsPerUser.add(
-                OrderItem(
-                    faker.number().randomDigit(),
-                    testItems[faker.number().numberBetween(0, itemsAmount - 1)],
-                    faker.food().ingredient(),
-                    userList[1]
-                )
-            )
-        }
-
-        itemsPerUser.add(
-            OrderItem(
-                faker.number().randomDigit(),
-                testItems[faker.number().numberBetween(0, itemsAmount - 1)],
-                faker.food().ingredient(),
-                userList[2]
-            )
-        )
-
-        val orderItemsPerUser = userGroupItems(itemsPerUser)
         assertEquals(orderItemsPerUser[2].items.size, 1)
     }
 
     /**
-     * Check if there is only one order without expired deadline
+     * Check if orders are sorted correctly based on being active/archived
      */
     @Test
-    fun `Should be 1 active order`() {
-        // Create fake data needed to create orders
-        val testUser1 = User(faker.number().randomDigit(), faker.name().username())
-        val testUser2 = User(faker.number().randomDigit(), faker.name().username())
+    fun `Should be 1 archived and 1 active order, both with specific id's`() {
+        val testUser1 = User(faker.number().randomDigit(), faker.name().username(), faker.internet().emailAddress())
+        val testUser2 = User(faker.number().randomDigit(), faker.name().username(), faker.internet().emailAddress())
 
         val testGroup = Group(faker.number().randomDigit(), faker.name().name(), testUser1)
         val testCuisine = Cuisine(faker.number().randomDigit(), faker.name().name(), arrayListOf<Item>())
@@ -356,88 +154,20 @@ class OrderUtilTest {
         val testLocation = Location(faker.number().randomDigit(), faker.name().name(), testLatitude, testLongitude, faker.address().fullAddress(), faker.bool().bool(), testCuisine)
 
         val orderList = arrayListOf<Order>()
+        val archivedId = faker.number().randomDigit()
         val activeId = faker.number().randomDigit()
 
-        // Make orders with deadlines far into the past and future
+        // Make orders with deadlines far into the future/past
         orderList.add(Order(activeId, faker.date().future(90000, 10000, TimeUnit.DAYS), faker.name().name(), testGroup, testLocation, testUser2))
-        orderList.add(Order(faker.number().randomDigit(), faker.date().past(90000, 10000, TimeUnit.DAYS), faker.name().name(), testGroup, testLocation, testUser2))
+        orderList.add(Order(archivedId, faker.date().past(90000, 10000, TimeUnit.DAYS), faker.name().name(), testGroup, testLocation, testUser2))
 
+        val filteredListArchived = filterOrdersStatus(orderList, OrdersStatus.ARCHIVED)
         val filteredListActive = filterOrdersStatus(orderList, OrdersStatus.ACTIVE)
+
         assertEquals(filteredListActive.size, 1)
-    }
-
-    /**
-     * Check if there is only one order with expired deadline
-     */
-    @Test
-    fun `Should be 1 archived order`() {
-        val testUser1 = User(faker.number().randomDigit(), faker.name().username())
-        val testUser2 = User(faker.number().randomDigit(), faker.name().username())
-
-        val testGroup = Group(faker.number().randomDigit(), faker.name().name(), testUser1)
-        val testCuisine = Cuisine(faker.number().randomDigit(), faker.name().name(), arrayListOf<Item>())
-
-        val testLatitude = faker.number().randomDouble(5, -90, 90)
-        val testLongitude = faker.number().randomDouble(5, -180, 180)
-        val testLocation = Location(faker.number().randomDigit(), faker.name().name(), testLatitude, testLongitude, faker.address().fullAddress(), faker.bool().bool(), testCuisine)
-
-        val orderList = arrayListOf<Order>()
-        val archivedId = faker.number().randomDigit()
-        orderList.add(Order(faker.number().randomDigit(), faker.date().future(90000, 10000, TimeUnit.DAYS), faker.name().name(), testGroup, testLocation, testUser2))
-        orderList.add(Order(archivedId, faker.date().past(90000, 10000, TimeUnit.DAYS), faker.name().name(), testGroup, testLocation, testUser2))
-
-        val filteredListArchived = filterOrdersStatus(orderList, OrdersStatus.ARCHIVED)
         assertEquals(filteredListArchived.size, 1)
-    }
 
-    /**
-     * Check if correct order was chosen as active
-     */
-    @Test
-    fun `Order should be active when deadline is not expired`() {
-        val testUser1 = User(faker.number().randomDigit(), faker.name().username())
-        val testUser2 = User(faker.number().randomDigit(), faker.name().username())
-
-        val testGroup = Group(faker.number().randomDigit(), faker.name().name(), testUser1)
-        val testCuisine = Cuisine(faker.number().randomDigit(), faker.name().name(), arrayListOf<Item>())
-
-        // Make fake location
-        val testLatitude = faker.number().randomDouble(5, -90, 90)
-        val testLongitude = faker.number().randomDouble(5, -180, 180)
-        val testLocation = Location(faker.number().randomDigit(), faker.name().name(), testLatitude, testLongitude, faker.address().fullAddress(), faker.bool().bool(), testCuisine)
-
-        val orderList = arrayListOf<Order>()
-        val activeId = faker.number().randomDigit()
-
-        // Make orders with deadlines far into the past and future
-        orderList.add(Order(activeId, faker.date().future(90000, 10000, TimeUnit.DAYS), faker.name().name(), testGroup, testLocation, testUser2))
-        orderList.add(Order(faker.number().randomDigit(), faker.date().past(90000, 10000, TimeUnit.DAYS), faker.name().name(), testGroup, testLocation, testUser2))
-
-        val filteredListActive = filterOrdersStatus(orderList, OrdersStatus.ACTIVE)
-        assertEquals(filteredListActive.get(0).id, activeId)
-    }
-
-    /**
-     * Check if correct order was chosen as archived
-     */
-    @Test
-    fun `Order should be archived when deadline expired`() {
-        val testUser1 = User(faker.number().randomDigit(), faker.name().username())
-        val testUser2 = User(faker.number().randomDigit(), faker.name().username())
-
-        val testGroup = Group(faker.number().randomDigit(), faker.name().name(), testUser1)
-        val testCuisine = Cuisine(faker.number().randomDigit(), faker.name().name(), arrayListOf<Item>())
-
-        val testLatitude = faker.number().randomDouble(5, -90, 90)
-        val testLongitude = faker.number().randomDouble(5, -180, 180)
-        val testLocation = Location(faker.number().randomDigit(), faker.name().name(), testLatitude, testLongitude, faker.address().fullAddress(), faker.bool().bool(), testCuisine)
-
-        val orderList = arrayListOf<Order>()
-        val archivedId = faker.number().randomDigit()
-        orderList.add(Order(faker.number().randomDigit(), faker.date().future(90000, 10000, TimeUnit.DAYS), faker.name().name(), testGroup, testLocation, testUser2))
-        orderList.add(Order(archivedId, faker.date().past(90000, 10000, TimeUnit.DAYS), faker.name().name(), testGroup, testLocation, testUser2))
-
-        val filteredListArchived = filterOrdersStatus(orderList, OrdersStatus.ARCHIVED)
+        assertEquals(filteredListActive[0].id, activeId)
         assertEquals(filteredListArchived[0].id, archivedId)
     }
 }
