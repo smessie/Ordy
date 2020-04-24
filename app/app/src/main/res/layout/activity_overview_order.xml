@@ -124,9 +124,10 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:gravity="end"
                     android:orientation="vertical"
+                    android:paddingTop="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/linearLayout"
                     app:layout_constraintTop_toTopOf="parent">
@@ -146,6 +147,15 @@
                         android:layout_weight="1"
                         android:textColor="@android:color/white"
                         android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/order_bill_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/order_overview_header_bill"
+                        android:backgroundTint="@color/colorAccent"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:onClick="@{() -> handlers.showBill()}"/>
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

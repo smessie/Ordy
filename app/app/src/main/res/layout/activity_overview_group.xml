@@ -91,7 +91,7 @@
                     android:backgroundTint="@android:color/darker_gray"
                     android:onClick="@{() -> handlers.onLeaveButtonClick()}"
                     android:text="@string/group_leave"
-                    android:elevation="0dp" />
+                    style="?android:attr/borderlessButtonStyle" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -100,7 +100,7 @@
                     android:backgroundTint="@color/colorAccent"
                     android:onClick="@{() -> handlers.onInviteButtonClick()}"
                     android:text="@string/group_invite_user"
-                    android:elevation="0dp"/>
+                    style="?android:attr/borderlessButtonStyle" />
             </LinearLayout>
         </LinearLayout>
 

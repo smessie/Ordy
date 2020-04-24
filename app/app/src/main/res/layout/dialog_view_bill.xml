@@ -2,28 +2,81 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.orders.create.location.CreateOrderLocationDialog">
+    tools:context=".ui.orders.overview.viewbill.ViewBillDialog">
 
     <data>
-        <variable
-            name="handlers"
-            type="com.ordy.app.ui.orders.create.location.CreateOrderLocationHandlers" />
 
         <variable
             name="viewModel"
-            type="com.ordy.app.ui.orders.create.location.CreateOrderLocationViewModel" />
+            type="com.ordy.app.ui.orders.overview.OverviewOrderViewModel" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@android:color/black">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Image -->
+            <com.github.chrisbanes.photoview.PhotoView
+                android:id="@+id/bill_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <!-- Loading -->
+            <LinearLayout
+                android:id="@+id/bill_image_loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <!-- Error -->
+            <LinearLayout
+                android:id="@+id/bill_image_error"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:visibility="invisible"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    style="@style/Subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/bill_error_title" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/bill_error_description" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Toolbar -->
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="0dp">
+            android:background="@android:color/transparent"
+            app:elevation="0dp"
+            >
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -36,71 +89,5 @@
                 app:navigationIcon="@drawable/ic_close_white_24dp" />
 
         </com.google.android.material.appbar.AppBarLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_horizontal_margin">
-
-            <!-- Search field -->
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin">
-
-                <ProgressBar
-                    android:id="@+id/locations_search_loading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:indeterminate="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/locations_search"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/order_location_input_search"
-                    android:maxLines="1"
-                    android:textColor="@android:color/primary_text_dark"
-                    app:startIconDrawable="@drawable/ic_search_black_24dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@={viewModel.searchValueData}" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </RelativeLayout>
-
-            <!-- List with locations -->
-            <ListView
-                android:id="@+id/locations"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <!-- Empty placeholder -->
-            <LinearLayout
-                android:id="@+id/locations_empty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/activity_horizontal_margin">
-
-                <TextView
-                    style="@style/Subtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/no_locations_title" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/no_locations_description" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </layout>
