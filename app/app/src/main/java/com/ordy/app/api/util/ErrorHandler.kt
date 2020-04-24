@@ -116,8 +116,17 @@ class ErrorHandler {
                 && view != null
             ) {
 
+                var message = queryError.message
+
+                // Filter a connection error message and throw a custom error instead
+                if(message.startsWith("Unable to resolve host")) {
+
+                    // Check if the user has no internet connection
+                    message = "Unable to connect to the server. Please check your connection."
+                }
+
                 // Create and show a snackbar with the error message.
-                this.handleRawGeneral(queryError.message, view)
+                this.handleRawGeneral(message, view)
             }
         }
 
