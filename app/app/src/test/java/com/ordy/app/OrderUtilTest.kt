@@ -22,7 +22,7 @@ class OrderUtilTest {
      */
     @Test
     fun `groupItems should return empty list when parameter is empty`() {
-        assertEquals(groupItems(arrayListOf<OrderItem>()).size, 0)
+        assertEquals(groupItems(emptyList()).size, 0)
     }
 
     /**
@@ -68,7 +68,7 @@ class OrderUtilTest {
      */
     @Test
     fun `userGroupItems should return empty list when param is empty list`() {
-        assertEquals(userGroupItems(arrayListOf<OrderItem>()).size, 0)
+        assertEquals(userGroupItems(emptyList()).size, 0)
     }
 
     /**
@@ -147,7 +147,7 @@ class OrderUtilTest {
         val testUser2 = User(faker.number().randomDigit(), faker.name().username(), faker.internet().emailAddress())
 
         val testGroup = Group(faker.number().randomDigit(), faker.name().name(), testUser1)
-        val testCuisine = Cuisine(faker.number().randomDigit(), faker.name().name(), arrayListOf<Item>())
+        val testCuisine = Cuisine(faker.number().randomDigit(), faker.name().name(), emptyList())
 
         val testLatitude = faker.number().randomDouble(5, -90, 90)
         val testLongitude = faker.number().randomDouble(5, -180, 180)
