@@ -85,4 +85,8 @@ dependencies {
 
     // Skeleton Loaders
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    // Photo view: used for viewing an order bill
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
