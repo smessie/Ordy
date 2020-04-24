@@ -12,7 +12,7 @@ data class Order(
     val deadline: Date,
 
     @SerializedName("billUrl")
-    val billUrl: String,
+    val billUrl: String?,
 
     @SerializedName("group")
     val group: Group,

@@ -155,6 +155,7 @@
                         android:text="@string/order_overview_header_bill"
                         android:backgroundTint="@color/colorAccent"
                         style="?android:attr/borderlessButtonStyle"
+                        android:visibility="invisible"
                         android:onClick="@{() -> handlers.showBill()}"/>
                 </LinearLayout>
 

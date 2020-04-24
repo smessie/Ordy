@@ -43,7 +43,7 @@ class ViewBillDialog : DialogFragment() {
         val photoView = binding.root.findViewById(R.id.bill_image) as PhotoView
 
         Picasso.get()
-            .load("https://media-cdn.tripadvisor.com/media/photo-s/0e/14/ff/95/rekening.jpg")
+            .load(viewModel.getOrder().requireData().billUrl)
             .into(photoView, object : Callback {
 
                 override fun onSuccess() {
