@@ -359,7 +359,44 @@ class Repository(val apiService: ApiService) {
     /******************************
      ***       PAYMENTS         ***
      ******************************/
+    val userDebtorsResult: MutableLiveData<Query<List<Payment>>> = MutableLiveData(Query())
+    val userDebtsResult: MutableLiveData<Query<List<Payment>>> = MutableLiveData(Query())
 
+    /**
+    * Refresh the Debtors.
+    * */
+    fun refreshDebtors() {
+        FetchHandler.handle(
+            userDebtorsResult, apiService.userDebtors()
+        )
+    }
+
+    /**
+     * Refresh the User his debts.
+     * */
+    fun refreshDebts() {
+        FetchHandler.handle(
+            userDebtsResult, apiService.userDepts()
+        )
+    }
+
+    /**
+     * Update The payment status of an order.
+     * */
+    fun updatePaid(
+        liveData: MutableLiveData<Query<ResponseBody>>,
+        orderId: Int,
+        userId: Int,
+        paymentUpdate: PaymentUpdate
+    ) {
+        FetchHandler.handle(
+            liveData, apiService.userSetPaid(
+                orderId = orderId,
+                userId = userId,
+                body = paymentUpdate
+            )
+        )
+    }
 
     /******************************
      ***        PROFILE         ***
