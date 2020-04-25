@@ -94,7 +94,7 @@ class OrderGeneralListAdapter(val context: Context?, var viewModel: OverviewOrde
         if (viewModel.getOrder().status == QueryStatus.SUCCESS) {
             val orderItems = viewModel.getOrder().requireData().orderItems
 
-            orderItemGroups = OrderUtil.groupItems(orderItems)
+            orderItemGroups = OrderUtil.groupItems(orderItems!!)
         }
 
         // Notify the changes to the list view (to re-render automatically)
