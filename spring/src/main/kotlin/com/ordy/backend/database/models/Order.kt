@@ -1,6 +1,7 @@
 package com.ordy.backend.database.models
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonView
 import com.ordy.backend.database.View
 import java.util.*
@@ -19,8 +20,12 @@ class Order (
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZZ")
         var deadline: Date,
 
-        @Column(nullable = true)
+        @Column(nullable = true, name = "bill_url", length = 512)
         @JsonView(View.Detail::class)
+        var billUrl: String = "",
+
+        @Column(nullable = true)
+        @JsonIgnore
         var imageId: Int? = null,
 
         @JsonView(View.List::class)
