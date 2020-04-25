@@ -19,9 +19,9 @@ class Order (
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZZ")
         var deadline: Date,
 
-        @Column(nullable = true, name = "bill_url", length = 512)
+        @Column(nullable = true)
         @JsonView(View.Detail::class)
-        var billUrl: String = "",
+        var imageId: Int? = null,
 
         @JsonView(View.List::class)
         @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false)

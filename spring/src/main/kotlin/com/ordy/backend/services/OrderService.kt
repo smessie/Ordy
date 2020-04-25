@@ -1,18 +1,22 @@
 package com.ordy.backend.services
 
-import com.ordy.backend.database.models.Item
-import com.ordy.backend.database.models.Location
-import com.ordy.backend.database.models.Order
-import com.ordy.backend.database.models.OrderItem
+import com.ordy.backend.database.models.*
 import com.ordy.backend.database.repositories.*
 import com.ordy.backend.exceptions.GenericException
 import com.ordy.backend.exceptions.ThrowableList
 import com.ordy.backend.wrappers.OrderAddItemWrapper
 import com.ordy.backend.wrappers.OrderCreateWrapper
 import com.ordy.backend.wrappers.OrderUpdateItemWrapper
+import org.apache.tomcat.util.http.fileupload.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpRequest
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
+import java.io.ByteArrayInputStream
+import java.io.InputStream
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @Service
 class OrderService(
@@ -22,7 +26,8 @@ class OrderService(
         @Autowired val userRepository: UserRepository,
         @Autowired val groupMemberRepository: GroupMemberRepository,
         @Autowired val groupRepository: GroupRepository,
-        @Autowired val locationRepository: LocationRepository
+        @Autowired val locationRepository: LocationRepository,
+        @Autowired val imageService: ImageService
 ) {
 
     /**
@@ -230,5 +235,39 @@ class OrderService(
 
         // Delete the order item
         orderItemRepository.delete(orderItemOptional.get())
+    }
+
+    /**
+     * upload the picture of bill in the database
+     */
+
+    fun uploadBillImage(userId: Int, orderId: Int, image: MultipartFile) {
+        val throwableList = ThrowableList()
+
+        val order = this.getOrder(userId, orderId)
+        val imageId = imageService.saveImage(image)
+        order.imageId = imageId
+        orderRepository.save(order)
+    }
+
+    /**
+     * get Image with given id
+     */
+
+    fun getBillImage(userId: Int, orderId: Int, request: HttpServletRequest, response: HttpServletResponse) {
+        val throwableList = ThrowableList()
+
+        val order = this.getOrder(userId, orderId) // TODO: throws error, due to changes in Order model I think
+        // this works (tested in imageController)
+        val image = imageService.getImage(order.imageId!!, request)
+        val byteArray = ByteArray(image.image.size)
+        var i = 0
+
+        for (wrappedByte in image.image) {
+            byteArray[i++] = wrappedByte
+        }
+
+        val inputStream: InputStream = ByteArrayInputStream(byteArray)
+        IOUtils.copy(inputStream, response.outputStream)
     }
 }
