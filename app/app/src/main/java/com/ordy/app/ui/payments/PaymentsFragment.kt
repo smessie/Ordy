@@ -6,11 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import com.ordy.app.R
 import com.ordy.app.api.RepositoryViewModelFactory
-import com.ordy.app.databinding.FragmentPaymentsBinding
+import com.ordy.app.ui.payments.debtors.PaymentsDebtorsFragment
+import com.ordy.app.ui.payments.debts.PaymentsDebtsFragment
+import com.ordy.app.util.TabsAdapter
+import com.ordy.app.util.TabsEntry
 
 class PaymentsFragment : Fragment() {
+
+    private lateinit var tabsAdapter: TabsAdapter
 
     private val viewModel: PaymentsViewModel by activityViewModels {
         RepositoryViewModelFactory(
@@ -26,13 +33,30 @@ class PaymentsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        inflater.inflate(R.layout.fragment_payments, container, false)
+        // Inflate the layout for this fragment.
+        val view = inflater.inflate(R.layout.fragment_payments, container, false)
 
-        // Create binding for the fragment.
-        val binding = FragmentPaymentsBinding.inflate(inflater, container, false)
-        binding.handlers = PaymentsHandlers(this, viewModel)
+        // Create the tabs adapter.
+        // TODO: Remove hardcoded strings
+        tabsAdapter = TabsAdapter(childFragmentManager)
+        tabsAdapter.addTabsEntry(TabsEntry(PaymentsDebtorsFragment(), "Debtors"))
+        tabsAdapter.addTabsEntry(TabsEntry(PaymentsDebtsFragment(), "Your debts"))
 
-        return binding.root
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        /**
+         * Setup the tabsbar.
+         * Link tabsAdapter to viewPager.
+         * Link viewPager ot tabLayout.
+         */
+        val viewPager = view.findViewById<ViewPager>(R.id.tabs_view)
+        viewPager.adapter = tabsAdapter
+
+        val tabs = view.findViewById<TabLayout>(R.id.tabs)
+        tabs.setupWithViewPager(viewPager)
     }
 }
