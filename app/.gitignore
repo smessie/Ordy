@@ -12,3 +12,6 @@
 /captures
 .externalNativeBuild
 .cxx
+
+# Sign key
+key.jks
