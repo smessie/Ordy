@@ -110,7 +110,7 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
 
             val orderItems = viewModel.getOrder().requireData().orderItems
 
-            orderItemUserGroups = OrderUtil.userGroupItems(orderItems)
+            orderItemUserGroups = OrderUtil.userGroupItems(orderItems!!)
         }
 
         // Notify the changes to the list view (to re-render automatically)

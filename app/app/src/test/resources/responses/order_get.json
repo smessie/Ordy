@@ -1,0 +1,27 @@
+{
+    "id": 1,
+    "deadline": "2020-04-26T16:00:27+0000",
+    "billUrl": "https://ordy.ga/test.png",
+    "group": {
+        "id": 1,
+        "name": "Zeus",
+        "creator": {
+            "id": 1,
+            "username": "Elon Musk",
+            "email": "elonmusk@spacex.com"
+        }
+    },
+    "courier": {
+        "id": 1,
+        "username": "Elon Musk",
+        "email": "elonmusk@spacex.com"
+    },
+    "location": {
+        "id": 1,
+        "name": "'t Blauw Kotje",
+        "latitude": 51.0311638,
+        "longitude": 3.7134913,
+        "address": "Somewhere over the rainbow"
+    },
+    "orderItems": []
+}

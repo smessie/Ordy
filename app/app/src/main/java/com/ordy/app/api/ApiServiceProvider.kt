@@ -13,6 +13,26 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiServiceProvider {
 
     /**
+     * Get the standard builder for the API Service.
+     */
+    fun builder(): Retrofit.Builder {
+
+        // Set the date format for the GSON converter
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ")
+            .create()
+
+        return Retrofit.Builder()
+            .addCallAdapterFactory(
+                RxJava2CallAdapterFactory.create()
+            )
+            .addConverterFactory(
+                GsonConverterFactory.create(gson)
+            )
+            .baseUrl("https://api.ordy.ga")
+    }
+
+    /**
      * Create the API Service
      */
     fun create(context: Context): ApiService {
@@ -25,18 +45,9 @@ class ApiServiceProvider {
             chain.proceed(newRequest)
         }.build()
 
-        val gson = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ")
-            .create()
-
-        val retrofit = Retrofit.Builder()
-            .addCallAdapterFactory(
-                RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(gson))
+        return this.builder()
             .client(client)
-            .baseUrl("https://api.ordy.ga")
             .build()
-
-        return retrofit.create(ApiService::class.java)
+            .create(ApiService::class.java)
     }
 }

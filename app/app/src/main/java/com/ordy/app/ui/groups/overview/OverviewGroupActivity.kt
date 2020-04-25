@@ -71,7 +71,7 @@ class OverviewGroupActivity : AppCompatActivity() {
                     val group = it.requireData()
 
                     group_title.text = group.name
-                    group_members_amount.text = group.members.size.toString()
+                    group_members_amount.text = group.members?.size.toString()
 
                     val listAdapter = this.listAdapter
 
