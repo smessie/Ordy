@@ -122,7 +122,7 @@ class ErrorHandler {
                 if(message.startsWith("Unable to resolve host")) {
 
                     // Check if the user has no internet connection
-                    message = context.getString(R.string.error_connection)
+                    message = view.context.getString(R.string.error_connection)
                 }
 
                 // Create and show a snackbar with the error message.
