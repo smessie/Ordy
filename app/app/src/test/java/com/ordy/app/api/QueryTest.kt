@@ -27,7 +27,7 @@ class QueryTest {
 
             fail("Expected an IllegalStateException to be thrown")
         } catch (exception: IllegalStateException) {
-            Assert.assertEquals(exception.message, "Data is not present on Query object")
+            Assert.assertEquals("Data is not present on Query object", exception.message)
         }
     }
 
@@ -41,7 +41,7 @@ class QueryTest {
 
             fail("Expected an IllegalStateException to be thrown")
         } catch (exception: IllegalStateException) {
-            Assert.assertEquals(exception.message, "Error is not present on Query object")
+            Assert.assertEquals("Error is not present on Query object", exception.message)
         }
     }
 }
