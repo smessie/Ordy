@@ -105,6 +105,8 @@
     <string name="list_item_closing_on">Closing on:&#160;</string>
     <string name="list_item_courier">Courier:</string>
 
+    <string name="error_connection">Unable to connect to the server. Please check your connection.</string>
+
     <!-- placeholders for development -->
     <string name="placeholder_name">Bob</string>
     <string name="placeholder_member_count">12</string>
