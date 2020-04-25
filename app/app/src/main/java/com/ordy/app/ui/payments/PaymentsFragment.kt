@@ -37,10 +37,19 @@ class PaymentsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_payments, container, false)
 
         // Create the tabs adapter.
-        // TODO: Remove hardcoded strings
         tabsAdapter = TabsAdapter(childFragmentManager)
-        tabsAdapter.addTabsEntry(TabsEntry(PaymentsDebtorsFragment(), "Debtors"))
-        tabsAdapter.addTabsEntry(TabsEntry(PaymentsDebtsFragment(), "Your debts"))
+        tabsAdapter.addTabsEntry(
+            TabsEntry(
+                PaymentsDebtorsFragment(),
+                getString(R.string.debtors_tab_title)
+            )
+        )
+        tabsAdapter.addTabsEntry(
+            TabsEntry(
+                PaymentsDebtsFragment(),
+                getString(R.string.debts_tab_title)
+            )
+        )
 
         return view
     }

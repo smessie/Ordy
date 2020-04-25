@@ -75,4 +75,13 @@
     <string name="loading">Loading</string>
     <string name="no_groups_title">No groups found</string>
     <string name="no_groups_description">Create or join a group and they will appear here</string>
+
+    <!-- Debts -->
+    <string name="debts_tab_title">Your debts</string>
+    <string name="no_debts_title">No debts</string>
+    <string name="no_debts_description">You currently have no debts</string>
+    <!-- Debtors -->
+    <string name="debtors_tab_title">Debtors</string>
+    <string name="no_debtors_title">No debtors</string>
+    <string name="no_debtors_description">Nobody is in your debt</string>
 </resources>
