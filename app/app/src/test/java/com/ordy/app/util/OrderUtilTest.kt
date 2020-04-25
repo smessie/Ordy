@@ -1,4 +1,4 @@
-package com.ordy.app
+package com.ordy.app.util
 
 import com.github.javafaker.Faker
 import com.ordy.app.api.models.*
