@@ -47,7 +47,7 @@ class ErrorHandler {
                         Gson().fromJson(errorBody.charStream(), ErrorResult::class.java)
 
                     if (errorResult != null) {
-                        // General errors (when defined)
+
                         if (errorResult.generalErrors != null) {
                             queryError.generalErrors = errorResult.generalErrors
                         }
