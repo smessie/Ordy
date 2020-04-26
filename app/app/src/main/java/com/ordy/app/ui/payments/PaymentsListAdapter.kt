@@ -57,7 +57,7 @@ class PaymentsListAdapter(
                 view.order_deadline_time.text = DateFormat
                     .getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
                     .format(payment.order.deadline)
-                view.payment_other_user_name.text = payment.order.courier.username
+                view.payment_other_user_name.text = payment.user.username
 
                 /**
                  * Do some paymentsType specific things
