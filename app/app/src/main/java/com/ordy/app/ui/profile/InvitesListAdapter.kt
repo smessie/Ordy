@@ -94,7 +94,7 @@ class InvitesListAdapter(
                         }
 
                         QueryStatus.ERROR -> {
-                            ErrorHandler.handle(it.error, view, listOf())
+                            ErrorHandler().handle(it.error, view, listOf())
                         }
 
                         else -> {

@@ -20,7 +20,7 @@ class RegisterHandlers(val fragment: RegisterFragment, val viewModel: LoginViewM
         if (password == passwordRepeat) {
             viewModel.register(username, email, password)
         } else {
-            ErrorHandler.handleRawGeneral("Passwords does not match.", fragment.requireView())
+            ErrorHandler().handleRawGeneral("Passwords does not match.", fragment.requireView())
         }
     }
 

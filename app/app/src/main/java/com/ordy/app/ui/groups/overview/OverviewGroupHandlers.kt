@@ -33,7 +33,7 @@ class OverviewGroupHandlers(
                 }
             }.show()
         } else {
-            ErrorHandler.handleRawGeneral(
+            ErrorHandler().handleRawGeneral(
                 "You already are no member of this group.",
                 view
             )
@@ -52,7 +52,7 @@ class OverviewGroupHandlers(
 
             activity.startActivity(intent)
         } else {
-            ErrorHandler.handleRawGeneral(
+            ErrorHandler().handleRawGeneral(
                 "Request failed. Please try again...",
                 view
             )
@@ -79,7 +79,7 @@ class OverviewGroupHandlers(
                     }
 
                     QueryStatus.ERROR -> {
-                        ErrorHandler.handle(it.error, view)
+                        ErrorHandler().handle(it.error, view)
                     }
 
                     else -> {

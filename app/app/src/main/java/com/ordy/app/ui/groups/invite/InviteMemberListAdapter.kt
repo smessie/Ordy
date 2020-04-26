@@ -77,7 +77,7 @@ class InviteMemberListAdapter(
 
                         QueryStatus.ERROR -> {
                             // Handle error
-                            ErrorHandler.handle(it.error, view)
+                            ErrorHandler().handle(it.error, view)
 
                             val text = context.getString(R.string.invite_button)
 

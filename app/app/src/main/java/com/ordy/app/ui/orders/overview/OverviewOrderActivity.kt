@@ -113,7 +113,7 @@ class OverviewOrderActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler.handle(it.error, binding.root)
+                    ErrorHandler().handle(it.error, binding.root)
                 }
 
                 else -> {
