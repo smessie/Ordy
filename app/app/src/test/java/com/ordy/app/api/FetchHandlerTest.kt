@@ -2,6 +2,7 @@ package com.ordy.app.api
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.github.javafaker.Faker
 import com.nhaarman.mockitokotlin2.whenever
 import com.ordy.app.api.util.*
 import io.reactivex.Observable
@@ -16,6 +17,8 @@ import org.mockito.Mockito.spy
 
 class FetchHandlerTest {
 
+    var faker = Faker()
+
     @Before
     fun setup() {
 
@@ -28,7 +31,7 @@ class FetchHandlerTest {
 
     @Test
     fun `'handle' should change the status of the query to LOADING`() {
-        val observable = Observable.just("")
+        val observable = Observable.just(faker.name().name())
         val mutableLiveData: MutableLiveData<Query<String>> = MutableLiveData(Query())
 
         // Handle the request.
@@ -40,7 +43,7 @@ class FetchHandlerTest {
 
     @Test
     fun `'handle' should update the data & success status when the observable succeeds`() {
-        val data = "Data Test"
+        val data = faker.name().name()
 
         val observable = Observable.just(data)
         val mutableLiveData: MutableLiveData<Query<String>> = MutableLiveData(Query())
@@ -58,7 +61,7 @@ class FetchHandlerTest {
 
     @Test
     fun `'handle' should update the error & error status when the observable fails`() {
-        val errorMessage = "Error Test"
+        val errorMessage = faker.name().name()
         val error = Throwable(errorMessage)
 
         val queryError = QueryError()
@@ -86,7 +89,7 @@ class FetchHandlerTest {
 
     @Test
     fun `'handleLive' should return mutable live data with a status of LOADING`() {
-        val observable = Observable.just("")
+        val observable = Observable.just(faker.name().name())
 
         // Handle the request.
         val queryMLD = FetchHandler.handleLive(observable)
