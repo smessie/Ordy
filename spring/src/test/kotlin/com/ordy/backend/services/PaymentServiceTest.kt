@@ -181,7 +181,7 @@ class PaymentServiceTest {
 
         whenever(orderItemRepository.findOrderItemsByUser(debtor)).thenReturn(orderItems.toList())
 
-        Assertions.assertEquals(paymentService.getDebts(courier.id), emptyList<PaymentWrapper>(), "Only active orders does not return empty debts list.")
+        Assertions.assertEquals(paymentService.getDebts(debtor.id), emptyList<PaymentWrapper>(), "Only active orders does not return empty debts list.")
     }
 
     private fun paymentWrapperIsEqual(paymentWrapper1: PaymentWrapper, paymentWrapper2: PaymentWrapper): Boolean {

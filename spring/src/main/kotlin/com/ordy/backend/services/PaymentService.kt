@@ -53,7 +53,7 @@ class PaymentService(
      */
     fun getDebts(userId: Int): List<PaymentWrapper> {
         val user = userRepository.findById(userId).get()
-        val allOrderItems = orderItemRepository.findOrderItemsByUser(user)
+        val allOrderItems = orderItemRepository.findOrderItemsByUser(user).filter { it.order.deadline.before(Date()) }
         val orders = allOrderItems.map {
             it.order
         }.distinct()
