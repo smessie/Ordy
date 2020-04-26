@@ -12,6 +12,8 @@ import com.ordy.app.R
 import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentPaymentsDebtsBinding
+import com.ordy.app.ui.payments.PaymentsListAdapter
+import com.ordy.app.ui.payments.PaymentsType
 import com.ordy.app.ui.payments.PaymentsViewModel
 import kotlinx.android.synthetic.main.fragment_payments_debts.view.*
 
@@ -23,7 +25,7 @@ class PaymentsDebtsFragment : Fragment() {
         )
     }
 
-    private lateinit var listAdapter: PaymentsDebtsListAdapter
+    private lateinit var listAdapter: PaymentsListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,18 +40,18 @@ class PaymentsDebtsFragment : Fragment() {
         binding.handlers = PaymentsDebtsHandlers(this, viewModel)
 
         // Initialize listViewAdapter
-        listAdapter = PaymentsDebtsListAdapter(requireContext(), viewModel)
+        listAdapter = PaymentsListAdapter(requireContext(), viewModel, PaymentsType.Debts)
 
         binding.root.findViewById<ListView>(R.id.payments_debts).apply {
             adapter = listAdapter
             emptyView = binding.root.findViewById(R.id.payments_debts_empty)
         }
 
-        // TODO Initial debtors "re"fresh
+        viewModel.refreshDebts()
 
         // Swipe to refresh
         binding.root.payments_debts_refresh.setOnRefreshListener {
-            // TODO refresh debtors
+            viewModel.refreshDebts()
         }
 
         // Observe the debts

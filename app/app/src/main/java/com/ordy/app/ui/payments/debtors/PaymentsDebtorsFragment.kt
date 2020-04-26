@@ -12,6 +12,8 @@ import com.ordy.app.R
 import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentPaymentsDebtorsBinding
+import com.ordy.app.ui.payments.PaymentsListAdapter
+import com.ordy.app.ui.payments.PaymentsType
 import com.ordy.app.ui.payments.PaymentsViewModel
 import kotlinx.android.synthetic.main.fragment_payments_debtors.view.*
 
@@ -23,7 +25,7 @@ class PaymentsDebtorsFragment : Fragment() {
         )
     }
 
-    private lateinit var listAdapter: PaymentsDebtorsListAdapter
+    private lateinit var listAdapter: PaymentsListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,18 +40,18 @@ class PaymentsDebtorsFragment : Fragment() {
         binding.handlers = PaymentsDebtorsHandlers(this, viewModel)
 
         // Initialize listViewAdapter
-        listAdapter = PaymentsDebtorsListAdapter(requireContext(), viewModel)
+        listAdapter = PaymentsListAdapter(requireContext(), viewModel, PaymentsType.Debtors)
 
         binding.root.findViewById<ListView>(R.id.payments_debtors).apply {
             adapter = listAdapter
             emptyView = binding.root.findViewById(R.id.payments_debtors_empty)
         }
 
-        // TODO Initial debtors "re"fresh
+        viewModel.refreshDebtors()
 
         // Swipe to refresh
         binding.root.payments_debtors_refresh.setOnRefreshListener {
-            // TODO refresh debtors
+            viewModel.refreshDebtors()
         }
 
         // Observe the debtors
@@ -61,5 +63,16 @@ class PaymentsDebtorsFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Update the list adapter when the "orders" query updates
+        viewModel.getDebtorsMLD().observe(this, Observer {
+
+            // Notify the changes to the list view (to re-render automatically)
+            listAdapter.notifyDataSetChanged()
+        })
     }
 }

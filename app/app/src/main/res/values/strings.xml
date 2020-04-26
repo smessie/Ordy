@@ -84,4 +84,6 @@
     <string name="debtors_tab_title">Debtors</string>
     <string name="no_debtors_title">No debtors</string>
     <string name="no_debtors_description">Nobody is in your debt</string>
+    <string name="mark_as_paid">Paid</string>
+    <string name="notify">Notify</string>
 </resources>
