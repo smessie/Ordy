@@ -27,18 +27,20 @@ android {
         enabled = true
     }
 
-// To inline the bytecode built with JVM target 1.8 into
-// bytecode that is being built with JVM target 1.6. (e.g. navArgs)
-
-
+    // To inline the bytecode built with JVM target 1.8 into
+    // bytecode that is being built with JVM target 1.6. (e.g. navArgs)
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -58,7 +60,8 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.5.0'
     testImplementation 'org.skyscreamer:jsonassert:1.5.0'
-    testImplementation 'org.mockito:mockito-core:3.3.3'
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
     implementation 'com.github.javafaker:javafaker:1.0.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

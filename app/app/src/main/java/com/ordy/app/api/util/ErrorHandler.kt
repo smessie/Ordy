@@ -12,75 +12,72 @@ import retrofit2.HttpException
 
 class ErrorHandler {
 
-    companion object {
+    /**
+     * Parse an error, received from RetroFit.
+     *
+     * @return Wrapped Query Error object.
+     */
+    fun parse(error: Throwable): QueryError {
 
-        /**
-         * Parse an error, received from RetroFit.
-         *
-         * @return Wrapped Query Error object.
-         */
-        fun parse(error: Throwable): QueryError {
+        val queryError = QueryError()
+        queryError.error = error
 
-            val queryError = QueryError()
-            queryError.error = error
+        Log.i("Error Handler", "----------------------------------------------")
+        Log.i("Error Handler", "An error occurred:")
 
-            // Print the error message to the console for debugging
-            error.printStackTrace()
+        // Handle HTTP Exceptions.
+        if (error is HttpException) {
+            queryError.message = if (error.message().isEmpty())
+                "An unknown error has occurred"
+            else error.message()
+            queryError.description = ""
+            queryError.code = error.code().toString()
+            queryError.response = error.response()
 
-            Log.i("Error Handler", "----------------------------------------------")
-            Log.i("Error Handler", "An error occurred:")
+            Log.i("Error Handler", "Message: ${queryError.message}")
+            Log.i("Error Handler", "Code: ${queryError.code}")
 
-            // Handle HTTP Exceptions.
-            if (error is HttpException) {
-                queryError.message = if (error.message().isEmpty())
-                    "An unknown error has occurred"
-                else error.message()
-                queryError.description = ""
-                queryError.code = error.code().toString()
-                queryError.response = error.response()
+            // General errors & input errors (when the error body is defined)
+            if (queryError.response != null && queryError.response!!.errorBody() != null) {
+                val errorBody = queryError.response!!.errorBody()
 
-                Log.i("Error Handler", "Message: ${queryError.message}")
-                Log.i("Error Handler", "Code: ${queryError.code}")
+                if (errorBody != null) {
+                    // Convert the error body.
+                    val errorResult =
+                        Gson().fromJson(errorBody.charStream(), ErrorResult::class.java)
 
-                // General errors & input errors (when the error body is defined)
-                if (queryError.response != null && queryError.response!!.errorBody() != null) {
-                    val errorBody = queryError.response!!.errorBody()
+                    if (errorResult != null) {
+                        // General errors (when defined)
+                        if (errorResult.generalErrors != null) {
+                            queryError.generalErrors = errorResult.generalErrors
+                        }
 
-                    if (errorBody != null) {
-                        // Convert the error body.
-                        val errorResult =
-                            Gson().fromJson(errorBody.charStream(), ErrorResult::class.java)
-
-                        if (errorResult != null) {
-                            // General errors (when defined)
-                            if (errorResult.generalErrors != null) {
-                                queryError.generalErrors = errorResult.generalErrors
-                            }
-
-                            // Input errors (when defined)
-                            if (errorResult.inputErrors != null) {
-                                queryError.inputErrors = errorResult.inputErrors
-                            }
+                        // Input errors (when defined)
+                        if (errorResult.inputErrors != null) {
+                            queryError.inputErrors = errorResult.inputErrors
                         }
                     }
                 }
             }
-
-            // Handle all other exceptions.
-            // This can be due to Runtime Errors
-            else {
-                queryError.message = error.message ?: "An unknown error has occurred"
-                queryError.description = "Something went wrong, please contact a developer."
-                queryError.code = "unknown"
-            }
-
-            Log.i("Error Handler", "Stacktrace: ")
-            error.printStackTrace()
-            Log.i("Error Handler", "----------------------------------------------")
-
-
-            return queryError
         }
+
+        // Handle all other exceptions.
+        // This can be due to Runtime Errors
+        else {
+            queryError.message = error.message ?: "An unknown error has occurred"
+            queryError.description = "Something went wrong, please contact a developer."
+            queryError.code = "unknown"
+        }
+
+        // Print the error message for debugging.
+        Log.i("Error Handler", "Stacktrace: ")
+        error.printStackTrace()
+        Log.i("Error Handler", "----------------------------------------------")
+
+        return queryError
+    }
+
+    companion object {
 
         /**
          * Handle input errors & general errors.
