@@ -1,18 +1,19 @@
 package com.ordy.app.api
 
+import android.view.View
 import com.github.javafaker.Faker
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import com.ordy.app.api.util.ErrorHandler
-import com.ordy.app.api.util.QueryGeneralError
-import com.ordy.app.api.util.QueryInputError
+import com.ordy.app.api.util.*
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert
 import org.junit.Test
-import org.mockito.Mockito.mock
+import org.mockito.Mockito.*
 import retrofit2.HttpException
 import retrofit2.Response
 
@@ -210,5 +211,105 @@ class ErrorHandlerTest {
         val queryError = ErrorHandler().parse(error)
 
         Assert.assertEquals(emptyList<QueryInputError>(), queryError.inputErrors)
+    }
+
+    @Test
+    fun `'handle' should handle the input errors`() {
+        val errorMessage = faker.name().name()
+        val errorHandler = spy(ErrorHandler::class.java)
+
+        // Mock the data
+        val queryError = mock(QueryError::class.java)
+        whenever(queryError.message).thenReturn(errorMessage)
+        val view = mock(View::class.java)
+        val fields = emptyList<InputField>()
+
+        // Prevent spawning a snackbar, since it is not mocked
+        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, view)
+
+        // Call the handle function
+        errorHandler.handle(queryError, view, fields)
+
+        verify(errorHandler, times(1)).handleInputs(queryError, view, fields)
+    }
+
+    @Test
+    fun `'handle' should handle the general errors`() {
+        val errorMessage = faker.name().name()
+        val errorHandler = spy(ErrorHandler::class.java)
+
+        // Mock the data
+        val queryError = mock(QueryError::class.java)
+        whenever(queryError.message).thenReturn(errorMessage)
+        val view = mock(View::class.java)
+
+        // Prevent spawning a snackbar, since it is not mocked
+        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, view)
+
+        // Call the handle function
+        errorHandler.handle(queryError, view)
+
+        verify(errorHandler, times(1)).handleGeneral(queryError, view)
+    }
+
+    @Test
+    fun `'handle' should put 'displayedError' on true when called`() {
+        val errorMessage = faker.name().name()
+        val errorHandler = spy(ErrorHandler::class.java)
+
+        // Mock the data
+        val queryError = QueryError()
+        queryError.message = errorMessage
+        val view = mock(View::class.java)
+
+        // Prevent spawning a snackbar, since it is not mocked
+        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, view)
+
+        // Call the handle function
+        errorHandler.handle(queryError, view)
+
+        Assert.assertTrue(queryError.displayedError)
+    }
+
+    @Test
+    fun `'handle' should do nothing when 'displayedError' is true`() {
+        val errorMessage = faker.name().name()
+        val errorHandler = spy(ErrorHandler::class.java)
+
+        // Mock the data
+        val queryError = QueryError()
+        queryError.message = errorMessage
+        queryError.displayedError = true
+        val view = mock(View::class.java)
+
+        // Prevent spawning a snackbar, since it is not mocked
+        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, view)
+
+        // Call the handle function
+        errorHandler.handle(queryError, view)
+
+        verify(errorHandler, times(1)).handle(queryError, view)
+        verifyNoMoreInteractions(errorHandler)
+    }
+
+    @Test
+    fun `'handle' should call 'handleRawGeneral' with the error message when no input or general error was found`() {
+        val errorMessage = faker.name().name()
+        val errorHandler = spy(ErrorHandler::class.java)
+
+        // Mock the data
+        val queryError = QueryError()
+        queryError.message = errorMessage
+        queryError.inputErrors = emptyList()
+        queryError.generalErrors = emptyList()
+        val view = mock(View::class.java)
+
+        // Prevent spawning a snackbar, since it is not mocked
+        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, view)
+
+        // Call the handle function
+        errorHandler.handle(queryError, view)
+
+        verify(errorHandler, times(1)).handleRawGeneral(queryError.message, view)
     }
 }

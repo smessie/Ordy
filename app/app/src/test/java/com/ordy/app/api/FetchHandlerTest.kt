@@ -53,7 +53,7 @@ class FetchHandlerTest {
         val query = queryMLD.value!!
 
         //  Wait until the observable has succeeded
-        observable.blockingSubscribe()
+        observable.blockingFirst()
 
         Assert.assertEquals(QueryStatus.SUCCESS, query.status)
         Assert.assertEquals(data, query.data)
