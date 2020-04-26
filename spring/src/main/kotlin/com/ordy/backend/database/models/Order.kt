@@ -24,9 +24,9 @@ class Order(
         @JsonView(View.Detail::class)
         var billUrl: String = "",
 
-        @Column(nullable = true)
         @JsonIgnore
-        var imageId: Int? = null,
+        @OneToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = true)
+        var image: Image? = null,
 
         @JsonView(View.List::class)
         @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false)

@@ -1,6 +1,7 @@
 package com.ordy.backend.services
 
 import com.ordy.backend.database.models.Image
+import com.ordy.backend.database.models.Order
 import com.ordy.backend.database.repositories.ImageRepository
 import com.ordy.backend.exceptions.ThrowableList
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,13 +18,13 @@ class ImageService(@Autowired val imageRepository: ImageRepository) {
      */
 
     @Transactional
-    fun saveImage(file: MultipartFile): Int {
+    fun saveImage(file: MultipartFile, order: Order?): Image {
         val byteObjects = Array<Byte>(file.size.toInt()) { 0 }
         var i = 0
         for (byte in file.bytes) {
             byteObjects[i++] = byte
         }
-        return imageRepository.saveAndFlush(Image(image = byteObjects)).id
+        return imageRepository.saveAndFlush(Image(image = byteObjects, order = order))
     }
 
 
@@ -47,6 +48,7 @@ class ImageService(@Autowired val imageRepository: ImageRepository) {
      *  delete a bill image
      */
 
+    @Transactional
     fun deleteImage(imageId: Int) {
         val throwableList = ThrowableList()
 

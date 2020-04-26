@@ -30,11 +30,23 @@ class OrderService(
         @Autowired val groupMemberRepository: GroupMemberRepository,
         @Autowired val groupRepository: GroupRepository,
         @Autowired val locationRepository: LocationRepository,
-        @Autowired val imageService: ImageService
+        @Autowired val imageService: ImageService,
+        @Autowired val imageRepository: ImageRepository
 ) {
 
     @Value("\${ORDY_DOMAIN_NAME}")
     private lateinit var domainName: String
+
+    /**
+     * Function to add a "/" if the domainName doesn't have one
+     */
+
+    fun getDomainName(): String {
+        if (!domainName.endsWith("/")) {
+            domainName = "$domainName/"
+        }
+        return domainName
+    }
 
     /**
      * Get a list of orders for a given user.
@@ -261,14 +273,16 @@ class OrderService(
         }
 
         // if the order already had a bill picture, replace it with the new picture and delete the old one
-        if (order.imageId != null) {
-            val previousBillImgId = order.imageId!!
+        if (order.image !== null) {
+            val previousBillImgId = order.image!!.id
+            order.image = null // unlink the image from the order to be able to delete the image
+            orderRepository.save(order) // for safety reasons
             imageService.deleteImage(previousBillImgId)
         }
 
-        val imageId = imageService.saveImage(image)
-        order.imageId = imageId
-        order.billUrl = domainName + "orders/$orderId/bill"
+        val newImage = imageService.saveImage(image, order)
+        order.image = newImage
+        order.billUrl = getDomainName() + "orders/$orderId/bill"
         orderRepository.save(order)
     }
 
@@ -281,11 +295,11 @@ class OrderService(
 
         val order = this.getOrder(userId, orderId)
 
-        if (order.imageId === null) {
+        if (order.image === null) {
             throw throwableList.also { it.addGenericException("This order has no bill picture.") }
         }
 
-        val image = imageService.getImage(order.imageId!!, request)
+        val image = imageService.getImage(order.image!!.id, request)
         val byteArray = ByteArray(image.image.size)
         var i = 0
 

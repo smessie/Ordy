@@ -16,5 +16,9 @@ class Image (
         @Lob
         @Column(nullable = false)
         @JsonIgnore
-        val image: Array<Byte> = emptyArray()
+        val image: Array<Byte> = emptyArray(),
+
+        @JsonIgnore
+        @OneToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = true)
+        val order: Order? = null
 )
