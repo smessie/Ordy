@@ -1,6 +1,9 @@
 package com.ordy.backend.services
 
-import com.ordy.backend.database.models.*
+import com.ordy.backend.database.models.Item
+import com.ordy.backend.database.models.Location
+import com.ordy.backend.database.models.Order
+import com.ordy.backend.database.models.OrderItem
 import com.ordy.backend.database.repositories.*
 import com.ordy.backend.exceptions.GenericException
 import com.ordy.backend.exceptions.ThrowableList
@@ -9,7 +12,7 @@ import com.ordy.backend.wrappers.OrderCreateWrapper
 import com.ordy.backend.wrappers.OrderUpdateItemWrapper
 import org.apache.tomcat.util.http.fileupload.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpRequest
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
@@ -29,6 +32,9 @@ class OrderService(
         @Autowired val locationRepository: LocationRepository,
         @Autowired val imageService: ImageService
 ) {
+
+    @Value("\${ORDY_DOMAIN_NAME}")
+    private lateinit var domainName: String
 
     /**
      * Get a list of orders for a given user.
@@ -245,8 +251,24 @@ class OrderService(
         val throwableList = ThrowableList()
 
         val order = this.getOrder(userId, orderId)
+
+        if (order.courier.id != userId) {
+            throw throwableList.also { it.addGenericException("Adding a bill picture is only possible if you are the courier.") }
+        }
+
+        if (image.contentType.isNullOrBlank() || !image.contentType!!.contains("image")) {
+            throw throwableList.also { it.addGenericException("The content-type of your bill picture has to be image/{type}.") }
+        }
+
+        // if the order already had a bill picture, replace it with the new picture and delete the old one
+        if (order.imageId != null) {
+            val previousBillImgId = order.imageId!!
+            imageService.deleteImage(previousBillImgId)
+        }
+
         val imageId = imageService.saveImage(image)
         order.imageId = imageId
+        order.billUrl = domainName + "orders/$orderId/bill"
         orderRepository.save(order)
     }
 
@@ -257,8 +279,12 @@ class OrderService(
     fun getBillImage(userId: Int, orderId: Int, request: HttpServletRequest, response: HttpServletResponse) {
         val throwableList = ThrowableList()
 
-        val order = this.getOrder(userId, orderId) // TODO: throws error, due to changes in Order model I think
-        // this works (tested in imageController)
+        val order = this.getOrder(userId, orderId)
+
+        if (order.imageId === null) {
+            throw throwableList.also { it.addGenericException("This order has no bill picture.") }
+        }
+
         val image = imageService.getImage(order.imageId!!, request)
         val byteArray = ByteArray(image.image.size)
         var i = 0

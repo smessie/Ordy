@@ -9,7 +9,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "orders")
-class Order (
+class Order(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @JsonView(View.Id::class)
@@ -41,6 +41,6 @@ class Order (
         var location: Location,
 
         @JsonView(View.Detail::class)
-        @OneToMany(mappedBy="order")
+        @OneToMany(mappedBy = "order")
         var orderItems: Set<OrderItem> = emptySet()
 )
