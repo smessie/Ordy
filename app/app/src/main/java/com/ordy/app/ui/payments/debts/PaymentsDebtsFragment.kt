@@ -64,4 +64,15 @@ class PaymentsDebtsFragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Update the list adapter when the "orders" query updates
+        viewModel.getDebtsMLD().observe(this, Observer {
+
+            // Notify the changes to the list view (to re-render automatically)
+            listAdapter.notifyDataSetChanged()
+        })
+    }
 }
