@@ -39,11 +39,11 @@ class GroupsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_groups, container, false)
 
-        val emptyList: LinearLayout = view.findViewById(R.id.groups_empty)
+        val emptyList = view.groups_empty
 
         // list view adapter
         listAdapter = GroupsListAdapter(requireContext(), viewModel)
-        view.findViewById<ListView>(R.id.groups).apply {
+        view.groups.apply {
             adapter = listAdapter
             emptyView = emptyList
         }
@@ -57,7 +57,7 @@ class GroupsFragment : Fragment() {
         }
 
         // Binding button to load new activity
-        val createButton = view.findViewById<Button>(R.id.create_group_button)
+        val createButton = view.create_group_button
         createButton.setOnClickListener {
             val intent = Intent(context, CreateGroupActivity::class.java)
             startActivity(intent)

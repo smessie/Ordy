@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.databinding.FragmentOrderGeneralBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
+import kotlinx.android.synthetic.main.fragment_order_general.view.*
 
 class OrderGeneralFragment : Fragment() {
 
@@ -35,9 +36,9 @@ class OrderGeneralFragment : Fragment() {
 
         // Create the list view adapter
         listAdapter = OrderGeneralListAdapter(requireContext(), viewModel)
-        binding.root.findViewById<ListView>(R.id.order_items).apply {
+        binding.root.order_items.apply {
             adapter = listAdapter
-            emptyView = binding.root.findViewById(R.id.order_items_empty)
+            emptyView = binding.root.order_items_empty
         }
 
         // Update the list adapter when the "order" query updates

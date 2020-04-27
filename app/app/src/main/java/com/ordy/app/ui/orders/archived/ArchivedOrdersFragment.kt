@@ -49,9 +49,9 @@ class ArchivedOrdersFragment : Fragment() {
             OrdersStatus.ARCHIVED
         )
 
-        binding.root.findViewById<ListView>(R.id.orders_archived).apply {
+        binding.root.orders_archived.apply {
             adapter = listAdapter
-            emptyView = binding.root.findViewById(R.id.orders_archived_empty)
+            emptyView = binding.root.orders_archived_empty
         }
 
         viewModel.refreshOrders()
