@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.orders.overview.OverviewOrderActivity">
 
     <data>
-        <variable name="handlers" type="com.ordy.app.ui.orders.overview.OverviewOrderHandlers" />
+
+        <variable
+            name="handlers"
+            type="com.ordy.app.ui.orders.overview.OverviewOrderHandlers" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,52 +16,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- Header -->
+            <LinearLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                android:padding="@dimen/activity_horizontal_margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_horizontal_margin">
 
+                <!-- Left bar -->
                 <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:divider="@drawable/divider_6dp"
                     android:orientation="vertical"
-                    android:showDividers="middle"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:showDividers="middle">
 
-                    <LinearLayout
+                    <!-- Title -->
+                    <TextView
+                        android:id="@+id/order_title"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/order_overview_header_order"
-                            android:textColor="@android:color/white"
-                            android:textSize="25sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/order_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/placeholder_location"
-                            android:textColor="@android:color/white"
-                            android:textSize="25sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_location"
+                        android:textColor="@android:color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
 
                     <!-- Deadline -->
                     <LinearLayout
@@ -122,14 +110,12 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <!-- Right bar -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -148,18 +134,13 @@
                         android:textSize="16sp" />
                 </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
-
+            <!-- Content -->
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/tabs_view"
@@ -176,6 +157,6 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.viewpager.widget.ViewPager>
             </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

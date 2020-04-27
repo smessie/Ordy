@@ -84,7 +84,6 @@
 
     <string name="no_order_items_title">No items found</string>
 
-    <string name="order_overview_header_order">Order:&#160;</string>
     <string name="order_overview_header_deadline">Deadline:&#160;</string>
     <string name="order_overview_header_location">Location:&#160;</string>
     <string name="order_overview_header_courier">Courier:&#160;</string>
