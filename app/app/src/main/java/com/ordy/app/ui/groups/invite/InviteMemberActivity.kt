@@ -68,7 +68,7 @@ class InviteMemberActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler.handle(it.error, binding.root, emptyList())
+                    ErrorHandler().handle(it.error, binding.root, emptyList())
                 }
 
                 else -> {
@@ -102,7 +102,7 @@ class InviteMemberActivity : AppCompatActivity() {
                 QueryStatus.ERROR -> {
                     searchLoading.visibility = View.INVISIBLE
 
-                    ErrorHandler.handle(it.error, binding.root)
+                    ErrorHandler().handle(it.error, binding.root)
                 }
 
                 else -> {

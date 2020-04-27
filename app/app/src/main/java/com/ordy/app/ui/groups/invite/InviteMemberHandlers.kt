@@ -21,4 +21,13 @@ class InviteMemberHandlers(
             viewModel.sendInviteToUserFromGroup(userId, groupId, liveData)
         }
     }
+
+    /**
+     * Handle the delete invite button clicked
+     */
+    fun onDeleteButtonClick(liveData: MutableLiveData<Query<ResponseBody>>, userId: Int) {
+        if (liveData.value?.status != QueryStatus.LOADING) {
+            viewModel.deleteInviteOfUserFromGroup(userId, groupId, liveData)
+        }
+    }
 }

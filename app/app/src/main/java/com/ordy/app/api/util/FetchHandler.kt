@@ -43,7 +43,7 @@ class FetchHandler {
                     },
 
                     { error ->
-                        val errorObject = ErrorHandler.parse(error)
+                        val errorObject = ErrorHandler().parse(error)
 
                         query.error = errorObject
 

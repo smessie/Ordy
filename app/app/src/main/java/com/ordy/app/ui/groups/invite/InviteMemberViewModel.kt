@@ -5,16 +5,48 @@ import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.User
 import com.ordy.app.api.util.Query
+import com.ordy.app.api.wrappers.GroupInviteUserWrapper
 import okhttp3.ResponseBody
 
 class InviteMemberViewModel(repository: Repository) : RepositoryViewModel(repository) {
+
+    /**
+     * private field to hold the ID's of users who are already invited
+     */
+
+    private var invitedUsers: MutableList<Int> = mutableListOf()
+
+
+    /**
+     * add the id of an user to the "already invited users"-list
+     */
+
+    fun markUserAsInvited(userId: Int) {
+        invitedUsers.add(userId)
+    }
+
+    /**
+     * Remove the id of an user to the "already invited users"-list
+     */
+
+    fun cancelUserInvite(userId: Int) {
+        invitedUsers.remove(userId)
+    }
+
+    /**
+     * check if a user is already invited
+     */
+
+    fun isUserInvited(userId: Int): Boolean {
+        return invitedUsers.contains(userId)
+    }
 
     /**
      * Value of the search input field.
      */
     private val searchValueData: MutableLiveData<String> = MutableLiveData("")
 
-    fun getUsers(): Query<List<User>> {
+    fun getUsers(): Query<List<GroupInviteUserWrapper>> {
         return repository.getInviteableUsers().value!!
     }
 
@@ -42,7 +74,7 @@ class InviteMemberViewModel(repository: Repository) : RepositoryViewModel(reposi
     /**
      * Get the MutableLiveData result of all users matched that are able to invite.
      */
-    fun getInviteableUsersMLD(): MutableLiveData<Query<List<User>>> {
+    fun getInviteableUsersMLD(): MutableLiveData<Query<List<GroupInviteUserWrapper>>> {
         return repository.getInviteableUsers()
     }
 
@@ -58,5 +90,19 @@ class InviteMemberViewModel(repository: Repository) : RepositoryViewModel(reposi
         liveData: MutableLiveData<Query<ResponseBody>>
     ) {
         repository.sendInviteToUserFromGroup(userId, groupId, liveData)
+    }
+
+    /**
+     * Send an invite for a group to an user.
+     * @param userId: ID of the user we want to invite
+     * @param groupId: ID of the group we want to send an invite for
+     * @param liveData: Object where we want to store the result of our query in
+     */
+    fun deleteInviteOfUserFromGroup(
+        userId: Int,
+        groupId: Int,
+        liveData: MutableLiveData<Query<ResponseBody>>
+    ) {
+        repository.deleteInviteOfUserFromGroup(userId, groupId, liveData)
     }
 }

@@ -6,6 +6,7 @@ import com.ordy.app.api.models.actions.*
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
+import com.ordy.app.api.wrappers.GroupInviteUserWrapper
 import okhttp3.ResponseBody
 import java.util.*
 
@@ -15,7 +16,7 @@ class Repository(private val apiService: ApiService) {
      ***        GROUPS          ***
      ******************************/
     private val createGroupResult: MutableLiveData<Query<Group>> = MutableLiveData(Query())
-    private val inviteableUsers: MutableLiveData<Query<List<User>>> = MutableLiveData(Query())
+    private val inviteableUsers: MutableLiveData<Query<List<GroupInviteUserWrapper>>> = MutableLiveData(Query())
     private val group: MutableLiveData<Query<Group>> = MutableLiveData(Query())
     private val renameGroupResult: MutableLiveData<Query<Group>> = MutableLiveData(Query())
     private val leaveGroupResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
@@ -59,6 +60,20 @@ class Repository(private val apiService: ApiService) {
     }
 
     /**
+     * Delete an invite send to an user.
+     * @param userInvitedId: ID of the user we want to delete his invite
+     * @param groupId: ID of the group we want to delete the invite for
+     * @param liveData: Object where we want to store the result of our query in
+     */
+    fun deleteInviteOfUserFromGroup(userInvitedId: Int,
+                                    groupId: Int,
+                                    liveData: MutableLiveData<Query<ResponseBody>>) {
+        FetchHandler.handle(
+            liveData, apiService.deleteInviteGroup(groupId, userInvitedId)
+        )
+    }
+
+    /**
      * Refresh the group with given id.
      * @param groupId: ID of the group we want to fetch
      */
@@ -85,7 +100,7 @@ class Repository(private val apiService: ApiService) {
     }
 
     /**
-     * Change the name of a group
+     * Change the name of a group.
      * @param groupId: ID of the group of which the name will be changed
      * @param newName: The new name that will be given to the group
      */
@@ -117,7 +132,7 @@ class Repository(private val apiService: ApiService) {
     /**
      * Get the MutableLiveData result of all users matched that are able to invite.
      */
-    fun getInviteableUsers(): MutableLiveData<Query<List<User>>> {
+    fun getInviteableUsers(): MutableLiveData<Query<List<GroupInviteUserWrapper>>> {
         return inviteableUsers
     }
 

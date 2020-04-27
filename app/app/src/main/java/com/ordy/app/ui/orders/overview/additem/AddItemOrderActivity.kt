@@ -98,7 +98,7 @@ class AddItemOrderActivity : AppCompatActivity() {
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(binding.root)
 
-                    ErrorHandler.handle(it.error, binding.root)
+                    ErrorHandler().handle(it.error, binding.root)
                 }
 
                 else -> {

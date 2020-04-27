@@ -52,7 +52,7 @@ class CreateGroupActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler.handle(
+                    ErrorHandler().handle(
                         it.error, binding.root, listOf(
                             InputField("name", this.input_name)
                         )

@@ -6,6 +6,7 @@ import com.ordy.backend.database.models.Group
 import com.ordy.backend.database.models.User
 import com.ordy.backend.services.GroupService
 import com.ordy.backend.wrappers.GroupCreateWrapper
+import com.ordy.backend.wrappers.GroupInviteUserWrapper
 import com.ordy.backend.wrappers.GroupWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -55,7 +56,7 @@ class GroupController(@Autowired val groupService: GroupService) {
 
     @GetMapping("/{groupId}/invites/search/{username}")
     @JsonView(View.List::class)
-    fun searchMatchingInviteUsers(@PathVariable groupId: Int, @PathVariable username: String, @RequestAttribute userId: Int): List<User>{
+    fun searchMatchingInviteUsers(@PathVariable groupId: Int, @PathVariable username: String, @RequestAttribute userId: Int): List<GroupInviteUserWrapper>{
         return groupService.searchMatchingInviteUsers(groupId, username, userId)
     }
 }

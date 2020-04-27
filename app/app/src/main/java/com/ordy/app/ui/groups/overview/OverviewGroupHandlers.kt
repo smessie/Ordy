@@ -79,7 +79,7 @@ class OverviewGroupHandlers(
                     }
 
                     QueryStatus.ERROR -> {
-                        ErrorHandler.handle(it.error, view)
+                        ErrorHandler().handle(it.error, view)
                     }
 
                     else -> {

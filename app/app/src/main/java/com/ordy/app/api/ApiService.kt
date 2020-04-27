@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.Image
 import com.ordy.app.api.models.*
 import com.ordy.app.api.models.actions.*
+import com.ordy.app.api.wrappers.GroupInviteUserWrapper
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -48,7 +49,7 @@ interface ApiService {
     fun updateGroup(@Path("groupId") groupId: Int, @Body body: GroupUpdate): Observable<Group>
 
     @GET("groups/{groupId}/invites/search/{username}")
-    fun searchMatchingInviteUsers(@Path("groupId") groupId: Int, @Path("username") username: String): Observable<List<User>>
+    fun searchMatchingInviteUsers(@Path("groupId") groupId: Int, @Path("username") username: String): Observable<List<GroupInviteUserWrapper>>
 
     @POST("groups/{groupId}/invites/{userId}")
     fun createInviteGroup(@Path("groupId") groupId: Int, @Path("userId") userId: Int): Observable<ResponseBody>

@@ -16,3 +16,12 @@ class GroupInviteListWrapper(
         @JsonView(View.List::class)
         val user: User
 )
+
+class GroupInviteUserWrapper(
+
+        @JsonView(View.List::class)
+        val invited: Boolean,
+
+        @JsonView(View.List::class)
+        val user: User
+)
