@@ -14,5 +14,8 @@ data class OrderItem(
     val comment: String,
 
     @SerializedName("user")
-    val user: User
+    val user: User,
+
+    @SerializedName("paid")
+    val paid: Boolean = false
 )

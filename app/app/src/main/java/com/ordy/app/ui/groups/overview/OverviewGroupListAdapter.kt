@@ -37,7 +37,7 @@ class OverviewGroupListAdapter(
             }
 
             QueryStatus.SUCCESS -> {
-                val member = viewModel.getGroup().requireData().members[position]
+                val member = viewModel.getGroup().requireData().members!![position]
 
                 // Stop the shimmer effect & hide
                 view.member_loading.stopShimmer()
@@ -100,7 +100,7 @@ class OverviewGroupListAdapter(
     override fun getCount(): Int {
         return when (viewModel.getGroup().status) {
             QueryStatus.LOADING -> 6
-            QueryStatus.SUCCESS -> viewModel.getGroup().requireData().members.size
+            QueryStatus.SUCCESS -> viewModel.getGroup().requireData().members!!.size
             else -> 0
         }
     }

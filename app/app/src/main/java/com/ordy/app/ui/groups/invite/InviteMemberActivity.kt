@@ -15,6 +15,7 @@ import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityInviteMemberBinding
+import kotlinx.android.synthetic.main.activity_invite_member.view.*
 
 class InviteMemberActivity : AppCompatActivity() {
 
@@ -40,16 +41,15 @@ class InviteMemberActivity : AppCompatActivity() {
         binding.handlers = handlers
         binding.viewModel = viewModel
 
-        val listView = binding.root.findViewById<ListView>(R.id.users)
-        val listViewEmpty = binding.root.findViewById<LinearLayout>(R.id.users_empty)
-        val searchLoading: ProgressBar =
-            binding.root.findViewById(R.id.username_search_loading)
+        val listView = binding.root.users
+        val listViewEmpty = binding.root.users_empty
+        val searchLoading = binding.root.username_search_loading
 
         // Create the list view adapter
         listAdapter = InviteMemberListAdapter(applicationContext, this, viewModel, handlers)
         listView.apply {
             adapter = listAdapter
-            emptyView = binding.root.findViewById(R.id.users_empty)
+            emptyView = binding.root.users_empty
         }
 
         // Set the action bar elevation to 0, since the invite screen extends the action bar.

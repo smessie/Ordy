@@ -3,6 +3,7 @@ package com.ordy.app.util
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.ordy.app.util.types.TabsEntry
 
 class TabsAdapter(manager: FragmentManager) : FragmentStatePagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
@@ -31,5 +32,3 @@ class TabsAdapter(manager: FragmentManager) : FragmentStatePagerAdapter(manager,
      */
     override fun getPageTitle(position: Int): String = tabs[position].title
 }
-
-data class TabsEntry(val fragment: Fragment, val title: String)

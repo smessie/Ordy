@@ -19,8 +19,8 @@ import com.ordy.app.ui.orders.overview.personal.OrderPersonalFragment
 import com.ordy.app.ui.orders.overview.users.OrderUsersFragment
 import com.ordy.app.util.OrderUtil
 import com.ordy.app.util.TabsAdapter
-import com.ordy.app.util.TabsEntry
 import com.ordy.app.util.TimerUtil
+import com.ordy.app.util.types.TabsEntry
 import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.activity_overview_order.view.*
 import java.text.DateFormat
@@ -63,11 +63,11 @@ class OverviewOrderActivity : AppCompatActivity() {
         tabsAdapter.addTabsEntry(TabsEntry(OrderUsersFragment(), "Users"))
 
         // Link the adapter to the viewpager.
-        val viewPager: ViewPager = binding.root.findViewById(R.id.tabs_view)
+        val viewPager: ViewPager = binding.root.tabs_view
         viewPager.adapter = tabsAdapter
 
         // Link the viewpager to the tablayout.
-        val tabs: TabLayout = binding.root.findViewById(R.id.tabs)
+        val tabs: TabLayout = binding.root.tabs
         tabs.setupWithViewPager(viewPager)
 
         // Extract the "order_id" from the given intent variables.

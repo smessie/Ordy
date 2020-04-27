@@ -1,0 +1,14 @@
+{
+    "id": 1,
+    "comment": "Extra salt",
+    "paid": false,
+    "item": {
+        "id": 10,
+        "name": "Test"
+    },
+    "user": {
+        "id": 1,
+        "username": "Elon Musk",
+        "email": "elonmusk@spacex.com"
+    }
+}
