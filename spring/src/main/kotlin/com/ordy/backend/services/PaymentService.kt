@@ -32,7 +32,7 @@ class PaymentService(
             val orderItemsOfOrder = order.orderItems
 
             // Divide this list in sublists per separate user
-            val orderItemsPerUser = orderItemsOfOrder.groupBy { it.user }
+            val orderItemsPerUser = orderItemsOfOrder.filter { !it.paid }.groupBy { it.user }
 
             // Per order, a Payment is now added for each user containing all ordered items in that order of that user
             // Filter the user we are querying for (where he paid for himself)
@@ -53,7 +53,7 @@ class PaymentService(
      */
     fun getDebts(userId: Int): List<PaymentWrapper> {
         val user = userRepository.findById(userId).get()
-        val allOrderItems = orderItemRepository.findOrderItemsByUser(user).filter { it.order.deadline.before(Date()) }
+        val allOrderItems = orderItemRepository.findOrderItemsByUser(user).filter { it.order.deadline.before(Date()) && !it.paid }
         val orders = allOrderItems.map {
             it.order
         }.distinct()

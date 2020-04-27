@@ -184,6 +184,27 @@ class PaymentServiceTest {
         Assertions.assertEquals(paymentService.getDebts(debtor.id), emptyList<PaymentWrapper>(), "Only active orders does not return empty debts list.")
     }
 
+    /**
+     * As the orderItems are already paid, it should not be included in the current debtors list.
+     */
+    @Test
+    fun `when getting debts With only paid orderItems in archived order Should return empty list`() {
+        val debtor = User(id = faker.number().numberBetween(1, 1000000), username = faker.name().username(), email = faker.internet().emailAddress(), password = faker.internet().password())
+
+        whenever(userRepository.findById(anyInt())).thenReturn(Optional.of(debtor))
+
+        val order = Order(deadline = pastDate, group = group, courier = courier, location = location)
+        val orderItems = mutableSetOf<OrderItem>()
+        for (i in 0..5) {
+            orderItems.add(OrderItem(paid = true, order = order, item = Item(name = faker.food().dish()), user = debtor))
+        }
+        order.orderItems = orderItems
+
+        whenever(orderItemRepository.findOrderItemsByUser(debtor)).thenReturn(orderItems.toList())
+
+        Assertions.assertEquals(paymentService.getDebts(debtor.id), emptyList<PaymentWrapper>(), "Only active orders does not return empty debts list.")
+    }
+
     private fun paymentWrapperIsEqual(paymentWrapper1: PaymentWrapper, paymentWrapper2: PaymentWrapper): Boolean {
         return paymentWrapper1.order == paymentWrapper2.order && paymentWrapper1.orderItems == paymentWrapper2.orderItems && paymentWrapper1.user == paymentWrapper2.user
     }
