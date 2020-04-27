@@ -7,6 +7,9 @@ import com.ordy.backend.services.OrderService
 import com.ordy.backend.wrappers.OrderCreateWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping("/orders")
@@ -25,12 +28,12 @@ class OrderController(@Autowired val orderService: OrderService) {
     }
 
     @PostMapping("/{orderId}/bill")
-    fun postBill(@PathVariable orderId: Int) {
-        // TODO
+    fun postBill(@RequestAttribute userId: Int, @PathVariable orderId: Int, @RequestBody image: MultipartFile, request: HttpServletRequest, response: HttpServletResponse) {
+        orderService.uploadBillImage(userId, orderId, image)
     }
 
     @GetMapping("/{orderId}/bill")
-    fun getBill(@PathVariable orderId: Int) {
-        // TODO
+    fun getBill(@RequestAttribute userId: Int, @PathVariable orderId: Int, request: HttpServletRequest, response: HttpServletResponse) {
+        orderService.getBillImage(userId, orderId, request, response)
     }
 }

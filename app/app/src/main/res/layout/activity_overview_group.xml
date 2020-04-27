@@ -19,42 +19,39 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Header -->
         <LinearLayout
-            android:baselineAligned="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@drawable/divider_6dp"
             android:background="@color/colorPrimary"
             android:padding="@dimen/activity_horizontal_margin"
-            android:orientation="horizontal"
-            android:showDividers="middle">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-
+                <!-- Title -->
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    >
 
                     <TextView
                         android:id="@+id/group_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:textColor="@android:color/white"
                         android:textSize="25sp"
                         android:textStyle="bold"
                         android:text="@string/placeholder_group_name"/>
 
                     <Button
-                        style="@style/Widget.AppTheme.Button.IconButton"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:backgroundTint="@color/colorPrimary"
                         android:drawableEnd="@drawable/ic_pencil_white_24dp"
-                        android:onClick="@{() -> handlers.onRenameButtonClick()}" />
+                        android:onClick="@{() -> handlers.onRenameButtonClick()}"
+                        style="@style/Widget.AppTheme.Button.IconButton"/>
                  </LinearLayout>
 
                 <!-- Member amount -->
@@ -76,34 +73,36 @@
                         android:text=""
                         android:textColor="@android:color/white" />
                 </LinearLayout>
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:orientation="vertical">
-
-                <Button
+                <!-- Buttons -->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:backgroundTint="@android:color/darker_gray"
-                    android:onClick="@{() -> handlers.onLeaveButtonClick()}"
-                    android:text="@string/group_leave"
-                    android:elevation="0dp" />
+                    android:gravity="end"
+                    android:orientation="horizontal"
+                    android:layout_gravity="end">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:backgroundTint="@color/colorAccent"
-                    android:onClick="@{() -> handlers.onInviteButtonClick()}"
-                    android:text="@string/group_invite_user"
-                    android:elevation="0dp"/>
-            </LinearLayout>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:backgroundTint="@android:color/darker_gray"
+                        android:onClick="@{() -> handlers.onLeaveButtonClick()}"
+                        android:text="@string/group_leave"
+                        style="?android:attr/borderlessButtonStyle" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:backgroundTint="@color/colorAccent"
+                        android:onClick="@{() -> handlers.onInviteButtonClick()}"
+                        android:text="@string/group_invite_user"
+                        style="?android:attr/borderlessButtonStyle" />
+                </LinearLayout>
         </LinearLayout>
 
+        <!-- Members -->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/group_refresh"
             android:layout_width="match_parent"
