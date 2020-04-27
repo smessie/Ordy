@@ -13,6 +13,7 @@ import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityAddItemOrderBinding
 import com.ordy.app.util.SnackbarUtil
+import kotlinx.android.synthetic.main.activity_add_item_order.view.*
 
 class AddItemOrderActivity : AppCompatActivity() {
 
@@ -46,7 +47,7 @@ class AddItemOrderActivity : AppCompatActivity() {
 
         // Create the list view adapter
         listAdapter = AddItemOrderListAdapter(this, orderId, viewModel)
-        binding.root.findViewById<ListView>(R.id.order_cuisine_items).adapter = listAdapter
+        binding.root.order_cuisine_items.adapter = listAdapter
 
         // Update the list adapter when the "cuisine" query updates
         viewModel.getCuisineItemsMLD().observe(this, Observer {

@@ -6,8 +6,8 @@ import android.view.animation.AnimationUtils
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ordy.app.R
-import com.ordy.app.util.SnackbarType
 import com.ordy.app.util.SnackbarUtil
+import com.ordy.app.util.types.SnackbarType
 import retrofit2.HttpException
 
 class ErrorHandler {

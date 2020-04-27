@@ -18,6 +18,7 @@ import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.DialogCreateOrderLocationBinding
 import com.ordy.app.ui.orders.create.CreateOrderViewModel
+import kotlinx.android.synthetic.main.dialog_create_order_location.view.*
 
 class CreateOrderLocationDialog : DialogFragment() {
 
@@ -46,13 +47,13 @@ class CreateOrderLocationDialog : DialogFragment() {
         binding.viewModel = viewModel
 
         // Setup the toolbar
-        val toolbar: Toolbar = binding.root.findViewById(R.id.toolbar)
+        val toolbar: Toolbar = binding.root.toolbar
         toolbar.title = "Choose location"
         toolbar.setNavigationOnClickListener { dismiss() }
 
         // Setup the list view
-        val listView: ListView = binding.root.findViewById(R.id.locations)
-        val listViewEmpty: LinearLayout = binding.root.findViewById(R.id.locations_empty)
+        val listView: ListView = binding.root.locations
+        val listViewEmpty: LinearLayout = binding.root.locations_empty
 
         // Create the list view adapter
         listAdapter = CreateOrderLocationListAdapter(
@@ -68,8 +69,7 @@ class CreateOrderLocationDialog : DialogFragment() {
             emptyView = listViewEmpty
         }
 
-        val searchLoading: ProgressBar =
-            binding.root.findViewById(R.id.locations_search_loading)
+        val searchLoading = binding.root.locations_search_loading
 
         // Watch changes to the the "search value"
         viewModel.searchValueData.observe(viewLifecycleOwner, Observer {

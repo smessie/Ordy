@@ -15,6 +15,7 @@ import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentLocationsBinding
+import kotlinx.android.synthetic.main.fragment_locations.view.*
 
 class LocationsFragment : Fragment() {
 
@@ -43,8 +44,8 @@ class LocationsFragment : Fragment() {
         binding.viewmodel = viewModel
 
         // Setup the list view
-        val listView: ListView = binding.root.findViewById(R.id.locations)
-        val listViewEmpty: LinearLayout = binding.root.findViewById(R.id.locations_empty)
+        val listView: ListView = binding.root.locations
+        val listViewEmpty: LinearLayout = binding.root.locations_empty
 
         // Create the list view adapter
         listAdapter = LocationsListAdapter(
@@ -57,8 +58,7 @@ class LocationsFragment : Fragment() {
             emptyView = listViewEmpty
         }
 
-        val searchLoading: ProgressBar =
-            binding.root.findViewById(R.id.locations_search_loading)
+        val searchLoading = binding.root.locations_search_loading
 
         // Watch changes to the the "search value"
         viewModel.searchValueData.observe(viewLifecycleOwner, Observer {

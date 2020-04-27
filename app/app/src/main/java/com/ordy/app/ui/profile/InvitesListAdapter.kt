@@ -13,8 +13,8 @@ import com.ordy.app.api.models.actions.enums.InviteActionOptions
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
-import com.ordy.app.util.SnackbarType
 import com.ordy.app.util.SnackbarUtil
+import com.ordy.app.util.types.SnackbarType
 import kotlinx.android.synthetic.main.list_invite_group_card.view.*
 import okhttp3.ResponseBody
 
@@ -84,7 +84,9 @@ class InvitesListAdapter(
                             } else {
                                 "Successfully declined group invite."
                             }
+
                             viewModel.refreshInvites()
+
                             SnackbarUtil.openSnackbar(
                                 message,
                                 view,

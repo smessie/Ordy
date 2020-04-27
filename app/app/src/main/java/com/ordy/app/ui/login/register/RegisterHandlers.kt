@@ -1,5 +1,6 @@
 package com.ordy.app.ui.login.register
 
+import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.ui.login.LoginViewModel
 import com.ordy.app.util.InputUtil
@@ -20,7 +21,10 @@ class RegisterHandlers(val fragment: RegisterFragment, val viewModel: LoginViewM
         if (password == passwordRepeat) {
             viewModel.register(username, email, password)
         } else {
-            ErrorHandler().handleRawGeneral("Passwords does not match.", fragment.requireView())
+            ErrorHandler().handleRawGeneral(
+                fragment.requireContext().getString(R.string.error_passwords_match),
+                fragment.requireView()
+            )
         }
     }
 
