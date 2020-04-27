@@ -60,6 +60,20 @@ class Repository(private val apiService: ApiService) {
     }
 
     /**
+     * delete an invite send to an user
+     * @param userInvitedId: ID of the user we want to delete his invite
+     * @param groupId: ID of the group we want to delete the invite for
+     * @param liveData: Object where we want to store the result of our query in
+     */
+    fun deleteInviteOfUserFromGroup(userInvitedId: Int,
+                                    groupId: Int,
+                                    liveData: MutableLiveData<Query<ResponseBody>>) {
+        FetchHandler.handle(
+            liveData, apiService.deleteInviteGroup(groupId, userInvitedId)
+        )
+    }
+
+    /**
      * Refresh the group with given id.
      * @param groupId: ID of the group we want to fetch
      */
