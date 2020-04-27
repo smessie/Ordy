@@ -82,8 +82,8 @@
     <string name="no_groups_description">Create or join a group and they will appear here</string>
 
     <!-- Payments -->
-    <string name="payment_user_header">User: </string>
-    <string name="payment_group_header">Group: </string>
+    <string name="payment_user_header">User:&#160;</string>
+    <string name="payment_group_header">Group:&#160;</string>
 
     <!-- Debts -->
     <string name="debts_tab_title">Your debts</string>
