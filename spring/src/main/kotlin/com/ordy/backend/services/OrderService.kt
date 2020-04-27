@@ -10,9 +10,16 @@ import com.ordy.backend.exceptions.ThrowableList
 import com.ordy.backend.wrappers.OrderAddItemWrapper
 import com.ordy.backend.wrappers.OrderCreateWrapper
 import com.ordy.backend.wrappers.OrderUpdateItemWrapper
+import org.apache.tomcat.util.http.fileupload.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
+import java.io.ByteArrayInputStream
+import java.io.InputStream
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @Service
 class OrderService(
@@ -22,8 +29,24 @@ class OrderService(
         @Autowired val userRepository: UserRepository,
         @Autowired val groupMemberRepository: GroupMemberRepository,
         @Autowired val groupRepository: GroupRepository,
-        @Autowired val locationRepository: LocationRepository
+        @Autowired val locationRepository: LocationRepository,
+        @Autowired val imageService: ImageService,
+        @Autowired val imageRepository: ImageRepository
 ) {
+
+    @Value("\${ORDY_DOMAIN_NAME}")
+    private lateinit var domainName: String
+
+    /**
+     * Function to add a "/" if the domainName doesn't have one
+     */
+
+    fun getDomainName(): String {
+        if (!domainName.endsWith("/")) {
+            domainName = "$domainName/"
+        }
+        return domainName
+    }
 
     /**
      * Get a list of orders for a given user.
@@ -230,5 +253,61 @@ class OrderService(
 
         // Delete the order item
         orderItemRepository.delete(orderItemOptional.get())
+    }
+
+    /**
+     * upload the picture of bill in the database
+     */
+
+    fun uploadBillImage(userId: Int, orderId: Int, image: MultipartFile) {
+        val throwableList = ThrowableList()
+
+        val order = this.getOrder(userId, orderId)
+
+        if (order.courier.id != userId) {
+            throw throwableList.also { it.addGenericException("Adding a bill picture is only possible if you are the courier.") }
+        }
+
+        if (image.contentType.isNullOrBlank() || !image.contentType!!.contains("image")) {
+            throw throwableList.also { it.addGenericException("The content-type of your bill picture has to be image/{type}.") }
+        }
+
+        // if the order already had a bill picture, replace it with the new picture and delete the old one
+        if (order.image !== null) {
+            val previousBillImgId = order.image!!.id
+            order.image = null // unlink the image from the order to be able to delete the image
+            orderRepository.save(order) // for safety reasons
+            imageService.deleteImage(previousBillImgId)
+        }
+
+        val newImage = imageService.saveImage(image, order)
+        order.image = newImage
+        order.billUrl = getDomainName() + "orders/$orderId/bill"
+        orderRepository.save(order)
+    }
+
+    /**
+     * get Image with given id
+     */
+
+    fun getBillImage(userId: Int, orderId: Int, request: HttpServletRequest, response: HttpServletResponse) {
+        val throwableList = ThrowableList()
+
+        val order = this.getOrder(userId, orderId)
+
+        if (order.image === null) {
+            throw throwableList.also { it.addGenericException("This order has no bill picture.") }
+        }
+
+        val image = imageService.getImage(order.image!!.id, request)
+        val byteArray = ByteArray(image.image.size)
+        var i = 0
+
+        for (wrappedByte in image.image) {
+            byteArray[i++] = wrappedByte
+        }
+
+        val inputStream: InputStream = ByteArrayInputStream(byteArray)
+        IOUtils.copy(inputStream, response.outputStream)
     }
 }
