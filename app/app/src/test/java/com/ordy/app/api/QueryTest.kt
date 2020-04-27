@@ -5,7 +5,6 @@ import com.ordy.app.api.util.QueryStatus
 import org.junit.Assert
 import org.junit.Assert.fail
 import org.junit.Test
-import java.lang.IllegalStateException
 
 
 class QueryTest {

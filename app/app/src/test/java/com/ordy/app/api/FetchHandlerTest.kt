@@ -81,7 +81,8 @@ class FetchHandlerTest {
         try {
             //  Wait until the observable has succeeded
             observable.blockingSubscribe()
-        } catch (e: Exception) {}
+        } catch (e: Exception) {
+        }
 
         Assert.assertEquals(QueryStatus.ERROR, query.status)
         Assert.assertEquals(error.message, query.error?.message)
