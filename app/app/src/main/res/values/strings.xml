@@ -79,7 +79,6 @@
     <string name="loading">Loading&#8230;</string>
     <string name="no_groups_title">No groups found</string>
     <string name="your_groups_title">Your groups</string>
-    <string name="new_group_button">new group</string>
     <string name="no_groups_description">Create or join a group and they will appear here</string>
 
     <string name="no_order_items_title">No items found</string>
@@ -92,6 +91,7 @@
     <string name="order_overview_leave_message">You are about to leave this group</string>
     <string name="order_overview_leave_error">You are not a member of this group.</string>
     <string name="order_overview_invite_error">Request failed. Please try again...</string>
+    <string name="order_overview_header_bill">View bill</string>
 
     <string name="your_items_title">Your items: </string>
     <string name="add_item_button">Add item</string>
@@ -107,6 +107,9 @@
     <string name="list_item_closing_in">Closing in:&#160;</string>
     <string name="list_item_closing_on">Closing on:&#160;</string>
     <string name="list_item_courier">Courier:</string>
+
+    <string name="bill_error_title">Unable to load bill</string>
+    <string name="bill_error_description">Unable to load bill for this order. Make sure you have a valid connection and try again!</string>
 
     <string name="error_connection">Unable to connect to the server. Please check your connection.</string>
     <string name="error_picker_past">You cannot select a deadline that has already passed.</string>

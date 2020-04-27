@@ -40,7 +40,7 @@ class ImageService(@Autowired val imageRepository: ImageRepository) {
         if (imageOptional.isPresent) {
             return imageOptional.get()
         } else {
-            throw throwableList.also { it.addGenericException("Image with given ID = $imageId was not found.") }
+            throw throwableList.also { it.addGenericException("Image of bill was not found.") }
         }
     }
 
@@ -56,7 +56,7 @@ class ImageService(@Autowired val imageRepository: ImageRepository) {
         if (imageOptional.isPresent) {
             imageRepository.delete(imageOptional.get())
         } else {
-            throw throwableList.also { it.addGenericException("Failed to delete bill picture with id = $imageOptional") }
+            throw throwableList.also { it.addGenericException("Failed to delete the bill image.") }
         }
     }
 }

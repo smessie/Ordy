@@ -2,6 +2,7 @@ package com.ordy.app.ui.orders.overview
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -105,6 +106,13 @@ class OverviewOrderActivity : AppCompatActivity() {
                     order_title.text = order.location.name
                     order_location_name.text = order.location.name
                     order_courier_name.text = order.courier.username
+
+                    // Show the bill URL when a bill is present.
+                    val billUrl = viewModel.getOrder().requireData().billUrl ?: ""
+
+                    if (!billUrl.isBlank()) {
+                        order_bill_button.visibility = View.VISIBLE
+                    }
 
                     // Update the closing time left every second.
                     TimerUtil.updateUI(this, 0, 1000) {

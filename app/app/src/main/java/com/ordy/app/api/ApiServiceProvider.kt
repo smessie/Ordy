@@ -35,18 +35,30 @@ class ApiServiceProvider {
     /**
      * Create the API Service
      */
-    fun create(context: Context): ApiService {
-
+    fun client(context: Context): OkHttpClient {
         // Add the "Authorization"-header to every request send to the backend
-        val client = OkHttpClient.Builder().addInterceptor { chain ->
+        return OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
                 .addHeader("Authorization", AppPreferences(context).accessToken)
                 .build()
             chain.proceed(newRequest)
         }.build()
+    }
 
-        return this.builder()
-            .client(client)
+    /**
+     * Create the API Service
+     */
+    fun create(context: Context): ApiService {
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ")
+            .create()
+
+        return Retrofit.Builder()
+            .addCallAdapterFactory(
+                RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(client(context))
+            .baseUrl("https://api.ordy.ga")
             .build()
             .create(ApiService::class.java)
     }

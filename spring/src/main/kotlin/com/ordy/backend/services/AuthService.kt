@@ -72,12 +72,7 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
 
         // Validate if the given email is valid.
         if (checkEmail(registerWrapper.email).not()) {
-            throwableList.addPropertyException("email", "Invalid email adress")
-        }
-
-        // Validate if the username does not contain invalid characters.
-        if (usernamePattern.matches(registerWrapper.username).not()) {
-            throwableList.addPropertyException("username", "Can only contain letters, number, space dash and underscore")
+            throwableList.addPropertyException("email", "Invalid email address")
         }
 
         // Validate if the username is bigger than 3 chars.
@@ -88,6 +83,11 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
         // Validate if the username is smaller than 30 chars.
         if(registerWrapper.username.length > 30) {
             throwableList.addPropertyException("username", "Should be at most 30 characters")
+        }
+
+        // Validate if the username does not contain invalid characters.
+        if (usernamePattern.matches(registerWrapper.username).not()) {
+            throwableList.addPropertyException("username", "Can only contain letters, numbers, spaces, dashes and underscores")
         }
 
         // Validate if the email is smaller than 320 chars.
@@ -116,7 +116,7 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
         }
 
         throwableList.ifNotEmpty {
-            throwableList.addGenericException("Unable to create account")
+            throwableList.addGenericException("Unable to create account.")
             throw throwableList.also { it.code = HttpStatus.UNPROCESSABLE_ENTITY }
         }
 
