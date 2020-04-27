@@ -73,7 +73,7 @@ class LoginFragment : Fragment() {
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(requireView())
 
-                    ErrorHandler.handle(
+                    ErrorHandler().handle(
                         it.error, view, listOf(
                             InputField("email", this.input_email),
                             InputField("password", this.input_password)

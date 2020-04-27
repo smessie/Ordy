@@ -40,7 +40,7 @@ class ChangeGroupNameDialog(
                     // Update group name
                     viewModel.renameGroup(group.id, newName)
                 } else {
-                    ErrorHandler.handleRawGeneral(
+                    ErrorHandler().handleRawGeneral(
                         getString(R.string.group_rename_dialog_is_empty),
                         activityView
                     )

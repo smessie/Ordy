@@ -62,7 +62,7 @@ class RegisterFragment : Fragment() {
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(requireView())
 
-                    ErrorHandler.handle(
+                    ErrorHandler().handle(
                         it.error, view, listOf(
                             InputField("username", this.input_register_username),
                             InputField("email", this.input_register_email),

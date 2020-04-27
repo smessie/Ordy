@@ -86,7 +86,7 @@ class LocationsFragment : Fragment() {
                 QueryStatus.ERROR -> {
                     searchLoading.visibility = View.INVISIBLE
 
-                    ErrorHandler.handle(it.error, view)
+                    ErrorHandler().handle(it.error, view)
                 }
 
                 else -> {

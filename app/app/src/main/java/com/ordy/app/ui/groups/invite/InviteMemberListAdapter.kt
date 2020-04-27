@@ -14,6 +14,7 @@ import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
+import com.ordy.app.api.wrappers.GroupInviteUserWrapper
 import kotlinx.android.synthetic.main.list_group_member_card.view.member_name
 import kotlinx.android.synthetic.main.list_invite_member_card.view.*
 import okhttp3.ResponseBody
@@ -46,16 +47,21 @@ class InviteMemberListAdapter(
             QueryStatus.SUCCESS -> {
                 val member = viewModel.getUsers().requireData()[position]
 
-                // Assign the data
-                view.member_name.text = member.username
+                // add already invited users to the local list that contains all already invited users
+                if (member.invited && !viewModel.isUserInvited(member.user.id)) {
+                    viewModel.markUserAsInvited(member.user.id)
+                }
 
                 val inviteResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
 
-                // Set click handler on remove button
-                view.member_invite.setOnClickListener {
+                // Assign the data
+                view.member_name.text = member.user.username
 
-                    // Invite the user
-                    handlers.onInviteButtonClick(inviteResult, member.id)
+                // if the user is already invited to the group
+                if (viewModel.isUserInvited(member.user.id)) {
+                    setButtonAlreadyInvited(view, inviteResult, member)
+                } else {
+                    setButtonNotInvited(view, inviteResult, member)
                 }
 
                 // Watch the invite result.
@@ -69,15 +75,23 @@ class InviteMemberListAdapter(
                         }
 
                         QueryStatus.SUCCESS -> {
-                            val text = context.getString(R.string.invited_button)
+                            if (!viewModel.isUserInvited(member.user.id)){
+                                setButtonAlreadyInvited(view, inviteResult, member)
 
-                            view.member_invite.backgroundTintList = successColor
-                            view.member_invite.text = text
+                                // add this user in the local list that holds all already invited users
+                                viewModel.markUserAsInvited(member.user.id)
+                            } else {
+                                setButtonNotInvited(view, inviteResult, member)
+
+                                // the invite is canceled.
+                                viewModel.cancelUserInvite(member.user.id)
+                            }
+
                         }
 
                         QueryStatus.ERROR -> {
                             // Handle error
-                            ErrorHandler.handle(it.error, view)
+                            ErrorHandler().handle(it.error, view)
 
                             val text = context.getString(R.string.invite_button)
 
@@ -114,4 +128,41 @@ class InviteMemberListAdapter(
         }
     }
 
+    /**
+     * function to set the invite button of a user who is already invited to this group
+     */
+
+    private fun setButtonAlreadyInvited(view: View,
+                                inviteResult: MutableLiveData<Query<ResponseBody>>,
+                                member: GroupInviteUserWrapper) {
+
+        view.member_invite.text = context.getString(R.string.invited_button)
+        view.member_invite.backgroundTintList = successColor
+
+        // setting up the listener for the button
+        view.member_invite.setOnClickListener {
+
+            // cancel the invite for this user
+            handlers.onDeleteButtonClick(inviteResult, member.user.id)
+        }
+    }
+
+    /**
+     * function to set the invite button of a user who is NOT invited to this group
+     */
+
+    private fun setButtonNotInvited(view: View,
+                                    inviteResult: MutableLiveData<Query<ResponseBody>>,
+                                    member: GroupInviteUserWrapper) {
+
+        view.member_invite.text = context.getString(R.string.invite_button)
+        view.member_invite.backgroundTintList = defaultColor
+
+        // setting up the listener for the button
+        view.member_invite.setOnClickListener {
+
+            // Invite the user
+            handlers.onInviteButtonClick(inviteResult, member.user.id)
+        }
+    }
 }

@@ -152,7 +152,7 @@ class OrderPersonalListAdapter(
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(fragment.requireView())
 
-                    ErrorHandler.handle(it.error, fragment.requireView(), listOf())
+                    ErrorHandler().handle(it.error, fragment.requireView(), listOf())
                 }
 
                 else -> {
@@ -203,7 +203,7 @@ class OrderPersonalListAdapter(
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(fragment.requireView())
 
-                    ErrorHandler.handle(it.error, fragment.requireView(), listOf())
+                    ErrorHandler().handle(it.error, fragment.requireView(), listOf())
                 }
 
                 else -> {

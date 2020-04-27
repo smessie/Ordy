@@ -125,7 +125,7 @@ class CreateOrderActivity : AppCompatActivity() {
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(binding.root)
 
-                    ErrorHandler.handle(
+                    ErrorHandler().handle(
                         it.error, binding.root, listOf(
                             InputField("locationId", this.input_location),
                             InputField("customLocationName", this.input_location),
