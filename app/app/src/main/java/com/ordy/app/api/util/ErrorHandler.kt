@@ -120,7 +120,7 @@ class ErrorHandler {
             }
 
             // Create and show a snackbar with the error message.
-            this.handleRawGeneral(queryError.message, view)
+            this.handleRawGeneral(message, view)
         }
     }
 
