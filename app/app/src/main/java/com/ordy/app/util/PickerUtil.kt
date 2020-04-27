@@ -37,7 +37,7 @@ class PickerUtil {
 
                     // When the date is the current date & disablePast is true,
                     // prevent selection of a time in the past
-                    if (disablePast && System.currentTimeMillis() >= calendar.timeInMillis) {
+                    if (disablePast && System.currentTimeMillis() >= returnCalendar.timeInMillis) {
                         ErrorHandler.handleRawGeneral(
                             context.getString(R.string.error_picker_past),
                             view
