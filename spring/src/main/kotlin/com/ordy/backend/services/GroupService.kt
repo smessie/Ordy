@@ -321,9 +321,10 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
 
     /**
      *  this gives a list of users that matches the given username
+     *  wrap the result in a GroupInviteUserWrapper to be able to check if a user is already invited in the group or not
      */
 
-    fun searchMatchingInviteUsers(groupId: Int, userName: String, userId: Int): List<User> {
+    fun searchMatchingInviteUsers(groupId: Int, userName: String, userId: Int): List<GroupInviteUserWrapper> {
         val throwableList = ThrowableList()
 
         val user = userRepository.findById(userId).get()
@@ -341,6 +342,7 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
         val membersOfGroup = groupMemberRepository.findGroupMembersByGroup(groupOptional.get()).map { it.user.id }
 
         return userRepository.findAll()
-                .filter { it.username.contains(userName, ignoreCase = true) && !membersOfGroup.contains(it.id) && !alreadyInvitedUsers.contains(it.id) }
+                .filter { it.username.contains(userName, ignoreCase = true) && !membersOfGroup.contains(it.id) }
+                .map { GroupInviteUserWrapper(user=it, invited = alreadyInvitedUsers.contains(it.id))  }
     }
 }

@@ -47,7 +47,14 @@ class InviteMemberListAdapter(
                 val member = viewModel.getUsers().requireData()[position]
 
                 // Assign the data
-                view.member_name.text = member.username
+                view.member_name.text = member.user.username
+
+                if (member.invited) {
+                    val text = context.getString(R.string.invited_button)
+
+                    view.member_invite.backgroundTintList = successColor
+                    view.member_invite.text = text
+                }
 
                 val inviteResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
 
@@ -55,7 +62,7 @@ class InviteMemberListAdapter(
                 view.member_invite.setOnClickListener {
 
                     // Invite the user
-                    handlers.onInviteButtonClick(inviteResult, member.id)
+                    handlers.onInviteButtonClick(inviteResult, member.user.id)
                 }
 
                 // Watch the invite result.

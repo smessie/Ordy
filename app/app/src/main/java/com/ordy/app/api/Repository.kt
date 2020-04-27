@@ -6,6 +6,7 @@ import com.ordy.app.api.models.actions.*
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
+import com.ordy.app.api.wrappers.GroupInviteUserWrapper
 import okhttp3.ResponseBody
 import java.util.*
 
@@ -15,7 +16,7 @@ class Repository(private val apiService: ApiService) {
      ***        GROUPS          ***
      ******************************/
     private val createGroupResult: MutableLiveData<Query<Group>> = MutableLiveData(Query())
-    private val inviteableUsers: MutableLiveData<Query<List<User>>> = MutableLiveData(Query())
+    private val inviteableUsers: MutableLiveData<Query<List<GroupInviteUserWrapper>>> = MutableLiveData(Query())
     private val group: MutableLiveData<Query<Group>> = MutableLiveData(Query())
     private val renameGroupResult: MutableLiveData<Query<Group>> = MutableLiveData(Query())
     private val leaveGroupResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
@@ -117,7 +118,7 @@ class Repository(private val apiService: ApiService) {
     /**
      * Get the MutableLiveData result of all users matched that are able to invite.
      */
-    fun getInviteableUsers(): MutableLiveData<Query<List<User>>> {
+    fun getInviteableUsers(): MutableLiveData<Query<List<GroupInviteUserWrapper>>> {
         return inviteableUsers
     }
 
