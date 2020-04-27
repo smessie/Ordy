@@ -110,7 +110,7 @@
     <string name="order_overview_leave_title">Are you sure?</string>
     <string name="order_overview_leave_message">You are about to leave this group</string>
     <string name="order_overview_leave_error">You are not a member of this group.</string>
-    <string name="order_overview_invite_error">Request failed. Please try again...</string>
+    <string name="order_overview_invite_error">Request failed. Please try again…</string>
     <string name="order_overview_header_bill">View bill</string>
 
     <string name="your_items_title">Your items: </string>
