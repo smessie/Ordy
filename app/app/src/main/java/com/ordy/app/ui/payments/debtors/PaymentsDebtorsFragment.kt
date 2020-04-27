@@ -11,11 +11,14 @@ import com.ordy.app.R
 import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentPaymentsDebtorsBinding
+import com.ordy.app.ui.payments.PaymentsFragment
 import com.ordy.app.ui.payments.PaymentsListAdapter
 import com.ordy.app.ui.payments.PaymentsType
 import com.ordy.app.ui.payments.PaymentsViewModel
 
-class PaymentsDebtorsFragment : Fragment() {
+class PaymentsDebtorsFragment(
+    val parentFragment: PaymentsFragment
+) : Fragment() {
 
     private val viewModel: PaymentsViewModel by activityViewModels {
         RepositoryViewModelFactory(
@@ -38,7 +41,12 @@ class PaymentsDebtorsFragment : Fragment() {
         binding.handlers = PaymentsDebtorsHandlers(this, viewModel)
 
         // Initialize listViewAdapter
-        listAdapter = PaymentsListAdapter(requireContext(), viewModel, PaymentsType.Debtors)
+        listAdapter = PaymentsListAdapter(
+            requireContext(),
+            viewModel,
+            parentFragment,
+            PaymentsType.Debtors
+        )
 
         binding.paymentsDebtors.apply {
             adapter = listAdapter

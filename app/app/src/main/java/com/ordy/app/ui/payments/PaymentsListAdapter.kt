@@ -5,16 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.models.Payment
+import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
+import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.list_payment_card.view.*
+import okhttp3.ResponseBody
 import java.text.DateFormat
 
 class PaymentsListAdapter(
     val context: Context,
     val viewModel: PaymentsViewModel,
+    val fragment: PaymentsFragment,
     private val paymentsType: PaymentsType
 ) : BaseAdapter() {
 
@@ -63,9 +70,7 @@ class PaymentsListAdapter(
                  * Do some paymentsType specific things
                  */
                 if (paymentsType == PaymentsType.Debtors) {
-                    view.payment_paid.setOnClickListener {
-                        // TODO Paid
-                    }
+                    addPaidAction(payment, view)
 
                     view.payment_notify.setOnClickListener {
                         // TODO Notify
@@ -94,5 +99,55 @@ class PaymentsListAdapter(
             QueryStatus.SUCCESS -> queryFun().requireData().size
             else -> 0
         }
+    }
+
+    private fun addPaidAction(payment: Payment, view: View) {
+        // Result of the update item query
+        val updatePaidResult = MutableLiveData<Query<ResponseBody>>(Query())
+
+        // Set click handler on remove button
+        view.payment_paid.setOnClickListener {
+            // Prompt for confirmation
+            AlertDialog.Builder(context).apply {
+                setTitle("Mark as paid?")
+                setMessage("This will remove ${payment.user.username}'s dept from the list.")
+
+                // Mark as paid when confirmed
+                setPositiveButton(android.R.string.ok) { _, _ ->
+                    viewModel.markAsPaid(
+                        updatePaidResult,
+                        payment.order.id,
+                        payment.user.id
+                    )
+                }
+
+                // Close the window on cancel
+                setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
+            }.show()
+        }
+
+        updatePaidResult.observe(fragment, Observer {
+            when (it.status) {
+                QueryStatus.LOADING -> {
+                    SnackbarUtil.openSnackbar(
+                        "Marking as paid...",
+                        fragment.requireView()
+                    )
+                }
+                QueryStatus.SUCCESS -> {
+                    SnackbarUtil.closeSnackbar(fragment.requireView())
+                    viewModel.refreshDebtors()
+                }
+                QueryStatus.ERROR -> {
+                    SnackbarUtil.closeSnackbar(fragment.requireView())
+                    ErrorHandler.handle(it.error, fragment.requireView(), listOf())
+                }
+                else -> {
+                }
+            }
+        })
+
     }
 }

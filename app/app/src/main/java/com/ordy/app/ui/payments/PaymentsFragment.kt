@@ -40,13 +40,13 @@ class PaymentsFragment : Fragment() {
         tabsAdapter = TabsAdapter(childFragmentManager)
         tabsAdapter.addTabsEntry(
             TabsEntry(
-                PaymentsDebtorsFragment(),
+                PaymentsDebtorsFragment(this),
                 getString(R.string.debtors_tab_title)
             )
         )
         tabsAdapter.addTabsEntry(
             TabsEntry(
-                PaymentsDebtsFragment(),
+                PaymentsDebtsFragment(this),
                 getString(R.string.debts_tab_title)
             )
         )
