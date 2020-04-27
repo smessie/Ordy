@@ -10,6 +10,6 @@ data class Payment(
     @SerializedName("order")
     val order: Order,
 
-    @SerializedName("items")
+    @SerializedName("orderItems")
     val orderItems: List<OrderItem>
 )

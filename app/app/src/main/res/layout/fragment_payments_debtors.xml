@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.payments.debtors.PaymentsDebtorsFragment">
+
+    <data>
+
+        <variable
+            name="handlers"
+            type="com.ordy.app.ui.payments.debtors.PaymentsDebtorsHandlers" />
+
+        <variable
+            name="viewModel"
+            type="com.ordy.app.ui.payments.PaymentsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <!-- Search field -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:hint="@string/debtors_search"
+            android:maxLines="1"
+            app:startIconDrawable="@drawable/ic_search_black_24dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.debtorsSearch}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/payments_debtors_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Debtors -->
+                <ListView
+                    android:id="@+id/payments_debtors"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:drawSelectorOnTop="true" />
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <!-- Empty placeholder -->
+            <LinearLayout
+                android:id="@+id/payments_debtors_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    style="@style/Subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/no_debtors_title" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/no_debtors_description" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+</layout>
