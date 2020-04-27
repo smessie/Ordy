@@ -3,6 +3,8 @@ package com.ordy.app.util
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.models.OrderItem
 import com.ordy.app.ui.orders.OrdersStatus
+import com.ordy.app.util.types.OrderItemGroup
+import com.ordy.app.util.types.OrderItemUserGroup
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -127,14 +129,3 @@ class OrderUtil {
         }
     }
 }
-
-data class OrderItemGroup(
-    var name: String,
-    var quantity: Int,
-    var items: MutableList<OrderItem>
-)
-
-data class OrderItemUserGroup(
-    var username: String,
-    var items: MutableList<OrderItem>
-)

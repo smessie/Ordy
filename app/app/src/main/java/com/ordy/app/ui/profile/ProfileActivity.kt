@@ -37,9 +37,9 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         val listAdapter = InvitesListAdapter(applicationContext, viewModel, this, handlers)
-        binding.root.findViewById<ListView>(R.id.group_invites).apply {
+        binding.root.group_invites.apply {
             adapter = listAdapter
-            emptyView = binding.root.findViewById(R.id.group_invites_empty)
+            emptyView = binding.root.group_invites_empty
         }
 
         // Set the action bar elevation to 0, since the group extends the action bar.

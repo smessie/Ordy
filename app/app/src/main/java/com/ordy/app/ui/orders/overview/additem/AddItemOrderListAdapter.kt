@@ -8,6 +8,7 @@ import android.widget.ListView
 import com.ordy.app.R
 import com.ordy.app.api.models.Item
 import com.ordy.app.api.util.QueryStatus
+import kotlinx.android.synthetic.main.activity_add_item_order.*
 import kotlinx.android.synthetic.main.list_order_cuisine_item.view.*
 import kotlinx.android.synthetic.main.list_order_cuisine_item_default.view.*
 import java.util.*
@@ -20,7 +21,7 @@ class AddItemOrderListAdapter(
 
     private var cuisineFiltered: List<Item> = emptyList()
 
-    private val listView: ListView = activity.findViewById(R.id.order_cuisine_items)
+    private val listView = activity.order_cuisine_items
     private var defaultItemView = View.inflate(activity.applicationContext, R.layout.list_order_cuisine_item_default, null)
 
     init {

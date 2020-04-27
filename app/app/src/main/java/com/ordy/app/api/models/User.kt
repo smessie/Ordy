@@ -11,5 +11,5 @@ data class User(
     val username: String,
 
     @SerializedName("email")
-    val email: String?
+    val email: String? = null
 )

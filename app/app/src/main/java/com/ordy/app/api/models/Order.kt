@@ -12,7 +12,7 @@ data class Order(
     val deadline: Date,
 
     @SerializedName("billUrl")
-    val billUrl: String?,
+    val billUrl: String? = null,
 
     @SerializedName("group")
     val group: Group,
@@ -24,5 +24,5 @@ data class Order(
     val courier: User,
 
     @SerializedName("orderItems")
-    val orderItems: MutableList<OrderItem> = mutableListOf()
+    val orderItems: MutableList<OrderItem>? = null
 )
