@@ -10,6 +10,7 @@ import com.ordy.app.api.models.Payment
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import kotlinx.android.synthetic.main.list_payment_card.view.*
+import kotlinx.android.synthetic.main.list_payment_order_item.view.*
 import java.text.DateFormat
 import java.util.*
 
@@ -62,6 +63,27 @@ abstract class PaymentsListAdapter(
                  * Do some paymentsType specific things
                  */
                 specificPaymentCardSetup(payment, view)
+
+                // Clear view
+                view.payment_order_items.removeAllViews()
+
+                // Add all the items
+                for (orderItem in payment.orderItems) {
+                    val orderItemView =
+                        LayoutInflater.from(context).inflate(R.layout.list_payment_order_item, null)
+
+                    // Assign the data.
+                    orderItemView.order_item_name.text = orderItem.item.name
+                    orderItemView.order_item_comment.text = orderItem.comment
+
+                    // Hide the comment area when comment is empty.
+                    if (orderItemView.order_item_comment.text == "") {
+                        orderItemView.order_item_comment.visibility = View.GONE
+                    }
+
+                    view.payment_order_items.addView(orderItemView)
+                }
+
             }
             else -> {
             }
