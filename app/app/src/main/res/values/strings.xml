@@ -78,12 +78,14 @@
 
     <!-- Debts -->
     <string name="debts_tab_title">Your debts</string>
-    <string name="no_debts_title">No debts</string>
+    <string name="no_debts_title">No debts found</string>
     <string name="no_debts_description">You currently have no debts</string>
+    <string name="debts_search">Search for creditor</string>
     <!-- Debtors -->
     <string name="debtors_tab_title">Debtors</string>
-    <string name="no_debtors_title">No debtors</string>
+    <string name="no_debtors_title">No debtors found</string>
     <string name="no_debtors_description">Nobody is in your debt</string>
     <string name="mark_as_paid">Paid</string>
     <string name="notify">Notify</string>
+    <string name="debtors_search">Search for debtor</string>
 </resources>

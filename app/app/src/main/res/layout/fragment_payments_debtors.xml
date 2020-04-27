@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.payments.debtors.PaymentsDebtorsFragment">
 
     <data>
@@ -27,13 +27,13 @@
 
             <!-- Search field -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/debtor_search"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:hint="@string/debtors_search"
                 android:maxLines="1"
-                android:hint="Search for debtor"
-                app:startIconDrawable="@drawable/ic_search_black_24dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                app:startIconDrawable="@drawable/ic_search_black_24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"

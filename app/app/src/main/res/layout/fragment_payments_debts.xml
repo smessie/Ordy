@@ -27,11 +27,11 @@
 
             <!-- Search field -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/debtor_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:hint="Search for debtor"
+                android:layout_marginBottom="5dp"
+                android:hint="@string/debts_search"
                 app:startIconDrawable="@drawable/ic_search_black_24dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 

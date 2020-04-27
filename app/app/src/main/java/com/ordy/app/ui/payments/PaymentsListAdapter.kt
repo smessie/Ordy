@@ -18,7 +18,6 @@ abstract class PaymentsListAdapter(
     val viewModel: PaymentsViewModel,
     val fragment: PaymentsFragment
 ) : BaseAdapter() {
-
     protected var paymentFiltered: List<Payment> = emptyList()
 
     abstract fun getQuery(): Query<List<Payment>>
@@ -100,6 +99,5 @@ abstract class PaymentsListAdapter(
             }
         }
         notifyDataSetChanged()
-
     }
 }
