@@ -17,73 +17,68 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
 
-        <LinearLayout
+        <!-- Search field -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_horizontal_margin">
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_marginBottom="5dp"
+            android:hint="@string/debts_search"
+            app:startIconDrawable="@drawable/ic_search_black_24dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-            <!-- Search field -->
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:layout_marginBottom="5dp"
-                android:hint="@string/debts_search"
-                app:startIconDrawable="@drawable/ic_search_black_24dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                android:inputType="text"
+                android:text="@={viewModel.debtsSearch}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:text="@={viewModel.debtsSearch}" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <FrameLayout
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/payments_debts_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/payments_debts_refresh"
+                <!-- Debts -->
+                <ListView
+                    android:id="@+id/payments_debts"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:drawSelectorOnTop="true" />
 
-                    <!-- Debts -->
-                    <ListView
-                        android:id="@+id/payments_debts"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:divider="@null"
-                        android:dividerHeight="0dp"
-                        android:drawSelectorOnTop="true" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <!-- Empty placeholder -->
+            <LinearLayout
+                android:id="@+id/payments_debts_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_horizontal_margin">
 
-                <!-- Empty placeholder -->
-                <LinearLayout
-                    android:id="@+id/payments_debts_empty"
+                <TextView
+                    style="@style/Subtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/activity_horizontal_margin">
+                    android:gravity="center"
+                    android:text="@string/no_debts_title" />
 
-                    <TextView
-                        style="@style/Subtitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/no_debts_title" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/no_debts_description" />
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/no_debts_description" />
+            </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 </layout>
