@@ -79,7 +79,6 @@
     <string name="loading">Loading&#8230;</string>
     <string name="no_groups_title">No groups found</string>
     <string name="your_groups_title">Your groups</string>
-    <string name="new_group_button">new group</string>
     <string name="no_groups_description">Create or join a group and they will appear here</string>
 
     <string name="no_order_items_title">No items found</string>

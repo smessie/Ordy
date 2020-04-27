@@ -1,20 +1,15 @@
 package com.ordy.app.ui.groups
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.QueryStatus
-import com.ordy.app.ui.groups.create.CreateGroupActivity
 import kotlinx.android.synthetic.main.fragment_groups.view.*
 
 
@@ -54,13 +49,6 @@ class GroupsFragment : Fragment() {
         // Swipe to refresh
         view.groups_refresh.setOnRefreshListener {
             viewModel.refreshGroups()
-        }
-
-        // Binding button to load new activity
-        val createButton = view.create_group_button
-        createButton.setOnClickListener {
-            val intent = Intent(context, CreateGroupActivity::class.java)
-            startActivity(intent)
         }
 
         viewModel.getGroupsMLD().observe(viewLifecycleOwner, Observer {

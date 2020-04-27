@@ -209,17 +209,17 @@ class OrderService(
      */
     fun updateItemOrder(userId: Int, orderId: Int, orderItemId: Int, orderUpdateItem: OrderUpdateItemWrapper) {
         val throwableList = ThrowableList()
-        var order = this.getOrder(userId, orderId)
-        var orderItemOptional = orderItemRepository.findById(orderItemId)
+        val order = this.getOrder(userId, orderId)
+        val orderItemOptional = orderItemRepository.findById(orderItemId)
 
         // Validate that the order item exists.
         if (!orderItemOptional.isPresent) {
-            throw throwableList.also { it.addGenericException("Order item does not exist") }
+            throw throwableList.also { it.addGenericException("Order item does not exist.") }
         }
 
         // Validate that the order item is linked to the given order.
         if (!order.orderItems.contains(orderItemOptional.get())) {
-            throw throwableList.also { it.addGenericException("Order item is not linked to the order") }
+            throw throwableList.also { it.addGenericException("Order item is not linked to the order.") }
         }
 
         // Validate that the comment exists.
@@ -238,17 +238,17 @@ class OrderService(
      */
     fun deleteItemOrder(userId: Int, orderId: Int, orderItemId: Int) {
         val throwableList = ThrowableList()
-        var order = this.getOrder(userId, orderId)
-        var orderItemOptional = orderItemRepository.findById(orderItemId)
+        val order = this.getOrder(userId, orderId)
+        val orderItemOptional = orderItemRepository.findById(orderItemId)
 
         // Validate that the order item exists.
         if (!orderItemOptional.isPresent) {
-            throw throwableList.also { it.addGenericException("Order item does not exist") }
+            throw throwableList.also { it.addGenericException("Order item does not exist.") }
         }
 
         // Validate that the order item is linked to the given order.
         if (!order.orderItems.contains(orderItemOptional.get())) {
-            throw throwableList.also { it.addGenericException("Order item is not linked to the order") }
+            throw throwableList.also { it.addGenericException("Order item is not linked to the order.") }
         }
 
         // Delete the order item
@@ -269,7 +269,8 @@ class OrderService(
         }
 
         if (image.contentType.isNullOrBlank() || !image.contentType!!.contains("image")) {
-            throw throwableList.also { it.addGenericException("The content-type of your bill picture has to be image/{type}.") }
+            // The content-type of the bill picture has to be image/{type}
+            throw throwableList.also { it.addGenericException("Failed to upload bill image. Please try again.") }
         }
 
         // if the order already had a bill picture, replace it with the new picture and delete the old one
