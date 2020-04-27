@@ -13,9 +13,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiServiceProvider {
 
     /**
-<<<<<<< HEAD
-     * Get the client for sending requests.
-=======
      * Get the standard builder for the API Service.
      */
     fun builder(): Retrofit.Builder {
