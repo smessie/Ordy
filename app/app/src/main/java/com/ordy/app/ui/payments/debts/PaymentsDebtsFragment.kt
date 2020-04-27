@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -15,7 +14,6 @@ import com.ordy.app.databinding.FragmentPaymentsDebtsBinding
 import com.ordy.app.ui.payments.PaymentsListAdapter
 import com.ordy.app.ui.payments.PaymentsType
 import com.ordy.app.ui.payments.PaymentsViewModel
-import kotlinx.android.synthetic.main.fragment_payments_debts.view.*
 
 class PaymentsDebtsFragment : Fragment() {
 
@@ -42,15 +40,15 @@ class PaymentsDebtsFragment : Fragment() {
         // Initialize listViewAdapter
         listAdapter = PaymentsListAdapter(requireContext(), viewModel, PaymentsType.Debts)
 
-        binding.root.findViewById<ListView>(R.id.payments_debts).apply {
+        binding.paymentsDebts.apply {
             adapter = listAdapter
-            emptyView = binding.root.findViewById(R.id.payments_debts_empty)
+            emptyView = binding.paymentsDebtsEmpty
         }
 
         viewModel.refreshDebts()
 
         // Swipe to refresh
-        binding.root.payments_debts_refresh.setOnRefreshListener {
+        binding.paymentsDebtsRefresh.setOnRefreshListener {
             viewModel.refreshDebts()
         }
 
@@ -58,7 +56,7 @@ class PaymentsDebtsFragment : Fragment() {
         viewModel.getDebtsMLD().observe(viewLifecycleOwner, Observer {
             // Stop refreshing when loaded
             if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
-                binding.root.payments_debts_refresh.isRefreshing = false
+                binding.paymentsDebtsRefresh.isRefreshing = false
             }
         })
 
