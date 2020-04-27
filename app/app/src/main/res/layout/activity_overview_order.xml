@@ -113,7 +113,7 @@
                 <!-- Right bar -->
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
+                    android:layout_height="match_parent"
                     android:gravity="end"
                     android:orientation="vertical"
                     android:paddingTop="5dp"
