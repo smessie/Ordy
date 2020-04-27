@@ -42,7 +42,12 @@ class PaymentsDebtorsListAdapter(
             // Prompt for confirmation
             AlertDialog.Builder(context).apply {
                 setTitle(fragment.getString(R.string.mark_confirm_text))
-                setMessage("This will remove ${payment.user.username}'s dept from the list.")
+                setMessage(
+                    fragment.getString(
+                        R.string.mark_confirm_text_decription,
+                        payment.user.username
+                    )
+                )
 
                 // Mark as paid when confirmed
                 setPositiveButton(android.R.string.ok) { _, _ ->
