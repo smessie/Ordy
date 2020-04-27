@@ -60,7 +60,7 @@ class Repository(private val apiService: ApiService) {
     }
 
     /**
-     * delete an invite send to an user
+     * Delete an invite send to an user.
      * @param userInvitedId: ID of the user we want to delete his invite
      * @param groupId: ID of the group we want to delete the invite for
      * @param liveData: Object where we want to store the result of our query in
@@ -100,7 +100,7 @@ class Repository(private val apiService: ApiService) {
     }
 
     /**
-     * Change the name of a group
+     * Change the name of a group.
      * @param groupId: ID of the group of which the name will be changed
      * @param newName: The new name that will be given to the group
      */
