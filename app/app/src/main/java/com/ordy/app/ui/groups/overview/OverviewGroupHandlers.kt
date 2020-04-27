@@ -33,7 +33,7 @@ class OverviewGroupHandlers(
                 }
             }.show()
         } else {
-            ErrorHandler.handleRawGeneral(
+            ErrorHandler().handleRawGeneral(
                 activity.getString(R.string.order_overview_leave_error),
                 view
             )
@@ -52,7 +52,7 @@ class OverviewGroupHandlers(
 
             activity.startActivity(intent)
         } else {
-            ErrorHandler.handleRawGeneral(
+            ErrorHandler().handleRawGeneral(
                 activity.getString(R.string.order_overview_invite_error),
                 view
             )
