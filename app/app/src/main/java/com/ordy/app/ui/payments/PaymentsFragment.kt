@@ -13,7 +13,7 @@ import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.ui.payments.debtors.PaymentsDebtorsFragment
 import com.ordy.app.ui.payments.debts.PaymentsDebtsFragment
 import com.ordy.app.util.TabsAdapter
-import com.ordy.app.util.TabsEntry
+import com.ordy.app.util.types.TabsEntry
 
 class PaymentsFragment : Fragment() {
 
