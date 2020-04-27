@@ -64,7 +64,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Group: "
+                            android:text="@string/payment_group_header"
                             android:textStyle="bold" />
 
                         <TextView
@@ -84,7 +84,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="User: "
+                            android:text="@string/payment_user_header"
                             android:textStyle="bold" />
 
                         <TextView
