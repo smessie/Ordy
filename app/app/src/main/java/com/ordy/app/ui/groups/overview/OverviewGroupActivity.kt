@@ -52,7 +52,7 @@ class OverviewGroupActivity : AppCompatActivity() {
 
         // Create the list view adapter
         listAdapter = OverviewGroupListAdapter(applicationContext, viewModel, handlers, this)
-        binding.root.findViewById<ListView>(R.id.group_members).adapter = listAdapter
+        binding.root.group_members.adapter = listAdapter
 
         // Set the action bar elevation to 0, since the group extends the action bar.
         if (supportActionBar != null) {
@@ -71,7 +71,7 @@ class OverviewGroupActivity : AppCompatActivity() {
                     val group = it.requireData()
 
                     group_title.text = group.name
-                    group_members_amount.text = group.members.size.toString()
+                    group_members_amount.text = group.members?.size.toString()
 
                     val listAdapter = this.listAdapter
 

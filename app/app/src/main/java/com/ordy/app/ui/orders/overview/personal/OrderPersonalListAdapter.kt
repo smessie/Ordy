@@ -194,7 +194,7 @@ class OrderPersonalListAdapter(
                     SnackbarUtil.closeSnackbar(fragment.requireView())
 
                     // Delete the order item from the list view
-                    viewModel.getOrder().requireData().orderItems.remove(orderItem)
+                    viewModel.getOrder().requireData().orderItems?.remove(orderItem)
 
                     // Update the query.
                     viewModel.getOrderMLD().postValue(viewModel.getOrder())
@@ -217,7 +217,7 @@ class OrderPersonalListAdapter(
         if (viewModel.getOrder().status == QueryStatus.SUCCESS) {
 
             // Only show the items with the same user id as the logged in user.
-            orderItems = viewModel.getOrder().requireData().orderItems.filter {
+            orderItems = viewModel.getOrder().requireData().orderItems!!.filter {
                 it.user.id == AppPreferences(context).userId
             }
 

@@ -11,17 +11,17 @@ data class Location(
     val name: String,
 
     @SerializedName("latitude")
-    val latitude: Double,
+    val latitude: Double? = null,
 
     @SerializedName("longitude")
-    val longitude: Double,
+    val longitude: Double? = null,
 
     @SerializedName("address")
-    val address: String?,
+    val address: String? = null,
 
     @SerializedName("private")
-    val private: Boolean,
+    val private: Boolean = false,
 
     @SerializedName("cuisine")
-    val cuisine: Cuisine
+    val cuisine: Cuisine? = null
 )

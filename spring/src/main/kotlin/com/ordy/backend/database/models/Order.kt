@@ -1,6 +1,7 @@
 package com.ordy.backend.database.models
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonView
 import com.ordy.backend.database.View
 import java.util.*
@@ -8,7 +9,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "orders")
-class Order (
+class Order(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @JsonView(View.Id::class)
@@ -23,6 +24,10 @@ class Order (
         @JsonView(View.Detail::class)
         var billUrl: String = "",
 
+        @JsonIgnore
+        @OneToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = true)
+        var image: Image? = null,
+
         @JsonView(View.List::class)
         @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false)
         var group: Group,
@@ -36,6 +41,6 @@ class Order (
         var location: Location,
 
         @JsonView(View.Detail::class)
-        @OneToMany(mappedBy="order")
+        @OneToMany(mappedBy = "order")
         var orderItems: Set<OrderItem> = emptySet()
 )

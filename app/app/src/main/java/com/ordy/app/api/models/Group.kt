@@ -14,8 +14,8 @@ data class Group(
     val creator: User,
 
     @SerializedName("members")
-    var members: List<User> = emptyList(),
+    var members: List<User>? = null,
 
     @SerializedName("membersCount")
-    var membersCount: Int = 0
+    var membersCount: Int? = null
 )

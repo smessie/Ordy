@@ -1,0 +1,21 @@
+{
+    "id": 1,
+    "deadline": "2020-04-26T16:00:27+0000",
+    "group": {
+        "id": 1,
+        "name": "Zeus",
+        "creator": {
+            "id": 1,
+            "username": "Elon Musk"
+        }
+    },
+    "courier": {
+        "id": 1,
+        "username": "Elon Musk"
+    },
+    "location": {
+        "id": 1,
+        "name": "Emily",
+        "address": "Zwijnaardse Steenweg"
+    }
+}
