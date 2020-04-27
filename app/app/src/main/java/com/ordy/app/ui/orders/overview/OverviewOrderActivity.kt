@@ -18,8 +18,8 @@ import com.ordy.app.ui.orders.overview.personal.OrderPersonalFragment
 import com.ordy.app.ui.orders.overview.users.OrderUsersFragment
 import com.ordy.app.util.OrderUtil
 import com.ordy.app.util.TabsAdapter
-import com.ordy.app.util.TabsEntry
 import com.ordy.app.util.TimerUtil
+import com.ordy.app.util.types.TabsEntry
 import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.activity_overview_order.view.*
 import java.text.DateFormat

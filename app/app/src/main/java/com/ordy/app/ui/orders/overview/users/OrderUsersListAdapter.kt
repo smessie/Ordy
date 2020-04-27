@@ -8,8 +8,8 @@ import android.widget.BaseAdapter
 import com.ordy.app.R
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
-import com.ordy.app.util.OrderItemUserGroup
 import com.ordy.app.util.OrderUtil
+import com.ordy.app.util.types.OrderItemUserGroup
 import kotlinx.android.synthetic.main.list_order_item.view.*
 import kotlinx.android.synthetic.main.list_order_item_user.view.*
 

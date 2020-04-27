@@ -3,6 +3,7 @@ package com.ordy.app.util
 import android.graphics.Color
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
+import com.ordy.app.util.types.SnackbarType
 
 class SnackbarUtil {
 
@@ -47,10 +48,4 @@ class SnackbarUtil {
             }
         }
     }
-}
-
-enum class SnackbarType {
-    SUCCESS,
-    INFO,
-    ERROR
 }
