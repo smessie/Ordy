@@ -42,20 +42,24 @@ class ErrorHandler {
                 val errorBody = queryError.response!!.errorBody()
 
                 if (errorBody != null) {
-                    // Convert the error body.
-                    val errorResult =
-                        Gson().fromJson(errorBody.charStream(), ErrorResult::class.java)
+                    try {
+                        // Convert the error body.
+                        val errorResult =
+                            Gson().fromJson(errorBody.charStream(), ErrorResult::class.java)
 
-                    if (errorResult != null) {
+                        if (errorResult != null) {
+                            // General errors (when defined)
+                            if (errorResult.generalErrors != null) {
+                                queryError.generalErrors = errorResult.generalErrors
+                            }
 
-                        if (errorResult.generalErrors != null) {
-                            queryError.generalErrors = errorResult.generalErrors
+                            // Input errors (when defined)
+                            if (errorResult.inputErrors != null) {
+                                queryError.inputErrors = errorResult.inputErrors
+                            }
                         }
-
-                        // Input errors (when defined)
-                        if (errorResult.inputErrors != null) {
-                            queryError.inputErrors = errorResult.inputErrors
-                        }
+                    } catch(e: Exception) {
+                        e.printStackTrace()
                     }
                 }
             }
