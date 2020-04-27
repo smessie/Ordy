@@ -10,13 +10,14 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.github.chrisbanes.photoview.PhotoView
 import com.ordy.app.R
+import com.ordy.app.api.ApiServiceProvider
 import com.ordy.app.databinding.DialogViewBillBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import com.squareup.picasso.Callback
+import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.dialog_view_bill.view.*
 import java.lang.Exception
-
 
 class ViewBillDialog : DialogFragment() {
 
@@ -36,13 +37,15 @@ class ViewBillDialog : DialogFragment() {
         binding.viewModel = viewModel
 
         // Setup the toolbar
-        val toolbar: Toolbar = binding.root.findViewById(R.id.toolbar)
+        val toolbar: Toolbar = binding.toolbar
         toolbar.title = "View bill: ${viewModel.getOrder().requireData().location.name}"
         toolbar.setNavigationOnClickListener { dismiss() }
 
         val photoView = binding.root.findViewById(R.id.bill_image) as PhotoView
 
-        Picasso.get()
+        Picasso.Builder(requireContext())
+            .downloader(OkHttp3Downloader(ApiServiceProvider().client(requireContext())))
+            .build()
             .load(viewModel.getOrder().requireData().billUrl)
             .into(photoView, object : Callback {
 
