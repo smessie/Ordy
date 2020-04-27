@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.ui.payments.debtors.PaymentsDebtorsFragment
 import com.ordy.app.ui.payments.debts.PaymentsDebtsFragment
 import com.ordy.app.util.TabsAdapter
@@ -18,12 +16,6 @@ import com.ordy.app.util.types.TabsEntry
 class PaymentsFragment : Fragment() {
 
     private lateinit var tabsAdapter: TabsAdapter
-
-    private val viewModel: PaymentsViewModel by activityViewModels {
-        RepositoryViewModelFactory(
-            requireContext()
-        )
-    }
 
     /**
      * Called when view is created.
