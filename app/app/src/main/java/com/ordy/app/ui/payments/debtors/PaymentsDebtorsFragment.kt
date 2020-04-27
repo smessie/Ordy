@@ -38,6 +38,7 @@ class PaymentsDebtorsFragment(
         // Create binding for the fragment.
         val binding = FragmentPaymentsDebtorsBinding.inflate(inflater, container, false)
         binding.handlers = PaymentsDebtorsHandlers(this, viewModel)
+        binding.viewModel = viewModel
 
         // Initialize listViewAdapter
         listAdapter = PaymentsDebtorsListAdapter(
@@ -58,6 +59,12 @@ class PaymentsDebtorsFragment(
             viewModel.refreshDebtors()
         }
 
+        // Observe the input field
+        viewModel.debtorsSearch.observe(viewLifecycleOwner, Observer {
+            listAdapter.update()
+        })
+
+
         // Observe the debtors
         viewModel.getDebtorsMLD().observe(viewLifecycleOwner, Observer {
             // Stop refreshing when loaded
@@ -71,11 +78,6 @@ class PaymentsDebtorsFragment(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Observe the input field
-        viewModel.debtorsSearch.observe(this, Observer {
-            listAdapter.update()
-        })
 
         // Update the list adapter when the "orders" query updates
         viewModel.getDebtorsMLD().observe(this, Observer {
