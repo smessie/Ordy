@@ -105,6 +105,8 @@
     <string name="list_item_closing_on">Closing on:&#160;</string>
     <string name="list_item_courier">Courier:</string>
 
+    <string name="error_picker_past">You cannot select a deadline that has already passed.</string>
+
     <!-- placeholders for development -->
     <string name="placeholder_name">Bob</string>
     <string name="placeholder_member_count">12</string>
