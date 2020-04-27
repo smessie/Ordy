@@ -41,8 +41,7 @@
                         android:layout_weight="1"
                         android:textColor="@android:color/white"
                         android:textSize="25sp"
-                        android:textStyle="bold"
-                        android:text="@string/placeholder_group_name"/>
+                        android:textStyle="bold"/>
 
                     <Button
                         android:layout_width="wrap_content"
