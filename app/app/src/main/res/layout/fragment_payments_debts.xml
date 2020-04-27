@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.payments.debts.PaymentsDebtsFragment">
 
     <data>
@@ -8,49 +9,81 @@
         <variable
             name="handlers"
             type="com.ordy.app.ui.payments.debts.PaymentsDebtsHandlers" />
+
+        <variable
+            name="viewModel"
+            type="com.ordy.app.ui.payments.PaymentsViewModel" />
     </data>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/payments_debts_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <!-- Debts -->
-            <ListView
-                android:id="@+id/payments_debts"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@null"
-                android:dividerHeight="0dp"
-                android:drawSelectorOnTop="true" />
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <!-- Empty placeholder -->
         <LinearLayout
-            android:id="@+id/payments_debts_empty"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="@dimen/activity_horizontal_margin">
 
-            <TextView
-                style="@style/Subtitle"
+            <!-- Search field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/debtor_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/no_debts_title" />
+                android:maxLines="1"
+                android:hint="Search for debtor"
+                app:startIconDrawable="@drawable/ic_search_black_24dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-            <TextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="@={viewModel.debtsSearch}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/no_debts_description" />
+                android:layout_height="match_parent">
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/payments_debts_refresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!-- Debts -->
+                    <ListView
+                        android:id="@+id/payments_debts"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@null"
+                        android:dividerHeight="0dp"
+                        android:drawSelectorOnTop="true" />
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                <!-- Empty placeholder -->
+                <LinearLayout
+                    android:id="@+id/payments_debts_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        style="@style/Subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/no_debts_title" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/no_debts_description" />
+                </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
-    </FrameLayout>
-
+    </LinearLayout>
 </layout>

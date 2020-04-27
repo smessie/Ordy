@@ -8,6 +8,9 @@ import com.ordy.app.api.util.Query
 import okhttp3.ResponseBody
 
 class PaymentsViewModel(repository: Repository) : RepositoryViewModel(repository) {
+    val debtorsSearch = MutableLiveData("")
+    fun getDebtorsSearchValue() = debtorsSearch.value!!
+
     // Debtors MLD
     fun getDebtorsMLD() = repository.userDebtorsResult
 
@@ -30,6 +33,9 @@ class PaymentsViewModel(repository: Repository) : RepositoryViewModel(repository
             PaymentUpdate(true)
         )
     }
+
+    val debtsSearch = MutableLiveData("")
+    fun getDebtsSearchValue() = debtsSearch.value!!
 
     // Debts MLD
     fun getDebtsMLD() = repository.userDebtsResult

@@ -5,32 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.models.Payment
-import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
-import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.list_payment_card.view.*
-import okhttp3.ResponseBody
 import java.text.DateFormat
+import java.util.*
 
-class PaymentsListAdapter(
+abstract class PaymentsListAdapter(
     val context: Context,
     val viewModel: PaymentsViewModel,
-    val fragment: PaymentsFragment,
-    private val paymentsType: PaymentsType
+    val fragment: PaymentsFragment
 ) : BaseAdapter() {
 
-    private val queryFun: () -> Query<List<Payment>> = if (paymentsType == PaymentsType.Debtors) {
-        { viewModel.getDebtors() }
-    } else {
-        { viewModel.getDebts() }
-    }
+    protected var paymentFiltered: List<Payment> = emptyList()
 
+    abstract fun getQuery(): Query<List<Payment>>
+    abstract fun getSearchValue(): String
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -40,7 +32,7 @@ class PaymentsListAdapter(
             false
         )
 
-        when (queryFun().status) {
+        when (getQuery().status) {
 
             QueryStatus.LOADING -> {
                 // Start the shimmer effect and show the right layout
@@ -50,7 +42,7 @@ class PaymentsListAdapter(
             }
 
             QueryStatus.SUCCESS -> {
-                val payment = queryFun().requireData()[position]
+                val payment = paymentFiltered[position]
 
                 // Stop shimmering and hide
                 view.payment_loading.stopShimmer()
@@ -66,21 +58,11 @@ class PaymentsListAdapter(
                     .format(payment.order.deadline)
                 view.payment_other_user_name.text = payment.user.username
 
+
                 /**
                  * Do some paymentsType specific things
                  */
-                if (paymentsType == PaymentsType.Debtors) {
-                    addPaidAction(payment, view)
-
-                    view.payment_notify.setOnClickListener {
-                        // TODO Notify
-                    }
-                } else {
-                    // Hide buttons
-                    view.payment_notify.visibility = View.GONE
-                    view.payment_paid.visibility = View.GONE
-                }
-
+                specificPaymentCardSetup(payment, view)
             }
             else -> {
             }
@@ -89,65 +71,35 @@ class PaymentsListAdapter(
         return view
     }
 
+    /**
+     * Specific setup for the card.
+     */
+    abstract fun specificPaymentCardSetup(payment: Payment, view: View)
+
     override fun getItem(position: Int) = position
     override fun getItemId(position: Int) = position.toLong()
-    override fun isEnabled(position: Int) = queryFun().status == QueryStatus.SUCCESS
+    override fun isEnabled(position: Int) = getQuery().status == QueryStatus.SUCCESS
 
     override fun getCount(): Int {
-        return when (queryFun().status) {
+        return when (getQuery().status) {
             QueryStatus.LOADING -> 4
-            QueryStatus.SUCCESS -> queryFun().requireData().size
+            QueryStatus.SUCCESS -> paymentFiltered.size
             else -> 0
         }
     }
 
-    private fun addPaidAction(payment: Payment, view: View) {
-        // Result of the update item query
-        val updatePaidResult = MutableLiveData<Query<ResponseBody>>(Query())
-
-        // Set click handler on remove button
-        view.payment_paid.setOnClickListener {
-            // Prompt for confirmation
-            AlertDialog.Builder(context).apply {
-                setTitle("Mark as paid?")
-                setMessage("This will remove ${payment.user.username}'s dept from the list.")
-
-                // Mark as paid when confirmed
-                setPositiveButton(android.R.string.ok) { _, _ ->
-                    viewModel.markAsPaid(
-                        updatePaidResult,
-                        payment.order.id,
-                        payment.user.id
+    fun update() {
+        if (getQuery().status == QueryStatus.SUCCESS) {
+            paymentFiltered = getQuery().requireData().filter {
+                it.user.username
+                    .toLowerCase(Locale.getDefault())
+                    .contains(
+                        getSearchValue()
+                            .toLowerCase(Locale.getDefault())
                     )
-                }
-
-                // Close the window on cancel
-                setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                    dialog.cancel()
-                }
-            }.show()
-        }
-
-        updatePaidResult.observe(fragment, Observer {
-            when (it.status) {
-                QueryStatus.LOADING -> {
-                    SnackbarUtil.openSnackbar(
-                        "Marking as paid...",
-                        fragment.requireView()
-                    )
-                }
-                QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireView())
-                    viewModel.refreshDebtors()
-                }
-                QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireView())
-                    ErrorHandler.handle(it.error, fragment.requireView(), listOf())
-                }
-                else -> {
-                }
             }
-        })
+        }
+        notifyDataSetChanged()
 
     }
 }

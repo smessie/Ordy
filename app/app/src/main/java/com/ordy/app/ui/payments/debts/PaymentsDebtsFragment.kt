@@ -13,11 +13,10 @@ import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentPaymentsDebtsBinding
 import com.ordy.app.ui.payments.PaymentsFragment
 import com.ordy.app.ui.payments.PaymentsListAdapter
-import com.ordy.app.ui.payments.PaymentsType
 import com.ordy.app.ui.payments.PaymentsViewModel
 
 class PaymentsDebtsFragment(
-    val parentFragment: PaymentsFragment
+    private val parentFragment: PaymentsFragment
 ) : Fragment() {
 
     private val viewModel: PaymentsViewModel by activityViewModels {
@@ -41,11 +40,10 @@ class PaymentsDebtsFragment(
         binding.handlers = PaymentsDebtsHandlers(this, viewModel)
 
         // Initialize listViewAdapter
-        listAdapter = PaymentsListAdapter(
+        listAdapter = PaymentsDebtsListAdapter(
             requireContext(),
             viewModel,
-            parentFragment,
-            PaymentsType.Debts
+            parentFragment
         )
 
         binding.paymentsDebts.apply {
@@ -74,11 +72,16 @@ class PaymentsDebtsFragment(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Observe the input field
+        viewModel.debtsSearch.observe(this, Observer {
+            listAdapter.update()
+        })
+
         // Update the list adapter when the "orders" query updates
         viewModel.getDebtsMLD().observe(this, Observer {
 
             // Notify the changes to the list view (to re-render automatically)
-            listAdapter.notifyDataSetChanged()
+            listAdapter.update()
         })
     }
 }
