@@ -27,10 +27,10 @@ class LocationService(
      */
     fun getLocationItems(userId: Int, locationId: Int): List<Item> {
         var user = userRepository.findById(userId).get()
-        var location = locationRepository.findById(locationId)
+        val location = locationRepository.findById(locationId)
 
         // Validate that the location is present.
-        if(!location.isPresent) {
+        if (!location.isPresent) {
             throw GenericException(HttpStatus.BAD_REQUEST, "Location does not exist")
         }
 

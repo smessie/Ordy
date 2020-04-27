@@ -23,15 +23,15 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
 
     private fun checkGroupName(name: String, list: ThrowableList) {
         if (!groupNameRegex.matches(name)) {
-            list.addPropertyException("name", "Name should only contain letters, numbers an spaces")
+            list.addPropertyException("name", "Name should only contain letters, numbers and spaces")
         }
     }
 
     fun createGroup(userId: Int, groupWrapper: GroupCreateWrapper): Group {
         val throwableList = ThrowableList()
 
-        if (!groupWrapper.name.isPresent){
-            throw throwableList.also { it.addGenericException("GroupCreateWrapper has no name.") }
+        if (!groupWrapper.name.isPresent) {
+            throw throwableList.also { it.addGenericException("No name was given. Please try again.") }
         }
 
         checkGroupName(groupWrapper.name.get(), throwableList)
@@ -51,8 +51,8 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
     fun updateGroup(groupId: Int, groupWrapper: GroupCreateWrapper): Group {
         val throwableList = ThrowableList()
 
-        if (!groupWrapper.name.isPresent){
-            throw throwableList.also { it.addGenericException("GroupCreateWrapper has no name.") }
+        if (!groupWrapper.name.isPresent) {
+            throw throwableList.also { it.addGenericException("No name was given. Please try again.") }
         }
 
         checkGroupName(groupWrapper.name.get(), throwableList)
@@ -63,7 +63,7 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
             group.get().name = groupWrapper.name.get()
             groupRepository.save(group.get())
         } else {
-            throwableList.addGenericException("Group does not exist")
+            throwableList.addGenericException("Group does not exist.")
         }
 
         throwableList.ifNotEmpty { throw throwableList }
@@ -212,7 +212,7 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
         try {
             inviteAction = InviteAction.valueOf(inviteActionWrapper.action.get().toUpperCase())
         } catch (e: IllegalArgumentException) {
-            throw throwableList.also { it.addPropertyException("action", "Wrong action was passed! This must be ACCEPT or DENY") }
+            throw throwableList.also { it.addPropertyException("action", "Unknown action was given. Please try again.") }
         }
 
         // accepting the invite means that you want to join the group
