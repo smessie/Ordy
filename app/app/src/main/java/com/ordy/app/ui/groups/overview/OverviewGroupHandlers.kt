@@ -21,8 +21,8 @@ class OverviewGroupHandlers(
     fun onLeaveButtonClick() {
         if (viewModel.getGroupMLD().value != null) {
             AlertDialog.Builder(activity).apply {
-                setTitle("Are you sure?")
-                setMessage("You are about to leave this group")
+                setTitle(activity.getString(R.string.order_overview_leave_title))
+                setMessage(activity.getString(R.string.order_overview_leave_message))
 
                 setPositiveButton(android.R.string.ok) { _, _ ->
                     viewModel.userLeaveGroup(viewModel.getGroup().requireData().id)
@@ -34,7 +34,7 @@ class OverviewGroupHandlers(
             }.show()
         } else {
             ErrorHandler().handleRawGeneral(
-                "You already are no member of this group.",
+                activity.getString(R.string.order_overview_leave_error),
                 view
             )
         }
@@ -53,7 +53,7 @@ class OverviewGroupHandlers(
             activity.startActivity(intent)
         } else {
             ErrorHandler().handleRawGeneral(
-                "Request failed. Please try again...",
+                activity.getString(R.string.order_overview_invite_error),
                 view
             )
         }
