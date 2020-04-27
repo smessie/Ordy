@@ -109,6 +109,7 @@
     <string name="bill_error_title">Unable to load bill</string>
     <string name="bill_error_description">Unable to load bill for this order. Make sure you have a valid connection and try again!</string>
 
+    <string name="error_connection">Unable to connect to the server. Please check your connection.</string>
     <string name="error_picker_past">You cannot select a deadline that has already passed.</string>
     <string name="error_passwords_match">Passwords do not match.</string>
 
