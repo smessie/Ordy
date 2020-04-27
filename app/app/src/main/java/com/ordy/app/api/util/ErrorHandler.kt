@@ -9,7 +9,6 @@ import com.ordy.app.R
 import com.ordy.app.util.SnackbarUtil
 import com.ordy.app.util.types.SnackbarType
 import retrofit2.HttpException
-import java.lang.Exception
 
 class ErrorHandler {
 
@@ -90,8 +89,8 @@ class ErrorHandler {
     fun handle(queryError: QueryError?, view: View?, fields: List<InputField> = emptyList()) {
 
         // Do not handle the error when it was already displayed before.
-        if(queryError != null) {
-            if(queryError.displayedError) {
+        if (queryError != null) {
+            if (queryError.displayedError) {
                 return
             } else {
                 // Set the error as displayed.
@@ -111,18 +110,17 @@ class ErrorHandler {
             && queryError.generalErrors.isEmpty()
             && view != null
         ) {
-                var message = queryError.message
+            var message = queryError.message
 
-                // Filter a connection error message and throw a custom error instead
-                if(message.startsWith("Unable to resolve host")) {
+            // Filter a connection error message and throw a custom error instead
+            if (message.startsWith("Unable to resolve host")) {
 
-                    // Check if the user has no internet connection
-                    message = view.context.getString(R.string.error_connection)
-                }
-
-                // Create and show a snackbar with the error message.
-                this.handleRawGeneral(queryError.message, view)
+                // Check if the user has no internet connection
+                message = view.context.getString(R.string.error_connection)
             }
+
+            // Create and show a snackbar with the error message.
+            this.handleRawGeneral(queryError.message, view)
         }
     }
 
