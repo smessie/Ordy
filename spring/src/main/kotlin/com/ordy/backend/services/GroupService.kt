@@ -21,8 +21,13 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
 
     private val groupNameRegex = Regex("^[A-z0-9 ]+$")
 
-    private fun checkGroupName(name: String, list: ThrowableList) {
-        if (!groupNameRegex.matches(name)) {
+    private fun checkGroupName(name: Optional<String>, list: ThrowableList) {
+        if (!name.isPresent) {
+            list.addGenericException("No name was given. Please try again.")
+            return
+        }
+
+        if (!groupNameRegex.matches(name.get())) {
             list.addPropertyException("name", "Name should only contain letters, numbers and spaces")
         }
     }
@@ -30,11 +35,7 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
     fun createGroup(userId: Int, groupWrapper: GroupCreateWrapper): Group {
         val throwableList = ThrowableList()
 
-        if (!groupWrapper.name.isPresent) {
-            throw throwableList.also { it.addGenericException("No name was given. Please try again.") }
-        }
-
-        checkGroupName(groupWrapper.name.get(), throwableList)
+        checkGroupName(groupWrapper.name, throwableList)
         throwableList.ifNotEmpty { throw throwableList }
 
         val creator = userRepository.findById(userId).get()
@@ -51,11 +52,8 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
     fun updateGroup(groupId: Int, groupWrapper: GroupCreateWrapper): Group {
         val throwableList = ThrowableList()
 
-        if (!groupWrapper.name.isPresent) {
-            throw throwableList.also { it.addGenericException("No name was given. Please try again.") }
-        }
-
-        checkGroupName(groupWrapper.name.get(), throwableList)
+        checkGroupName(groupWrapper.name, throwableList)
+        throwableList.ifNotEmpty { throw throwableList }
 
         val group: Optional<Group> = groupRepository.findById(groupId)
 
