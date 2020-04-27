@@ -1,5 +1,6 @@
 package com.ordy.app.ui.orders.overview.general
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +9,8 @@ import android.widget.BaseAdapter
 import com.ordy.app.R
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
-import com.ordy.app.util.OrderItemGroup
 import com.ordy.app.util.OrderUtil
+import com.ordy.app.util.types.OrderItemGroup
 import kotlinx.android.synthetic.main.list_order_item.view.*
 
 class OrderGeneralListAdapter(val context: Context?, var viewModel: OverviewOrderViewModel) :
@@ -17,6 +18,8 @@ class OrderGeneralListAdapter(val context: Context?, var viewModel: OverviewOrde
 
     private var orderItemGroups: List<OrderItemGroup> = emptyList()
 
+    // suppress the warning for "${orderItemGroup.quantity}x"
+    @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(
             R.layout.list_order_item,
@@ -91,7 +94,7 @@ class OrderGeneralListAdapter(val context: Context?, var viewModel: OverviewOrde
         if (viewModel.getOrder().status == QueryStatus.SUCCESS) {
             val orderItems = viewModel.getOrder().requireData().orderItems
 
-            orderItemGroups = OrderUtil.groupItems(orderItems)
+            orderItemGroups = OrderUtil.groupItems(orderItems!!)
         }
 
         // Notify the changes to the list view (to re-render automatically)

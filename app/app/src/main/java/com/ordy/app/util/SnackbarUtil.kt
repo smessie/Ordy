@@ -3,12 +3,13 @@ package com.ordy.app.util
 import android.graphics.Color
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
+import com.ordy.app.util.types.SnackbarType
 
 class SnackbarUtil {
 
     companion object {
 
-        var snackbars: MutableMap<View, Snackbar> = mutableMapOf()
+        private var snackbars: MutableMap<View, Snackbar> = mutableMapOf()
 
         /**
          * Open a snackbar
@@ -47,10 +48,4 @@ class SnackbarUtil {
             }
         }
     }
-}
-
-enum class SnackbarType {
-    SUCCESS,
-    INFO,
-    ERROR
 }

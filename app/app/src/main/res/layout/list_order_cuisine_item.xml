@@ -24,20 +24,17 @@
         <!-- Name of the cuisine item -->
         <TextView
             android:id="@+id/order_cuisine_item_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="@string/placeholder_product_name"/>
 
         <!-- Action button of the cuisine item -->
         <Button
             android:id="@+id/order_cuisine_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="Add"
+            android:text="@string/add_button"
             android:backgroundTint="@color/colorPrimary"
             style="@style/TextAppearance.AppCompat.Widget.Button.Inverse"/>
     </LinearLayout>

@@ -8,8 +8,8 @@ import android.widget.BaseAdapter
 import com.ordy.app.R
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
-import com.ordy.app.util.OrderItemUserGroup
 import com.ordy.app.util.OrderUtil
+import com.ordy.app.util.types.OrderItemUserGroup
 import kotlinx.android.synthetic.main.list_order_item.view.*
 import kotlinx.android.synthetic.main.list_order_item_user.view.*
 
@@ -52,8 +52,7 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
                 // Add all the items
                 for (orderItem in orderItemUserGroup.items) {
 
-                    val orderItemView =
-                        LayoutInflater.from(context).inflate(R.layout.list_order_item, null)
+                    val orderItemView = View.inflate(context, R.layout.list_order_item, null)
 
                     // Stop the shimmer effect & hide.
                     orderItemView.order_item_loading.stopShimmer()
@@ -61,7 +60,7 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
                     orderItemView.order_item_data.visibility = View.VISIBLE
 
                     // Assign the data.
-                    orderItemView.order_item_quantity.text = "1x"
+                    orderItemView.order_item_quantity.text = context?.getString(R.string.placeholder_item_quantity)
                     orderItemView.order_item_name.text = orderItem.item.name
                     orderItemView.order_item_comment.text = orderItem.comment
 
@@ -111,7 +110,7 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
 
             val orderItems = viewModel.getOrder().requireData().orderItems
 
-            orderItemUserGroups = OrderUtil.userGroupItems(orderItems)
+            orderItemUserGroups = OrderUtil.userGroupItems(orderItems!!)
         }
 
         // Notify the changes to the list view (to re-render automatically)

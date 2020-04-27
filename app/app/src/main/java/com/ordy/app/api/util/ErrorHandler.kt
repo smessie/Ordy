@@ -6,9 +6,10 @@ import android.view.animation.AnimationUtils
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ordy.app.R
-import com.ordy.app.util.SnackbarType
 import com.ordy.app.util.SnackbarUtil
+import com.ordy.app.util.types.SnackbarType
 import retrofit2.HttpException
+import java.lang.Exception
 
 class ErrorHandler {
 
@@ -47,20 +48,24 @@ class ErrorHandler {
                     val errorBody = queryError.response!!.errorBody()
 
                     if (errorBody != null) {
-                        // Convert the error body.
-                        val errorResult =
-                            Gson().fromJson(errorBody.charStream(), ErrorResult::class.java)
+                        try {
+                            // Convert the error body.
+                            val errorResult =
+                                Gson().fromJson(errorBody.charStream(), ErrorResult::class.java)
 
-                        if (errorResult != null) {
-                            // General errors (when defined)
-                            if (errorResult.generalErrors != null) {
-                                queryError.generalErrors = errorResult.generalErrors
-                            }
+                            if (errorResult != null) {
+                                // General errors (when defined)
+                                if (errorResult.generalErrors != null) {
+                                    queryError.generalErrors = errorResult.generalErrors
+                                }
 
-                            // Input errors (when defined)
-                            if (errorResult.inputErrors != null) {
-                                queryError.inputErrors = errorResult.inputErrors
+                                // Input errors (when defined)
+                                if (errorResult.inputErrors != null) {
+                                    queryError.inputErrors = errorResult.inputErrors
+                                }
                             }
+                        } catch(e: Exception) {
+                            e.printStackTrace()
                         }
                     }
                 }
@@ -99,7 +104,7 @@ class ErrorHandler {
                     return
                 } else {
                     // Set the error as displayed.
-                    queryError.displayedError = true;
+                    queryError.displayedError = true
                 }
             }
 
@@ -116,8 +121,17 @@ class ErrorHandler {
                 && view != null
             ) {
 
+                var message = queryError.message
+
+                // Filter a connection error message and throw a custom error instead
+                if(message.startsWith("Unable to resolve host")) {
+
+                    // Check if the user has no internet connection
+                    message = view.context.getString(R.string.error_connection)
+                }
+
                 // Create and show a snackbar with the error message.
-                this.handleRawGeneral(queryError.message, view)
+                this.handleRawGeneral(message, view)
             }
         }
 

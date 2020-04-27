@@ -24,9 +24,7 @@ class Query<T> {
      */
     fun requireData(): T {
 
-        val data = this.data ?: throw IllegalStateException("Data is not present on Query object")
-
-        return data;
+        return (this.data ?: throw IllegalStateException("Data is not present on Query object"))
     }
 
     /**
@@ -36,9 +34,7 @@ class Query<T> {
      */
     fun requireError(): QueryError {
 
-        val error = this.error ?: throw IllegalStateException("Error is not present on Query object")
-
-        return error;
+        return (this.error ?: throw IllegalStateException("Error is not present on Query object"))
     }
 
     /**

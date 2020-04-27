@@ -9,7 +9,7 @@ import com.ordy.app.api.util.QueryStatus
 import okhttp3.ResponseBody
 import java.util.*
 
-class Repository(val apiService: ApiService) {
+class Repository(private val apiService: ApiService) {
 
     /******************************
      ***        GROUPS          ***
@@ -17,6 +17,7 @@ class Repository(val apiService: ApiService) {
     private val createGroupResult: MutableLiveData<Query<Group>> = MutableLiveData(Query())
     private val inviteableUsers: MutableLiveData<Query<List<User>>> = MutableLiveData(Query())
     private val group: MutableLiveData<Query<Group>> = MutableLiveData(Query())
+    private val renameGroupResult: MutableLiveData<Query<Group>> = MutableLiveData(Query())
     private val leaveGroupResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
     private val removeMemberResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
     private val groups: MutableLiveData<Query<List<Group>>> = MutableLiveData(Query())
@@ -84,6 +85,18 @@ class Repository(val apiService: ApiService) {
     }
 
     /**
+     * Change the name of a group
+     * @param groupId: ID of the group of which the name will be changed
+     * @param newName: The new name that will be given to the group
+     */
+    fun renameGroup(groupId: Int, newName: String) {
+        FetchHandler.handle(
+            renameGroupResult,
+            apiService.updateGroup(groupId, GroupUpdate(newName))
+        )
+    }
+
+    /**
      * Remove a member from a group.
      * @param userId: ID of the user that should be kicked
      * @param groupId: ID of the group the user is removed from
@@ -113,6 +126,13 @@ class Repository(val apiService: ApiService) {
      */
     fun getGroup(): MutableLiveData<Query<Group>> {
         return group
+    }
+
+    /**
+     * Get the MutableLiveData result of the Rename group query.
+     */
+    fun getRenameGroupResult(): MutableLiveData<Query<Group>> {
+        return renameGroupResult
     }
 
     /**

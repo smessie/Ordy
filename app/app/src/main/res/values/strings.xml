@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">Ordy</string>
     <string name="title_orders">Orders</string>
     <string name="title_groups">Groups</string>
@@ -17,10 +18,16 @@
     <string name="title_login">Login</string>
     <string name="title_register">Register</string>
 
-    <string name="title_group">Group:&#160;</string>
     <string name="members">Members:&#160;</string>
     <string name="group_invite_user">Invite</string>
     <string name="group_leave">Leave</string>
+    <string name="group_rename">Rename</string>
+    <string name="group_rename_dialog_tag">New name</string>
+    <string name="group_rename_dialog_title">New group-name</string>
+    <string name="group_rename_dialog_message">Enter a new name:</string>
+    <string name="group_rename_dialog_is_empty">Name cannot be empty.</string>
+
+    <string name="group_new_name">Enter new name</string>
     <string name="create_group_name">Group name</string>
 
     <string name="invite_username_search">Search for usernames to invite</string>
@@ -28,6 +35,7 @@
     <string name="invite_subtitle">Use the searchbar above to search</string>
     <string name="invite_button">Invite</string>
     <string name="invited_button">Invited!</string>
+    <string name="your_invites_title">Your invites</string>
     <string name="no_group_invites_title">No group invites found</string>
     <string name="no_group_invites_description">All invites for groups you receive will be listed here</string>
 
@@ -39,7 +47,6 @@
     <string name="create_order_input_group">Group</string>
 
     <string name="create">Create</string>
-    <string name="search">Search</string>
 
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -49,7 +56,7 @@
     <string name="password_repeat">Repeat password</string>
 
     <string name="register">Create account</string>
-    <string name="register_login">Already an account? Login now!</string>
+    <string name="register_login">Already have an account? Login now!</string>
 
     <string name="no_active_orders_title">No active orders found</string>
     <string name="no_active_orders_description">Click the "+"-button to create a new order for one of your groups</string>
@@ -59,22 +66,22 @@
     <string name="add_item_order_input_search">Search for an item</string>
     <string name="add_item_order_default_title">Not in the list?</string>
     <string name="add_item_order_default_text">Add \"%1$s\" to your order instead</string>
-    <string name="no_order_items_title">No items found</string>
-    <string name="no_order_items_description">Nobody has ordered anything.</string>
-    <string name="no_order_items_description_personal">You have not ordered anything. Click the \"add item\" button to add an item to this order.</string>
+
+    <string name="overview_title">Overview</string>
+
     <string name="order_item_comment">Enter extra comment</string>
     <string name="order_location_input_search">Search for a location</string>
     <string name="pick">Pick</string>
     <string name="no_locations_title">No locations found</string>
     <string name="no_locations_description">Use the searchbar above to search for a location by name</string>
-    <string name="loading_locations_title">Loading locations...</string>
-    <string name="loading_locations_description">Please wait while fetching locations...</string>
     <string name="pick_custom">Pick Custom</string>
     <string name="location_item_default_title">Not in the list?</string>
-    <string name="location_item_default_text">Add \"%1$s\" as location instead</string>
-    <string name="loading">Loading</string>
+    <string name="loading">Loading&#8230;</string>
     <string name="no_groups_title">No groups found</string>
+    <string name="your_groups_title">Your groups</string>
+    <string name="new_group_button">new group</string>
     <string name="no_groups_description">Create or join a group and they will appear here</string>
+
 
     <!-- Debts -->
     <string name="debts_tab_title">Your debts</string>
@@ -88,4 +95,43 @@
     <string name="mark_as_paid">Paid</string>
     <string name="notify">Notify</string>
     <string name="debtors_search">Search for debtor</string>
+
+    <string name="no_order_items_title">No items found</string>
+
+    <string name="order_overview_header_order">Order:&#160;</string>
+    <string name="order_overview_header_deadline">Deadline:&#160;</string>
+    <string name="order_overview_header_location">Location:&#160;</string>
+    <string name="order_overview_header_courier">Courier:&#160;</string>
+    <string name="order_overview_header_closing">Closing in:&#160;</string>
+
+    <string name="your_items_title">Your items: </string>
+    <string name="add_item_button">Add item</string>
+    <string name="no_order_items_description_personal">You have not ordered anything. Click the \"add item\" button to add an item to this order.</string>
+
+    <string name="users_title">Users</string>
+    <string name="no_order_items_description">Nobody has ordered anything.</string>
+
+    <string name="add_button">Add</string>
+
+    <string name="list_item_group_creator">Group Creator:&#160;</string>
+    <string name="list_item_group_member_count">&#160;members in group</string>
+    <string name="list_item_closing_in">Closing in:&#160;</string>
+    <string name="list_item_closing_on">Closing on:&#160;</string>
+    <string name="list_item_courier">Courier:</string>
+
+    <string name="error_connection">Unable to connect to the server. Please check your connection.</string>
+    <string name="error_picker_past">You cannot select a deadline that has already passed.</string>
+    <string name="error_passwords_match">Passwords do not match.</string>
+
+    <!-- placeholders for development -->
+    <string name="placeholder_name">Bob</string>
+    <string name="placeholder_member_count">12</string>
+    <string name="placeholder_group_name">Zeus</string>
+    <string name="placeholder_location">\'t Blauw Kotje</string>
+    <string name="placeholder_closing_date">4/15/20 11:00 AM</string>
+    <string name="placeholder_closing_time">10 min</string>
+    <string name="placeholder_item_quantity">1x</string>
+    <string name="placeholder_product_name">Big pack of fries</string>
+    <string name="placeholder_comment">extra salt</string>
+    <string name="placeholder_email">bob@mail.com</string>
 </resources>

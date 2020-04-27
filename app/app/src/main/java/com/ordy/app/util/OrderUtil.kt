@@ -1,9 +1,10 @@
 package com.ordy.app.util
 
-import android.util.Log
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.models.OrderItem
 import com.ordy.app.ui.orders.OrdersStatus
+import com.ordy.app.util.types.OrderItemGroup
+import com.ordy.app.util.types.OrderItemUserGroup
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -54,7 +55,7 @@ class OrderUtil {
          * Get the time until in milliseconds for a specific date.
          * @param date Date
          */
-        fun timeUntil(date: Date): Long {
+        private fun timeUntil(date: Date): Long {
             return System.currentTimeMillis() - date.time
         }
 
@@ -70,7 +71,7 @@ class OrderUtil {
             for(orderItem in orderItems) {
 
                 // Check if the order item already has a corresponding group.
-                val match = itemGroups.find { it.name.toLowerCase() == orderItem.item.name.toLowerCase() }
+                val match = itemGroups.find { it.name.toLowerCase(Locale.US) == orderItem.item.name.toLowerCase(Locale.US) }
 
                 if(match !== null) {
                     match.quantity += 1
@@ -128,14 +129,3 @@ class OrderUtil {
         }
     }
 }
-
-data class OrderItemGroup(
-    var name: String,
-    var quantity: Int,
-    var items: MutableList<OrderItem>
-)
-
-data class OrderItemUserGroup(
-    var username: String,
-    var items: MutableList<OrderItem>
-)

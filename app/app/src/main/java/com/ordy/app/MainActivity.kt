@@ -18,6 +18,7 @@ import com.ordy.app.ui.login.LoginActivity
 import com.ordy.app.ui.orders.create.CreateOrderActivity
 import com.ordy.app.ui.profile.ProfileActivity
 import com.ordy.app.ui.settings.SettingsActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         /**
          *  Create FAB speeddial.
          */
-        val speedDialView: SpeedDialView = findViewById(R.id.speeddial)
+        val speedDialView = this.speeddial
 
         // New order button
         speedDialView
@@ -101,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         /**
          * Create bottom navigation.
          */
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+        val navView = this.nav_view
         val navController = findNavController(R.id.nav_host_fragment)
 
         // Passing each menu ID as a set of Ids because each

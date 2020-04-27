@@ -27,7 +27,7 @@ import java.util.*
 
 class OrderPersonalListAdapter(
     val context: Context,
-    val parentView: View,
+    private val parentView: View,
     val handlers: OrderPersonalHandlers,
     val fragment: OrderPersonalFragment,
     val viewModel: OverviewOrderViewModel
@@ -61,7 +61,7 @@ class OrderPersonalListAdapter(
                 view.order_item_data.visibility = View.VISIBLE
 
                 // Assign the data.
-                view.order_item_quantity.text = "1x"
+                view.order_item_quantity.text = context.getString(R.string.placeholder_item_quantity)
                 view.order_item_name.text = orderItem.item.name
                 view.order_item_comment.text = orderItem.comment
 
@@ -194,7 +194,7 @@ class OrderPersonalListAdapter(
                     SnackbarUtil.closeSnackbar(fragment.requireView())
 
                     // Delete the order item from the list view
-                    viewModel.getOrder().requireData().orderItems.remove(orderItem)
+                    viewModel.getOrder().requireData().orderItems?.remove(orderItem)
 
                     // Update the query.
                     viewModel.getOrderMLD().postValue(viewModel.getOrder())
@@ -217,7 +217,7 @@ class OrderPersonalListAdapter(
         if (viewModel.getOrder().status == QueryStatus.SUCCESS) {
 
             // Only show the items with the same user id as the logged in user.
-            orderItems = viewModel.getOrder().requireData().orderItems.filter {
+            orderItems = viewModel.getOrder().requireData().orderItems!!.filter {
                 it.user.id == AppPreferences(context).userId
             }
 

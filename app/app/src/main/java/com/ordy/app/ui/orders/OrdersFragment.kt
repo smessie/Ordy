@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.ordy.app.R
 import com.ordy.app.api.RepositoryViewModelFactory
@@ -16,7 +15,8 @@ import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.active.ActiveOrdersFragment
 import com.ordy.app.ui.orders.archived.ArchivedOrdersFragment
 import com.ordy.app.util.TabsAdapter
-import com.ordy.app.util.TabsEntry
+import com.ordy.app.util.types.TabsEntry
+import kotlinx.android.synthetic.main.fragment_orders.view.*
 
 class OrdersFragment : Fragment() {
 
@@ -62,11 +62,11 @@ class OrdersFragment : Fragment() {
          * Setup the tabsbar.
          */
         // Link the adapter to the viewpager.
-        val viewPager: ViewPager = view.findViewById(R.id.tabs_view)
+        val viewPager = view.tabs_view
         viewPager.adapter = tabsAdapter
 
         // Link the viewpager to the tablayout.
-        val tabs: TabLayout = view.findViewById(R.id.tabs)
+        val tabs: TabLayout = view.tabs
         tabs.setupWithViewPager(viewPager)
     }
 }

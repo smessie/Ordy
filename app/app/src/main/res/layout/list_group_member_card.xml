@@ -36,12 +36,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:text="@string/placeholder_name"/>
 
             <TextView
                 android:id="@+id/member_email"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder_email"/>
 
         </LinearLayout>
 
@@ -58,7 +60,7 @@
             <Button
                 android:id="@+id/member_remove"
                 android:layout_width="wrap_content"
-                android:drawableLeft="@drawable/ic_delete_forever_red_24dp"
+                android:drawableEnd="@drawable/ic_delete_forever_red_24dp"
                 style="@style/Widget.AppTheme.Button.IconButton"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
