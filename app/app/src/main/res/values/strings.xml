@@ -98,6 +98,8 @@
     <string name="mark_as_paid">Paid</string>
     <string name="notify">Notify</string>
     <string name="debtors_search">Search for debtor</string>
+    <string name="mark_snackbar_text">Marking as paid…</string>
+    <string name="mark_confirm_text">Mark as paid?</string>
 
     <string name="no_order_items_title">No items found</string>
 

@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.ordy.app.R
 import com.ordy.app.api.models.Payment
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.Query
@@ -40,7 +41,7 @@ class PaymentsDebtorsListAdapter(
         view.payment_paid.setOnClickListener {
             // Prompt for confirmation
             AlertDialog.Builder(context).apply {
-                setTitle("Mark as paid?")
+                setTitle(fragment.getString(R.string.mark_confirm_text))
                 setMessage("This will remove ${payment.user.username}'s dept from the list.")
 
                 // Mark as paid when confirmed
@@ -63,7 +64,7 @@ class PaymentsDebtorsListAdapter(
             when (it.status) {
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
-                        "Marking as paid...",
+                        fragment.getString(R.string.mark_snackbar_text),
                         fragment.requireView()
                     )
                 }
