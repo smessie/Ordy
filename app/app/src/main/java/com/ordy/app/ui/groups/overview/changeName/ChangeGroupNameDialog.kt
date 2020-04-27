@@ -13,6 +13,7 @@ import com.ordy.app.api.models.Group
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.ui.groups.overview.OverviewGroupViewModel
 import com.ordy.app.util.InputUtil
+import kotlinx.android.synthetic.main.dialog_change_group_name.view.*
 
 
 class ChangeGroupNameDialog(
@@ -24,7 +25,7 @@ class ChangeGroupNameDialog(
         val group: Group = viewModel.getGroup().requireData()
         val dialogView =
             View.inflate(context, R.layout.dialog_change_group_name, null)
-        val newNameView: TextInputLayout = dialogView.findViewById(R.id.new_group_name)
+        val newNameView: TextInputLayout = dialogView.new_group_name
 
         // Initial text for the "New name"-field view
         newNameView.editText!!.text = SpannableStringBuilder(group.name)
@@ -35,7 +36,7 @@ class ChangeGroupNameDialog(
             setView(dialogView)
             setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
                 val newName: String = InputUtil.extractText(newNameView)
-                if (!newName.isNullOrBlank()) {
+                if (!newName.isBlank()) {
                     // Update group name
                     viewModel.renameGroup(group.id, newName)
                 } else {

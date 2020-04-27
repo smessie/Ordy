@@ -62,11 +62,11 @@ class OverviewOrderActivity : AppCompatActivity() {
         tabsAdapter.addTabsEntry(TabsEntry(OrderUsersFragment(), "Users"))
 
         // Link the adapter to the viewpager.
-        val viewPager: ViewPager = binding.root.findViewById(R.id.tabs_view)
+        val viewPager: ViewPager = binding.root.tabs_view
         viewPager.adapter = tabsAdapter
 
         // Link the viewpager to the tablayout.
-        val tabs: TabLayout = binding.root.findViewById(R.id.tabs)
+        val tabs: TabLayout = binding.root.tabs
         tabs.setupWithViewPager(viewPager)
 
         // Extract the "order_id" from the given intent variables.
