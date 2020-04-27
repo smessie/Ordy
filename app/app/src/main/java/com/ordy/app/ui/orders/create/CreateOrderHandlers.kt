@@ -1,11 +1,16 @@
 package com.ordy.app.ui.orders.create
 
+import android.view.View
 import androidx.fragment.app.DialogFragment
 import com.ordy.app.R
 import com.ordy.app.ui.orders.create.location.CreateOrderLocationDialog
 import com.ordy.app.util.PickerUtil
 
-class CreateOrderHandlers(val activity: CreateOrderActivity, val viewModel: CreateOrderViewModel) {
+class CreateOrderHandlers(
+    val activity: CreateOrderActivity,
+    val view: View,
+    val viewModel: CreateOrderViewModel
+) {
 
     /**
      * Open the dialog to select a location for the order.
@@ -23,7 +28,7 @@ class CreateOrderHandlers(val activity: CreateOrderActivity, val viewModel: Crea
      * Open the dialog to select the deadline for the order.
      */
     fun openDeadline() {
-        PickerUtil.openDateTimePicker(viewModel.deadlineValueData, activity)
+        PickerUtil.openDateTimePicker(viewModel.deadlineValueData, activity, view, true)
     }
 
     /**

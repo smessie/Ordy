@@ -19,6 +19,7 @@ import com.ordy.app.databinding.ActivityCreateOrderBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
 import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.activity_create_order.*
+import kotlinx.android.synthetic.main.activity_create_order.view.*
 
 class CreateOrderActivity : AppCompatActivity() {
 
@@ -35,18 +36,19 @@ class CreateOrderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Create the handlers
-        handlers = CreateOrderHandlers(this, viewModel)
-
         // Create binding for the activity.
         val binding: ActivityCreateOrderBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_create_order)
+
+        // Create the handlers
+        handlers = CreateOrderHandlers(this, binding.root, viewModel)
+
         binding.lifecycleOwner = this
         binding.handlers = handlers
         binding.viewModel = viewModel
 
         // Set the values for the group input field.
-        val groupValues: AutoCompleteTextView = binding.root.findViewById(R.id.input_group_values)
+        val groupValues: AutoCompleteTextView = binding.root.input_group_values
         adapter = CreateOrderGroupAdapter(applicationContext, viewModel)
         groupValues.setAdapter(adapter)
 
