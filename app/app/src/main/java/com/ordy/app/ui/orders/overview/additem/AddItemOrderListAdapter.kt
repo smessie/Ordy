@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ListView
 import com.ordy.app.R
 import com.ordy.app.api.models.Item
 import com.ordy.app.api.util.QueryStatus
@@ -98,7 +97,7 @@ class AddItemOrderListAdapter(
             cuisineFiltered = viewModel.getCuisineItems().requireData().filter {
                 it.name.toLowerCase(Locale.US)
                     .matches(Regex(".*${viewModel.getSearchValue().toLowerCase(Locale.US)}.*"))
-            }
+            }.sortedBy { it.name }
 
             // Add the "default" item to the bottom of the listview
             // This item serves as a fallback when no correct matches were found.
