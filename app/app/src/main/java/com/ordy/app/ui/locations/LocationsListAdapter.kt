@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.ordy.app.R
 import com.ordy.app.api.util.QueryStatus
+import kotlinx.android.synthetic.main.list_location_card.view.*
 import kotlinx.android.synthetic.main.list_location_item.view.*
 
 class LocationsListAdapter(
@@ -17,23 +18,32 @@ class LocationsListAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
         val view = convertView ?: LayoutInflater.from(context)
-            .inflate(R.layout.list_location_item, parent, false)
+            .inflate(R.layout.list_location_card, parent, false)
 
         when (viewModel.getLocations().status) {
 
             QueryStatus.SUCCESS -> {
                 val location = viewModel.getLocations().requireData()[position]
 
+                view.favorite_mark.isSelected = false
+
+                // if a location was already marked as favorite
+                if (viewModel.isFavorite(location.id)) {
+                    view.favorite_mark.isSelected = true
+                }
+
                 // Assign the data.
-                view.location_item_name.text = location.name
-                view.location_item_address.text =
-                    when (location.address) {
-                        null -> "No address found"
-                        else -> location.address
+                view.location_name.text = location.name
+
+                view.favorite_mark.setOnClickListener {
+                    if (viewModel.isFavorite(location.id)) {
+                        viewModel.unMarkAsFavorite(location.id)
+                    } else {
+                        viewModel.markAsFavorite(location.id)
                     }
 
-                // Hide the pick button
-                view.location_item_pick.visibility = View.GONE
+                    view.favorite_mark.isSelected = viewModel.isFavorite(location.id)
+                }
             }
         }
 

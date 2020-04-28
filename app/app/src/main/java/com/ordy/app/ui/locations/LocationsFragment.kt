@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ListView
-import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -40,7 +39,7 @@ class LocationsFragment : Fragment() {
 
         // Create binding for the fragment.
         val binding = FragmentLocationsBinding.inflate(inflater, container, false)
-        binding.handlers = LocationsBindings(this, viewModel)
+        binding.handlers = LocationsHandlers(this, viewModel)
         binding.viewmodel = viewModel
 
         // Setup the list view
