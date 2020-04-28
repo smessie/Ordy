@@ -35,27 +35,9 @@ class InviteMemberBaseAdapter(
     private val defaultColor = ColorStateList.valueOf(
         ContextCompat.getColor(context, R.color.colorPrimary)
     )
+    private var users: Query<List<GroupInviteUserWrapper>> = Query()
 
     init {
-        viewModel.getInviteableUsersMLD().observe(activity, Observer {
-
-            when (it.status) {
-
-                QueryStatus.SUCCESS -> {
-
-                    // Notify the changes to the list view (to re-render automatically)
-                    notifyDataSetChanged()
-                }
-
-                QueryStatus.ERROR -> {
-                    ErrorHandler().handle(it.error, view, emptyList())
-                }
-
-                else -> {
-                }
-            }
-        })
-
         val listView = view.users
         val listViewEmpty = view.users_empty
         val searchLoading = view.username_search_loading
@@ -66,6 +48,7 @@ class InviteMemberBaseAdapter(
             // Show a loading indicator in the searchbox.
             // Hide the list view while loading.
             when (it.status) {
+
                 QueryStatus.LOADING -> {
                     searchLoading.visibility = View.VISIBLE
                     listView.emptyView = null
@@ -86,8 +69,7 @@ class InviteMemberBaseAdapter(
                 }
             }
 
-            // Update the list adapter
-            notifyDataSetChanged()
+            update(it)
         })
     }
 
@@ -99,10 +81,10 @@ class InviteMemberBaseAdapter(
             false
         )
 
-        when (viewModel.getUsers().status) {
+        when (users.status) {
 
             QueryStatus.SUCCESS -> {
-                val member = viewModel.getUsers().requireData()[position]
+                val member = users.requireData()[position]
 
                 // add already invited users to the local list that contains all already invited users
                 if (member.invited && !viewModel.isUserInvited(member.user.id)) {
@@ -169,6 +151,11 @@ class InviteMemberBaseAdapter(
         return view
     }
 
+    fun update(users: Query<List<GroupInviteUserWrapper>>) {
+        this.users = users
+        notifyDataSetChanged()
+    }
+
     override fun getItem(position: Int): Any {
         return position
     }
@@ -178,9 +165,9 @@ class InviteMemberBaseAdapter(
     }
 
     override fun getCount(): Int {
-        return when (viewModel.getUsers().status) {
+        return when (users.status) {
             QueryStatus.LOADING -> 0
-            QueryStatus.SUCCESS -> viewModel.getUsers().requireData().size
+            QueryStatus.SUCCESS -> users.requireData().size
             else -> 0
         }
     }
