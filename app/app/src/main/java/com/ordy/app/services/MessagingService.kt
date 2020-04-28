@@ -65,6 +65,9 @@ class MessagingService : FirebaseMessagingService() {
             // Order type: PAYMENT
             if (type == "PAYMENT_DEBT") {
                 intent = Intent(this, MainActivity::class.java)
+
+                // Pass which tab to open
+                intent.putExtra("open_tab", "payments")
             }
 
             // Order type: INVITE_NEW
