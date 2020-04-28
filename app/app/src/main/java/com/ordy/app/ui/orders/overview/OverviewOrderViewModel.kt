@@ -17,13 +17,6 @@ class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repos
     }
 
     /**
-     * Get the order value
-     */
-    fun getOrder(): Query<Order> {
-        return getOrderMLD().value!!
-    }
-
-    /**
      * Refresh the order
      */
     fun refreshOrder(orderId: Int) {

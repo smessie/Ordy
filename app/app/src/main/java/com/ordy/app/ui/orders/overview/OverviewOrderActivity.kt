@@ -108,7 +108,7 @@ class OverviewOrderActivity : AppCompatActivity() {
                     order_courier_name.text = order.courier.username
 
                     // Show the bill URL when a bill is present.
-                    val billUrl = viewModel.getOrder().requireData().billUrl ?: ""
+                    val billUrl = it.requireData().billUrl ?: ""
 
                     if (!billUrl.isBlank()) {
                         order_bill_button.visibility = View.VISIBLE

@@ -1,6 +1,5 @@
 package com.ordy.app.ui.orders.overview.viewbill
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,6 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.dialog_view_bill.view.*
-import java.lang.Exception
 
 class ViewBillDialog : DialogFragment() {
 
@@ -38,7 +36,7 @@ class ViewBillDialog : DialogFragment() {
 
         // Setup the toolbar
         val toolbar: Toolbar = binding.toolbar
-        toolbar.title = "View bill: ${viewModel.getOrder().requireData().location.name}"
+        toolbar.title = "View bill: ${viewModel.getOrderMLD().value!!.requireData().location.name}"
         toolbar.setNavigationOnClickListener { dismiss() }
 
         val photoView = binding.root.findViewById(R.id.bill_image) as PhotoView
@@ -46,7 +44,7 @@ class ViewBillDialog : DialogFragment() {
         Picasso.Builder(requireContext())
             .downloader(OkHttp3Downloader(ApiServiceProvider().client(requireContext())))
             .build()
-            .load(viewModel.getOrder().requireData().billUrl)
+            .load(viewModel.getOrderMLD().value!!.requireData().billUrl)
             .into(photoView, object : Callback {
 
                 override fun onSuccess() {
