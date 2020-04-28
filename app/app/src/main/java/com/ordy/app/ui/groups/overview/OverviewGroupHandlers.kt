@@ -25,7 +25,7 @@ class OverviewGroupHandlers(
                 setMessage(activity.getString(R.string.order_overview_leave_message))
 
                 setPositiveButton(android.R.string.ok) { _, _ ->
-                    viewModel.userLeaveGroup(viewModel.getGroup().requireData().id)
+                    viewModel.userLeaveGroup(viewModel.getGroupMLD().value!!.requireData().id)
                 }
 
                 setNegativeButton(android.R.string.cancel) { dialog, _ ->
@@ -48,7 +48,7 @@ class OverviewGroupHandlers(
             val intent = Intent(activity, InviteMemberActivity::class.java)
 
             // Pass the group as extra information
-            intent.putExtra("group_id", viewModel.getGroup().requireData().id)
+            intent.putExtra("group_id", viewModel.getGroupMLD().value!!.requireData().id)
 
             activity.startActivity(intent)
         } else {
@@ -75,7 +75,7 @@ class OverviewGroupHandlers(
                 // Refresh when query is successful
                 when (it.status) {
                     QueryStatus.SUCCESS -> {
-                        viewModel.refreshGroup(viewModel.getGroup().requireData().id)
+                        viewModel.refreshGroup(viewModel.getGroupMLD().value!!.requireData().id)
                     }
 
                     QueryStatus.ERROR -> {
