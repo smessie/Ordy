@@ -3,6 +3,7 @@ package com.ordy.app.ui.payments.debtors
 import android.content.Context
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.ordy.app.R
@@ -10,20 +11,37 @@ import com.ordy.app.api.models.Payment
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
+import com.ordy.app.ui.payments.PaymentsBaseAdapter
 import com.ordy.app.ui.payments.PaymentsFragment
-import com.ordy.app.ui.payments.PaymentsListAdapter
 import com.ordy.app.ui.payments.PaymentsViewModel
 import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.list_payment_card.view.*
 import okhttp3.ResponseBody
 
-class PaymentsDebtorsListAdapter(
+class PaymentsDebtorsBaseAdapter(
     context: Context,
     viewModel: PaymentsViewModel,
-    fragment: PaymentsFragment
-) : PaymentsListAdapter(context, viewModel, fragment) {
-    override fun getQuery(): Query<List<Payment>> = viewModel.getDebtors()
-    override fun getSearchValue(): String = viewModel.getDebtorsSearchValue()
+    fragment: PaymentsFragment,
+    lifecycleOwner: LifecycleOwner
+) : PaymentsBaseAdapter(context, viewModel, fragment) {
+
+    override fun getQuery(): Query<List<Payment>> = debtors
+    override fun getSearchValue(): String = debtorsSearchValue
+
+    private var debtors: Query<List<Payment>> = Query()
+    private var debtorsSearchValue = ""
+
+    init {
+        // Observe the debtors
+        viewModel.getDebtorsMLD().observe(lifecycleOwner, Observer {
+            update(it, debtorsSearchValue)
+        })
+
+        // Observe the input field
+        viewModel.getDebtorsSearchMLD().observe(lifecycleOwner, Observer {
+            update(debtors, it)
+        })
+    }
 
     /**
      * Apply some specific setup to the card
@@ -86,5 +104,12 @@ class PaymentsDebtorsListAdapter(
             }
         })
 
+    }
+
+    override fun update(query: Query<List<Payment>>, searchValue: String) {
+        super.update(query, searchValue)
+
+        debtors = query
+        debtorsSearchValue = searchValue
     }
 }
