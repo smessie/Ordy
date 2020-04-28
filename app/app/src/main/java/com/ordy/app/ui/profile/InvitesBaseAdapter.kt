@@ -9,21 +9,37 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.ordy.app.R
+import com.ordy.app.api.models.GroupInvite
 import com.ordy.app.api.models.actions.enums.InviteActionOptions
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.util.SnackbarUtil
 import com.ordy.app.util.types.SnackbarType
+import kotlinx.android.synthetic.main.activity_profile.view.*
 import kotlinx.android.synthetic.main.list_invite_group_card.view.*
 import okhttp3.ResponseBody
 
-class InvitesListAdapter(
+class InvitesBaseAdapter(
     val context: Context?,
     val viewModel: ProfileViewModel,
     val activity: ProfileActivity,
-    val handlers: ProfileHandlers
+    val handlers: ProfileHandlers,
+    val view: View
 ) : BaseAdapter() {
+
+    private var invites: Query<List<GroupInvite>> = Query()
+
+    init {
+        viewModel.getInvitesMLD().observe(activity, Observer {
+            // Stop refreshing on load
+            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+                view.group_invites_refresh.isRefreshing = false
+            }
+
+            update(it)
+        })
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -33,7 +49,7 @@ class InvitesListAdapter(
             false
         )
 
-        when (viewModel.getInvites().status) {
+        when (invites.status) {
             QueryStatus.LOADING -> {
                 // Start the shimmer effect & show
                 view.group_loading.startShimmer()
@@ -42,7 +58,7 @@ class InvitesListAdapter(
             }
 
             QueryStatus.SUCCESS -> {
-                val invite = viewModel.getInvites().requireData()[position]
+                val invite = invites.requireData()[position]
 
                 // Stop the shimmer effect & hide.
                 view.group_loading.stopShimmer()
@@ -112,6 +128,11 @@ class InvitesListAdapter(
         return view
     }
 
+    fun update(invites: Query<List<GroupInvite>>) {
+        this.invites = invites
+        notifyDataSetChanged()
+    }
+
     override fun getItem(position: Int): Any {
         return position
     }
@@ -121,9 +142,9 @@ class InvitesListAdapter(
     }
 
     override fun getCount(): Int {
-        return when (viewModel.getInvites().status) {
+        return when (invites.status) {
             QueryStatus.LOADING -> 4
-            QueryStatus.SUCCESS -> viewModel.getInvites().requireData().size
+            QueryStatus.SUCCESS -> invites.requireData().size
             else -> 0
         }
     }
