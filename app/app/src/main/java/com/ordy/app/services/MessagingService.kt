@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.text.Html
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat

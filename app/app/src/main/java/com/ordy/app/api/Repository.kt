@@ -1,6 +1,7 @@
 package com.ordy.app.api
 
 import androidx.lifecycle.MutableLiveData
+import com.ordy.app.AppPreferences
 import com.ordy.app.api.models.*
 import com.ordy.app.api.models.actions.*
 import com.ordy.app.api.util.FetchHandler
@@ -201,13 +202,15 @@ class Repository(private val apiService: ApiService) {
      * Attempt to login a user.
      * @param email: Email entered by the user
      * @param password: Password entered by the user
+     * @param deviceToken: Devicetoken of the user
      */
-    fun login(email: String, password: String) {
+    fun login(email: String, password: String, deviceToken: String) {
         FetchHandler.handle(
             loginResult, apiService.login(
                 UserLogin(
                     email,
-                    password
+                    password,
+                    deviceToken
                 )
             )
         )

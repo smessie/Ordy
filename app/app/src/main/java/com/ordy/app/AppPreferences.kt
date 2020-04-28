@@ -18,6 +18,15 @@ class AppPreferences (val context: Context) {
         }
 
     /**
+     * Device Token for notifications
+     */
+    var deviceToken: String?
+        get() = preferences.getString("device_token", "")
+        set(value) {
+            preferences.edit().putString("device_token", value).commit()
+        }
+
+    /**
      * User ID of the logged in user
      */
     var userId: Int?
