@@ -12,6 +12,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.ordy.app.AppPreferences
 import com.ordy.app.MainActivity
 import com.ordy.app.R
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
@@ -30,6 +31,12 @@ class MessagingService : FirebaseMessagingService() {
 
         // Check if message contains a data payload.
         if (remoteMessage.data.isNotEmpty()) {
+
+            // Prevent the user from receiving any notifications when not logged in.
+            if (AppPreferences(this).accessToken == null) {
+                return
+            }
+
             val type = remoteMessage.data["type"]
             val notificationTitle = remoteMessage.data["notificationTitle"]
             val notificationSubtitle = remoteMessage.data["notificationSubtitle"]
