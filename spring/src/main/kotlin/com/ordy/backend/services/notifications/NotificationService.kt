@@ -122,7 +122,7 @@ class NotificationService(
         orderRepository.findAllByNotifiedIsFalse().forEach {
             // > 10 minutes
             val difference = it.deadline.time - Date().time
-            if (difference <= 600000) {
+            if (difference in 0..600000) {
                 orderRepository.saveAndFlush(it.also { order -> order.notified = true })
                 sendNotificationAsync(
                         users = deviceTokenRepository.findAll().map { DT -> DT.user }, // notify all users in group
