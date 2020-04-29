@@ -6,12 +6,16 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingException
 import com.google.firebase.messaging.Message
+import com.ordy.backend.database.models.User
+import com.ordy.backend.database.repositories.DeviceTokenRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import javax.annotation.PostConstruct
 
 @Service
-class NotificationService {
+class NotificationService(
+        val deviceTokenRepository: DeviceTokenRepository
+) {
 
     private lateinit var firebaseApp: FirebaseApp
 
@@ -30,7 +34,15 @@ class NotificationService {
         }
     }
 
-    fun sendNotification(target: String, content: Map<String, String>) {
+    fun sendNotification(users: List<User>, content: Map<String, String>) {
+        users.forEach { sendNotification(it, content) }
+    }
+
+    fun sendNotification(user: User, content: Map<String, String>) {
+        deviceTokenRepository.getAllByUser(user).forEach { sendNotification(it.token, content) }
+    }
+
+    private fun sendNotification(target: String, content: Map<String, String>) {
         val message = Message.builder()
                 .setToken(target)
                 .putAllData(content)
