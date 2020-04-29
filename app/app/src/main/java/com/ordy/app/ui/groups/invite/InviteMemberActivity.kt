@@ -2,22 +2,17 @@ package com.ordy.app.ui.groups.invite
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.databinding.ActivityInviteMemberBinding
 import kotlinx.android.synthetic.main.activity_invite_member.view.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class InviteMemberActivity : AppCompatActivity() {
 
-    private val viewModel: InviteMemberViewModel by viewModels {
-        RepositoryViewModelFactory(
-            applicationContext
-        )
-    }
+    private val viewModel: InviteMemberViewModel by viewModel()
 
     lateinit var baseAdapter: InviteMemberBaseAdapter
     lateinit var handlers: InviteMemberHandlers

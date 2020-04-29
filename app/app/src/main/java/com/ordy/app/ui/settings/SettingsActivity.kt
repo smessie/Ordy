@@ -1,20 +1,15 @@
 package com.ordy.app.ui.settings
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.databinding.ActivitySettingsBinding
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
-    private val viewModel: SettingsViewModel by viewModels {
-        RepositoryViewModelFactory(
-            applicationContext
-        )
-    }
+    private val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

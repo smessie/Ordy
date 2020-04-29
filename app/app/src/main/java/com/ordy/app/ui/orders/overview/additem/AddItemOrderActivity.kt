@@ -1,21 +1,16 @@
 package com.ordy.app.ui.orders.overview.additem
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.databinding.ActivityAddItemOrderBinding
 import kotlinx.android.synthetic.main.activity_add_item_order.view.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class AddItemOrderActivity : AppCompatActivity() {
 
-    val viewModel: AddItemOrderViewModel by viewModels {
-        RepositoryViewModelFactory(
-            applicationContext
-        )
-    }
+    val viewModel: AddItemOrderViewModel by viewModel()
 
     lateinit var baseAdapter: AddItemOrderBaseAdapter
 

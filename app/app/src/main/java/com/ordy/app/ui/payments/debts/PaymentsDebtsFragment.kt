@@ -5,25 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentPaymentsDebtsBinding
 import com.ordy.app.ui.payments.PaymentsBaseAdapter
 import com.ordy.app.ui.payments.PaymentsFragment
 import com.ordy.app.ui.payments.PaymentsViewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class PaymentsDebtsFragment(
     private val parentFragment: PaymentsFragment
 ) : Fragment() {
 
-    private val viewModel: PaymentsViewModel by activityViewModels {
-        RepositoryViewModelFactory(
-            requireContext()
-        )
-    }
+    private val viewModel: PaymentsViewModel by sharedViewModel()
 
     private lateinit var baseAdapter: PaymentsBaseAdapter
 

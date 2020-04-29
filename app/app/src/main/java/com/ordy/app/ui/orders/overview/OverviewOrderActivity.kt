@@ -3,14 +3,12 @@ package com.ordy.app.ui.orders.overview
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewOrderBinding
@@ -23,17 +21,13 @@ import com.ordy.app.util.TimerUtil
 import com.ordy.app.util.types.TabsEntry
 import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.activity_overview_order.view.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.DateFormat
 import kotlin.properties.Delegates
 
-
 class OverviewOrderActivity : AppCompatActivity() {
 
-    private val viewModel: OverviewOrderViewModel by viewModels {
-        RepositoryViewModelFactory(
-            applicationContext
-        )
-    }
+    private val viewModel: OverviewOrderViewModel by viewModel()
 
     private lateinit var tabsAdapter: TabsAdapter
 

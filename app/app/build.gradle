@@ -102,5 +102,6 @@ dependencies {
     // Koin for dependency injection
     def koin_version = '2.1.5'
     implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
     testImplementation "org.koin:koin-test:$koin_version"
 }
