@@ -74,17 +74,18 @@ class OverviewOrderActivity : AppCompatActivity() {
         // Extract the "order_id" from the given intent variables.
         orderId = intent.getIntExtra("order_id", -1)
 
+        // Store the orderId
+        viewModel.orderId.postValue(orderId)
+
         // Fetch the specific order.
-        viewModel.refreshOrder(orderId)
+        viewModel.orderId.observe(this, Observer {
+            viewModel.refreshOrder()
+        })
 
         // Observe the changes of the fetch.
         viewModel.getOrderMLD().observe(this, Observer {
 
             when (it.status) {
-
-                QueryStatus.LOADING -> {
-                    Log.i("TAG", "NOW LOADING")
-                }
 
                 QueryStatus.SUCCESS -> {
                     val order = it.requireData()
@@ -123,6 +124,6 @@ class OverviewOrderActivity : AppCompatActivity() {
         super.onResume()
 
         // Update the order.
-        viewModel.refreshOrder(orderId)
+        viewModel.refreshOrder()
     }
 }

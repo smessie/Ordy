@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.ordy.app.R
+import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentOrderPersonalBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import kotlinx.android.synthetic.main.fragment_order_general.view.*
@@ -48,6 +50,18 @@ class OrderPersonalFragment : Fragment() {
             adapter = baseAdapter
             emptyView = binding.root.order_items_empty
         }
+
+        // Swipe to refresh
+        binding.root.order_refresh.setOnRefreshListener {
+            viewModel.refreshOrder()
+        }
+
+        // Stop refreshing on load
+        viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
+            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+                binding.root.order_refresh.isRefreshing = false
+            }
+        })
 
         return binding.root
     }
