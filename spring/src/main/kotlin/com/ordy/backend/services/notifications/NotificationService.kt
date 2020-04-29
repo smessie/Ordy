@@ -44,11 +44,19 @@ class NotificationService {
 
     }
 
-    fun createNotificationContent(title: String, text: String, type: NotificationType, extra: Map<String, String> = emptyMap()): Map<String, String> {
+    fun createNotificationContent(
+            title: String = "Title",
+            subtitle: String = "Subtitle",
+            detail: String = "Detail",
+            summary: String = "Summary",
+            type: NotificationType = NotificationType.INVITE_NEW,
+            extra: Map<String, String> = emptyMap()): Map<String, String> {
         return mutableMapOf(
+                "type" to type.toString(),
                 "notificationTitle" to title,
-                "notificationText" to text,
-                "type" to type.toString()
+                "notificationSubtitle" to subtitle,
+                "notificationContent" to detail,
+                "notificationSummary" to summary
         ).also {
             for (i in extra) {
                 it[i.key] = i.value
