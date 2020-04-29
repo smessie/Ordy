@@ -6,18 +6,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import com.ordy.app.AppPreferences
 import com.ordy.app.R
+import com.ordy.app.api.models.Group
+import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import kotlinx.android.synthetic.main.list_group_member_card.view.*
 
-class OverviewGroupListAdapter(
+class OverviewGroupBaseAdapter(
     val context: Context?,
     val viewModel: OverviewGroupViewModel,
     val handlers: OverviewGroupHandlers,
-    val activity: OverviewGroupActivity
+    val activity: OverviewGroupActivity,
+    val view: View
 ) :
     BaseAdapter() {
+
+    private var group: Query<Group> = Query()
+
+    init {
+        viewModel.getGroupMLD().observe(activity, Observer {
+            update(it)
+        })
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -27,7 +39,7 @@ class OverviewGroupListAdapter(
             false
         )
 
-        when (viewModel.getGroup().status) {
+        when (group.status) {
             QueryStatus.LOADING -> {
 
                 // Start the shimmer effect & show
@@ -37,7 +49,7 @@ class OverviewGroupListAdapter(
             }
 
             QueryStatus.SUCCESS -> {
-                val member = viewModel.getGroup().requireData().members!![position]
+                val member = group.requireData().members!![position]
 
                 // Stop the shimmer effect & hide
                 view.member_loading.stopShimmer()
@@ -56,7 +68,7 @@ class OverviewGroupListAdapter(
 
                         setPositiveButton(android.R.string.ok) { _, _ ->
                             handlers.removeMember(
-                                viewModel.getGroup().requireData().id,
+                                group.requireData().id,
                                 member.id
                             )
                         }
@@ -68,7 +80,7 @@ class OverviewGroupListAdapter(
                 }
 
                 // Hide the remove button if the member is the the creator
-                if (member.id == viewModel.getGroup().requireData().creator.id) {
+                if (member.id == group.requireData().creator.id) {
                     view.member_remove.visibility = View.INVISIBLE
                 }
 
@@ -85,6 +97,11 @@ class OverviewGroupListAdapter(
         return view
     }
 
+    fun update(group: Query<Group>) {
+        this.group = group
+        notifyDataSetChanged()
+    }
+
     override fun isEnabled(position: Int): Boolean {
         return false
     }
@@ -98,9 +115,9 @@ class OverviewGroupListAdapter(
     }
 
     override fun getCount(): Int {
-        return when (viewModel.getGroup().status) {
+        return when (group.status) {
             QueryStatus.LOADING -> 6
-            QueryStatus.SUCCESS -> viewModel.getGroup().requireData().members!!.size
+            QueryStatus.SUCCESS -> group.requireData().members!!.size
             else -> 0
         }
     }

@@ -1,14 +1,11 @@
 package com.ordy.app.ui.profile
 
 import android.os.Bundle
-import android.widget.ListView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.RepositoryViewModelFactory
-import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityProfileBinding
 import kotlinx.android.synthetic.main.activity_profile.view.*
 
@@ -36,7 +33,8 @@ class ProfileActivity : AppCompatActivity() {
             viewModel.refreshInvites()
         }
 
-        val listAdapter = InvitesListAdapter(applicationContext, viewModel, this, handlers)
+        val listAdapter =
+            InvitesBaseAdapter(applicationContext, viewModel, this, handlers, binding.root)
         binding.root.group_invites.apply {
             adapter = listAdapter
             emptyView = binding.root.group_invites_empty
@@ -46,16 +44,6 @@ class ProfileActivity : AppCompatActivity() {
         if (supportActionBar != null) {
             supportActionBar!!.elevation = 0F
         }
-
-        viewModel.getInvitesMLD().observe(this, Observer {
-            // Stop refreshing on load
-            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
-                binding.root.group_invites_refresh.isRefreshing = false
-            }
-
-            // Notify changes to list view
-            listAdapter.notifyDataSetChanged()
-        })
     }
 
     override fun onResume() {

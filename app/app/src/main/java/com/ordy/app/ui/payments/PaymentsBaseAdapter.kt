@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.list_payment_order_item.view.*
 import java.text.DateFormat
 import java.util.*
 
-abstract class PaymentsListAdapter(
+abstract class PaymentsBaseAdapter(
     val context: Context,
     val viewModel: PaymentsViewModel,
     val fragment: PaymentsFragment
@@ -109,13 +109,13 @@ abstract class PaymentsListAdapter(
         }
     }
 
-    fun update() {
-        if (getQuery().status == QueryStatus.SUCCESS) {
-            paymentFiltered = getQuery().requireData().filter {
+    open fun update(query: Query<List<Payment>>, searchValue: String) {
+        if (query.status == QueryStatus.SUCCESS) {
+            paymentFiltered = query.requireData().filter {
                 it.user.username
                     .toLowerCase(Locale.getDefault())
                     .contains(
-                        getSearchValue()
+                        searchValue
                             .toLowerCase(Locale.getDefault())
                     )
             }

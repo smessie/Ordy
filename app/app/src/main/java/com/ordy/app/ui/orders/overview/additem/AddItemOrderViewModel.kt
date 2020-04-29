@@ -31,8 +31,8 @@ class AddItemOrderViewModel(repository: Repository) : RepositoryViewModel(reposi
     /**
      * Get the value of the search input field.
      */
-    fun getSearchValue(): String {
-        return searchValueData.value!!
+    fun getSearchValueMLD(): MutableLiveData<String> {
+        return searchValueData
     }
 
     /**

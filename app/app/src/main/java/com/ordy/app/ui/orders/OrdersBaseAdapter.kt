@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.models.Order
+import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
 import com.ordy.app.util.OrderUtil
@@ -16,14 +18,21 @@ import com.ordy.app.util.TimerUtil
 import kotlinx.android.synthetic.main.list_order_card.view.*
 import java.text.DateFormat
 
-class OrdersListAdapter(
+class OrdersBaseAdapter(
     val activity: AppCompatActivity,
     val context: Context,
     val viewModel: OrdersViewModel,
     private val orderStatus: OrdersStatus
 ) : BaseAdapter() {
 
+    private var orders: Query<List<Order>> = Query()
     private var ordersFiltered: List<Order> = emptyList()
+
+    init {
+        viewModel.getOrdersMLD().observe(activity, Observer {
+            update(it)
+        })
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -33,7 +42,7 @@ class OrdersListAdapter(
             false
         )
 
-        when (viewModel.getOrders().status) {
+        when (orders.status) {
 
             QueryStatus.LOADING -> {
 
@@ -96,23 +105,24 @@ class OrdersListAdapter(
     }
 
     override fun isEnabled(position: Int): Boolean {
-        return viewModel.getOrders().status == QueryStatus.SUCCESS
+        return orders.status == QueryStatus.SUCCESS
     }
 
     override fun getCount(): Int {
-        return when (viewModel.getOrders().status) {
+        return when (orders.status) {
             QueryStatus.LOADING -> 4
             QueryStatus.SUCCESS -> ordersFiltered.size
             else -> 0
         }
     }
 
-    fun update() {
+    fun update(orders: Query<List<Order>>) {
+        this.orders = orders
 
         // Update the filtered orders, when the query succeeded.
-        if (viewModel.getOrders().status == QueryStatus.SUCCESS) {
+        if (orders.status == QueryStatus.SUCCESS) {
             ordersFiltered = OrderUtil.filterOrdersStatus(
-                viewModel.getOrders().requireData(),
+                orders.requireData(),
                 orderStatus
             )
 

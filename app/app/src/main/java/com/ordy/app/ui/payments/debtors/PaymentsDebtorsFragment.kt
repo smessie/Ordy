@@ -11,8 +11,8 @@ import com.ordy.app.R
 import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentPaymentsDebtorsBinding
+import com.ordy.app.ui.payments.PaymentsBaseAdapter
 import com.ordy.app.ui.payments.PaymentsFragment
-import com.ordy.app.ui.payments.PaymentsListAdapter
 import com.ordy.app.ui.payments.PaymentsViewModel
 
 class PaymentsDebtorsFragment(
@@ -25,7 +25,7 @@ class PaymentsDebtorsFragment(
         )
     }
 
-    private lateinit var listAdapter: PaymentsListAdapter
+    private lateinit var baseAdapter: PaymentsBaseAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,14 +41,15 @@ class PaymentsDebtorsFragment(
         binding.viewModel = viewModel
 
         // Initialize listViewAdapter
-        listAdapter = PaymentsDebtorsListAdapter(
+        baseAdapter = PaymentsDebtorsBaseAdapter(
             requireContext(),
             viewModel,
-            parentFragment
+            parentFragment,
+            viewLifecycleOwner
         )
 
         binding.paymentsDebtors.apply {
-            adapter = listAdapter
+            adapter = baseAdapter
             emptyView = binding.paymentsDebtorsEmpty
         }
 
@@ -59,12 +60,6 @@ class PaymentsDebtorsFragment(
             viewModel.refreshDebtors()
         }
 
-        // Observe the input field
-        viewModel.debtorsSearch.observe(viewLifecycleOwner, Observer {
-            listAdapter.update()
-        })
-
-
         // Observe the debtors
         viewModel.getDebtorsMLD().observe(viewLifecycleOwner, Observer {
             // Stop refreshing when loaded
@@ -74,16 +69,5 @@ class PaymentsDebtorsFragment(
         })
 
         return binding.root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Update the list adapter when the "orders" query updates
-        viewModel.getDebtorsMLD().observe(this, Observer {
-
-            // Notify the changes to the list view (to re-render automatically)
-            listAdapter.update()
-        })
     }
 }
