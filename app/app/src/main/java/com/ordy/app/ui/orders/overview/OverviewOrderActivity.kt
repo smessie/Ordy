@@ -77,26 +77,6 @@ class OverviewOrderActivity : AppCompatActivity() {
         // Fetch the specific order.
         viewModel.refreshOrder(orderId)
 
-        // Register the swipe to refresh listener on every tab that may have it.
-        for (i in 0 until tabsAdapter.count) {
-            val currentView = tabsAdapter.getItem(i).view
-            val refreshView = currentView?.findViewById<SwipeRefreshLayout>(R.id.order_refresh)
-
-            if(refreshView != null) {
-                // Swipe to refresh
-                refreshView.setOnRefreshListener {
-                    viewModel.refreshOrder(orderId)
-                }
-
-                // Stop refreshing on load
-                viewModel.getOrderMLD().observe(this, Observer {
-                    if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
-                        refreshView.isRefreshing = false
-                    }
-                })
-            }
-        }
-
         // Observe the changes of the fetch.
         viewModel.getOrderMLD().observe(this, Observer {
 
