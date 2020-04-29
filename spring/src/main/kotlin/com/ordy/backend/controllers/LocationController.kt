@@ -25,7 +25,7 @@ class LocationController(@Autowired val locationService: LocationService) {
 
     @GetMapping("/{locationId}/items")
     @JsonView(View.Detail::class)
-    fun getLocationItems(@RequestAttribute userId: Int, @PathVariable locationId: Int): List<Item> {
-        return locationService.getLocationItems(userId, locationId)
+    fun getLocationItems(@PathVariable locationId: Int): List<Item> {
+        return locationService.getLocationItems(locationId)
     }
 }
