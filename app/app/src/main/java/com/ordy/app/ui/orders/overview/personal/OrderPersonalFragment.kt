@@ -6,10 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.ordy.app.R
+import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentOrderPersonalBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
+import com.ordy.app.util.OrderUtil
 import kotlinx.android.synthetic.main.fragment_order_general.view.*
+import kotlinx.android.synthetic.main.fragment_order_personal.*
 
 class OrderPersonalFragment : Fragment() {
 
@@ -48,6 +52,20 @@ class OrderPersonalFragment : Fragment() {
             adapter = baseAdapter
             emptyView = binding.root.order_items_empty
         }
+
+        // Observe the changes of the fetch.
+        viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
+
+            when (it.status) {
+                QueryStatus.SUCCESS -> {
+                    // Hide the "add item"-button
+                    val closed = OrderUtil.timeLeft(it.requireData().deadline) <= 0
+                    order_items_add.visibility = if (closed) View.INVISIBLE else View.VISIBLE
+                }
+                else -> {
+                }
+            }
+        })
 
         return binding.root
     }

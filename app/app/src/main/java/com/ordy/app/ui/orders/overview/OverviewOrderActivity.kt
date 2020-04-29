@@ -21,6 +21,9 @@ import com.ordy.app.util.TimerUtil
 import com.ordy.app.util.types.TabsEntry
 import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.activity_overview_order.view.*
+import kotlinx.android.synthetic.main.fragment_order_personal.*
+import kotlinx.android.synthetic.main.fragment_order_personal.view.*
+import kotlinx.android.synthetic.main.fragment_order_personal.view.order_items_add
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.DateFormat
 import kotlin.properties.Delegates

@@ -10,7 +10,7 @@ import com.ordy.app.api.wrappers.GroupInviteUserWrapper
 import okhttp3.ResponseBody
 import java.util.*
 
-class Repository(private val apiService: ApiService) {
+open class Repository(private val apiService: ApiService) {
 
     /******************************
      ***        GROUPS          ***
@@ -285,7 +285,7 @@ class Repository(private val apiService: ApiService) {
     /**
      * Refresh the order.
      */
-    fun refreshOrder(orderId: Int) {
+    open fun refreshOrder(orderId: Int) {
         FetchHandler.handle(order, apiService.order(orderId))
     }
 
@@ -373,7 +373,7 @@ class Repository(private val apiService: ApiService) {
     /**
      * Get the MutableLiveData result of the Order fetch.
      */
-    fun getOrder(): MutableLiveData<Query<Order>> {
+    open fun getOrder(): MutableLiveData<Query<Order>> {
         return order
     }
 
