@@ -9,13 +9,10 @@ import okhttp3.ResponseBody
 
 class PaymentsViewModel(repository: Repository) : RepositoryViewModel(repository) {
     val debtorsSearch = MutableLiveData("")
-    fun getDebtorsSearchValue() = debtorsSearch.value!!
+    fun getDebtorsSearchMLD() = debtorsSearch
 
     // Debtors MLD
     fun getDebtorsMLD() = repository.userDebtorsResult
-
-    // Debtors List
-    fun getDebtors() = getDebtorsMLD().value!!
 
     // Refresh debtors
     fun refreshDebtors() = repository.refreshDebtors()
@@ -35,13 +32,10 @@ class PaymentsViewModel(repository: Repository) : RepositoryViewModel(repository
     }
 
     val debtsSearch = MutableLiveData("")
-    fun getDebtsSearchValue() = debtsSearch.value!!
+    fun getDebtsSearchMLD() = debtsSearch
 
     // Debts MLD
     fun getDebtsMLD() = repository.userDebtsResult
-
-    // Debts List
-    fun getDebts() = getDebtsMLD().value!!
 
     // Refresh Debts
     fun refreshDebts() = repository.refreshDebts()

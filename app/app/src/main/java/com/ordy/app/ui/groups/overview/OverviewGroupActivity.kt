@@ -2,7 +2,6 @@ package com.ordy.app.ui.groups.overview
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.ListView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -24,7 +23,7 @@ class OverviewGroupActivity : AppCompatActivity() {
         )
     }
 
-    private lateinit var listAdapter: OverviewGroupListAdapter
+    private lateinit var baseAdapter: OverviewGroupBaseAdapter
     lateinit var handlers: OverviewGroupHandlers
     private var groupId by Delegates.notNull<Int>()
 
@@ -51,8 +50,8 @@ class OverviewGroupActivity : AppCompatActivity() {
         }
 
         // Create the list view adapter
-        listAdapter = OverviewGroupListAdapter(applicationContext, viewModel, handlers, this)
-        binding.root.group_members.adapter = listAdapter
+        baseAdapter = OverviewGroupBaseAdapter(applicationContext, viewModel, handlers, this, binding.root)
+        binding.root.group_members.adapter = baseAdapter
 
         // Set the action bar elevation to 0, since the group extends the action bar.
         if (supportActionBar != null) {
@@ -72,11 +71,6 @@ class OverviewGroupActivity : AppCompatActivity() {
 
                     group_title.text = group.name
                     group_members_amount.text = group.members?.size.toString()
-
-                    val listAdapter = this.listAdapter
-
-                    // Notify the changes to the list view (to re-render automatically)
-                    listAdapter.notifyDataSetChanged()
                 }
 
                 QueryStatus.ERROR -> {

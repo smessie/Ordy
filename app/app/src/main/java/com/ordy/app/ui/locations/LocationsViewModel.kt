@@ -14,13 +14,6 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     val searchValueData: MutableLiveData<String> = MutableLiveData("")
 
     /**
-     * Get a list with locations
-     */
-    fun getLocations(): Query<List<Location>> {
-        return repository.getLocationsResult().value!!
-    }
-
-    /**
      * Get the value of the search input field.
      */
     fun getSearchValue(): String {

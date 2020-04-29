@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.ordy.app.AppPreferences
@@ -25,23 +26,31 @@ import kotlinx.android.synthetic.main.list_order_item.view.*
 import okhttp3.ResponseBody
 import java.util.*
 
-class OrderPersonalListAdapter(
+class OrderPersonalBaseAdapter(
     val context: Context,
     private val parentView: View,
     val handlers: OrderPersonalHandlers,
     val fragment: OrderPersonalFragment,
-    val viewModel: OverviewOrderViewModel
+    val viewModel: OverviewOrderViewModel,
+    lifecycleOwner: LifecycleOwner
 ) : BaseAdapter() {
 
+    private var order: Query<Order> = Query()
     private var orderItems: List<OrderItem> = emptyList()
     private var showActions: Boolean = true
     private var updateTimer: Timer = Timer()
+
+    init {
+        viewModel.getOrderMLD().observe(lifecycleOwner, Observer {
+            update(it)
+        })
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context)
             .inflate(R.layout.list_order_item, parent, false)
 
-        when (viewModel.getOrder().status) {
+        when (order.status) {
 
             QueryStatus.LOADING -> {
 
@@ -53,7 +62,7 @@ class OrderPersonalListAdapter(
 
             QueryStatus.SUCCESS -> {
                 val orderItem = orderItems[position]
-                val order = viewModel.getOrder().requireData()
+                val order = order.requireData()
 
                 // Stop the shimmer effect & hide.
                 view.order_item_loading.stopShimmer()
@@ -101,7 +110,7 @@ class OrderPersonalListAdapter(
     }
 
     override fun getCount(): Int {
-        return when (viewModel.getOrder().status) {
+        return when (order.status) {
             QueryStatus.LOADING -> 4
             QueryStatus.SUCCESS -> orderItems.size
             else -> 0
@@ -194,10 +203,10 @@ class OrderPersonalListAdapter(
                     SnackbarUtil.closeSnackbar(fragment.requireView())
 
                     // Delete the order item from the list view
-                    viewModel.getOrder().requireData().orderItems?.remove(orderItem)
+                    this.order.requireData().orderItems?.remove(orderItem)
 
                     // Update the query.
-                    viewModel.getOrderMLD().postValue(viewModel.getOrder())
+                    viewModel.getOrderMLD().postValue(this.order)
                 }
 
                 QueryStatus.ERROR -> {
@@ -212,12 +221,14 @@ class OrderPersonalListAdapter(
         })
     }
 
-    fun update() {
+    fun update(order: Query<Order>) {
+        this.order = order
+
         // Update the order items, when the query succeeded.
-        if (viewModel.getOrder().status == QueryStatus.SUCCESS) {
+        if (order.status == QueryStatus.SUCCESS) {
 
             // Only show the items with the same user id as the logged in user.
-            orderItems = viewModel.getOrder().requireData().orderItems!!.filter {
+            orderItems = order.requireData().orderItems!!.filter {
                 it.user.id == AppPreferences(context).userId
             }
 
@@ -229,11 +240,11 @@ class OrderPersonalListAdapter(
                 TimerUtil.updateUI(fragment.requireActivity() as AppCompatActivity, 0, 1000) {
 
                     // Cancel the timer when the query updates.
-                    if (viewModel.getOrder().status != QueryStatus.SUCCESS) {
+                    if (order.status != QueryStatus.SUCCESS) {
                         updateTimer.cancel()
                     } else {
                         val closed =
-                            OrderUtil.timeLeft(viewModel.getOrder().requireData().deadline) <= 0
+                            OrderUtil.timeLeft(order.requireData().deadline) <= 0
 
                         // Update the list view only when necessary
                         if (!closed != showActions) {
@@ -242,9 +253,6 @@ class OrderPersonalListAdapter(
                             // Hide the "add item"-button
                             parentView.order_items_add.visibility =
                                 if (closed) View.INVISIBLE else View.VISIBLE
-
-                            // Notify the changes to the list view (to re-render automatically)
-                            notifyDataSetChanged()
                         }
                     }
                 }

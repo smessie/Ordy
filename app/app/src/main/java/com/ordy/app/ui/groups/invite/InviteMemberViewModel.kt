@@ -3,7 +3,6 @@ package com.ordy.app.ui.groups.invite
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
-import com.ordy.app.api.models.User
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.wrappers.GroupInviteUserWrapper
 import okhttp3.ResponseBody
@@ -45,10 +44,6 @@ class InviteMemberViewModel(repository: Repository) : RepositoryViewModel(reposi
      * Value of the search input field.
      */
     private val searchValueData: MutableLiveData<String> = MutableLiveData("")
-
-    fun getUsers(): Query<List<GroupInviteUserWrapper>> {
-        return repository.getInviteableUsers().value!!
-    }
 
     /**
      * Get the value of the search input field.

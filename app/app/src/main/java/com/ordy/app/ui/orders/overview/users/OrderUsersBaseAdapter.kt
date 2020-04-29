@@ -5,7 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.ordy.app.R
+import com.ordy.app.api.models.Order
+import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import com.ordy.app.util.OrderUtil
@@ -13,10 +17,21 @@ import com.ordy.app.util.types.OrderItemUserGroup
 import kotlinx.android.synthetic.main.list_order_item.view.*
 import kotlinx.android.synthetic.main.list_order_item_user.view.*
 
-class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderViewModel) :
+class OrderUsersBaseAdapter(
+    val context: Context?,
+    val viewModel: OverviewOrderViewModel,
+    lifecycleOwner: LifecycleOwner
+) :
     BaseAdapter() {
 
+    private var order: Query<Order> = Query()
     private var orderItemUserGroups: List<OrderItemUserGroup> = emptyList()
+
+    init {
+        viewModel.getOrderMLD().observe(lifecycleOwner, Observer {
+            update(it)
+        })
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(
@@ -25,7 +40,7 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
             false
         )
 
-        when (viewModel.getOrder().status) {
+        when (order.status) {
 
             QueryStatus.LOADING -> {
 
@@ -60,7 +75,8 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
                     orderItemView.order_item_data.visibility = View.VISIBLE
 
                     // Assign the data.
-                    orderItemView.order_item_quantity.text = context?.getString(R.string.placeholder_item_quantity)
+                    orderItemView.order_item_quantity.text =
+                        context?.getString(R.string.placeholder_item_quantity)
                     orderItemView.order_item_name.text = orderItem.item.name
                     orderItemView.order_item_comment.text = orderItem.comment
 
@@ -92,7 +108,7 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
     }
 
     override fun getCount(): Int {
-        return when (viewModel.getOrder().status) {
+        return when (order.status) {
             QueryStatus.LOADING -> 4
             QueryStatus.SUCCESS -> orderItemUserGroups.size
             else -> 0
@@ -103,12 +119,13 @@ class OrderUsersListAdapter(val context: Context?, val viewModel: OverviewOrderV
         return false
     }
 
-    fun update() {
+    fun update(order: Query<Order>) {
+        this.order = order
 
         // Update the order item groups, when the query succeeded.
-        if (viewModel.getOrder().status == QueryStatus.SUCCESS) {
+        if (order.status == QueryStatus.SUCCESS) {
 
-            val orderItems = viewModel.getOrder().requireData().orderItems
+            val orderItems = order.requireData().orderItems
 
             orderItemUserGroups = OrderUtil.userGroupItems(orderItems!!)
         }

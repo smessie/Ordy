@@ -15,16 +15,18 @@ import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.api.wrappers.GroupInviteUserWrapper
+import kotlinx.android.synthetic.main.activity_invite_member.view.*
 import kotlinx.android.synthetic.main.list_group_member_card.view.member_name
 import kotlinx.android.synthetic.main.list_invite_member_card.view.*
 import okhttp3.ResponseBody
 
 
-class InviteMemberListAdapter(
+class InviteMemberBaseAdapter(
     val context: Context,
     val activity: InviteMemberActivity,
     val viewModel: InviteMemberViewModel,
-    val handlers: InviteMemberHandlers
+    val handlers: InviteMemberHandlers,
+    val view: View
 ) :
     BaseAdapter() {
 
@@ -33,6 +35,43 @@ class InviteMemberListAdapter(
     private val defaultColor = ColorStateList.valueOf(
         ContextCompat.getColor(context, R.color.colorPrimary)
     )
+    private var users: Query<List<GroupInviteUserWrapper>> = Query()
+
+    init {
+        val listView = view.users
+        val listViewEmpty = view.users_empty
+        val searchLoading = view.username_search_loading
+
+        // Watch changes to the "users"
+        viewModel.getInviteableUsersMLD().observe(activity, Observer {
+
+            // Show a loading indicator in the searchbox.
+            // Hide the list view while loading.
+            when (it.status) {
+
+                QueryStatus.LOADING -> {
+                    searchLoading.visibility = View.VISIBLE
+                    listView.emptyView = null
+                }
+
+                QueryStatus.SUCCESS -> {
+                    searchLoading.visibility = View.INVISIBLE
+                    listView.emptyView = listViewEmpty
+                }
+
+                QueryStatus.ERROR -> {
+                    searchLoading.visibility = View.INVISIBLE
+
+                    ErrorHandler().handle(it.error, view)
+                }
+
+                else -> {
+                }
+            }
+
+            update(it)
+        })
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -42,10 +81,10 @@ class InviteMemberListAdapter(
             false
         )
 
-        when (viewModel.getUsers().status) {
+        when (users.status) {
 
             QueryStatus.SUCCESS -> {
-                val member = viewModel.getUsers().requireData()[position]
+                val member = users.requireData()[position]
 
                 // add already invited users to the local list that contains all already invited users
                 if (member.invited && !viewModel.isUserInvited(member.user.id)) {
@@ -75,7 +114,7 @@ class InviteMemberListAdapter(
                         }
 
                         QueryStatus.SUCCESS -> {
-                            if (!viewModel.isUserInvited(member.user.id)){
+                            if (!viewModel.isUserInvited(member.user.id)) {
                                 setButtonAlreadyInvited(view, inviteResult, member)
 
                                 // add this user in the local list that holds all already invited users
@@ -112,6 +151,11 @@ class InviteMemberListAdapter(
         return view
     }
 
+    fun update(users: Query<List<GroupInviteUserWrapper>>) {
+        this.users = users
+        notifyDataSetChanged()
+    }
+
     override fun getItem(position: Int): Any {
         return position
     }
@@ -121,9 +165,9 @@ class InviteMemberListAdapter(
     }
 
     override fun getCount(): Int {
-        return when (viewModel.getUsers().status) {
+        return when (users.status) {
             QueryStatus.LOADING -> 0
-            QueryStatus.SUCCESS -> viewModel.getUsers().requireData().size
+            QueryStatus.SUCCESS -> users.requireData().size
             else -> 0
         }
     }
@@ -132,9 +176,11 @@ class InviteMemberListAdapter(
      * function to set the invite button of a user who is already invited to this group
      */
 
-    private fun setButtonAlreadyInvited(view: View,
-                                inviteResult: MutableLiveData<Query<ResponseBody>>,
-                                member: GroupInviteUserWrapper) {
+    private fun setButtonAlreadyInvited(
+        view: View,
+        inviteResult: MutableLiveData<Query<ResponseBody>>,
+        member: GroupInviteUserWrapper
+    ) {
 
         view.member_invite.text = context.getString(R.string.invited_button)
         view.member_invite.backgroundTintList = successColor
@@ -151,9 +197,11 @@ class InviteMemberListAdapter(
      * function to set the invite button of a user who is NOT invited to this group
      */
 
-    private fun setButtonNotInvited(view: View,
-                                    inviteResult: MutableLiveData<Query<ResponseBody>>,
-                                    member: GroupInviteUserWrapper) {
+    private fun setButtonNotInvited(
+        view: View,
+        inviteResult: MutableLiveData<Query<ResponseBody>>,
+        member: GroupInviteUserWrapper
+    ) {
 
         view.member_invite.text = context.getString(R.string.invite_button)
         view.member_invite.backgroundTintList = defaultColor

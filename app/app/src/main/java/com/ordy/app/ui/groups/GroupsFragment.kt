@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.RepositoryViewModelFactory
-import com.ordy.app.api.util.QueryStatus
 import kotlinx.android.synthetic.main.fragment_groups.view.*
 
 
@@ -21,7 +19,7 @@ class GroupsFragment : Fragment() {
         )
     }
 
-    private lateinit var listAdapter: GroupsListAdapter
+    private lateinit var baseAdapter: GroupsBaseAdapter
 
     /**
      * Called when view is created.
@@ -37,9 +35,9 @@ class GroupsFragment : Fragment() {
         val emptyList = view.groups_empty
 
         // list view adapter
-        listAdapter = GroupsListAdapter(requireContext(), viewModel)
+        baseAdapter = GroupsBaseAdapter(requireContext(), viewModel, viewLifecycleOwner, view)
         view.groups.apply {
-            adapter = listAdapter
+            adapter = baseAdapter
             emptyView = emptyList
         }
 
@@ -50,16 +48,6 @@ class GroupsFragment : Fragment() {
         view.groups_refresh.setOnRefreshListener {
             viewModel.refreshGroups()
         }
-
-        viewModel.getGroupsMLD().observe(viewLifecycleOwner, Observer {
-            // Stop refreshing on load
-            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
-                view.groups_refresh.isRefreshing = false
-            }
-
-            // Notify changes to list view
-            listAdapter.notifyDataSetChanged()
-        })
 
         return view
     }

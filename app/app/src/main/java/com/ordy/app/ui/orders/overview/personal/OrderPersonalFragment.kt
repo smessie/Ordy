@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.databinding.FragmentOrderPersonalBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
@@ -17,7 +15,7 @@ class OrderPersonalFragment : Fragment() {
 
     private val viewModel: OverviewOrderViewModel by activityViewModels()
 
-    private lateinit var listAdapter: OrderPersonalListAdapter
+    private lateinit var baseAdapter: OrderPersonalBaseAdapter
 
     lateinit var handlers: OrderPersonalHandlers
 
@@ -38,22 +36,18 @@ class OrderPersonalFragment : Fragment() {
         binding.handlers = handlers
 
         // Create the list view adapter
-        listAdapter = OrderPersonalListAdapter(
+        baseAdapter = OrderPersonalBaseAdapter(
             requireContext(),
             binding.root,
             handlers,
             this,
-            viewModel
+            viewModel,
+            viewLifecycleOwner
         )
         binding.root.order_items.apply {
-            adapter = listAdapter
+            adapter = baseAdapter
             emptyView = binding.root.order_items_empty
         }
-
-        // Update the list adapter when the "order" query updates
-        viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
-            listAdapter.update()
-        })
 
         return binding.root
     }
