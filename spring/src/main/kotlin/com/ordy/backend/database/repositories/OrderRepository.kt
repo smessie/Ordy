@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface OrderRepository : JpaRepository<Order, Int> {
     fun findAllByGroup(group: Group): List<Order>
     fun findOrdersByCourier(courier: User): List<Order>
+    fun findAllByNotifiedIsFalse(): List<Order>
 }

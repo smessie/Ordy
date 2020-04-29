@@ -1,20 +1,18 @@
-package com.ordy.backend.interceptors
+package com.ordy.backend
 
-import com.fasterxml.jackson.databind.MapperFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.ordy.backend.database.View
+import com.ordy.backend.interceptors.AuthInterceptor
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.converter.HttpMessageConverter
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.scheduling.annotation.EnableAsync
+import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-import java.util.*
 
 
 @Configuration
-class AppConfig: WebMvcConfigurer {
+@EnableAsync
+@EnableScheduling
+class AppConfig : WebMvcConfigurer {
 
     @Autowired
     private lateinit var authInterceptor: AuthInterceptor

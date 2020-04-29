@@ -152,7 +152,6 @@ class OrderService(
 
         orderRepository.save(order)
 
-
         // notify all users in group except creator
         notificationService.sendNotificationAsync(
                 users = groupMemberRepository.findGroupMembersByGroup(group.get())

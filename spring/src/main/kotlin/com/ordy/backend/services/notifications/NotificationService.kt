@@ -8,14 +8,20 @@ import com.google.firebase.messaging.FirebaseMessagingException
 import com.google.firebase.messaging.Message
 import com.ordy.backend.database.models.User
 import com.ordy.backend.database.repositories.DeviceTokenRepository
+import com.ordy.backend.database.repositories.OrderRepository
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Async
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.annotation.PostConstruct
+import kotlin.math.roundToInt
 
 @Service
 class NotificationService(
-        val deviceTokenRepository: DeviceTokenRepository
+        val deviceTokenRepository: DeviceTokenRepository,
+        val orderRepository: OrderRepository
 ) {
 
     private lateinit var firebaseApp: FirebaseApp
@@ -104,6 +110,34 @@ class NotificationService(
         ).also {
             for (i in extra) {
                 it[i.key] = i.value
+            }
+        }
+    }
+
+    /**
+     * Check deadlines every minute, send notification when close to deadline.
+     */
+    @Scheduled(fixedRate = 60000)
+    fun deadlineNotification() {
+        orderRepository.findAllByNotifiedIsFalse().forEach {
+            // > 10 minutes
+            val difference = it.deadline.time - Date().time
+            if (difference <= 600000) {
+                orderRepository.saveAndFlush(it.also { order -> order.notified = true })
+                sendNotificationAsync(
+                        users = deviceTokenRepository.findAll().map { DT -> DT.user }, // notify all users in group
+                        content = createNotificationContent(
+                                title = "${(difference / (60 * 1000.0)).roundToInt()} minutes left",
+                                subtitle = "The order for ${it.location.name} in group ${it.group.name} is about to close",
+                                detail = "<b>Group: </b>${it.group.name}\n<b>Location: </b>${it.location.name}\n<b>Courier: </b>${it.courier.username}",
+                                summary = "Hurry",
+                                type = NotificationType.ORDER_DEADLINE,
+                                extra = mapOf(
+                                        "orderId" to it.id.toString(),
+                                        "notificationDeadline" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ").format(it.deadline)
+                                )
+                        )
+                )
             }
         }
     }
