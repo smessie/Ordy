@@ -3,21 +3,25 @@ package com.ordy.backend.services
 import com.ordy.backend.database.models.Group
 import com.ordy.backend.database.models.GroupInvite
 import com.ordy.backend.database.models.GroupMember
-import com.ordy.backend.database.models.User
 import com.ordy.backend.database.repositories.*
 import com.ordy.backend.exceptions.ThrowableList
+import com.ordy.backend.services.notifications.NotificationService
+import com.ordy.backend.services.notifications.NotificationType
 import com.ordy.backend.wrappers.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class GroupService(@Autowired val groupRepository: GroupRepository,
-                   @Autowired val userRepository: UserRepository,
-                   @Autowired val groupMemberRepository: GroupMemberRepository,
-                   @Autowired val groupInviteRepository: GroupInviteRepository,
-                   @Autowired val orderRepository: OrderRepository,
-                   @Autowired val orderItemRepository: OrderItemRepository) {
+class GroupService(
+        @Autowired val groupRepository: GroupRepository,
+        @Autowired val userRepository: UserRepository,
+        @Autowired val groupMemberRepository: GroupMemberRepository,
+        @Autowired val groupInviteRepository: GroupInviteRepository,
+        @Autowired val orderRepository: OrderRepository,
+        @Autowired val orderItemRepository: OrderItemRepository,
+        @Autowired val notificationService: NotificationService
+) {
 
     private val groupNameRegex = Regex("^[A-z0-9 ]+$")
 
@@ -143,6 +147,18 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
 
         val invite = GroupInvite(user = invitedUser.get(), group = group.get())
         groupInviteRepository.save(invite)
+
+        // notify user
+        notificationService.sendNotificationAsync(
+                user = invitedUser.get(),
+                content = notificationService.createNotificationContent(
+                        title = "Invite from ${user.username}",
+                        subtitle = "You have been invited to join ${group.get().name}",
+                        detail = "<b>Group: </b>${group.get().name}\n<b>By: </b>${user.username}",
+                        summary = "New invite",
+                        type = NotificationType.INVITE_NEW
+                )
+        )
     }
 
     fun deleteInvite(groupId: Int, userId: Int) {
@@ -341,6 +357,6 @@ class GroupService(@Autowired val groupRepository: GroupRepository,
 
         return userRepository.findAll()
                 .filter { it.username.contains(userName, ignoreCase = true) && !membersOfGroup.contains(it.id) }
-                .map { GroupInviteUserWrapper(user=it, invited = alreadyInvitedUsers.contains(it.id))  }
+                .map { GroupInviteUserWrapper(user = it, invited = alreadyInvitedUsers.contains(it.id)) }
     }
 }
