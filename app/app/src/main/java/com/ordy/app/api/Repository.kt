@@ -192,6 +192,24 @@ class Repository(private val apiService: ApiService) {
         return locations
     }
 
+    /**
+     * Add a location to the favorite location list of the user.
+     * @param locationId: ID of location the user want to mark as favorite
+     * @param liveData: Object where we want to store the result of our query in
+     */
+    fun markLocationAsFavorite(locationId: Int, liveData: MutableLiveData<Query<ResponseBody>>) {
+        FetchHandler.handle(liveData, apiService.markLocationAsFavorite(locationId))
+    }
+
+    /**
+     * Remove a location from a user favorite locations list
+     * @param locationId: ID of location the user want to remove from his favorite location list
+     * @param liveData: Object where we want to store the result of our query in
+     */
+    fun unMarkLocationAsFavorite(locationId: Int, liveData: MutableLiveData<Query<ResponseBody>>) {
+        FetchHandler.handle(liveData, apiService.unMarkLocationAsFavorite(locationId))
+    }
+
     /******************************
      ***         LOGIN          ***
      ******************************/

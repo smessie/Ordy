@@ -24,7 +24,7 @@ class LocationsFragment : Fragment() {
         )
     }
 
-    private lateinit var listAdapter: LocationsListAdapter
+    private lateinit var baseAdapter: LocationsBaseAdapter
 
     /**
      * Called when view is created.
@@ -47,53 +47,23 @@ class LocationsFragment : Fragment() {
         val listViewEmpty: LinearLayout = binding.root.locations_empty
 
         // Create the list view adapter
-        listAdapter = LocationsListAdapter(
+        baseAdapter = LocationsBaseAdapter(
             requireContext(),
-            viewModel
+            viewModel,
+            viewLifecycleOwner,
+            binding.root
         )
 
         listView.apply {
-            adapter = listAdapter
+            adapter = baseAdapter
             emptyView = listViewEmpty
         }
-
-        val searchLoading = binding.root.locations_search_loading
 
         // Watch changes to the the "search value"
         viewModel.searchValueData.observe(viewLifecycleOwner, Observer {
 
             // Update the locations
             viewModel.updateLocations()
-        })
-
-        // Watch changes to the "locations"
-        viewModel.getLocationsMLD().observe(viewLifecycleOwner, Observer {
-
-            // Show a loading indicator in the searchbox.
-            // Hide the list view while loading.
-            when (it.status) {
-                QueryStatus.LOADING -> {
-                    searchLoading.visibility = View.VISIBLE
-                    listView.emptyView = null
-                }
-
-                QueryStatus.SUCCESS -> {
-                    searchLoading.visibility = View.INVISIBLE
-                    listView.emptyView = listViewEmpty
-                }
-
-                QueryStatus.ERROR -> {
-                    searchLoading.visibility = View.INVISIBLE
-
-                    ErrorHandler().handle(it.error, view)
-                }
-
-                else -> {
-                }
-            }
-
-            // Update the list adapter
-            listAdapter.notifyDataSetChanged()
         })
 
         return binding.root

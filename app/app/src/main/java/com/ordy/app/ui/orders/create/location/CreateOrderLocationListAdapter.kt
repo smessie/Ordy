@@ -48,6 +48,7 @@ class CreateOrderLocationListAdapter(
         when (viewModel.getLocations().status) {
 
             QueryStatus.SUCCESS -> {
+                val isFavorite = viewModel.getLocations().requireData()[position].favorite
                 val location = viewModel.getLocations().requireData()[position].location
 
                 // Assign the data.
@@ -56,6 +57,12 @@ class CreateOrderLocationListAdapter(
                     when (location.address) {
                         null -> "No address found"
                         else -> location.address
+                    }
+
+                view.location_favorite_mark.visibility =
+                    when (isFavorite) {
+                        false -> View.INVISIBLE
+                        else  -> View.VISIBLE
                     }
 
                 // Set click handler.

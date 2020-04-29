@@ -6,6 +6,7 @@ import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.Location
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.wrappers.LocationWrapper
+import okhttp3.ResponseBody
 
 class LocationsViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
@@ -70,5 +71,23 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
      */
     fun getLocationsMLD(): MutableLiveData<Query<List<LocationWrapper>>> {
         return repository.getLocationsResult()
+    }
+
+    /**
+     * Create a FavoriteLocation with given location and user.
+     * @param locationId: ID of the location the user wants to make favorite
+     * @param liveData: Object where we want to store the result of our query in
+     */
+    fun createFavoriteLocation(locationId: Int, liveData: MutableLiveData<Query<ResponseBody>>) {
+        repository.markLocationAsFavorite(locationId, liveData)
+    }
+
+    /**
+     * Delete a FavoriteLocation with given location and user
+     * @param locationId: ID of the location the user wants to remove from his favorite locations list
+     * @param liveData: Object where we want to store the result of our query in
+     */
+    fun deleteFavoriteLocation(locationId: Int, liveData: MutableLiveData<Query<ResponseBody>>) {
+        repository.unMarkLocationAsFavorite(locationId, liveData)
     }
 }

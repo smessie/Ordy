@@ -34,6 +34,12 @@ interface ApiService {
     @GET("locations/{locationId}")
     fun location(@Path("locationId") locationId: Int): Observable<Location>
 
+    @POST("locations/{locationId}")
+    fun markLocationAsFavorite(@Path("locationId") locationId: Int): Observable<ResponseBody>
+
+    @DELETE("locations/{locationId}")
+    fun unMarkLocationAsFavorite(@Path("locationId") locationId: Int): Observable<ResponseBody>
+
     @GET("locations/{locationId}/items")
     fun locationItems(@Path("locationId") locationId: Int): Observable<List<Item>>
 
