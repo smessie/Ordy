@@ -9,6 +9,7 @@ import com.google.firebase.messaging.Message
 import com.ordy.backend.database.models.User
 import com.ordy.backend.database.repositories.DeviceTokenRepository
 import org.slf4j.LoggerFactory
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import javax.annotation.PostConstruct
 
@@ -34,14 +35,42 @@ class NotificationService(
         }
     }
 
-    fun sendNotification(users: List<User>, content: Map<String, String>) {
+    /**
+     * Async method for sending a list of user the same notification.
+     * This is a simple wrapper around the sendNotification method.
+     */
+    @Async
+    fun sendNotificationAsync(users: List<User>, content: Map<String, String>) {
+        sendNotification(users, content)
+    }
+
+    /**
+     * Send each user of a list a notification.
+     */
+    private fun sendNotification(users: List<User>, content: Map<String, String>) {
         users.forEach { sendNotification(it, content) }
     }
 
-    fun sendNotification(user: User, content: Map<String, String>) {
+
+    /**
+     * Async method for sending a single user a notification.
+     * This is a simple wrapper around the sendNotification method.
+     */
+    @Async
+    fun sendNotificationAsync(user: User, content: Map<String, String>) {
+        sendNotification(user, content)
+    }
+
+    /**
+     * send a notification for each token of a user.
+     */
+    private fun sendNotification(user: User, content: Map<String, String>) {
         deviceTokenRepository.getAllByUser(user).forEach { sendNotification(it.token, content) }
     }
 
+    /**
+     * send notification for a specific token.
+     */
     private fun sendNotification(target: String, content: Map<String, String>) {
         val message = Message.builder()
                 .setToken(target)
@@ -56,6 +85,9 @@ class NotificationService(
 
     }
 
+    /**
+     * Create the message content given the start parameters.
+     */
     fun createNotificationContent(
             title: String = "Title",
             subtitle: String = "Subtitle",
