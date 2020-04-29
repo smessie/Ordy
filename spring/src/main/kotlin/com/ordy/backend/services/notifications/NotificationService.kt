@@ -119,7 +119,7 @@ class NotificationService(
     /**
      * Check deadlines every minute, send notification when close to deadline.
      */
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 30000)
     fun deadlineNotification() {
         orderRepository.findAllByNotifiedIsFalse().forEach {
             // > 10 minutes
