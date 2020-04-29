@@ -7,6 +7,8 @@ import com.ordy.backend.database.models.OrderItem
 import com.ordy.backend.database.repositories.*
 import com.ordy.backend.exceptions.GenericException
 import com.ordy.backend.exceptions.ThrowableList
+import com.ordy.backend.services.notifications.NotificationService
+import com.ordy.backend.services.notifications.NotificationType
 import com.ordy.backend.wrappers.OrderAddItemWrapper
 import com.ordy.backend.wrappers.OrderCreateWrapper
 import com.ordy.backend.wrappers.OrderUpdateItemWrapper
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
 import java.io.InputStream
+import java.text.SimpleDateFormat
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -31,7 +34,7 @@ class OrderService(
         @Autowired val groupRepository: GroupRepository,
         @Autowired val locationRepository: LocationRepository,
         @Autowired val imageService: ImageService,
-        @Autowired val imageRepository: ImageRepository
+        @Autowired val notificationService: NotificationService
 ) {
 
     @Value("\${ORDY_DOMAIN_NAME}")
@@ -52,8 +55,8 @@ class OrderService(
      * Get a list of orders for a given user.
      */
     fun getOrders(userId: Int): List<Order> {
-        var user = userRepository.findById(userId).get()
-        var groups = groupMemberRepository.findGroupMembersByUser(user).map { it.group }
+        val user = userRepository.findById(userId).get()
+        val groups = groupMemberRepository.findGroupMembersByUser(user).map { it.group }
 
         return groups.flatMap { orderRepository.findAllByGroup(it) }.sortedBy { it.deadline }.reversed()
     }
@@ -62,9 +65,9 @@ class OrderService(
      * Get an order by id.
      */
     fun getOrder(userId: Int, orderId: Int): Order {
-        var user = userRepository.findById(userId).get()
+        val user = userRepository.findById(userId).get()
         val order = orderRepository.findById(orderId)
-        var groups = groupMemberRepository.findGroupMembersByUser(user).map { it.group }
+        val groups = groupMemberRepository.findGroupMembersByUser(user).map { it.group }
 
 
         // Validate that the order exists
@@ -84,7 +87,7 @@ class OrderService(
      * Create an order for a given user.
      */
     fun createOrder(userId: Int, orderCreate: OrderCreateWrapper): Order {
-        var user = userRepository.findById(userId).get()
+        val user = userRepository.findById(userId).get()
         val throwableList = ThrowableList()
 
         // Validate that the deadline is present.
@@ -148,6 +151,27 @@ class OrderService(
         )
 
         orderRepository.save(order)
+
+
+        // notify all users in group except creator
+        notificationService.sendNotificationAsync(
+                users = groupMemberRepository.findGroupMembersByGroup(group.get())
+                        .map { it.user }
+                        .toMutableList()
+                        .also { it.remove(user) },
+                content = notificationService.createNotificationContent(
+                        title = "New order in ${group.get().name}",
+                        subtitle = "${user.username} has created a new order for ${location.name}",
+                        detail = "<b>Group: </b>${group.get().name}\n<b>Location: </b>${location.name}\n<b>Courier: </b>${user.username}",
+                        summary = "New Order",
+                        type = NotificationType.ORDER_CREATE,
+                        extra = mapOf(
+                                "orderId" to order.id.toString(),
+                                "notificationDeadline" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ").format(order.deadline)
+                        )
+                )
+        )
+
         return order
     }
 
@@ -156,8 +180,8 @@ class OrderService(
      */
     fun addItemOrder(userId: Int, orderId: Int, orderAddItem: OrderAddItemWrapper): OrderItem {
         val throwableList = ThrowableList()
-        var user = userRepository.findById(userId).get()
-        var order = this.getOrder(userId, orderId)
+        val user = userRepository.findById(userId).get()
+        val order = this.getOrder(userId, orderId)
 
         lateinit var item: Item
 
@@ -285,6 +309,24 @@ class OrderService(
         order.image = newImage
         order.billUrl = getDomainName() + "orders/$orderId/bill"
         orderRepository.save(order)
+
+        val uploader = userRepository.findById(userId).get() // user is authenticated so no check is needed
+
+        // notify all users in group except the uploader
+        notificationService.sendNotificationAsync(
+                users = groupMemberRepository.findGroupMembersByGroup(order.group)
+                        .map { it.user }
+                        .toMutableList()
+                        .also { it.remove(uploader) },
+                content = notificationService.createNotificationContent(
+                        title = "New bill in ${order.group.name}",
+                        subtitle = "${uploader.username} has uploaded a bill",
+                        detail = "<b>Group: </b>${order.group.name}\n<b>Location: </b>${order.location.name}\n<b>Courier: </b>${order.courier.username}",
+                        summary = "Bill added",
+                        type = NotificationType.ORDER_BILL,
+                        extra = mapOf("orderId" to order.id.toString())
+                )
+        )
     }
 
     /**
