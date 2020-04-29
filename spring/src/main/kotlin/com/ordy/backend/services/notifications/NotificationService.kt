@@ -8,6 +8,7 @@ import com.google.firebase.messaging.FirebaseMessagingException
 import com.google.firebase.messaging.Message
 import com.ordy.backend.database.models.User
 import com.ordy.backend.database.repositories.DeviceTokenRepository
+import com.ordy.backend.database.repositories.GroupMemberRepository
 import com.ordy.backend.database.repositories.OrderRepository
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Async
@@ -21,7 +22,8 @@ import kotlin.math.roundToInt
 @Service
 class NotificationService(
         val deviceTokenRepository: DeviceTokenRepository,
-        val orderRepository: OrderRepository
+        val orderRepository: OrderRepository,
+        val groupMemberRepository: GroupMemberRepository
 ) {
 
     private lateinit var firebaseApp: FirebaseApp
@@ -125,7 +127,8 @@ class NotificationService(
             if (difference in 0..600000) {
                 orderRepository.saveAndFlush(it.also { order -> order.notified = true })
                 sendNotificationAsync(
-                        users = deviceTokenRepository.findAll().map { DT -> DT.user }, // notify all users in group
+                        users = groupMemberRepository.findGroupMembersByGroup(it.group)
+                                .map { groupMember -> groupMember.user }, // notify all users in group
                         content = createNotificationContent(
                                 title = "${(difference / (60 * 1000.0)).roundToInt()} minutes left",
                                 subtitle = "The order for ${it.location.name} in group ${it.group.name} is about to close",
