@@ -79,7 +79,9 @@ class OverviewOrderActivity : AppCompatActivity() {
 
         // Fetch the specific order.
         viewModel.orderId.observe(this, Observer {
-            viewModel.refreshOrder()
+            if (it != -1) {
+                viewModel.refreshOrder()
+            }
         })
 
         // Observe the changes of the fetch.
@@ -118,12 +120,5 @@ class OverviewOrderActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // Update the order.
-        viewModel.refreshOrder()
     }
 }
