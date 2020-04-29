@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.text.Html
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -139,7 +140,7 @@ class MessagingService : FirebaseMessagingService() {
                 this,
                 0,
                 intent,
-                0
+                PendingIntent.FLAG_UPDATE_CURRENT
             )
 
             notificationBuilder.setContentIntent(pendingIntent)
