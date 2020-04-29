@@ -48,12 +48,12 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
         if (users.isNotEmpty() && checkPasswd(loginWrapper.password, users.first().password)) {
             return AuthTokenWrapper(
                     tokenService.encrypt(
-                        jacksonObjectMapper().writeValueAsString(
-                                TokenWrapper(
-                                    userId = users.first().id,
-                                    random = UUID.randomUUID().toString()
-                                )
-                        )
+                            jacksonObjectMapper().writeValueAsString(
+                                    TokenWrapper(
+                                            userId = users.first().id,
+                                            random = UUID.randomUUID().toString()
+                                    )
+                            )
                     ),
                     users.first()
             )
@@ -76,12 +76,12 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
         }
 
         // Validate if the username is bigger than 3 chars.
-        if(registerWrapper.username.length < 3) {
+        if (registerWrapper.username.length < 3) {
             throwableList.addPropertyException("username", "Should be at least 3 characters")
         }
 
         // Validate if the username is smaller than 30 chars.
-        if(registerWrapper.username.length > 30) {
+        if (registerWrapper.username.length > 30) {
             throwableList.addPropertyException("username", "Should be at most 30 characters")
         }
 
@@ -91,27 +91,27 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
         }
 
         // Validate if the email is smaller than 320 chars.
-        if(registerWrapper.email.length > 320) {
+        if (registerWrapper.email.length > 320) {
             throwableList.addPropertyException("email", "Should be at most 320 characters")
         }
 
         // Validate if the password is bigger than 8 chars.
-        if(registerWrapper.password.length < 8) {
+        if (registerWrapper.password.length < 8) {
             throwableList.addPropertyException("password", "Should be at least 8 characters")
         }
 
         // Validate if the password is smaller than 64 chars.
-        if(registerWrapper.password.length > 64) {
+        if (registerWrapper.password.length > 64) {
             throwableList.addPropertyException("password", "Should be at most 64 characters")
         }
 
         // Validate if the email is already taken.
-        if(userRepository.findByEmail(registerWrapper.email).isEmpty().not()) {
+        if (userRepository.findByEmail(registerWrapper.email).isEmpty().not()) {
             throwableList.addPropertyException("email", "Email is already taken")
         }
 
         // Validate if the username is already taken.
-        if(userRepository.findByUsername(registerWrapper.username).isEmpty().not()) {
+        if (userRepository.findByUsername(registerWrapper.username).isEmpty().not()) {
             throwableList.addPropertyException("username", "Username is already taken")
         }
 
