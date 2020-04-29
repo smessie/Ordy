@@ -48,7 +48,7 @@ class CreateOrderLocationListAdapter(
         when (viewModel.getLocations().status) {
 
             QueryStatus.SUCCESS -> {
-                val location = viewModel.getLocations().requireData()[position]
+                val location = viewModel.getLocations().requireData()[position].location
 
                 // Assign the data.
                 view.location_item_name.text = location.name

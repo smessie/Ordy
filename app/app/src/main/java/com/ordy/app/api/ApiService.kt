@@ -5,6 +5,7 @@ import android.media.Image
 import com.ordy.app.api.models.*
 import com.ordy.app.api.models.actions.*
 import com.ordy.app.api.wrappers.GroupInviteUserWrapper
+import com.ordy.app.api.wrappers.LocationWrapper
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -28,7 +29,7 @@ interface ApiService {
      * Locations
      */
     @GET("locations")
-    fun locations(@Query("q") search: String): Observable<List<Location>>
+    fun locations(@Query("q") search: String): Observable<List<LocationWrapper>>
 
     @GET("locations/{locationId}")
     fun location(@Path("locationId") locationId: Int): Observable<Location>

@@ -5,6 +5,7 @@ import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.Location
 import com.ordy.app.api.util.Query
+import com.ordy.app.api.wrappers.LocationWrapper
 
 class LocationsViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
@@ -46,7 +47,7 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     /**
      * Get a list with locations
      */
-    fun getLocations(): Query<List<Location>> {
+    fun getLocations(): Query<List<LocationWrapper>> {
         return repository.getLocationsResult().value!!
     }
 
@@ -67,7 +68,7 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     /**
      * Get the MutableLiveData result of the Locations fetch.
      */
-    fun getLocationsMLD(): MutableLiveData<Query<List<Location>>> {
+    fun getLocationsMLD(): MutableLiveData<Query<List<LocationWrapper>>> {
         return repository.getLocationsResult()
     }
 }

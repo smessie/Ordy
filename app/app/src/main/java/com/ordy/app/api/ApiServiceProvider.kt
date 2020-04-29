@@ -29,7 +29,7 @@ class ApiServiceProvider {
             .addConverterFactory(
                 GsonConverterFactory.create(gson)
             )
-            .baseUrl("https://api.ordy.ga")
+            .baseUrl("http://192.168.1.6:8080/")
     }
 
     /**
@@ -58,7 +58,7 @@ class ApiServiceProvider {
                 RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client(context))
-            .baseUrl("https://api.ordy.ga")
+            .baseUrl("http://192.168.1.6:8080/")
             .build()
             .create(ApiService::class.java)
     }

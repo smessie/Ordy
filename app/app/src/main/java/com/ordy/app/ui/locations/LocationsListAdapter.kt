@@ -23,26 +23,31 @@ class LocationsListAdapter(
         when (viewModel.getLocations().status) {
 
             QueryStatus.SUCCESS -> {
-                val location = viewModel.getLocations().requireData()[position]
+                val locationWrapper = viewModel.getLocations().requireData()[position]
 
+                // this is needed to prevent strange behaviour of ListView that reuses ListCells
                 view.favorite_mark.isSelected = false
 
+                if (locationWrapper.favorite && !viewModel.isFavorite(locationWrapper.location.id)) {
+                    viewModel.markAsFavorite(locationWrapper.location.id)
+                }
+
                 // if a location was already marked as favorite
-                if (viewModel.isFavorite(location.id)) {
+                if (viewModel.isFavorite(locationWrapper.location.id)) {
                     view.favorite_mark.isSelected = true
                 }
 
                 // Assign the data.
-                view.location_name.text = location.name
+                view.location_name.text = locationWrapper.location.name
 
                 view.favorite_mark.setOnClickListener {
-                    if (viewModel.isFavorite(location.id)) {
-                        viewModel.unMarkAsFavorite(location.id)
+                    if (viewModel.isFavorite(locationWrapper.location.id)) {
+                        viewModel.unMarkAsFavorite(locationWrapper.location.id)
                     } else {
-                        viewModel.markAsFavorite(location.id)
+                        viewModel.markAsFavorite(locationWrapper.location.id)
                     }
 
-                    view.favorite_mark.isSelected = viewModel.isFavorite(location.id)
+                    view.favorite_mark.isSelected = viewModel.isFavorite(locationWrapper.location.id)
                 }
             }
         }
