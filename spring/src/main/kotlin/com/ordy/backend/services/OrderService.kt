@@ -150,7 +150,7 @@ class OrderService(
                 courier = user
         )
 
-        orderRepository.save(order)
+        orderRepository.saveAndFlush(order)
 
         // notify all users in group except creator
         notificationService.sendNotificationAsync(
