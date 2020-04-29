@@ -10,7 +10,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
 import com.github.javafaker.Faker
 import com.ordy.app.R
 import com.ordy.app.api.Repository
@@ -30,14 +29,11 @@ import org.koin.test.KoinTest
 import org.koin.test.mock.MockProviderRule
 import org.koin.test.mock.declareMock
 import org.mockito.BDDMockito.given
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
 import java.text.SimpleDateFormat
 
 @RunWith(AndroidJUnit4::class)
 class OrdersOverviewTest : KoinTest {
-
-    @get:Rule
-    val activityRule = ActivityTestRule(OverviewOrderActivity::class.java)
 
     @get:Rule
     val mockProvider = MockProviderRule.create { clazz ->
