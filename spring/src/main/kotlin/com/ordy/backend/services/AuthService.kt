@@ -1,7 +1,9 @@
 package com.ordy.backend.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.ordy.backend.database.models.DeviceToken
 import com.ordy.backend.database.models.User
+import com.ordy.backend.database.repositories.DeviceTokenRepository
 import com.ordy.backend.database.repositories.UserRepository
 import com.ordy.backend.exceptions.ThrowableList
 import com.ordy.backend.wrappers.AuthLoginWrapper
@@ -17,7 +19,11 @@ import javax.mail.internet.AddressException
 import javax.mail.internet.InternetAddress
 
 @Service
-class AuthService(@Autowired val userRepository: UserRepository, @Autowired val tokenService: TokenService) {
+class AuthService(
+        @Autowired val userRepository: UserRepository,
+        @Autowired val tokenService: TokenService,
+        @Autowired val deviceTokenRepository: DeviceTokenRepository
+) {
     private final val bCryptRounds = 12
     private val usernamePattern = Regex("^[^ ][A-Za-z0-9 \\-_]+[^ ]$")
 
@@ -46,6 +52,17 @@ class AuthService(@Autowired val userRepository: UserRepository, @Autowired val 
 
         // Check if the user was found & the password is correct.
         if (users.isNotEmpty() && checkPasswd(loginWrapper.password, users.first().password)) {
+            if (loginWrapper.deviceToken.isBlank().not()) {
+                val optDT = deviceTokenRepository.getByToken(loginWrapper.deviceToken)
+                optDT.ifPresentOrElse({
+                    deviceTokenRepository.save(optDT.get().also { it.user = users.first() })
+                }, {
+                    deviceTokenRepository.save(DeviceToken(
+                            user = users.first(),
+                            token = loginWrapper.deviceToken
+                    ))
+                })
+            }
             return AuthTokenWrapper(
                     tokenService.encrypt(
                             jacksonObjectMapper().writeValueAsString(
