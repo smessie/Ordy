@@ -29,7 +29,7 @@ class LocationService(
         val userFavoriteLocations = favoriteLocationRepository.findAllByUser(user).map { it.location }
 
         // add favorite locations of user that are not included in matchingLocations because we only searched the first 30 matching ones
-        matchingLocations += userFavoriteLocations.filter { !matchingLocations.contains(it) }
+        matchingLocations += userFavoriteLocations.filter { !matchingLocations.contains(it) && it.name.contains(query, ignoreCase = true) }
 
         // if no query is given, show all the user his favorite locations
         if (query.isBlank()) {

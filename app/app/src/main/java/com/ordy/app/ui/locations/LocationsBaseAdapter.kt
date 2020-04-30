@@ -13,6 +13,7 @@ import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.api.wrappers.LocationWrapper
+import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.fragment_locations.view.*
 import kotlinx.android.synthetic.main.list_location_card.view.*
 import okhttp3.ResponseBody
@@ -20,7 +21,7 @@ import okhttp3.ResponseBody
 class LocationsBaseAdapter(
     val context: Context,
     val viewModel: LocationsViewModel,
-    val lifecycleOwner: LifecycleOwner,
+    private val lifecycleOwner: LifecycleOwner,
     val view: View
 ) : BaseAdapter() {
 
@@ -85,21 +86,42 @@ class LocationsBaseAdapter(
                 // Assign the data.
                 view.location_name.text = locationWrapper.location.name
 
+                view.location_address.text =
+                    when (locationWrapper.location.address) {
+                        null -> "No address found"
+                        else -> locationWrapper.location.address
+                    }
+
                 view.favorite_mark.setOnClickListener {
 
                     if (viewModel.isFavorite(locationWrapper.location.id)) {
                         viewModel.deleteFavoriteLocation(locationWrapper.location.id, favoriteResult)
+                        viewModel.unMarkAsFavorite(locationWrapper.location.id)
                     } else {
                         viewModel.createFavoriteLocation(locationWrapper.location.id, favoriteResult)
+                        viewModel.markAsFavorite(locationWrapper.location.id)
                     }
 
+                    view.favorite_mark.isSelected = viewModel.isFavorite(locationWrapper.location.id)
                 }
 
                 // observe result of favoriteResult
                 favoriteResult.observe(lifecycleOwner, Observer {
                     when (it.status) {
-                        QueryStatus.SUCCESS -> {
 
+                        QueryStatus.LOADING -> {
+                            // when loading, disable the favorite mark
+                            view.favorite_mark.isClickable = false
+                        }
+
+                        QueryStatus.SUCCESS -> {
+                            // when success, make the favorite mark selectable again
+                            view.favorite_mark.isClickable = true
+                        }
+
+                        QueryStatus.ERROR -> {
+
+                            // reset state as it was before the favorite mark was clicked
                             if (viewModel.isFavorite(locationWrapper.location.id)) {
                                 viewModel.unMarkAsFavorite(locationWrapper.location.id)
                             } else {
@@ -107,21 +129,10 @@ class LocationsBaseAdapter(
                             }
 
                             view.favorite_mark.isSelected = viewModel.isFavorite(locationWrapper.location.id)
-
-                            view.favorite_mark.setOnClickListener {
-
-                                if (viewModel.isFavorite(locationWrapper.location.id)) {
-                                    viewModel.createFavoriteLocation(locationWrapper.location.id, favoriteResult)
-                                } else {
-                                    viewModel.deleteFavoriteLocation(locationWrapper.location.id, favoriteResult)
-                                }
-                                
-                            }
-                        }
-
-                        QueryStatus.ERROR -> {
                             ErrorHandler().handle(it.error, view)
                         }
+
+                        else -> {}
                     }
                 })
             }
@@ -151,7 +162,7 @@ class LocationsBaseAdapter(
         return when (viewModel.getLocations().status) {
             QueryStatus.LOADING -> 0
             QueryStatus.SUCCESS -> return when {
-                // Do not show any results for a blank search query.
+                // Do not show any results if the search query is blank and if the user has no favorite locations.
                 viewModel.getLocations().requireData().isEmpty() -> 0
                 else -> viewModel.getLocations().requireData().size
             }
