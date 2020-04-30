@@ -6,27 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ListView
-import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.DialogCreateOrderLocationBinding
 import com.ordy.app.ui.orders.create.CreateOrderViewModel
 import kotlinx.android.synthetic.main.dialog_create_order_location.view.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class CreateOrderLocationDialog : DialogFragment() {
 
-    private val viewModel: CreateOrderLocationViewModel by viewModels {
-        RepositoryViewModelFactory(
-            requireContext()
-        )
-    }
+    private val viewModel: CreateOrderLocationViewModel by viewModel()
 
     private val activityViewModel: CreateOrderViewModel by activityViewModels()
 

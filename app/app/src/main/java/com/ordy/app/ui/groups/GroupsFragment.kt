@@ -5,19 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import kotlinx.android.synthetic.main.fragment_groups.view.*
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 
 class GroupsFragment : Fragment() {
 
-    private val viewModel: GroupsViewModel by activityViewModels {
-        RepositoryViewModelFactory(
-            requireContext()
-        )
-    }
+    private val viewModel: GroupsViewModel by sharedViewModel()
 
     private lateinit var baseAdapter: GroupsBaseAdapter
 

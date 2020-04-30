@@ -4,26 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityCreateGroupBinding
 import com.ordy.app.ui.groups.overview.OverviewGroupActivity
 import kotlinx.android.synthetic.main.activity_create_group.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class CreateGroupActivity : AppCompatActivity() {
 
-    private val viewModel: CreateGroupViewModel by viewModels {
-        RepositoryViewModelFactory(
-            applicationContext
-        )
-    }
+    private val viewModel: CreateGroupViewModel by viewModel()
 
     lateinit var handlers: CreateGroupHandlers
 

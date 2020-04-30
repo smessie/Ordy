@@ -6,24 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentOrdersActiveBinding
 import com.ordy.app.ui.orders.OrdersBaseAdapter
 import com.ordy.app.ui.orders.OrdersStatus
 import com.ordy.app.ui.orders.OrdersViewModel
 import kotlinx.android.synthetic.main.fragment_orders_active.view.*
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class ActiveOrdersFragment : Fragment() {
 
-    private val viewModel: OrdersViewModel by activityViewModels {
-        RepositoryViewModelFactory(
-            requireContext()
-        )
-    }
+    private val viewModel: OrdersViewModel by sharedViewModel()
 
     private lateinit var baseAdapter: OrdersBaseAdapter
 

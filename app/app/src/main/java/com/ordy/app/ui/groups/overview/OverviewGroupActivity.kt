@@ -2,26 +2,21 @@ package com.ordy.app.ui.groups.overview
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewGroupBinding
 import kotlinx.android.synthetic.main.activity_overview_group.*
 import kotlinx.android.synthetic.main.activity_overview_group.view.*
 import kotlin.properties.Delegates
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class OverviewGroupActivity : AppCompatActivity() {
 
-    private val viewModel: OverviewGroupViewModel by viewModels {
-        RepositoryViewModelFactory(
-            applicationContext
-        )
-    }
+    private val viewModel: OverviewGroupViewModel by viewModel()
 
     private lateinit var baseAdapter: OverviewGroupBaseAdapter
     lateinit var handlers: OverviewGroupHandlers
