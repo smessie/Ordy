@@ -7,22 +7,16 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ListView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
-import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentLocationsBinding
 import kotlinx.android.synthetic.main.fragment_locations.view.*
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class LocationsFragment : Fragment() {
 
-    private val viewModel: LocationsViewModel by activityViewModels {
-        RepositoryViewModelFactory(
-            requireContext()
-        )
-    }
+    private val viewModel: LocationsViewModel by sharedViewModel()
 
     private lateinit var baseAdapter: LocationsBaseAdapter
 
@@ -61,6 +55,7 @@ class LocationsFragment : Fragment() {
 
         // Swipe to refresh
         binding.locationsRefresh.setOnRefreshListener {
+
             viewModel.updateLocations()
         }
 

@@ -5,27 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentPaymentsDebtsBinding
+import com.ordy.app.ui.payments.PaymentsBaseAdapter
 import com.ordy.app.ui.payments.PaymentsFragment
-import com.ordy.app.ui.payments.PaymentsListAdapter
 import com.ordy.app.ui.payments.PaymentsViewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class PaymentsDebtsFragment(
     private val parentFragment: PaymentsFragment
 ) : Fragment() {
 
-    private val viewModel: PaymentsViewModel by activityViewModels {
-        RepositoryViewModelFactory(
-            requireContext()
-        )
-    }
+    private val viewModel: PaymentsViewModel by sharedViewModel()
 
-    private lateinit var listAdapter: PaymentsListAdapter
+    private lateinit var baseAdapter: PaymentsBaseAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,14 +36,15 @@ class PaymentsDebtsFragment(
         binding.viewModel = viewModel
 
         // Initialize listViewAdapter
-        listAdapter = PaymentsDebtsListAdapter(
+        baseAdapter = PaymentsDebtsBaseAdapter(
             requireContext(),
             viewModel,
-            parentFragment
+            parentFragment,
+            viewLifecycleOwner
         )
 
         binding.paymentsDebts.apply {
-            adapter = listAdapter
+            adapter = baseAdapter
             emptyView = binding.paymentsDebtsEmpty
         }
 
@@ -59,11 +55,6 @@ class PaymentsDebtsFragment(
             viewModel.refreshDebts()
         }
 
-        // Observe the input field
-        viewModel.debtsSearch.observe(viewLifecycleOwner, Observer {
-            listAdapter.update()
-        })
-
         // Observe the debts
         viewModel.getDebtsMLD().observe(viewLifecycleOwner, Observer {
             // Stop refreshing when loaded
@@ -73,16 +64,5 @@ class PaymentsDebtsFragment(
         })
 
         return binding.root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Update the list adapter when the "orders" query updates
-        viewModel.getDebtsMLD().observe(this, Observer {
-
-            // Notify the changes to the list view (to re-render automatically)
-            listAdapter.update()
-        })
     }
 }

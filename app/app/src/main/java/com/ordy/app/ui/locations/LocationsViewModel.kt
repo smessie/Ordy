@@ -46,6 +46,7 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     val searchValueData: MutableLiveData<String> = MutableLiveData("")
 
     /**
+<<<<<<< HEAD
      * Get a list with locations
      */
     fun getLocations(): Query<List<LocationWrapper>> {
@@ -53,6 +54,8 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     }
 
     /**
+=======
+>>>>>>> master
      * Get the value of the search input field.
      */
     fun getSearchValue(): String {

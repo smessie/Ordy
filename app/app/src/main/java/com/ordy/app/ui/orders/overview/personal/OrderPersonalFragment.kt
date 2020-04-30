@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
+import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentOrderPersonalBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import kotlinx.android.synthetic.main.fragment_order_general.view.*
@@ -17,7 +17,7 @@ class OrderPersonalFragment : Fragment() {
 
     private val viewModel: OverviewOrderViewModel by activityViewModels()
 
-    private lateinit var listAdapter: OrderPersonalListAdapter
+    private lateinit var baseAdapter: OrderPersonalBaseAdapter
 
     lateinit var handlers: OrderPersonalHandlers
 
@@ -38,21 +38,29 @@ class OrderPersonalFragment : Fragment() {
         binding.handlers = handlers
 
         // Create the list view adapter
-        listAdapter = OrderPersonalListAdapter(
+        baseAdapter = OrderPersonalBaseAdapter(
             requireContext(),
             binding.root,
             handlers,
             this,
-            viewModel
+            viewModel,
+            viewLifecycleOwner
         )
         binding.root.order_items.apply {
-            adapter = listAdapter
+            adapter = baseAdapter
             emptyView = binding.root.order_items_empty
         }
 
-        // Update the list adapter when the "order" query updates
+        // Swipe to refresh
+        binding.root.order_refresh.setOnRefreshListener {
+            viewModel.refreshOrder()
+        }
+
+        // Stop refreshing on load
         viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
-            listAdapter.update()
+            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+                binding.root.order_refresh.isRefreshing = false
+            }
         })
 
         return binding.root

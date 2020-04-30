@@ -15,12 +15,13 @@ class OrderPersonalHandlers(
      */
     fun onAddItemClick() {
         if (viewModel.getOrderMLD().value != null) {
-            if (viewModel.getOrder().status == QueryStatus.SUCCESS) {
+            val order = viewModel.getOrderMLD().value!!
+            if (order.status == QueryStatus.SUCCESS) {
                 val intent = Intent(fragment.requireContext(), AddItemOrderActivity::class.java)
 
                 // Pass the location & order id as extra information:
-                intent.putExtra("location_id", viewModel.getOrder().requireData().location.id)
-                intent.putExtra("order_id", viewModel.getOrder().requireData().id)
+                intent.putExtra("location_id", order.requireData().location.id)
+                intent.putExtra("order_id", order.requireData().id)
 
                 fragment.requireContext().startActivity(intent)
             }

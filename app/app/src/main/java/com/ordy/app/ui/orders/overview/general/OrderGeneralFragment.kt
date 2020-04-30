@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.ordy.app.R
+import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentOrderGeneralBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import kotlinx.android.synthetic.main.fragment_order_general.view.*
@@ -17,7 +17,7 @@ class OrderGeneralFragment : Fragment() {
 
     private val viewModel: OverviewOrderViewModel by activityViewModels()
 
-    private lateinit var listAdapter: OrderGeneralListAdapter
+    private lateinit var baseAdapter: OrderGeneralBaseAdapter
 
     /**
      * Called when view is created.
@@ -35,17 +35,22 @@ class OrderGeneralFragment : Fragment() {
         binding.handlers = OrderGeneralHandlers(this, viewModel)
 
         // Create the list view adapter
-        listAdapter = OrderGeneralListAdapter(requireContext(), viewModel)
+        baseAdapter = OrderGeneralBaseAdapter(requireContext(), viewModel, viewLifecycleOwner)
         binding.root.order_items.apply {
-            adapter = listAdapter
+            adapter = baseAdapter
             emptyView = binding.root.order_items_empty
         }
 
-        // Update the list adapter when the "order" query updates
-        viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
+        // Swipe to refresh
+        binding.root.order_refresh.setOnRefreshListener {
+            viewModel.refreshOrder()
+        }
 
-            // Update the list view
-            listAdapter.update()
+        // Stop refreshing on load
+        viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
+            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+                binding.root.order_refresh.isRefreshing = false
+            }
         })
 
         return binding.root

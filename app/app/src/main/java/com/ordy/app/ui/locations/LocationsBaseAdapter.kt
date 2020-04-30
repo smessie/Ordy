@@ -13,7 +13,6 @@ import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.api.wrappers.LocationWrapper
-import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.fragment_locations.view.*
 import kotlinx.android.synthetic.main.list_location_card.view.*
 import okhttp3.ResponseBody
@@ -26,6 +25,7 @@ class LocationsBaseAdapter(
 ) : BaseAdapter() {
 
     private var locations: Query<List<LocationWrapper>> = Query()
+
 
     init {
         val searchLoading = view.locations_search_loading
@@ -104,7 +104,6 @@ class LocationsBaseAdapter(
                     }
 
                     view.favorite_mark.isSelected = viewModel.isFavorite(locationWrapper.location.id)
-                    notifyDataSetChanged()
                 }
 
                 // observe result of favoriteResult
@@ -137,7 +136,6 @@ class LocationsBaseAdapter(
                         else -> {}
                     }
 
-                    notifyDataSetChanged()
                 })
             }
 
@@ -165,13 +163,10 @@ class LocationsBaseAdapter(
     }
 
     override fun getCount(): Int {
+
         return when (viewModel.getLocations().status) {
             QueryStatus.LOADING -> 0
-            QueryStatus.SUCCESS -> return when {
-                // Do not show any results if the search query is blank and if the user has no favorite locations.
-                viewModel.getLocations().requireData().isEmpty() -> 0
-                else -> viewModel.getLocations().requireData().size
-            }
+            QueryStatus.SUCCESS -> return viewModel.getLocations().requireData().size
             else -> 0
         }
     }

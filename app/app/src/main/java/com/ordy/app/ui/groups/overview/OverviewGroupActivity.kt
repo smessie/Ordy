@@ -2,29 +2,23 @@ package com.ordy.app.ui.groups.overview
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.ListView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewGroupBinding
 import kotlinx.android.synthetic.main.activity_overview_group.*
 import kotlinx.android.synthetic.main.activity_overview_group.view.*
 import kotlin.properties.Delegates
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class OverviewGroupActivity : AppCompatActivity() {
 
-    private val viewModel: OverviewGroupViewModel by viewModels {
-        RepositoryViewModelFactory(
-            applicationContext
-        )
-    }
+    private val viewModel: OverviewGroupViewModel by viewModel()
 
-    private lateinit var listAdapter: OverviewGroupListAdapter
+    private lateinit var baseAdapter: OverviewGroupBaseAdapter
     lateinit var handlers: OverviewGroupHandlers
     private var groupId by Delegates.notNull<Int>()
 
@@ -51,8 +45,8 @@ class OverviewGroupActivity : AppCompatActivity() {
         }
 
         // Create the list view adapter
-        listAdapter = OverviewGroupListAdapter(applicationContext, viewModel, handlers, this)
-        binding.root.group_members.adapter = listAdapter
+        baseAdapter = OverviewGroupBaseAdapter(applicationContext, viewModel, handlers, this, binding.root)
+        binding.root.group_members.adapter = baseAdapter
 
         // Set the action bar elevation to 0, since the group extends the action bar.
         if (supportActionBar != null) {
@@ -72,11 +66,6 @@ class OverviewGroupActivity : AppCompatActivity() {
 
                     group_title.text = group.name
                     group_members_amount.text = group.members?.size.toString()
-
-                    val listAdapter = this.listAdapter
-
-                    // Notify the changes to the list view (to re-render automatically)
-                    listAdapter.notifyDataSetChanged()
                 }
 
                 QueryStatus.ERROR -> {

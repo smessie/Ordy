@@ -3,14 +3,13 @@ package com.ordy.app.ui.orders.overview
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewOrderBinding
@@ -23,17 +22,13 @@ import com.ordy.app.util.TimerUtil
 import com.ordy.app.util.types.TabsEntry
 import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.activity_overview_order.view.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.DateFormat
 import kotlin.properties.Delegates
 
-
 class OverviewOrderActivity : AppCompatActivity() {
 
-    private val viewModel: OverviewOrderViewModel by viewModels {
-        RepositoryViewModelFactory(
-            applicationContext
-        )
-    }
+    private val viewModel: OverviewOrderViewModel by viewModel()
 
     private lateinit var tabsAdapter: TabsAdapter
 
@@ -73,18 +68,13 @@ class OverviewOrderActivity : AppCompatActivity() {
         // Extract the "order_id" from the given intent variables.
         orderId = intent.getIntExtra("order_id", -1)
 
+        // Store the orderId
+        viewModel.orderId.postValue(orderId)
+
         // Fetch the specific order.
-        viewModel.refreshOrder(orderId)
-
-        // Swipe to refresh
-        binding.root.order_refresh.setOnRefreshListener {
-            viewModel.refreshOrder(orderId)
-        }
-
-        // Stop refreshing on load
-        viewModel.getOrderMLD().observe(this, Observer {
-            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
-                binding.root.order_refresh.isRefreshing = false
+        viewModel.orderId.observe(this, Observer {
+            if (it != -1) {
+                viewModel.refreshOrder()
             }
         })
 
@@ -92,10 +82,6 @@ class OverviewOrderActivity : AppCompatActivity() {
         viewModel.getOrderMLD().observe(this, Observer {
 
             when (it.status) {
-
-                QueryStatus.LOADING -> {
-                    Log.i("TAG", "NOW LOADING")
-                }
 
                 QueryStatus.SUCCESS -> {
                     val order = it.requireData()
@@ -108,7 +94,7 @@ class OverviewOrderActivity : AppCompatActivity() {
                     order_courier_name.text = order.courier.username
 
                     // Show the bill URL when a bill is present.
-                    val billUrl = viewModel.getOrder().requireData().billUrl ?: ""
+                    val billUrl = it.requireData().billUrl ?: ""
 
                     if (!billUrl.isBlank()) {
                         order_bill_button.visibility = View.VISIBLE
@@ -128,12 +114,5 @@ class OverviewOrderActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // Update the order.
-        viewModel.refreshOrder(orderId)
     }
 }

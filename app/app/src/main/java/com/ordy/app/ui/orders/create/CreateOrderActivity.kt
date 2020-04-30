@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.AutoCompleteTextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
@@ -20,14 +18,11 @@ import com.ordy.app.ui.orders.overview.OverviewOrderActivity
 import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.activity_create_order.*
 import kotlinx.android.synthetic.main.activity_create_order.view.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class CreateOrderActivity : AppCompatActivity() {
 
-    private val viewModel: CreateOrderViewModel by viewModels {
-        RepositoryViewModelFactory(
-            applicationContext
-        )
-    }
+    private val viewModel: CreateOrderViewModel by viewModel()
 
     private lateinit var handlers: CreateOrderHandlers
 
