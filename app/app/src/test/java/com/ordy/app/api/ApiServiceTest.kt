@@ -65,7 +65,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/order_create.json"))
+            setBody(getFile("responses/orders/order_create.json"))
         }
         server.enqueue(response)
 
@@ -125,7 +125,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/order_get.json"))
+            setBody(getFile("responses/orders/order_get.json"))
         }
         server.enqueue(response)
 
@@ -182,7 +182,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/order_user_list.json"))
+            setBody(getFile("responses/orders/order_user_list.json"))
         }
         server.enqueue(response)
 
@@ -257,7 +257,7 @@ class ApiServiceTest {
         Assert.assertEquals("/user/orders/$orderId", request.path)
 
         JSONAssert.assertEquals(
-            getFile("responses/body_order_user_update.json"),
+            getFile("responses/orders/body_order_user_update.json"),
             Gson().toJson(body),
             false
         )
@@ -274,7 +274,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/order_user_additem.json"))
+            setBody(getFile("responses/orders/order_user_additem.json"))
         }
         server.enqueue(response)
 
@@ -314,7 +314,7 @@ class ApiServiceTest {
         Assert.assertEquals("/user/orders/$orderId/items", request.path)
 
         JSONAssert.assertEquals(
-            getFile("responses/body_order_user_additem.json"),
+            getFile("responses/orders/body_order_user_additem.json"),
             Gson().toJson(body),
             false
         )
@@ -353,7 +353,7 @@ class ApiServiceTest {
         Assert.assertEquals("/user/orders/$orderId/items/$orderItemId", request.path)
 
         JSONAssert.assertEquals(
-            getFile("responses/body_order_user_updateitem.json"),
+            getFile("responses/orders/body_order_user_updateitem.json"),
             Gson().toJson(body),
             false
         )
@@ -402,7 +402,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/location_get.json"))
+            setBody(getFile("responses/locations/location_get.json"))
         }
         server.enqueue(response)
 
@@ -461,7 +461,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/location_items_get.json"))
+            setBody(getFile("responses/locations/location_items_get.json"))
         }
         server.enqueue(response)
 
@@ -491,7 +491,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/locations_filtered_get.json"))
+            setBody(getFile("responses/locations/locations_filtered_get.json"))
         }
         server.enqueue(response)
 
@@ -632,6 +632,253 @@ class ApiServiceTest {
         Assert.assertEquals("/auth/logout", request.path)
     }
 
+    /**
+     * PAYMENTS
+     */
 
+    /**
+     * @method GET
+     * @endpoint "user/payments/debtors"
+     */
+    @Test
+    fun `Debtors of user should be returned`() {
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/payments/payments_debtors_get.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.userDebtors().test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                mutableListOf(
+                    Payment(
+                        user = User(
+                            id = 5,
+                            username = "Bruce Banner",
+                            email = "brucebanner@gmail.com"
+                        ),
+                        order = Order(
+                            id = 1,
+                            deadline = TEST_DEADLINE,
+                            group = Group(
+                                id = 1,
+                                name = "Zeus",
+                                creator = User(
+                                    id = 2,
+                                    username = "Elon Musk",
+                                    email = "elonmusk@spacex.com"
+                                )
+                            ),
+                            courier = User(
+                                id = 1,
+                                username = "Peter Parker",
+                                email = "peterparker@gmail.com"
+                            ),
+                            location = Location(
+                                id = 1,
+                                name = "'t Blauw Kotje"
+                            ),
+                            orderItems = mutableListOf()
+                        ),
+                        orderItems = mutableListOf()
+                    ),
+                    Payment(
+                        user = User(
+                            id = 3,
+                            username = "Tony Stark",
+                            email = "tonystark@gmail.com"
+                        ),
+                        order = Order(
+                            id = 2,
+                            deadline = TEST_DEADLINE,
+                            group = Group(
+                                id = 1,
+                                name = "Zeus",
+                                creator = User(
+                                    id = 2,
+                                    username = "Elon Musk",
+                                    email = "elonmusk@spacex.com"
+                                )
+                            ),
+                            courier = User(
+                                id = 1,
+                                username = "Peter Parker",
+                                    email = "peterparker@gmail.com"
+                            ),
+                            location = Location(
+                                id = 2,
+                                name = "Emily's"
+                            ),
+                            orderItems = mutableListOf()
+                        ),
+                        orderItems = mutableListOf()
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("GET", request.method)
+        Assert.assertEquals("/user/payments/debtors", request.path)
+    }
+
+    /**
+     * @method GET
+     * @endpoint "user/payments/debts"
+     */
+    @Test
+    fun `Debts of user should be returned`() {
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/payments/payments_debts_get.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.userDepts().test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                mutableListOf(
+                    Payment(
+                        user = User(
+                            id = 1,
+                            username = "Peter Parker",
+                            email = "peterparker@gmail.com"
+                        ),
+                        order = Order(
+                            id = 1,
+                            deadline = TEST_DEADLINE,
+                            group = Group(
+                                id = 1,
+                                name = "Zeus",
+                                creator = User(
+                                    id = 2,
+                                    username = "Elon Musk",
+                                    email = "elonmusk@spacex.com"
+                                )
+                            ),
+                            courier = User(
+                                id = 2,
+                                username = "Elon Musk",
+                                email = "elonmusk@spacex.com"
+                            ),
+                            location = Location(
+                                id = 1,
+                                name = "'t Blauw Kotje"
+                            ),
+                            orderItems = mutableListOf()
+                        ),
+                        orderItems = mutableListOf()
+                    ),
+                    Payment(
+                        user = User(
+                            id = 1,
+                            username = "Peter Parker",
+                            email = "peterparker@gmail.com"
+                        ),
+                        order = Order(
+                            id = 2,
+                            deadline = TEST_DEADLINE,
+                            group = Group(
+                                id = 2,
+                                name = "WiNa",
+                                creator = User(
+                                    id = 3,
+                                    username = "Bill Gates",
+                                    email = "billgates@microsoft.com"
+                                )
+                            ),
+                            courier = User(
+                                id = 3,
+                                username = "Bill Gates",
+                                email = "billgates@microsoft.com"
+                            ),
+                            location = Location(
+                                id = 2,
+                                name = "Pizza Hut"
+                            ),
+                            orderItems = mutableListOf()
+                        ),
+                        orderItems = mutableListOf()
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("GET", request.method)
+        Assert.assertEquals("/user/payments/debts", request.path)
+    }
+
+    /**
+     * @method "PATCH"
+     * @endpoint "user/payments/{orderId}/{userId}"
+     */
+    @Test
+    fun `Paid-status should be updated`() {
+        val userId = 1
+        val orderId = 1
+        val body = PaymentUpdate(
+            paid = true
+        )
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.userSetPaid(orderId, userId, body).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        JSONAssert.assertEquals(
+                getFile("responses/payments/payments_paid_patch.json"),
+                Gson().toJson(body),
+                false
+        )
+    }
+
+    /**
+     * @method "POST"
+     * @endpoint "user/payments/{orderId}/{userId}/notification"
+     */
+    @Test
+    fun `User should be notified without errors`() {
+        val userId = 1
+        val orderId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.userNotifyDeptor(orderId, userId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/user/payments/${orderId}/${userId}/notification", request.path)
+    }
 
 }
