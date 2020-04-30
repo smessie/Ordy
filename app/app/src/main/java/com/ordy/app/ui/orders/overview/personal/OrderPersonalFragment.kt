@@ -52,7 +52,7 @@ class OrderPersonalFragment : Fragment() {
             adapter = baseAdapter
             emptyView = binding.root.order_items_empty
         }
-
+      
         // Observe the changes of the fetch.
         viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
 
