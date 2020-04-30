@@ -2,10 +2,7 @@ package com.ordy.app.api
 
 import com.google.gson.Gson
 import com.ordy.app.api.models.*
-import com.ordy.app.api.models.actions.OrderAddItem
-import com.ordy.app.api.models.actions.OrderCreate
-import com.ordy.app.api.models.actions.OrderUpdate
-import com.ordy.app.api.models.actions.OrderUpdateItem
+import com.ordy.app.api.models.actions.*
 import com.ordy.app.api.models.actions.enums.OrderUpdateAction
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -53,6 +50,10 @@ class ApiServiceTest {
 
         return file?.bufferedReader()?.readText() ?: ""
     }
+
+    /**
+     * ORDERS
+     */
 
     /**
      * @method POST
@@ -387,6 +388,10 @@ class ApiServiceTest {
     }
 
     /**
+     * LOCATIONS
+     */
+
+    /**
      * @method GET
      * @endpoint "/locations/{id}"
      */
@@ -531,4 +536,102 @@ class ApiServiceTest {
         Assert.assertEquals("GET", request.method)
         Assert.assertEquals("/locations?q=${query}", request.path)
     }
+
+    /**
+     * USERS
+     */
+
+    /**
+     * @method POST
+     * @endpoint "/auth/login"
+     */
+    @Test
+    fun `User and AccesToken should be returned`() {
+        val userLogin = UserLogin("peterparker@gmail.com", "spiderman")
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/users/auth_post_login.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.login(userLogin).test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                LoginResponse(
+                    accessToken = ".P?ONHHYUBBLJBJJJNJ+%OKP87543389",
+                    user = User(
+                        id = 1,
+                        username = "Peter Parker",
+                        email = "peterparker@gmail.com"
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/auth/login", request.path)
+    }
+
+    /**
+     * @method POST
+     * @endpoint "/auth/register"
+     */
+    @Test
+    fun `User should be registered without errors`() {
+        val userRegister = UserRegister("Peter Parker","peterparker@gmail.com", "spiderman")
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.register(userRegister).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/auth/register", request.path)
+    }
+
+    /**
+     * @method POST
+     * @endpoint "/auth/logout"
+     */
+    @Test
+    fun `User should be logged out without errors`() {
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.logout().test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/auth/logout", request.path)
+    }
+
+
+
 }
