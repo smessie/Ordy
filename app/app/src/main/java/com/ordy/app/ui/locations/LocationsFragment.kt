@@ -59,6 +59,21 @@ class LocationsFragment : Fragment() {
             emptyView = listViewEmpty
         }
 
+        // Swipe to refresh
+        binding.locationsRefresh.setOnRefreshListener {
+            viewModel.updateLocations()
+        }
+
+        viewModel.getLocationsMLD().observe(viewLifecycleOwner, Observer {
+
+            // Stop refreshing when query is loaded
+            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+                binding.locationsRefresh.isRefreshing = false
+            }
+
+            baseAdapter.notifyDataSetChanged()
+        })
+
         // Watch changes to the the "search value"
         viewModel.searchValueData.observe(viewLifecycleOwner, Observer {
 

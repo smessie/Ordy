@@ -69,6 +69,21 @@ class CreateOrderLocationDialog : DialogFragment() {
             emptyView = listViewEmpty
         }
 
+        // Swipe to refresh
+        binding.locationsRefresh.setOnRefreshListener {
+            viewModel.updateLocations()
+        }
+
+        viewModel.getLocationsMLD().observe(viewLifecycleOwner, Observer {
+
+            // Stop refreshing when query is loaded
+            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+                binding.locationsRefresh.isRefreshing = false
+            }
+
+            listAdapter.notifyDataSetChanged()
+        })
+
         val searchLoading = binding.root.locations_search_loading
 
         // Watch changes to the the "search value"

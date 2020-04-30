@@ -69,14 +69,15 @@ class LocationsBaseAdapter(
             QueryStatus.SUCCESS -> {
                 val locationWrapper = viewModel.getLocations().requireData()[position]
 
-                // this is needed to prevent strange behaviour of ListView that reuses ListCells
+                // This is needed to prevent strange behaviour of ListView that reuses ListCells
                 view.favorite_mark.isSelected = false
 
+                // Add initial favorite locations to viewModel local favorite locations list
                 if (locationWrapper.favorite && !viewModel.isFavorite(locationWrapper.location.id)) {
                     viewModel.markAsFavorite(locationWrapper.location.id)
                 }
 
-                // if a location was already marked as favorite
+                // if a location is marked as favorite
                 if (viewModel.isFavorite(locationWrapper.location.id)) {
                     view.favorite_mark.isSelected = true
                 }
@@ -103,6 +104,7 @@ class LocationsBaseAdapter(
                     }
 
                     view.favorite_mark.isSelected = viewModel.isFavorite(locationWrapper.location.id)
+                    notifyDataSetChanged()
                 }
 
                 // observe result of favoriteResult
@@ -134,8 +136,12 @@ class LocationsBaseAdapter(
 
                         else -> {}
                     }
+
+                    notifyDataSetChanged()
                 })
             }
+
+            else -> {}
         }
 
         return view

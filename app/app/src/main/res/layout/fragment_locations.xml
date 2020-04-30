@@ -53,33 +53,43 @@
 
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
-
-        <!-- List with locations -->
-        <ListView
-            android:id="@+id/locations"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
-        <!-- Empty placeholder -->
-        <LinearLayout
-            android:id="@+id/locations_empty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_horizontal_margin">
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/locations_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                style="@style/Subtitle"
+                <!-- List with locations -->
+                <ListView
+                    android:id="@+id/locations"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <!-- Empty placeholder -->
+            <LinearLayout
+                android:id="@+id/locations_empty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/no_locations_title" />
+                android:orientation="vertical"
+                android:padding="@dimen/activity_horizontal_margin">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/no_locations_description" />
-        </LinearLayout>
+                <TextView
+                    style="@style/Subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/no_locations_title" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/no_locations_description" />
+            </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 </layout>
