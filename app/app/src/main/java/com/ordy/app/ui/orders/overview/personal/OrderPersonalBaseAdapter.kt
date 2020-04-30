@@ -155,7 +155,7 @@ class OrderPersonalBaseAdapter(
                     SnackbarUtil.closeSnackbar(fragment.requireView())
 
                     // Update the query.
-                    viewModel.refreshOrder(order.id)
+                    viewModel.refreshOrder()
                 }
 
                 QueryStatus.ERROR -> {

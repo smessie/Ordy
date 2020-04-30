@@ -9,6 +9,8 @@ import okhttp3.ResponseBody
 
 class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
+    val orderId = MutableLiveData(-1)
+
     /**
      * Get the MutableLiveData result of the Order fetch.
      */
@@ -19,8 +21,8 @@ class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repos
     /**
      * Refresh the order
      */
-    fun refreshOrder(orderId: Int) {
-        repository.refreshOrder(orderId)
+    fun refreshOrder() {
+        repository.refreshOrder(orderId.value!!)
     }
 
     /**
