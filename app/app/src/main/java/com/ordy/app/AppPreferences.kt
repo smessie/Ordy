@@ -27,4 +27,48 @@ class AppPreferences (val context: Context) {
                 preferences.edit().putInt("user_id", value).commit()
             }
         }
+
+    /**
+     * Boolean that determines whether the user gets notifications for payments
+     */
+    var wantsPaymentsNotifications: Boolean?
+        get() = preferences.getBoolean("notif_payments", true)
+        set(value) {
+            if (value != null) {
+                preferences.edit().putBoolean("notif_payments", value).commit()
+            }
+        }
+
+    /**
+     * Boolean that determines whether the user gets notifications for new orders
+     */
+    var wantsOrdersNotifications: Boolean?
+        get() = preferences.getBoolean("notif_orders", true)
+        set(value) {
+            if (value != null) {
+                preferences.edit().putBoolean("notif_orders", value).commit()
+            }
+        }
+
+    /**
+     * Boolean that determines whether the user gets notifications for new invites
+     */
+    var wantsInvitesNotifications: Boolean?
+        get() = preferences.getBoolean("notif_invites", true)
+        set(value) {
+            if (value != null) {
+                preferences.edit().putBoolean("notif_invites", value).commit()
+            }
+        }
+
+    /**
+     * Boolean that determines whether the user gets notifications when the order deadline draws near
+     */
+    var wantsDeadlineNotifications: Boolean?
+        get() = preferences.getBoolean("notif_deadline", true)
+        set(value) {
+            if (value != null) {
+                preferences.edit().putBoolean("notif_deadline", value).commit()
+            }
+        }
 }
