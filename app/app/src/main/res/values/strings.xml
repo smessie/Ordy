@@ -135,6 +135,9 @@
     <string name="error_picker_past">You cannot select a deadline that has already passed.</string>
     <string name="error_passwords_match">Passwords do not match.</string>
 
+    <string name="is_favorite_description">Favorite</string>
+    <string name="not_favorite_description">Not favorite</string>
+
     <!-- placeholders for development -->
     <string name="placeholder_name">Bob</string>
     <string name="placeholder_member_count">12</string>

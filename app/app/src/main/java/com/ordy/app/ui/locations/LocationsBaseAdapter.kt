@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.ordy.app.R
@@ -20,17 +19,16 @@ import okhttp3.ResponseBody
 class LocationsBaseAdapter(
     val context: Context,
     val viewModel: LocationsViewModel,
-    private val lifecycleOwner: LifecycleOwner,
+    val fragment: LocationsFragment,
     val view: View
 ) : BaseAdapter() {
 
     private var locations: Query<List<LocationWrapper>> = Query()
 
-
     init {
         val searchLoading = view.locations_search_loading
 
-        viewModel.getLocationsMLD().observe(lifecycleOwner, Observer {
+        viewModel.getLocationsMLD().observe(fragment, Observer {
 
             // Show a loading indicator in the searchbox.
             // Hide the list view while loading.
@@ -71,6 +69,8 @@ class LocationsBaseAdapter(
 
                 // This is needed to prevent strange behaviour of ListView that reuses ListCells
                 view.favorite_mark.isSelected = false
+                view.favorite_mark.contentDescription =
+                    context.getString(R.string.not_favorite_description)
 
                 // Add initial favorite locations to viewModel local favorite locations list
                 if (locationWrapper.favorite && !viewModel.isFavorite(locationWrapper.location.id)) {
@@ -80,6 +80,8 @@ class LocationsBaseAdapter(
                 // if a location is marked as favorite
                 if (viewModel.isFavorite(locationWrapper.location.id)) {
                     view.favorite_mark.isSelected = true
+                    view.favorite_mark.contentDescription =
+                        context.getString(R.string.is_favorite_description)
                 }
 
                 val favoriteResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
@@ -96,22 +98,34 @@ class LocationsBaseAdapter(
                 view.favorite_mark.setOnClickListener {
 
                     if (viewModel.isFavorite(locationWrapper.location.id)) {
-                        viewModel.deleteFavoriteLocation(locationWrapper.location.id, favoriteResult)
+                        viewModel.deleteFavoriteLocation(
+                            locationWrapper.location.id,
+                            favoriteResult
+                        )
                         viewModel.unMarkAsFavorite(locationWrapper.location.id)
+                        view.favorite_mark.contentDescription =
+                            context.getString(R.string.not_favorite_description)
                     } else {
-                        viewModel.createFavoriteLocation(locationWrapper.location.id, favoriteResult)
+                        viewModel.createFavoriteLocation(
+                            locationWrapper.location.id,
+                            favoriteResult
+                        )
                         viewModel.markAsFavorite(locationWrapper.location.id)
+                        view.favorite_mark.contentDescription =
+                            context.getString(R.string.is_favorite_description)
                     }
 
-                    view.favorite_mark.isSelected = viewModel.isFavorite(locationWrapper.location.id)
+                    view.favorite_mark.isSelected =
+                        viewModel.isFavorite(locationWrapper.location.id)
                 }
 
                 // observe result of favoriteResult
-                favoriteResult.observe(lifecycleOwner, Observer {
+                favoriteResult.observe(fragment, Observer {
                     when (it.status) {
 
                         QueryStatus.LOADING -> {
                             // when loading, disable the favorite mark
+                            // this is made to avoid spamming on the favorite mark
                             view.favorite_mark.isClickable = false
                         }
 
@@ -125,21 +139,32 @@ class LocationsBaseAdapter(
                             // reset state as it was before the favorite mark was clicked
                             if (viewModel.isFavorite(locationWrapper.location.id)) {
                                 viewModel.unMarkAsFavorite(locationWrapper.location.id)
+                                view.favorite_mark.contentDescription =
+                                    context.getString(R.string.not_favorite_description)
                             } else {
                                 viewModel.markAsFavorite(locationWrapper.location.id)
+                                view.favorite_mark.contentDescription =
+                                    context.getString(R.string.is_favorite_description)
                             }
 
-                            view.favorite_mark.isSelected = viewModel.isFavorite(locationWrapper.location.id)
+                            view.favorite_mark.isSelected =
+                                viewModel.isFavorite(locationWrapper.location.id)
+
+                            // make the favorite mark selectable again
+                            view.favorite_mark.isClickable = true
+
                             ErrorHandler().handle(it.error, view)
                         }
 
-                        else -> {}
+                        else -> {
+                        }
                     }
 
                 })
             }
 
-            else -> {}
+            else -> {
+            }
         }
 
         return view
@@ -166,7 +191,7 @@ class LocationsBaseAdapter(
 
         return when (viewModel.getLocations().status) {
             QueryStatus.LOADING -> 0
-            QueryStatus.SUCCESS -> return viewModel.getLocations().requireData().size
+            QueryStatus.SUCCESS -> viewModel.getLocations().requireData().size
             else -> 0
         }
     }

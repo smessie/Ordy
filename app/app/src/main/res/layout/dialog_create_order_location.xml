@@ -74,17 +74,11 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </RelativeLayout>
 
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/locations_refresh"
+            <!-- List with locations -->
+            <ListView
+                android:id="@+id/locations"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <!-- List with locations -->
-                <ListView
-                    android:id="@+id/locations"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                android:layout_height="match_parent" />
 
             <!-- Empty placeholder -->
             <LinearLayout

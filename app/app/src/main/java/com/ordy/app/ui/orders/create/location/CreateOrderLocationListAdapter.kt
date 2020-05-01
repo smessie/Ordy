@@ -62,7 +62,7 @@ class CreateOrderLocationListAdapter(
                 view.location_favorite_mark.visibility =
                     when (isFavorite) {
                         false -> View.INVISIBLE
-                        else  -> View.VISIBLE
+                        else -> View.VISIBLE
                     }
 
                 // Set click handler.
@@ -98,7 +98,7 @@ class CreateOrderLocationListAdapter(
     override fun getCount(): Int {
         return when (viewModel.getLocations().status) {
             QueryStatus.LOADING -> 0
-            QueryStatus.SUCCESS -> return viewModel.getLocations().requireData().size
+            QueryStatus.SUCCESS -> viewModel.getLocations().requireData().size
             else -> 0
         }
     }

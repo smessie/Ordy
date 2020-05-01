@@ -9,7 +9,6 @@ import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.ordy.app.R
-import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentLocationsBinding
 import kotlinx.android.synthetic.main.fragment_locations.view.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
@@ -44,7 +43,7 @@ class LocationsFragment : Fragment() {
         baseAdapter = LocationsBaseAdapter(
             requireContext(),
             viewModel,
-            viewLifecycleOwner,
+            this,
             binding.root
         )
 
@@ -52,22 +51,6 @@ class LocationsFragment : Fragment() {
             adapter = baseAdapter
             emptyView = listViewEmpty
         }
-
-        // Swipe to refresh
-        binding.locationsRefresh.setOnRefreshListener {
-
-            viewModel.updateLocations()
-        }
-
-        viewModel.getLocationsMLD().observe(viewLifecycleOwner, Observer {
-
-            // Stop refreshing when query is loaded
-            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
-                binding.locationsRefresh.isRefreshing = false
-            }
-
-            baseAdapter.notifyDataSetChanged()
-        })
 
         // Watch changes to the the "search value"
         viewModel.searchValueData.observe(viewLifecycleOwner, Observer {
