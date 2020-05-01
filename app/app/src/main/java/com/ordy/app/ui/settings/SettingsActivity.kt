@@ -21,28 +21,25 @@ class SettingsActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_settings)
         binding.handlers = SettingsHandlers(this, viewModel)
 
+        binding.deadlinesSwitch.isChecked = AppPreferences(this).wantsDeadlineNotifications!!
+        binding.paymentsSwitch.isChecked = AppPreferences(this).wantsPaymentsNotifications!!
+        binding.ordersSwitch.isChecked = AppPreferences(this).wantsOrdersNotifications!!
+        binding.invitesSwitch.isChecked = AppPreferences(this).wantsInvitesNotifications!!
+
         binding.deadlinesSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked != null) {
-                AppPreferences(this).wantsDeadlineNotifications = isChecked
-            }
+            AppPreferences(this).wantsDeadlineNotifications = isChecked
         }
 
         binding.paymentsSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked != null) {
-                AppPreferences(this).wantsPaymentsNotifications = isChecked
-            }
+            AppPreferences(this).wantsPaymentsNotifications = isChecked
         }
 
         binding.ordersSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked != null) {
-                AppPreferences(this).wantsOrdersNotifications = isChecked
-            }
+            AppPreferences(this).wantsOrdersNotifications = isChecked
         }
 
         binding.invitesSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked != null) {
-                AppPreferences(this).wantsInvitesNotifications = isChecked
-            }
+            AppPreferences(this).wantsInvitesNotifications = isChecked
         }
     }
 }
