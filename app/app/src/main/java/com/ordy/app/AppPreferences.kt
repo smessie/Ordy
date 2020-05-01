@@ -6,7 +6,7 @@ import android.content.Context
 @SuppressLint("ApplySharedPref")
 class AppPreferences (val context: Context) {
 
-    private val preferences = context.getSharedPreferences("ordy", 0)
+    private val preferences = context.getSharedPreferences("ordy", Context.MODE_PRIVATE)
 
     /**
      * Access Token for authentication
@@ -32,10 +32,10 @@ class AppPreferences (val context: Context) {
      * Boolean that determines whether the user gets notifications for payments
      */
     var wantsPaymentsNotifications: Boolean?
-        get() = preferences.getBoolean("notif_payments", true)
+        get() = preferences.getBoolean(userId.toString() + "/" + "notif_payments", true)
         set(value) {
             if (value != null) {
-                preferences.edit().putBoolean("notif_payments", value).commit()
+                preferences.edit().putBoolean(userId.toString() + "/" + "notif_payments", value).commit()
             }
         }
 
@@ -43,10 +43,10 @@ class AppPreferences (val context: Context) {
      * Boolean that determines whether the user gets notifications for new orders
      */
     var wantsOrdersNotifications: Boolean?
-        get() = preferences.getBoolean("notif_orders", true)
+        get() = preferences.getBoolean(userId.toString() + "/" + "notif_orders", true)
         set(value) {
             if (value != null) {
-                preferences.edit().putBoolean("notif_orders", value).commit()
+                preferences.edit().putBoolean(userId.toString() + "/" + "notif_orders", value).commit()
             }
         }
 
@@ -54,10 +54,10 @@ class AppPreferences (val context: Context) {
      * Boolean that determines whether the user gets notifications for new invites
      */
     var wantsInvitesNotifications: Boolean?
-        get() = preferences.getBoolean("notif_invites", true)
+        get() = preferences.getBoolean(userId.toString() + "/" + "notif_invites", true)
         set(value) {
             if (value != null) {
-                preferences.edit().putBoolean("notif_invites", value).commit()
+                preferences.edit().putBoolean(userId.toString() + "/" + "notif_invites", value).commit()
             }
         }
 
@@ -65,10 +65,10 @@ class AppPreferences (val context: Context) {
      * Boolean that determines whether the user gets notifications when the order deadline draws near
      */
     var wantsDeadlineNotifications: Boolean?
-        get() = preferences.getBoolean("notif_deadline", true)
+        get() = preferences.getBoolean(userId.toString() + "/" + "notif_deadline", true)
         set(value) {
             if (value != null) {
-                preferences.edit().putBoolean("notif_deadline", value).commit()
+                preferences.edit().putBoolean(userId.toString() + "/" + "notif_deadline", value).commit()
             }
         }
 }
