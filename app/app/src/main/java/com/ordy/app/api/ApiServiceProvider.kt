@@ -29,7 +29,7 @@ class ApiServiceProvider {
             .addConverterFactory(
                 GsonConverterFactory.create(gson)
             )
-            .baseUrl("http://api.ordy.ga/")
+            .baseUrl("https://api.ordy.ga")
     }
 
     /**
