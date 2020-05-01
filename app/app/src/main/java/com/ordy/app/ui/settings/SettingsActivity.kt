@@ -21,11 +21,13 @@ class SettingsActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_settings)
         binding.handlers = SettingsHandlers(this, viewModel)
 
+        // Set the correct state of the switches based on the AppPreferences
         binding.deadlinesSwitch.isChecked = AppPreferences(this).wantsDeadlineNotifications!!
         binding.paymentsSwitch.isChecked = AppPreferences(this).wantsPaymentsNotifications!!
         binding.ordersSwitch.isChecked = AppPreferences(this).wantsOrdersNotifications!!
         binding.invitesSwitch.isChecked = AppPreferences(this).wantsInvitesNotifications!!
 
+        // Set listeners for changes in the switches
         binding.deadlinesSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             AppPreferences(this).wantsDeadlineNotifications = isChecked
         }
