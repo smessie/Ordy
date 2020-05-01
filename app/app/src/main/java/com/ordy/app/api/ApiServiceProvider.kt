@@ -51,7 +51,6 @@ class ApiServiceProvider {
     fun create(context: Context): ApiService {
         return this.builder()
             .client(client(context))
-            .baseUrl("https://api.ordy.ga")
             .build()
             .create(ApiService::class.java)
     }
