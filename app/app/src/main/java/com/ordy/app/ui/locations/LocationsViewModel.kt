@@ -3,7 +3,6 @@ package com.ordy.app.ui.locations
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
-import com.ordy.app.api.models.Location
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.wrappers.LocationWrapper
 import okhttp3.ResponseBody
@@ -46,7 +45,6 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     val searchValueData: MutableLiveData<String> = MutableLiveData("")
 
     /**
-<<<<<<< HEAD
      * Get a list with locations
      */
     fun getLocations(): Query<List<LocationWrapper>> {
@@ -54,11 +52,9 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     }
 
     /**
-=======
->>>>>>> master
      * Get the value of the search input field.
      */
-    fun getSearchValue(): String {
+    private fun getSearchValue(): String {
         return searchValueData.value!!
     }
 

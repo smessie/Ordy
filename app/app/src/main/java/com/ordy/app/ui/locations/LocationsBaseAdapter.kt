@@ -77,7 +77,7 @@ class LocationsBaseAdapter(
                     viewModel.markAsFavorite(locationWrapper.location.id)
                 }
 
-                // if a location is marked as favorite
+                // If a location is marked as favorite
                 if (viewModel.isFavorite(locationWrapper.location.id)) {
                     view.favorite_mark.isSelected = true
                     view.favorite_mark.contentDescription =
@@ -119,24 +119,26 @@ class LocationsBaseAdapter(
                         viewModel.isFavorite(locationWrapper.location.id)
                 }
 
-                // observe result of favoriteResult
+                // Observe result of favoriteResult
                 favoriteResult.observe(fragment, Observer {
                     when (it.status) {
 
                         QueryStatus.LOADING -> {
-                            // when loading, disable the favorite mark
-                            // this is made to avoid spamming on the favorite mark
-                            view.favorite_mark.isClickable = false
+                            // Show a loading effect and hide the favorite mark
+                            view.favorite_mark.visibility = View.GONE
+                            view.favorite_loading.visibility = View.VISIBLE
                         }
 
                         QueryStatus.SUCCESS -> {
-                            // when success, make the favorite mark selectable again
-                            view.favorite_mark.isClickable = true
+
+                            // Stop the loading effect and show the favorite mark again
+                            view.favorite_mark.visibility = View.VISIBLE
+                            view.favorite_loading.visibility = View.GONE
                         }
 
                         QueryStatus.ERROR -> {
 
-                            // reset state as it was before the favorite mark was clicked
+                            // Reset state as it was before the favorite mark was clicked
                             if (viewModel.isFavorite(locationWrapper.location.id)) {
                                 viewModel.unMarkAsFavorite(locationWrapper.location.id)
                                 view.favorite_mark.contentDescription =
@@ -150,8 +152,9 @@ class LocationsBaseAdapter(
                             view.favorite_mark.isSelected =
                                 viewModel.isFavorite(locationWrapper.location.id)
 
-                            // make the favorite mark selectable again
-                            view.favorite_mark.isClickable = true
+                            // Stop the loading effect and show the favorite mark again
+                            view.favorite_mark.visibility = View.VISIBLE
+                            view.favorite_loading.visibility = View.GONE
 
                             ErrorHandler().handle(it.error, view)
                         }

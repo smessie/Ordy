@@ -37,4 +37,11 @@
         android:id="@+id/favorite_mark"
         android:background="@drawable/ic_favorite_mark_40dp"
         android:contentDescription="@string/not_favorite_description"/>
+
+    <ProgressBar
+        android:id="@+id/favorite_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:indeterminate="true"
+        android:visibility="gone"/>
 </LinearLayout>
