@@ -121,8 +121,9 @@ class PaymentService(
             throw throwableList.also { it.addGenericException("Order does not exist.") }
         }
 
+        val orderItemsFiltered = order.get().orderItems.filter { it.user.id == notifiedUser.get().id }
         // Check whether the last notification was at least one hour ago
-        if (order.get().orderItems.any { Date().time - it.lastNotification.time > 3600000 }) {
+        if (orderItemsFiltered.any { Date().time - it.lastNotification.time < 3600000 }) {
             throw throwableList.also { it.addGenericException("A new notification can only be sent after 1 hour.") }
         }
 
