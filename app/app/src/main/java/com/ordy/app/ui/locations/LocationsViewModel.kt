@@ -3,10 +3,41 @@ package com.ordy.app.ui.locations
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
-import com.ordy.app.api.models.Location
 import com.ordy.app.api.util.Query
+import com.ordy.app.api.wrappers.LocationWrapper
+import okhttp3.ResponseBody
 
 class LocationsViewModel(repository: Repository) : RepositoryViewModel(repository) {
+
+    /**
+     * List that holds all the ID's of favorite locations.
+     */
+
+    private val favoriteLocations: MutableList<Int> = mutableListOf()
+
+    /**
+     * Add a location ID to the favorite list.
+     */
+
+    fun markAsFavorite(locationId: Int) {
+        favoriteLocations.add(locationId)
+    }
+
+    /**
+     * Remove a location ID from the favorite list.
+     */
+
+    fun unMarkAsFavorite(locationId: Int) {
+        favoriteLocations.remove(locationId)
+    }
+
+    /**
+     * Check if location Id is marked as favorite
+     */
+
+    fun isFavorite(locationId: Int): Boolean {
+        return favoriteLocations.contains(locationId)
+    }
 
     /**
      * Value of the search input field.
@@ -14,9 +45,16 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     val searchValueData: MutableLiveData<String> = MutableLiveData("")
 
     /**
+     * Get a list with locations
+     */
+    fun getLocations(): Query<List<LocationWrapper>> {
+        return repository.getLocationsResult().value!!
+    }
+
+    /**
      * Get the value of the search input field.
      */
-    fun getSearchValue(): String {
+    private fun getSearchValue(): String {
         return searchValueData.value!!
     }
 
@@ -30,7 +68,25 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     /**
      * Get the MutableLiveData result of the Locations fetch.
      */
-    fun getLocationsMLD(): MutableLiveData<Query<List<Location>>> {
+    fun getLocationsMLD(): MutableLiveData<Query<List<LocationWrapper>>> {
         return repository.getLocationsResult()
+    }
+
+    /**
+     * Create a FavoriteLocation with given location and user.
+     * @param locationId: ID of the location the user wants to make favorite
+     * @param liveData: Object where we want to store the result of our query
+     */
+    fun createFavoriteLocation(locationId: Int, liveData: MutableLiveData<Query<ResponseBody>>) {
+        repository.markLocationAsFavorite(locationId, liveData)
+    }
+
+    /**
+     * Delete a FavoriteLocation with given location and user
+     * @param locationId: ID of the location the user wants to remove from his favorite locations list
+     * @param liveData: Object where we want to store the result of our query
+     */
+    fun deleteFavoriteLocation(locationId: Int, liveData: MutableLiveData<Query<ResponseBody>>) {
+        repository.unMarkLocationAsFavorite(locationId, liveData)
     }
 }

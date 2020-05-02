@@ -7,6 +7,7 @@ import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.api.wrappers.GroupInviteUserWrapper
+import com.ordy.app.api.wrappers.LocationWrapper
 import okhttp3.ResponseBody
 import java.util.*
 
@@ -174,7 +175,7 @@ class Repository(private val apiService: ApiService) {
     /******************************
      ***       LOCATIONS        ***
      ******************************/
-    private val locations: MutableLiveData<Query<List<Location>>> = MutableLiveData(Query())
+    private val locations: MutableLiveData<Query<List<LocationWrapper>>> = MutableLiveData(Query())
 
     /**
      * Update the locations by the given search query.
@@ -187,8 +188,26 @@ class Repository(private val apiService: ApiService) {
     /**
      * Get the MutableLiveData result of the Locations fetch.
      */
-    fun getLocationsResult(): MutableLiveData<Query<List<Location>>> {
+    fun getLocationsResult(): MutableLiveData<Query<List<LocationWrapper>>> {
         return locations
+    }
+
+    /**
+     * Add a location to the favorite location list of the user.
+     * @param locationId: ID of location the user want to mark as favorite
+     * @param liveData: Object where we want to store the result of our query in
+     */
+    fun markLocationAsFavorite(locationId: Int, liveData: MutableLiveData<Query<ResponseBody>>) {
+        FetchHandler.handle(liveData, apiService.markLocationAsFavorite(locationId))
+    }
+
+    /**
+     * Remove a location from a user favorite locations list
+     * @param locationId: ID of location the user want to remove from his favorite location list
+     * @param liveData: Object where we want to store the result of our query in
+     */
+    fun unMarkLocationAsFavorite(locationId: Int, liveData: MutableLiveData<Query<ResponseBody>>) {
+        FetchHandler.handle(liveData, apiService.unMarkLocationAsFavorite(locationId))
     }
 
     /******************************
