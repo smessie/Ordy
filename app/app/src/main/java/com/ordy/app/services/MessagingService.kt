@@ -52,6 +52,42 @@ class MessagingService : FirebaseMessagingService() {
                 null
             }
 
+            // Check preferences to check whether the notification should be sent
+            when (type) {
+                "ORDER_CREATE" -> {
+                    if (!AppPreferences(this).wantsOrdersNotifications!!) {
+                        return
+                    }
+                }
+
+                "ORDER_DEADLINE" -> {
+                    if (!AppPreferences(this).wantsDeadlineNotifications!!) {
+                        return
+                    }
+                }
+
+                "ORDER_BILL" -> {
+                    if (!AppPreferences(this).wantsBillNotifications!!) {
+                        return
+                    }
+                }
+
+                "PAYMENT_DEBT" -> {
+                    if (!AppPreferences(this).wantsPaymentsNotifications!!) {
+                        return
+                    }
+                }
+
+                "INVITE_NEW" -> {
+                    if (!AppPreferences(this).wantsInvitesNotifications!!) {
+                        return
+                    }
+                }
+
+                else -> {
+                }
+            }
+
             // Create the notification channel.
             this.createNotificationChannel()
 
