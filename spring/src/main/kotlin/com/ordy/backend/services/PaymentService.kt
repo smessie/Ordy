@@ -1,5 +1,7 @@
 package com.ordy.backend.services
 
+import com.ordy.backend.database.models.Order
+import com.ordy.backend.database.models.User
 import com.ordy.backend.database.repositories.OrderItemRepository
 import com.ordy.backend.database.repositories.OrderRepository
 import com.ordy.backend.database.repositories.UserRepository
@@ -127,10 +129,15 @@ class PaymentService(
             throw throwableList.also { it.addGenericException("A new notification can only be sent after 1 hour.") }
         }
 
-        val newDate = LastNotifyUpdateWrapper(Date())
-        order.get().orderItems.forEach {
-
+        // Update the last time a notifictaion was sent to the user
+        val updatedOrderItems = order.get().orderItems.map {
+            if (it.user.id == notifiedUser.get().id) {
+                it.lastNotification = Date()
+            }
+            it
         }
+        order.get().orderItems = updatedOrderItems.toSet()
+        orderRepository.save(order.get())
 
         notificationService.sendNotificationAsync(
                 user = notifiedUser.get(),
