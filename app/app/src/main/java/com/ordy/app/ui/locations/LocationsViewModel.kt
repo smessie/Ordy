@@ -10,7 +10,7 @@ import okhttp3.ResponseBody
 class LocationsViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
     /**
-     * List that hold all the ID's of favorite locations.
+     * List that holds all the ID's of favorite locations.
      */
 
     private val favoriteLocations: MutableList<Int> = mutableListOf()
@@ -75,7 +75,7 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     /**
      * Create a FavoriteLocation with given location and user.
      * @param locationId: ID of the location the user wants to make favorite
-     * @param liveData: Object where we want to store the result of our query in
+     * @param liveData: Object where we want to store the result of our query
      */
     fun createFavoriteLocation(locationId: Int, liveData: MutableLiveData<Query<ResponseBody>>) {
         repository.markLocationAsFavorite(locationId, liveData)
@@ -84,7 +84,7 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     /**
      * Delete a FavoriteLocation with given location and user
      * @param locationId: ID of the location the user wants to remove from his favorite locations list
-     * @param liveData: Object where we want to store the result of our query in
+     * @param liveData: Object where we want to store the result of our query
      */
     fun deleteFavoriteLocation(locationId: Int, liveData: MutableLiveData<Query<ResponseBody>>) {
         repository.unMarkLocationAsFavorite(locationId, liveData)

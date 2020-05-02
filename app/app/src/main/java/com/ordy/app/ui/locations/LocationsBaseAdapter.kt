@@ -65,7 +65,7 @@ class LocationsBaseAdapter(
         when (locations.status) {
 
             QueryStatus.SUCCESS -> {
-                val locationWrapper = viewModel.getLocations().requireData()[position]
+                val locationWrapper = locations.requireData()[position]
 
                 // This is needed to prevent strange behaviour of ListView that reuses ListCells
                 view.favorite_mark.isSelected = false
