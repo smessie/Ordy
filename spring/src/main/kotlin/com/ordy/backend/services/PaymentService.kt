@@ -1,14 +1,11 @@
 package com.ordy.backend.services
 
-import com.ordy.backend.database.models.Order
-import com.ordy.backend.database.models.User
 import com.ordy.backend.database.repositories.OrderItemRepository
 import com.ordy.backend.database.repositories.OrderRepository
 import com.ordy.backend.database.repositories.UserRepository
 import com.ordy.backend.exceptions.ThrowableList
 import com.ordy.backend.services.notifications.NotificationService
 import com.ordy.backend.services.notifications.NotificationType
-import com.ordy.backend.wrappers.LastNotifyUpdateWrapper
 import com.ordy.backend.wrappers.PaymentUpdateWrapper
 import com.ordy.backend.wrappers.PaymentWrapper
 import org.springframework.beans.factory.annotation.Autowired
