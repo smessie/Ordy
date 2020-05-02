@@ -45,10 +45,6 @@ class OverviewGroupViewModel(repository: Repository) : RepositoryViewModel(repos
         return repository.getRenameGroupResult()
     }
 
-    fun getGroup(): Query<Group> {
-        return getGroupMLD().value!!
-    }
-
     /**
      * Let the user leave the given group.
      * @param groupId: ID of the group the user is about to leave

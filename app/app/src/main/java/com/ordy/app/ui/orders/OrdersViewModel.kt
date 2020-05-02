@@ -16,13 +16,6 @@ class OrdersViewModel(repository: Repository) : RepositoryViewModel(repository) 
     }
 
     /**
-     * Get a list of orders.
-     */
-    fun getOrders(): Query<List<Order>> {
-        return getOrdersMLD().value!!
-    }
-
-    /**
      * Refresh the list of orders
      */
     fun refreshOrders() {

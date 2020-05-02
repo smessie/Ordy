@@ -22,7 +22,7 @@ class ChangeGroupNameDialog(
 ) : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val group: Group = viewModel.getGroup().requireData()
+        val group: Group = viewModel.getGroupMLD().value!!.requireData()
         val dialogView =
             View.inflate(context, R.layout.dialog_change_group_name, null)
         val newNameView: TextInputLayout = dialogView.new_group_name

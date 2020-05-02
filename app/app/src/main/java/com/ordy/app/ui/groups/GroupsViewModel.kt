@@ -21,8 +21,4 @@ class GroupsViewModel(repository: Repository) : RepositoryViewModel(repository) 
     fun getGroupsMLD(): MutableLiveData<Query<List<Group>>> {
         return repository.getGroups()
     }
-
-    fun getGroups(): Query<List<Group>> {
-        return getGroupsMLD().value!!
-    }
 }

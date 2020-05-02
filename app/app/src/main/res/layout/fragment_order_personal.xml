@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.orders.overview.personal.OrderPersonalFragment">
 
     <data>
-        <variable name="handlers" type="com.ordy.app.ui.orders.overview.personal.OrderPersonalHandlers" />
+
+        <variable
+            name="handlers"
+            type="com.ordy.app.ui.orders.overview.personal.OrderPersonalHandlers" />
     </data>
 
     <LinearLayout
@@ -20,55 +22,64 @@
             android:orientation="horizontal">
 
             <TextView
+                style="@style/Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/order_items_add"
-                style="@style/Title"
-                android:text="@string/your_items_title"/>
+                android:text="@string/your_items_title" />
 
             <Button
                 android:id="@+id/order_items_add"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:elevation="0dp"
-                android:text="@string/add_item_button"
-                style="?android:attr/borderlessButtonStyle"
-                android:onClick="@{() -> handlers.onAddItemClick()}"/>
+                android:onClick="@{() -> handlers.onAddItemClick()}"
+                android:text="@string/add_item_button" />
         </RelativeLayout>
 
-        <ListView
-            android:id="@+id/order_items"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@android:color/transparent"
-            />
+            android:layout_height="match_parent">
 
-        <!-- Empty placeholder -->
-        <LinearLayout
-            android:id="@+id/order_items_empty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_horizontal_margin">
+            <!-- Data -->
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/order_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:text="@string/no_order_items_title"
+                <ListView
+                    android:id="@+id/order_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@android:color/transparent" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <!-- Empty placeholder -->
+            <LinearLayout
+                android:id="@+id/order_items_empty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                style="@style/Subtitle"
-                />
+                android:orientation="vertical"
+                android:padding="@dimen/activity_horizontal_margin">
 
-            <TextView
-                android:text="@string/no_order_items_description_personal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                />
-        </LinearLayout>
+                <TextView
+                    style="@style/Subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/no_order_items_title" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/no_order_items_description_personal" />
+            </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 </layout>

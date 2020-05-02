@@ -6,12 +6,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.ordy.app.R
+import com.ordy.app.api.models.Group
+import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.groups.overview.OverviewGroupActivity
+import kotlinx.android.synthetic.main.fragment_groups.view.*
 import kotlinx.android.synthetic.main.list_group_card.view.*
 
-class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) : BaseAdapter() {
+class GroupsBaseAdapter(
+    val context: Context?,
+    var viewModel: GroupsViewModel,
+    lifecycleOwner: LifecycleOwner,
+    val view: View
+) : BaseAdapter() {
+
+    private var groups: Query<List<Group>> = Query()
+
+    init {
+        viewModel.getGroupsMLD().observe(lifecycleOwner, Observer {
+            // Stop refreshing on load
+            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+                view.groups_refresh.isRefreshing = false
+            }
+
+            update(it)
+        })
+    }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(
             R.layout.list_group_card,
@@ -19,7 +43,7 @@ class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) :
             false
         )
 
-        when (viewModel.getGroups().status) {
+        when (groups.status) {
 
             QueryStatus.LOADING -> {
 
@@ -30,7 +54,7 @@ class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) :
             }
 
             QueryStatus.SUCCESS -> {
-                val group = viewModel.getGroups().requireData()[position]
+                val group = groups.requireData()[position]
 
                 // Stop the shimmer effect & hide.
                 view.group_loading.stopShimmer()
@@ -60,6 +84,11 @@ class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) :
         return view
     }
 
+    fun update(groups: Query<List<Group>>) {
+        this.groups = groups
+        notifyDataSetChanged()
+    }
+
     override fun getItem(position: Int): Any {
         return position
     }
@@ -69,9 +98,9 @@ class GroupsListAdapter(val context: Context?, var viewModel: GroupsViewModel) :
     }
 
     override fun getCount(): Int {
-        return when (viewModel.getGroups().status) {
+        return when (groups.status) {
             QueryStatus.LOADING -> 4
-            QueryStatus.SUCCESS -> viewModel.getGroups().requireData().size
+            QueryStatus.SUCCESS -> groups.requireData().size
             else -> 0
         }
     }

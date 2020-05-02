@@ -18,13 +18,6 @@ class ProfileViewModel(repository: Repository) : RepositoryViewModel(repository)
     }
 
     /**
-     * Get the invites value.
-     */
-    fun getInvites(): Query<List<GroupInvite>> {
-        return getInvitesMLD().value!!
-    }
-
-    /**
      * Refresh the invites.
      */
     fun refreshInvites() {

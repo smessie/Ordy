@@ -1,0 +1,13 @@
+{
+  "id": 1,
+  "name": "De Frietchalet",
+  "latitude": 51.021429,
+  "longitude": 4.093035,
+  "address": "Diepestraat 1",
+  "private": false,
+  "cuisine": {
+    "id": 2,
+    "name": "Fries",
+    "items": []
+  }
+}

@@ -6,17 +6,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.ordy.app.R
+import com.ordy.app.api.models.Order
+import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import com.ordy.app.util.OrderUtil
 import com.ordy.app.util.types.OrderItemGroup
 import kotlinx.android.synthetic.main.list_order_item.view.*
 
-class OrderGeneralListAdapter(val context: Context?, var viewModel: OverviewOrderViewModel) :
+class OrderGeneralBaseAdapter(
+    val context: Context?,
+    var viewModel: OverviewOrderViewModel,
+    lifecycleOwner: LifecycleOwner
+) :
     BaseAdapter() {
 
+    private var order: Query<Order> = Query()
     private var orderItemGroups: List<OrderItemGroup> = emptyList()
+
+    init {
+        viewModel.getOrderMLD().observe(lifecycleOwner, Observer {
+            update(it)
+        })
+    }
 
     // suppress the warning for "${orderItemGroup.quantity}x"
     @SuppressLint("SetTextI18n")
@@ -27,7 +42,7 @@ class OrderGeneralListAdapter(val context: Context?, var viewModel: OverviewOrde
             false
         )
 
-        when (viewModel.getOrder().status) {
+        when (order.status) {
 
             QueryStatus.LOADING -> {
 
@@ -78,7 +93,7 @@ class OrderGeneralListAdapter(val context: Context?, var viewModel: OverviewOrde
     }
 
     override fun getCount(): Int {
-        return when (viewModel.getOrder().status) {
+        return when (order.status) {
             QueryStatus.LOADING -> 4
             QueryStatus.SUCCESS -> orderItemGroups.size
             else -> 0
@@ -89,10 +104,12 @@ class OrderGeneralListAdapter(val context: Context?, var viewModel: OverviewOrde
         return false
     }
 
-    fun update() {
+    fun update(order: Query<Order>) {
+        this.order = order
+
         // Update the order item groups, when the query succeeded.
-        if (viewModel.getOrder().status == QueryStatus.SUCCESS) {
-            val orderItems = viewModel.getOrder().requireData().orderItems
+        if (order.status == QueryStatus.SUCCESS) {
+            val orderItems = order.requireData().orderItems
 
             orderItemGroups = OrderUtil.groupItems(orderItems!!)
         }
