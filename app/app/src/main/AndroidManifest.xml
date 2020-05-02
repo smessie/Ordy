@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ordy.app">
+
     <!-- Permission to connect to the internet for fetching data from the backend API. -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -15,6 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
+
+        <!-- Firebase Messaging -->
+        <service
+            android:name=".services.MessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
 
         <!-- Login Activity -->
         <activity
@@ -43,14 +54,14 @@
         <activity
             android:name=".ui.orders.create.location.CreateOrderLocationDialog"
             android:label="@string/title_create_order"
-            android:parentActivityName=".ui.orders.create.CreateOrderActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.orders.create.CreateOrderActivity" />
 
         <!-- Overview order activity -->
         <activity
             android:name=".ui.orders.overview.OverviewOrderActivity"
-            android:parentActivityName=".MainActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
 
         <!-- Add item order activity -->
         <activity

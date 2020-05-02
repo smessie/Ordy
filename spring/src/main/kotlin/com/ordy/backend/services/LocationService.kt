@@ -25,8 +25,7 @@ class LocationService(
     /**
      * Get a list with predefined location items for the given location
      */
-    fun getLocationItems(userId: Int, locationId: Int): List<Item> {
-        var user = userRepository.findById(userId).get()
+    fun getLocationItems(locationId: Int): List<Item> {
         val location = locationRepository.findById(locationId)
 
         // Validate that the location is present.

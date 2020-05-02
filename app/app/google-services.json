@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "35805603093",
+    "firebase_url": "https://ordy-selab.firebaseio.com",
+    "project_id": "ordy-selab",
+    "storage_bucket": "ordy-selab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35805603093:android:c12ca07d44fccf1f3df51c",
+        "android_client_info": {
+          "package_name": "com.ordy.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "35805603093-7je6pponto5kl1tvocj1vsmre98uivi2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2xvkiugA5wRlpzWK5LBbGLdXv-tGNG3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "35805603093-7je6pponto5kl1tvocj1vsmre98uivi2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -24,6 +24,10 @@ class Order(
         @JsonView(View.Detail::class)
         var billUrl: String = "",
 
+        @Column(nullable = false, name = "notified")
+        @JsonIgnore
+        var notified: Boolean = false,
+
         @JsonIgnore
         @OneToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = true)
         var image: Image? = null,
