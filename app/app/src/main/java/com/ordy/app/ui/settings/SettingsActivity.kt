@@ -26,22 +26,27 @@ class SettingsActivity : AppCompatActivity() {
         binding.paymentsSwitch.isChecked = AppPreferences(this).wantsPaymentsNotifications!!
         binding.ordersSwitch.isChecked = AppPreferences(this).wantsOrdersNotifications!!
         binding.invitesSwitch.isChecked = AppPreferences(this).wantsInvitesNotifications!!
+        binding.billSwitch.isChecked = AppPreferences(this).wantsBillNotifications!!
 
         // Set listeners for changes in the switches
-        binding.deadlinesSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.deadlinesSwitch.setOnCheckedChangeListener { _, isChecked ->
             AppPreferences(this).wantsDeadlineNotifications = isChecked
         }
 
-        binding.paymentsSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.paymentsSwitch.setOnCheckedChangeListener { _, isChecked ->
             AppPreferences(this).wantsPaymentsNotifications = isChecked
         }
 
-        binding.ordersSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.ordersSwitch.setOnCheckedChangeListener { _, isChecked ->
             AppPreferences(this).wantsOrdersNotifications = isChecked
         }
 
-        binding.invitesSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.invitesSwitch.setOnCheckedChangeListener { _, isChecked ->
             AppPreferences(this).wantsInvitesNotifications = isChecked
+        }
+
+        binding.billSwitch.setOnCheckedChangeListener { _, isChecked ->
+            AppPreferences(this).wantsBillNotifications = isChecked
         }
     }
 }

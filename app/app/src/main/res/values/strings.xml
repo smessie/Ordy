@@ -136,6 +136,7 @@
     <string name="notif_deadlines_text">Order deadlines</string>
     <string name="notif_invites_text">Invites</string>
     <string name="notif_orders_text">New orders</string>
+    <string name="notif_bill_text">Bill pictures</string>
 
     <string name="error_connection">Unable to connect to the server. Please check your connection.</string>
     <string name="error_picker_past">You cannot select a deadline that has already passed.</string>

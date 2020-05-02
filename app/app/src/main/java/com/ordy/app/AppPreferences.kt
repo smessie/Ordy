@@ -80,4 +80,15 @@ class AppPreferences (val context: Context) {
                 preferences.edit().putBoolean(userId.toString() + "/" + "notif_deadline", value).commit()
             }
         }
+
+    /**
+     * Boolean that determines whether the user gets notifications when the bill picture is uploaded
+     */
+    var wantsBillNotifications: Boolean?
+        get() = preferences.getBoolean(userId.toString() + "/" + "notif_bill_picture", true)
+        set(value) {
+            if (value != null) {
+                preferences.edit().putBoolean(userId.toString() + "/" + "notif_bill_picture", value).commit()
+            }
+        }
 }
