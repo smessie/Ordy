@@ -7,7 +7,6 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.ordy.app.AppPreferences
 import com.ordy.app.R
-import com.ordy.app.api.RepositoryViewModelFactory
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.ui.login.login.LoginFragment
 import com.ordy.app.ui.login.register.RegisterFragment
