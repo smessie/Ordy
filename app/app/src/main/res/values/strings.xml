@@ -101,6 +101,8 @@
     <string name="mark_snackbar_text">Marking as paid…</string>
     <string name="mark_confirm_text">Mark as paid?</string>
     <string name="mark_confirm_text_decription">This will remove %1$s\'s dept from the list.</string>
+    <string name="notify_snackbar_loading">Notifying %1$s…</string>
+    <string name="notify_snackbar_success">Notified.</string>
 
     <string name="no_order_items_title">No items found</string>
 

@@ -123,7 +123,7 @@ class PaymentsDebtorsBaseAdapter(
             when (it.status) {
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
-                        "YEET",
+                        fragment.getString(R.string.notify_snackbar_loading, payment.user.username),
                         fragment.requireView()
                     )
                     view.payment_notify.isEnabled = false
@@ -133,7 +133,7 @@ class PaymentsDebtorsBaseAdapter(
                     view.payment_notify.isEnabled = true
 
                     SnackbarUtil.openSnackbar(
-                        "Succes",
+                        fragment.getString(R.string.notify_snackbar_success),
                         fragment.requireView(),
                         Snackbar.LENGTH_SHORT,
                         SnackbarType.SUCCESS
