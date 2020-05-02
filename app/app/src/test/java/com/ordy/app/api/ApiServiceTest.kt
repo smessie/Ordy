@@ -2,11 +2,10 @@ package com.ordy.app.api
 
 import com.google.gson.Gson
 import com.ordy.app.api.models.*
-import com.ordy.app.api.models.actions.OrderAddItem
-import com.ordy.app.api.models.actions.OrderCreate
-import com.ordy.app.api.models.actions.OrderUpdate
-import com.ordy.app.api.models.actions.OrderUpdateItem
+import com.ordy.app.api.models.actions.*
+import com.ordy.app.api.models.actions.enums.InviteActionOptions
 import com.ordy.app.api.models.actions.enums.OrderUpdateAction
+import com.ordy.app.api.wrappers.GroupInviteUserWrapper
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -531,4 +530,402 @@ class ApiServiceTest {
         Assert.assertEquals("GET", request.method)
         Assert.assertEquals("/locations?q=${query}", request.path)
     }
+
+    /**
+     * @method POST
+     * @endpoint "/groups"
+     */
+    @Test
+    fun `Group should be created`() {
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/group_create.json"))
+        }
+        server.enqueue(response)
+
+        // Body
+        val body = GroupCreate(
+            name = "Zeus"
+        )
+
+        // API Call
+        apiService.createGroup(body).test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                Group(
+                    id = 1,
+                    name = "Zeus",
+                    creator = User(
+                        id = 1,
+                        username = "Elon Musk"
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/groups", request.path)
+    }
+
+    /**
+     * @method GET
+     * @endpoint "/groups/{groupId}"
+     */
+    @Test
+    fun `Group should be returned`() {
+        val groupId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/group_get.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.group(groupId).test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                Group(
+                    id = 1,
+                    name = "Zeus",
+                    creator = User(
+                        id = 1,
+                        username = "Elon Musk"
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("GET", request.method)
+        Assert.assertEquals("/groups/$groupId", request.path)
+    }
+
+    /**
+     * @method PATCH
+     * @endpoint "/groups/{groupId}"
+     */
+    @Test
+    fun `Name of group should be changed`() {
+        // TODO
+    }
+
+    /**
+     * @method GET
+     * @endpoint "/groups/{groupId}/invites/search/{username}"
+     */
+    @Test
+    fun `Give all matching users without users in given group`() {
+        val groupId = 0
+        val username = "e"
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/user_invites_filtered_get.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.searchMatchingInviteUsers(groupId, username).test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                mutableListOf(
+                    GroupInviteUserWrapper(
+                        user = User(
+                            id = 1,
+                            username = "Elon Musk"
+                        ),
+                        invited = false
+                    ),
+                    GroupInviteUserWrapper(
+                        User(
+                            id = 2,
+                            username = "Test"
+                        ),
+                        invited = true
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("GET", request.method)
+        Assert.assertEquals("/groups/$groupId/invites/search/$username", request.path)
+    }
+
+    /**
+     * @method POST
+     * @endpoint "/groups/{groupId}/invites/{userId}"
+     */
+    @Test
+    fun `User should be invited to group`() {
+        val groupId = 1
+        val userId = 2
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody("")
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.createInviteGroup(groupId, userId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/groups/$groupId/invites/$userId", request.path)
+    }
+
+    /**
+     * @method DELETE
+     * @endpoint "/groups/{groupId}/invites/{userId}"
+     */
+    @Test
+    fun `Should delete a GroupInvite`() {
+        val groupId = 1
+        val userId = 2
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.deleteInviteGroup(groupId, userId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("DELETE", request.method)
+        Assert.assertEquals("/groups/$groupId/invites/$userId", request.path)
+    }
+
+
+    /**
+     * @method DELETE
+     * @endpoint "/groups/{groupId}/members/{userId}"
+     */
+    @Test
+    fun `Should delete a member from group`() {
+        val groupId = 1
+        val userId = 3
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.deleteMemberGroup(groupId, userId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("DELETE", request.method)
+        Assert.assertEquals("/groups/$groupId/members/$userId", request.path)
+    }
+
+
+    /**
+     * @method GET
+     * @endpoint "/user/groups"
+     */
+    @Test
+    fun `Should return all groups of the user`() {
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/group_user_list.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.userGroups().test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                mutableListOf(
+                    Group(
+                        id = 1,
+                        name = "Zeus",
+                        creator = User(
+                            id = 1,
+                            username = "Elon Musk"
+                        )
+                    ),
+                    Group(
+                        id = 2,
+                        name = "TeslaLovers",
+                        creator = User(
+                            id = 2,
+                            username = "Test"
+                        )
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("GET", request.method)
+        Assert.assertEquals("/user/groups", request.path)
+    }
+
+    /**
+     * @method GET
+     * @endpoint "/user/invites"
+     */
+    @Test
+    fun `Should return all invites a user has`() {
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/invite_user_list.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.userInvites().test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                mutableListOf(
+                    GroupInvite(
+                        id = 1,
+                        user = User(
+                            id = 2,
+                            username = "Test"
+                        ),
+                        group = Group(
+                            id = 1,
+                            name = "Zeus",
+                            creator = User(
+                                id = 1,
+                                username = "Elon Musk"
+                            )
+                        )
+                    ),
+                    GroupInvite(
+                        id = 2,
+                        user = User(
+                            id = 2,
+                            username = "Test"
+                        ),
+                        group = Group(
+                            id = 3,
+                            name = "groupOfTesters",
+                            creator = User(
+                                id = 3,
+                                username = "TestChief"
+                            )
+                        )
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("GET", request.method)
+        Assert.assertEquals("/user/invites", request.path)
+    }
+
+    /**
+     * @method POST
+     * @endpoint "/user/invites/{groupId}"
+     */
+    @Test
+    fun `Should accept or deny a group invite`() {
+        val groupId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/body_invite_action.json"))
+        }
+        server.enqueue(response)
+
+        // Body
+        val body = InviteAction(
+            action = InviteActionOptions.ACCEPT
+        )
+
+        // API Call
+        apiService.userActionInvites(body, groupId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/user/invites/$groupId", request.path)
+    }
+
+    /**
+     * @method POST
+     * @endpoint "/user/groups/{groupId}/leave"
+     */
+    @Test
+    fun `User should leave from group`() {
+        val groupId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile(""))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.userLeaveGroup(groupId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/user/groups/$groupId/leave", request.path)
+    }
+
 }

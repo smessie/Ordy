@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "user": {
+            "id": 2,
+            "username": "Test"
+        },
+        "group": {
+            "id": 1,
+            "name": "Zeus",
+            "creator": {
+                "id": 1,
+                "username": "Elon Musk"
+            }
+        }
+    },
+    {
+        "id": 2,
+        "user": {
+            "id": 2,
+            "username": "Test"
+        },
+        "group": {
+            "id": 3,
+            "name": "groupOfTesters",
+            "creator": {
+                "id": 3,
+                "username": "TestChief"
+            }
+        }
+    }
+]
