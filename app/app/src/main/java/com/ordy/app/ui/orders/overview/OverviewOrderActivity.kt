@@ -245,6 +245,9 @@ class OverviewOrderActivity : AppCompatActivity() {
                         duration = Snackbar.LENGTH_SHORT,
                         type = SnackbarType.SUCCESS
                     )
+
+                    // Refresh the order
+                    viewModel.refreshOrder()
                 }
 
                 QueryStatus.ERROR -> {
