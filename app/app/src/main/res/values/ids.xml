@@ -5,5 +5,5 @@
     <item name="speeddial_login" type="id" />
 
     <item name="speeddial_order_camera" type="id" />
-    <item name="speeddial_order_galery" type="id" />
+    <item name="speeddial_order_gallery" type="id" />
 </resources>

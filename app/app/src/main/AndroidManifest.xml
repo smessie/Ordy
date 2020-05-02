@@ -6,6 +6,9 @@
     <!-- Permission to connect to the internet for fetching data from the backend API. -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Permission to read from storage for bills -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <!-- Permission to use the camera for taking bill pictures. -->
     <uses-feature
         android:name="android.hardware.camera"

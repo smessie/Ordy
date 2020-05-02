@@ -2,17 +2,14 @@ package com.ordy.app.ui.orders.overview
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.core.net.toFile
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
@@ -154,7 +151,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         speedDialView
             .addActionItem(
                 SpeedDialActionItem.Builder(
-                    R.id.speeddial_order_galery,
+                    R.id.speeddial_order_gallery,
                     R.drawable.ic_image_black_24dp
                 )
                     .setLabel(getString(R.string.speeddial_order_gallery))
@@ -166,10 +163,10 @@ class OverviewOrderActivity : AppCompatActivity() {
         speedDialView.setOnActionSelectedListener { actionItem ->
             when (actionItem.id) {
 
-                // Create new order.
+                // Take bill picture.
                 R.id.speeddial_order_camera -> {
 
-                    // Open the create order activity
+                    // Open camera activity
                     Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                         takePictureIntent.resolveActivity(packageManager)?.also {
                             val imageDir = externalCacheDir
@@ -195,6 +192,25 @@ class OverviewOrderActivity : AppCompatActivity() {
 
                             // Open the camera activity.
                             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                        }
+                    }
+
+                    // Close the speeddial.
+                    speedDialView.close()
+                }
+
+                // Select bill picture
+                R.id.speeddial_order_gallery -> {
+
+                    // Open the gallery activity
+                    Intent(Intent.ACTION_PICK).also { choosePictureIntent ->
+                        choosePictureIntent.resolveActivity(packageManager)?.also {
+
+                            // Only select images.
+                            choosePictureIntent.type = "image/*"
+
+                            // Open the gallery activity.
+                            startActivityForResult(choosePictureIntent, REQUEST_IMAGE_SELECT)
                         }
                     }
 
@@ -246,6 +262,9 @@ class OverviewOrderActivity : AppCompatActivity() {
     // Request code for taking a picture with the camera.
     val REQUEST_IMAGE_CAPTURE = 1
 
+    // Request code for sekecting a picture from the gallery.
+    val REQUEST_IMAGE_SELECT = 2
+
     /**
      * Get the result image from the camera when the picture is taken.
      * Send the picture to the server in an upload request.
@@ -263,21 +282,72 @@ class OverviewOrderActivity : AppCompatActivity() {
                 if (imagePath != null) {
                     val imageFile = File(imagePath)
 
-                    // File to send in the request.
-                    val requestFile = RequestBody.create(
-                        MediaType.parse("image/*"),
-                        imageFile
-                    )
+                    uploadBillFile(imageFile)
+                }
+            }
+        }
 
-                    // Name of the file to send in the request.
-                    val requestBody =
-                        MultipartBody.Part.createFormData("image", "bill.jpg", requestFile)
+        // When the result is a picture from the gallery.
+        if (requestCode == REQUEST_IMAGE_SELECT && resultCode == RESULT_OK) {
 
-                    // Upload the bill image.
-                    viewModel.uploadBill(orderId, requestBody)
+            if (data != null) {
+                val image = data.data
+
+                if (image != null) {
+
+                    val parcelFileDescriptor = contentResolver.openFileDescriptor(image, "r")
+                    val fileDescriptor = parcelFileDescriptor?.fileDescriptor
+                    val imageData = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+
+                    val imageBytes = ByteArrayOutputStream()
+
+                    // Compress the image as JPEG.
+                    imageData.compress(Bitmap.CompressFormat.JPEG, 100, imageBytes)
+
+                    uploadBillData(imageBytes.toByteArray())
                 }
             }
         }
     }
 
+
+    /**
+     * Upload the bill to the server.
+     * @param imageFile File to upload.
+     */
+    private fun uploadBillFile(imageFile: File) {
+
+        // File to send in the request.
+        val requestFile = RequestBody.create(
+            MediaType.parse("image/*"),
+            imageFile
+        )
+
+        // Name of the file to send in the request.
+        val requestBody =
+            MultipartBody.Part.createFormData("image", "bill.jpg", requestFile)
+
+        // Upload the bill image.
+        viewModel.uploadBill(orderId, requestBody)
+    }
+
+    /**
+     * Upload the bill to the server.
+     * @param imageBytes Array with bytes.
+     */
+    private fun uploadBillData(imageBytes: ByteArray) {
+
+        // File to send in the request.
+        val requestFile = RequestBody.create(
+            MediaType.parse("image/*"),
+            imageBytes
+        )
+
+        // Name of the file to send in the request.
+        val requestBody =
+            MultipartBody.Part.createFormData("image", "bill.jpg", requestFile)
+
+        // Upload the bill image.
+        viewModel.uploadBill(orderId, requestBody)
+    }
 }
