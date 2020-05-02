@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import com.ordy.app.R
 import com.ordy.app.api.models.Payment
 import com.ordy.app.api.util.ErrorHandler
@@ -15,6 +16,7 @@ import com.ordy.app.ui.payments.PaymentsBaseAdapter
 import com.ordy.app.ui.payments.PaymentsFragment
 import com.ordy.app.ui.payments.PaymentsViewModel
 import com.ordy.app.util.SnackbarUtil
+import com.ordy.app.util.types.SnackbarType
 import kotlinx.android.synthetic.main.list_payment_card.view.*
 import okhttp3.ResponseBody
 
@@ -48,7 +50,7 @@ class PaymentsDebtorsBaseAdapter(
      */
     override fun specificPaymentCardSetup(payment: Payment, view: View) {
         addPaidAction(payment, view)
-        // TODO notify
+        addNotifyAction(payment, view)
     }
 
     private fun addPaidAction(payment: Payment, view: View) {
@@ -104,6 +106,48 @@ class PaymentsDebtorsBaseAdapter(
             }
         })
 
+    }
+
+    private fun addNotifyAction(payment: Payment, view: View) {
+        val notifyResult = MutableLiveData<Query<ResponseBody>>(Query())
+
+        view.payment_notify.setOnClickListener {
+            viewModel.notifyDebtor(
+                notifyResult,
+                payment.order.id,
+                payment.user.id
+            )
+        }
+
+        notifyResult.observe(fragment, Observer {
+            when (it.status) {
+                QueryStatus.LOADING -> {
+                    SnackbarUtil.openSnackbar(
+                        "YEET",
+                        fragment.requireView()
+                    )
+                    view.payment_notify.isEnabled = false
+                }
+                QueryStatus.SUCCESS -> {
+                    SnackbarUtil.closeSnackbar(fragment.requireView())
+                    view.payment_notify.isEnabled = true
+
+                    SnackbarUtil.openSnackbar(
+                        "Succes",
+                        fragment.requireView(),
+                        Snackbar.LENGTH_SHORT,
+                        SnackbarType.SUCCESS
+                    )
+                }
+                QueryStatus.ERROR -> {
+                    SnackbarUtil.closeSnackbar(fragment.requireView())
+                    view.payment_notify.isEnabled = true
+                    ErrorHandler().handle(it.error, fragment.requireView(), listOf())
+                }
+                else -> {
+                }
+            }
+        })
     }
 
     override fun update(query: Query<List<Payment>>, searchValue: String) {

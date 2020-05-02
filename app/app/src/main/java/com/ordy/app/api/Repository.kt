@@ -1,7 +1,6 @@
 package com.ordy.app.api
 
 import androidx.lifecycle.MutableLiveData
-import com.ordy.app.AppPreferences
 import com.ordy.app.api.models.*
 import com.ordy.app.api.models.actions.*
 import com.ordy.app.api.util.FetchHandler
@@ -432,6 +431,18 @@ class Repository(private val apiService: ApiService) {
                 orderId = orderId,
                 userId = userId,
                 body = paymentUpdate
+            )
+        )
+    }
+
+    fun notifyDebtor(
+        liveData: MutableLiveData<Query<ResponseBody>>,
+        orderId: Int,
+        userId: Int
+    ) {
+        FetchHandler.handle(
+            liveData, apiService.userNotifyDeptor(
+                orderId, userId
             )
         )
     }
