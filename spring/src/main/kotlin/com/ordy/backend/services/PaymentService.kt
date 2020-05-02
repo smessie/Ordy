@@ -4,6 +4,9 @@ import com.ordy.backend.database.repositories.OrderItemRepository
 import com.ordy.backend.database.repositories.OrderRepository
 import com.ordy.backend.database.repositories.UserRepository
 import com.ordy.backend.exceptions.ThrowableList
+import com.ordy.backend.services.notifications.NotificationService
+import com.ordy.backend.services.notifications.NotificationType
+import com.ordy.backend.wrappers.LastNotifyUpdateWrapper
 import com.ordy.backend.wrappers.PaymentUpdateWrapper
 import com.ordy.backend.wrappers.PaymentWrapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +17,8 @@ import java.util.*
 class PaymentService(
         @Autowired val userRepository: UserRepository,
         @Autowired val orderRepository: OrderRepository,
-        @Autowired val orderItemRepository: OrderItemRepository
+        @Autowired val orderItemRepository: OrderItemRepository,
+        @Autowired val notificationService: NotificationService
 ) {
 
     /**
@@ -100,5 +104,43 @@ class PaymentService(
         }
         order.orderItems = updatedOrderItems.toSet()
         orderRepository.save(order)
+    }
+
+    /**
+     * Notify the user that still has to pay
+     */
+    fun reactOnNotify(orderId: Int, userId: Int) {
+        val notifiedUser = userRepository.findById(userId)
+        val order = orderRepository.findById(orderId)
+        val throwableList = ThrowableList()
+
+        if (!notifiedUser.isPresent) {
+            throw throwableList.also { it.addGenericException("User does not exist.") }
+        }
+
+        if (!order.isPresent) {
+            throw throwableList.also { it.addGenericException("Order does not exist.") }
+        }
+
+        // Check whether the last notification was at least one hour ago
+        if (order.get().orderItems.any { Date().time - it.lastNotification.time > 3600000 }) {
+            throw throwableList.also { it.addGenericException("A new notification can only be sent after 1 hour.") }
+        }
+
+        val newDate = LastNotifyUpdateWrapper(Date())
+        order.get().orderItems.forEach {
+
+        }
+
+        notificationService.sendNotificationAsync(
+                user = notifiedUser.get(),
+                content = notificationService.createNotificationContent(
+                        title = "Payment reminder",
+                        subtitle = "You still need to pay ${order.get().courier.username}",
+                        detail = "<b>Group: </b>${order.get().group.name}\n<b>Location: </b>${order.get().location.name}",
+                        summary = "Payment reminder",
+                        type = NotificationType.PAYMENT_DEBT
+                )
+        )
     }
 }

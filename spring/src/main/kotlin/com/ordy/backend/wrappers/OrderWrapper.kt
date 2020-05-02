@@ -17,3 +17,7 @@ class OrderAddItemWrapper(
 class OrderUpdateItemWrapper(
         val comment: Optional<String>
 )
+
+class LastNotifyUpdateWrapper(
+        val lastTime: Date
+)
