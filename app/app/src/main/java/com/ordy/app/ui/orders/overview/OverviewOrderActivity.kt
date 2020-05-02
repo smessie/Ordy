@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.leinardi.android.speeddial.SpeedDialActionItem
+import com.ordy.app.AppPreferences
 import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
@@ -118,6 +119,11 @@ class OverviewOrderActivity : AppCompatActivity() {
                     // Update the closing time left every second.
                     TimerUtil.updateUI(this, 0, 1000) {
                         order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
+                    }
+
+                    // Show the add bill FAB when the user is the courier.
+                    if (it.requireData().courier.id == AppPreferences(this).userId) {
+                        speeddial_orders.visibility = View.VISIBLE
                     }
                 }
 

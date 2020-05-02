@@ -181,7 +181,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:sdMainFabClosedBackgroundColor="@color/colorPrimary"
             app:sdMainFabClosedIconColor="@android:color/white"
-            app:sdMainFabClosedSrc="@drawable/ic_camera_alt_black_24dp" />
+            app:sdMainFabClosedSrc="@drawable/ic_camera_alt_black_24dp"
+            android:visibility="invisible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
