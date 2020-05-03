@@ -108,8 +108,8 @@ class PaymentService(
     /**
      * Notify the user that still has to pay
      */
-    fun reactOnNotify(orderId: Int, userId: Int) {
-        val notifiedUser = userRepository.findById(userId)
+    fun reactOnNotify(orderId: Int, receiverId: Int, senderId: Int) {
+        val notifiedUser = userRepository.findById(receiverId)
         val order = orderRepository.findById(orderId)
         val throwableList = ThrowableList()
 
@@ -119,6 +119,10 @@ class PaymentService(
 
         if (!order.isPresent) {
             throw throwableList.also { it.addGenericException("Order does not exist.") }
+        }
+
+        if (senderId != order.get().courier.id) {
+            throw throwableList.also { it.addGenericException("Notifications can only be sent by the courier.") }
         }
 
         val orderItemsFiltered = order.get().orderItems.filter { it.user.id == notifiedUser.get().id }
