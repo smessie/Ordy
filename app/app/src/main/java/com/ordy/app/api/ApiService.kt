@@ -5,7 +5,10 @@ import android.media.Image
 import com.ordy.app.api.models.*
 import com.ordy.app.api.models.actions.*
 import com.ordy.app.api.wrappers.GroupInviteUserWrapper
+import com.ordy.app.api.wrappers.LocationWrapper
 import io.reactivex.Observable
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
 import java.io.File
@@ -28,10 +31,16 @@ interface ApiService {
      * Locations
      */
     @GET("locations")
-    fun locations(@Query("q") search: String): Observable<List<Location>>
+    fun locations(@Query("q") search: String): Observable<List<LocationWrapper>>
 
     @GET("locations/{locationId}")
     fun location(@Path("locationId") locationId: Int): Observable<Location>
+
+    @POST("locations/{locationId}")
+    fun markLocationAsFavorite(@Path("locationId") locationId: Int): Observable<ResponseBody>
+
+    @DELETE("locations/{locationId}")
+    fun unMarkLocationAsFavorite(@Path("locationId") locationId: Int): Observable<ResponseBody>
 
     @GET("locations/{locationId}/items")
     fun locationItems(@Path("locationId") locationId: Int): Observable<List<Item>>
@@ -84,8 +93,9 @@ interface ApiService {
     @GET("orders/{orderId}/bill")
     fun orderBill(@Path("orderId") orderId: Int): Observable<Image>
 
+    @Multipart
     @POST("orders/{orderId}/bill")
-    fun createOrderBill(@Path("orderId") orderId: Int, @Path("bill") bill: File): Observable<Order>
+    fun createOrderBill(@Path("orderId") orderId: Int, @Part image: MultipartBody.Part): Observable<ResponseBody>
 
     @GET("user/orders")
     fun userOrders(): Observable<List<Order>>

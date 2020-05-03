@@ -385,4 +385,150 @@ class ApiServiceTest {
         Assert.assertEquals("DELETE", request.method)
         Assert.assertEquals("/user/orders/$orderId/items/$orderItemId", request.path)
     }
+
+    /**
+     * @method GET
+     * @endpoint "/locations/{id}"
+     */
+    @Test
+    fun `Location should be returned`() {
+        val locationId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/location_get.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.location(locationId).test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                Location(
+                    id = 1,
+                    name = "De Frietchalet",
+                    latitude = 51.021429,
+                    longitude = 4.093035,
+                    address = "Diepestraat 1",
+                    private = false,
+                    cuisine = Cuisine(
+                        id = 2,
+                        name = "Fries",
+                        items = mutableListOf()
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("GET", request.method)
+        Assert.assertEquals("/locations/$locationId", request.path)
+    }
+
+    /**
+     * @method GET
+     * @endpoint "/locations/{id}/items"
+     */
+    @Test
+    fun `Items should be returned`() {
+        val locationId = 1
+
+        val body = listOf(
+                        Item(
+                            id = 3,
+                            name = "Small pack of fries"
+                        ),
+                        Item(
+                            id = 4,
+                            name = "Chicken nuggets"
+                        ),
+                        Item(
+                            id = 5,
+                            name = "Mayonnaise"
+                        )
+                    )
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/location_items_get.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.locationItems(locationId).test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(body)
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("GET", request.method)
+        Assert.assertEquals("/locations/$locationId/items", request.path)
+    }
+
+    /**
+     * @method GET
+     * @endpoint "/locations"
+     */
+    @Test
+    fun `Locations with matching names should be returned`() {
+        val query = "la"
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/locations_filtered_get.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.locations(query).test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                mutableListOf(
+                    Location(
+                        id = 4,
+                        name = "La Piazza",
+                        latitude = 51.031638,
+                        longitude = 4.096320,
+                        address = "Kerkstraat 48",
+                        cuisine = Cuisine(
+                            id = 4,
+                            name = "Italian",
+                            items = mutableListOf()
+                        )
+                    ),
+                    Location(
+                        id = 5,
+                        name = "Naxos Island",
+                        latitude = 51.031604,
+                        longitude = 4.097384,
+                        address = "Kerkstraat 15",
+                        cuisine = Cuisine(
+                            id = 5,
+                            name = "Greek",
+                            items = mutableListOf()
+                        )
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("GET", request.method)
+        Assert.assertEquals("/locations?q=${query}", request.path)
+    }
 }

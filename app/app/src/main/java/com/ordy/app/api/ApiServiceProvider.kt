@@ -49,16 +49,8 @@ class ApiServiceProvider {
      * Create the API Service
      */
     fun create(context: Context): ApiService {
-        val gson = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ")
-            .create()
-
-        return Retrofit.Builder()
-            .addCallAdapterFactory(
-                RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(gson))
+        return this.builder()
             .client(client(context))
-            .baseUrl("https://api.ordy.ga")
             .build()
             .create(ApiService::class.java)
     }

@@ -1,0 +1,28 @@
+[
+  {
+    "id": 4,
+    "name": "La Piazza",
+    "latitude": 51.031638,
+    "longitude": 4.096320,
+    "address": "Kerkstraat 48",
+    "private": false,
+    "cuisine": {
+      "id": 4,
+      "name": "Italian",
+      "items": []
+    }
+  },
+  {
+    "id": 5,
+    "name": "Naxos Island",
+    "latitude": 51.031604,
+    "longitude": 4.097384,
+    "address": "Kerkstraat 15",
+    "private": false,
+    "cuisine": {
+      "id": 5,
+      "name": "Greek",
+      "items": []
+    }
+  }
+]
