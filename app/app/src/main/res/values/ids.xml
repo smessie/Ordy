@@ -3,4 +3,7 @@
     <item name="speeddial_order" type="id" />
     <item name="speeddial_group" type="id" />
     <item name="speeddial_login" type="id" />
+
+    <item name="speeddial_order_camera" type="id" />
+    <item name="speeddial_order_gallery" type="id" />
 </resources>

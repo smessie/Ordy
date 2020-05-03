@@ -42,6 +42,9 @@
     <string name="speeddial_order">New order</string>
     <string name="speeddial_group">New group</string>
 
+    <string name="speeddial_order_camera">Take bill image</string>
+    <string name="speeddial_order_gallery">Select bill image</string>
+
     <string name="create_order_input_location">Location</string>
     <string name="create_order_input_deadline">Deadline</string>
     <string name="create_order_input_group">Group</string>
@@ -90,6 +93,7 @@
     <string name="no_debts_title">No debts found</string>
     <string name="no_debts_description">You currently have no debts</string>
     <string name="debts_search">Search for creditor</string>
+
     <!-- Debtors -->
     <string name="debtors_tab_title">Debtors</string>
     <string name="no_debtors_title">No debtors found</string>
@@ -128,8 +132,10 @@
     <string name="list_item_closing_on">Closing on:&#160;</string>
     <string name="list_item_courier">Courier:</string>
 
+    <string name="bill_upload_loading">Uploading bill. Please wait…</string>
     <string name="bill_error_title">Unable to load bill</string>
     <string name="bill_error_description">Unable to load bill for this order. Make sure you have a valid connection and try again!</string>
+    <string name="bill_upload_success">Bill has been uploaded.</string>
 
     <string name="error_connection">Unable to connect to the server. Please check your connection.</string>
     <string name="error_picker_past">You cannot select a deadline that has already passed.</string>
