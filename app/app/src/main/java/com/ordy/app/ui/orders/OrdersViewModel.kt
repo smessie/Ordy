@@ -5,7 +5,6 @@ import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.util.Query
-import java.util.*
 
 class OrdersViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
