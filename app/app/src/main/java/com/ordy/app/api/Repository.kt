@@ -9,7 +9,6 @@ import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.api.wrappers.GroupInviteUserWrapper
 import com.ordy.app.api.wrappers.LocationWrapper
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import java.util.*
 
@@ -270,7 +269,6 @@ class Repository(private val apiService: ApiService) {
      ***        ORDERS          ***
      ******************************/
     private val orders: MutableLiveData<Query<List<Order>>> = MutableLiveData(Query())
-    private val createOrderResult: MutableLiveData<Query<Order>> = MutableLiveData(Query())
     private val order: MutableLiveData<Query<Order>> = MutableLiveData(Query(QueryStatus.LOADING))
     private val cuisineItems: MutableLiveData<Query<List<Item>>> = MutableLiveData(Query())
     private val addItemResult: MutableLiveData<Query<OrderItem>> = MutableLiveData(Query())
@@ -290,9 +288,15 @@ class Repository(private val apiService: ApiService) {
      * @param deadline: Date of the deadline for new items to the order
      * @param groupId: ID of the group where the order belongs to
      */
-    fun createOrder(locationId: Int?, customLocationName: String?, deadline: Date, groupId: Int?) {
+    fun createOrder(
+        createOrderMLD: MutableLiveData<Query<Order>>,
+        locationId: Int?,
+        customLocationName: String?,
+        deadline: Date,
+        groupId: Int?
+    ) {
         FetchHandler.handle(
-            createOrderResult,
+            createOrderMLD,
             apiService.createOrder(
                 OrderCreate(
                     locationId = locationId,
@@ -395,13 +399,6 @@ class Repository(private val apiService: ApiService) {
      */
     fun getOrdersResult(): MutableLiveData<Query<List<Order>>> {
         return orders
-    }
-
-    /**
-     * Get the MutableLiveData result of the Create order query.
-     */
-    fun getCreateOrderResult(): MutableLiveData<Query<Order>> {
-        return createOrderResult
     }
 
     /**

@@ -91,7 +91,7 @@ class CreateOrderActivity : AppCompatActivity() {
         })
 
         // Observe the result of adding an item to the order.
-        viewModel.getCreateOrderMLD().observe(this, Observer {
+        viewModel.createOrderMLD.observe(this, Observer {
 
             when (it.status) {
 
