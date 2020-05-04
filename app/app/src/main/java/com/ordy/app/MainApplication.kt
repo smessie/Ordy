@@ -3,6 +3,7 @@ package com.ordy.app
 import android.app.Application
 import com.ordy.app.api.RepositoryProvider
 import com.ordy.app.ui.groups.GroupsViewModel
+import com.ordy.app.ui.groups.create.CreateGroupViewModel
 import com.ordy.app.ui.groups.invite.InviteMemberViewModel
 import com.ordy.app.ui.groups.overview.OverviewGroupViewModel
 import com.ordy.app.ui.locations.LocationsViewModel
@@ -60,6 +61,10 @@ class MainApplication : Application() {
 
             viewModel {
                 OverviewGroupViewModel(get())
+            }
+          
+            viewModel {
+                CreateGroupViewModel(get())
             }
 
             viewModel {
