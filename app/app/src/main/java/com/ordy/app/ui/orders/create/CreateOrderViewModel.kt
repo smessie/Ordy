@@ -26,6 +26,7 @@ class CreateOrderViewModel(repository: Repository) : RepositoryViewModel(reposit
      * Value of the group input
      */
     val groupValueData: MutableLiveData<Group> = MutableLiveData()
+    val createOrderMLD: MutableLiveData<Query<Order>> = MutableLiveData(Query())
 
 
     /**
@@ -110,20 +111,18 @@ class CreateOrderViewModel(repository: Repository) : RepositoryViewModel(reposit
     }
 
     /**
-     * Get the MutableLiveData result of the Create order query.
-     */
-    fun getCreateOrderMLD(): MutableLiveData<Query<Order>> {
-        return repository.getCreateOrderResult()
-    }
-
-    /**
      * Create a new order.
      * @param locationId: ID of the existing location for the order if applicable
      * @param customLocationName: Name of the custom location if applicable
      * @param deadline: Date of the deadline for new items to the order
      * @param groupId: ID of the group where the order belongs to
      */
-    fun createOrder(locationId: Int?, customLocationName: String?, deadline: Date, groupId: Int?) {
-        repository.createOrder(locationId, customLocationName, deadline, groupId)
+    fun createOrder(
+        locationId: Int?,
+        customLocationName: String?,
+        deadline: Date,
+        groupId: Int?
+    ) {
+        repository.createOrder(createOrderMLD, locationId, customLocationName, deadline, groupId)
     }
 }
