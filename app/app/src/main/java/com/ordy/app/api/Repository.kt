@@ -8,6 +8,8 @@ import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.api.wrappers.GroupInviteUserWrapper
 import com.ordy.app.api.wrappers.LocationWrapper
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import java.util.*
 
@@ -272,6 +274,7 @@ class Repository(private val apiService: ApiService) {
     private val order: MutableLiveData<Query<Order>> = MutableLiveData(Query(QueryStatus.LOADING))
     private val cuisineItems: MutableLiveData<Query<List<Item>>> = MutableLiveData(Query())
     private val addItemResult: MutableLiveData<Query<OrderItem>> = MutableLiveData(Query())
+    private val uploadBillResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
 
     /**
      * Refresh the list of orders.
@@ -376,6 +379,18 @@ class Repository(private val apiService: ApiService) {
     }
 
     /**
+     * Upload a bill for a given order.
+     * @param orderId: Id of the order
+     * @param image: Body containing the image data
+     */
+    fun uploadBill(orderId: Int, image: MultipartBody.Part) {
+        FetchHandler.handle(
+            uploadBillResult,
+            apiService.createOrderBill(orderId, image)
+        )
+    }
+
+    /**
      * Get the MutableLiveData result of the Orders query.
      */
     fun getOrdersResult(): MutableLiveData<Query<List<Order>>> {
@@ -408,6 +423,13 @@ class Repository(private val apiService: ApiService) {
      */
     fun getAddItemResult(): MutableLiveData<Query<OrderItem>> {
         return addItemResult
+    }
+
+    /**
+     * Get the MutableLiveData resultof the Upload bill query.
+     */
+    fun getUploadBillResult(): MutableLiveData<Query<ResponseBody>> {
+        return uploadBillResult
     }
 
     /******************************
