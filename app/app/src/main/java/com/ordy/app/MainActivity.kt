@@ -10,9 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.leinardi.android.speeddial.SpeedDialActionItem
-import com.leinardi.android.speeddial.SpeedDialView
 import com.ordy.app.ui.groups.create.CreateGroupActivity
 import com.ordy.app.ui.login.LoginActivity
 import com.ordy.app.ui.orders.create.CreateOrderActivity

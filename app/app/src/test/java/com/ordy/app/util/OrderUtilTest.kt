@@ -6,8 +6,8 @@ import com.ordy.app.ui.orders.OrdersStatus
 import com.ordy.app.util.OrderUtil.Companion.filterOrdersStatus
 import com.ordy.app.util.OrderUtil.Companion.groupItems
 import com.ordy.app.util.OrderUtil.Companion.userGroupItems
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.Assert.*
 import java.util.concurrent.TimeUnit
 
 /**

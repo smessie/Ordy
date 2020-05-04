@@ -7,6 +7,8 @@ import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.api.wrappers.GroupInviteUserWrapper
+import com.ordy.app.api.wrappers.LocationWrapper
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import java.util.*
 
@@ -174,7 +176,7 @@ class Repository(private val apiService: ApiService) {
     /******************************
      ***       LOCATIONS        ***
      ******************************/
-    private val locations: MutableLiveData<Query<List<Location>>> = MutableLiveData(Query())
+    private val locations: MutableLiveData<Query<List<LocationWrapper>>> = MutableLiveData(Query())
 
     /**
      * Update the locations by the given search query.
@@ -187,8 +189,26 @@ class Repository(private val apiService: ApiService) {
     /**
      * Get the MutableLiveData result of the Locations fetch.
      */
-    fun getLocationsResult(): MutableLiveData<Query<List<Location>>> {
+    fun getLocationsResult(): MutableLiveData<Query<List<LocationWrapper>>> {
         return locations
+    }
+
+    /**
+     * Add a location to the favorite location list of the user.
+     * @param locationId: ID of location the user want to mark as favorite
+     * @param liveData: Object where we want to store the result of our query in
+     */
+    fun markLocationAsFavorite(locationId: Int, liveData: MutableLiveData<Query<ResponseBody>>) {
+        FetchHandler.handle(liveData, apiService.markLocationAsFavorite(locationId))
+    }
+
+    /**
+     * Remove a location from a user favorite locations list
+     * @param locationId: ID of location the user want to remove from his favorite location list
+     * @param liveData: Object where we want to store the result of our query in
+     */
+    fun unMarkLocationAsFavorite(locationId: Int, liveData: MutableLiveData<Query<ResponseBody>>) {
+        FetchHandler.handle(liveData, apiService.unMarkLocationAsFavorite(locationId))
     }
 
     /******************************
@@ -251,10 +271,10 @@ class Repository(private val apiService: ApiService) {
      ***        ORDERS          ***
      ******************************/
     private val orders: MutableLiveData<Query<List<Order>>> = MutableLiveData(Query())
-    private val createOrderResult: MutableLiveData<Query<Order>> = MutableLiveData(Query())
     private val order: MutableLiveData<Query<Order>> = MutableLiveData(Query(QueryStatus.LOADING))
     private val cuisineItems: MutableLiveData<Query<List<Item>>> = MutableLiveData(Query())
     private val addItemResult: MutableLiveData<Query<OrderItem>> = MutableLiveData(Query())
+    private val uploadBillResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
 
     /**
      * Refresh the list of orders.
@@ -270,9 +290,15 @@ class Repository(private val apiService: ApiService) {
      * @param deadline: Date of the deadline for new items to the order
      * @param groupId: ID of the group where the order belongs to
      */
-    fun createOrder(locationId: Int?, customLocationName: String?, deadline: Date, groupId: Int?) {
+    fun createOrder(
+        createOrderMLD: MutableLiveData<Query<Order>>,
+        locationId: Int?,
+        customLocationName: String?,
+        deadline: Date,
+        groupId: Int?
+    ) {
         FetchHandler.handle(
-            createOrderResult,
+            createOrderMLD,
             apiService.createOrder(
                 OrderCreate(
                     locationId = locationId,
@@ -359,17 +385,22 @@ class Repository(private val apiService: ApiService) {
     }
 
     /**
+     * Upload a bill for a given order.
+     * @param orderId: Id of the order
+     * @param image: Body containing the image data
+     */
+    fun uploadBill(orderId: Int, image: MultipartBody.Part) {
+        FetchHandler.handle(
+            uploadBillResult,
+            apiService.createOrderBill(orderId, image)
+        )
+    }
+
+    /**
      * Get the MutableLiveData result of the Orders query.
      */
     fun getOrdersResult(): MutableLiveData<Query<List<Order>>> {
         return orders
-    }
-
-    /**
-     * Get the MutableLiveData result of the Create order query.
-     */
-    fun getCreateOrderResult(): MutableLiveData<Query<Order>> {
-        return createOrderResult
     }
 
     /**
@@ -391,6 +422,13 @@ class Repository(private val apiService: ApiService) {
      */
     fun getAddItemResult(): MutableLiveData<Query<OrderItem>> {
         return addItemResult
+    }
+
+    /**
+     * Get the MutableLiveData resultof the Upload bill query.
+     */
+    fun getUploadBillResult(): MutableLiveData<Query<ResponseBody>> {
+        return uploadBillResult
     }
 
     /******************************
