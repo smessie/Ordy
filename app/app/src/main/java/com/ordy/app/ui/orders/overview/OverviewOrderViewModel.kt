@@ -6,10 +6,13 @@ import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.util.Query
 import okhttp3.ResponseBody
+import java.util.*
 
 class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
     val orderId = MutableLiveData(-1)
+
+    lateinit var updateTimer: Timer
 
     /**
      * Get the MutableLiveData result of the Order fetch.

@@ -101,7 +101,7 @@ class OverviewOrderActivity : AppCompatActivity() {
                     }
 
                     // Update the closing time left every second.
-                    TimerUtil.updateUI(this, 0, 1000) {
+                    viewModel.updateTimer = TimerUtil.updateUI(this, 0, 1000) {
                         order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
                     }
                 }
@@ -114,5 +114,12 @@ class OverviewOrderActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // Cancel the update timer.
+        viewModel.updateTimer.cancel()
     }
 }

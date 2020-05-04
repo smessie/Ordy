@@ -2,6 +2,7 @@ package com.ordy.app.ui.orders
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import com.ordy.app.util.OrderUtil
 import com.ordy.app.util.TimerUtil
 import kotlinx.android.synthetic.main.list_order_card.view.*
 import java.text.DateFormat
+import java.util.*
 
 class OrdersBaseAdapter(
     val activity: AppCompatActivity,
@@ -27,6 +29,11 @@ class OrdersBaseAdapter(
 
     private var orders: Query<List<Order>> = Query()
     private var ordersFiltered: List<Order> = emptyList()
+
+    /**
+     * List containing the timers that refresh the closing countdown every second.
+     */
+    private var timers: MutableList<Timer> = mutableListOf()
 
     init {
         viewModel.getOrdersMLD().observe(activity, Observer {
@@ -73,9 +80,10 @@ class OrdersBaseAdapter(
                 view.order_courier_name.text = order.courier.username
 
                 // Update the closing time left every second.
-                TimerUtil.updateUI(activity, 0, 1000) {
+                val updateTimer = TimerUtil.updateUI(activity, 0, 1000) {
                     view.order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
                 }
+                timers.add(updateTimer)
 
                 // Set click handler.
                 view.setOnClickListener {
@@ -134,7 +142,17 @@ class OrdersBaseAdapter(
             }
         }
 
+        // Clear the timers, since new timers will be created
+        this.timers.forEach { it.cancel() }
+        this.timers.clear()
+
         // Notify the changes to the list view (to re-render automatically)
         notifyDataSetChanged()
+    }
+
+    fun destroy() {
+        // Clear the timers, since new timers will be created
+        this.timers.forEach { it.cancel() }
+        this.timers.clear()
     }
 }

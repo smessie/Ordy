@@ -68,4 +68,11 @@ class ActiveOrdersFragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // Destroy the adapter & stop all the ongoing timer tasks.
+        baseAdapter.destroy()
+    }
 }
