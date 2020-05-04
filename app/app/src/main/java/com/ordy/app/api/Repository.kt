@@ -478,6 +478,22 @@ class Repository(private val apiService: ApiService) {
      ***        PROFILE         ***
      ******************************/
     private val invites: MutableLiveData<Query<List<GroupInvite>>> = MutableLiveData(Query())
+    private val user: MutableLiveData<Query<User>> = MutableLiveData(Query())
+
+    /**
+     * refresh the user information
+     */
+
+    fun refreshUserInfo() {
+        FetchHandler.handle(user, apiService.userInfo())
+    }
+
+    /**
+     * Get the MutableLiveData result of the User fetch.
+     */
+    fun getUser(): MutableLiveData<Query<User>> {
+        return user
+    }
 
     /**
      * Refresh the invites.

@@ -4,11 +4,26 @@ import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.GroupInvite
+import com.ordy.app.api.models.User
 import com.ordy.app.api.models.actions.InviteAction
 import com.ordy.app.api.util.Query
 import okhttp3.ResponseBody
 
 class ProfileViewModel(repository: Repository) : RepositoryViewModel(repository) {
+
+    /**
+     * Refresh the user information
+     */
+    fun refreshUserInfo() {
+        return repository.refreshUserInfo()
+    }
+
+    /**
+     * Get the MutableLiveData result of the User fetch.
+     */
+    fun getUserMLD(): MutableLiveData<Query<User>> {
+        return repository.getUser()
+    }
 
     /**
      * Get the MutableLiveData result of the Invites fetch.
