@@ -142,14 +142,17 @@ class OrdersBaseAdapter(
         }
 
         // Clear the timers, since new timers will be created
-        this.timers.forEach { it.cancel() }
-        this.timers.clear()
+        this.destroyTimers()
 
         // Notify the changes to the list view (to re-render automatically)
         notifyDataSetChanged()
     }
 
     fun destroy() {
+       this.destroyTimers()
+    }
+
+    fun destroyTimers() {
         // Clear the timers, since new timers will be created
         this.timers.forEach { it.cancel() }
         this.timers.clear()
