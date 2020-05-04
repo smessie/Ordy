@@ -8,7 +8,6 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.MutableLiveData
-import com.google.android.material.textfield.TextInputLayout
 import com.ordy.app.R
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.models.OrderItem

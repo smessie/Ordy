@@ -261,4 +261,9 @@ class OrderPersonalBaseAdapter(
         // Notify the changes to the list view (to re-render automatically)
         notifyDataSetChanged()
     }
+
+    fun destroy() {
+        // Stop the update timer.
+        this.updateTimer.cancel()
+    }
 }

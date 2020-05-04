@@ -9,6 +9,7 @@ import com.ordy.app.api.util.Query
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import java.util.*
 import java.lang.IllegalStateException
 import java.net.URI
 
@@ -16,6 +17,8 @@ class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repos
 
     val orderId = MutableLiveData(-1)
 
+    lateinit var updateTimer: Timer
+  
     // Uri of the selected image when uploading from the camera.
     var billUploadUri: URI? = null
 

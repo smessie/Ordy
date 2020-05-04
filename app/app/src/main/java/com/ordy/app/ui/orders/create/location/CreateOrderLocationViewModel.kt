@@ -3,7 +3,6 @@ package com.ordy.app.ui.orders.create.location
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
-import com.ordy.app.api.models.Location
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.wrappers.LocationWrapper
 
