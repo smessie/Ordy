@@ -5,6 +5,7 @@ import com.ordy.backend.database.View
 import com.ordy.backend.database.models.Item
 import com.ordy.backend.database.models.Location
 import com.ordy.backend.services.LocationService
+import com.ordy.backend.wrappers.LocationWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -14,13 +15,20 @@ class LocationController(@Autowired val locationService: LocationService) {
 
     @GetMapping
     @JsonView(View.List::class)
-    fun getLocations(@RequestParam("q") query: String): List<Location> {
-        return locationService.getLocations(query)
+    fun getLocations(@RequestAttribute userId: Int, @RequestParam("q") query: String): List<LocationWrapper> {
+        return locationService.getLocations(userId, query)
     }
 
-    @GetMapping("/{locationId}")
-    fun getLocation(@PathVariable locationId: Int) {
+    @PostMapping("/{locationId}")
+    @JsonView(View.Empty::class)
+    fun markLocationAsFavorite(@RequestAttribute userId: Int, @PathVariable locationId: Int) {
+        locationService.markAsFavorite(userId, locationId)
+    }
 
+    @DeleteMapping("/{locationId}")
+    @JsonView(View.Empty::class)
+    fun unMarkLocationAsFavorite(@RequestAttribute userId: Int, @PathVariable locationId: Int) {
+        locationService.unMarkAsFavorite(userId, locationId)
     }
 
     @GetMapping("/{locationId}/items")

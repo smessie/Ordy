@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingStart="5dp"
+    android:paddingEnd="15dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <!-- Location -->
+
+        <TextView
+            android:id="@+id/location_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:paddingEnd="5dp"
+            android:paddingStart="0dp"/>
+
+        <!-- Address -->
+        <TextView
+            android:id="@+id/location_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/favorite_mark"
+        android:background="@drawable/ic_favorite_mark_40dp"
+        android:contentDescription="@string/not_favorite_description"/>
+
+    <ProgressBar
+        android:id="@+id/favorite_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:indeterminate="true"
+        android:visibility="gone"/>
+</LinearLayout>

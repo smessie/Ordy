@@ -3,8 +3,8 @@ package com.ordy.app.ui.orders.create.location
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
-import com.ordy.app.api.models.Location
 import com.ordy.app.api.util.Query
+import com.ordy.app.api.wrappers.LocationWrapper
 
 class CreateOrderLocationViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
@@ -16,14 +16,14 @@ class CreateOrderLocationViewModel(repository: Repository) : RepositoryViewModel
     /**
      * Get the MutableLiveData result of the Locations fetch.
      */
-    fun getLocationsMLD(): MutableLiveData<Query<List<Location>>> {
+    fun getLocationsMLD(): MutableLiveData<Query<List<LocationWrapper>>> {
         return repository.getLocationsResult()
     }
 
     /**
      * Get a list with locations
      */
-    fun getLocations(): Query<List<Location>> {
+    fun getLocations(): Query<List<LocationWrapper>> {
         return getLocationsMLD().value!!
     }
 

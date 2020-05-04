@@ -8,7 +8,7 @@
 
         <variable
             name="handlers"
-            type="com.ordy.app.ui.locations.LocationsBindings" />
+            type="com.ordy.app.ui.locations.LocationsHandlers" />
 
         <variable
             name="viewmodel"

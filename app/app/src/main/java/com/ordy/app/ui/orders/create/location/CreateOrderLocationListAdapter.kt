@@ -48,7 +48,8 @@ class CreateOrderLocationListAdapter(
         when (viewModel.getLocations().status) {
 
             QueryStatus.SUCCESS -> {
-                val location = viewModel.getLocations().requireData()[position]
+                val isFavorite = viewModel.getLocations().requireData()[position].favorite
+                val location = viewModel.getLocations().requireData()[position].location
 
                 // Assign the data.
                 view.location_item_name.text = location.name
@@ -56,6 +57,12 @@ class CreateOrderLocationListAdapter(
                     when (location.address) {
                         null -> "No address found"
                         else -> location.address
+                    }
+
+                view.location_favorite_mark.visibility =
+                    when (isFavorite) {
+                        false -> View.INVISIBLE
+                        else -> View.VISIBLE
                     }
 
                 // Set click handler.
@@ -91,37 +98,24 @@ class CreateOrderLocationListAdapter(
     override fun getCount(): Int {
         return when (viewModel.getLocations().status) {
             QueryStatus.LOADING -> 0
-            QueryStatus.SUCCESS -> return when {
-
-                // Do not show any results for a blank search query.
-                viewModel.getSearchValue().isEmpty() -> {
-                    0
-                }
-                else -> {
-                    viewModel.getLocations().requireData().size
-                }
-            }
+            QueryStatus.SUCCESS -> viewModel.getLocations().requireData().size
             else -> 0
         }
     }
 
     override fun isEmpty(): Boolean {
 
-        // Do not show the empty view when the search query is not empty.
+        var hasFavorites = false
+        if (viewModel.getLocations().status == QueryStatus.SUCCESS) {
+            hasFavorites = viewModel.getLocations().requireData().isNotEmpty()
+        }
+
+        // Show the empty view when the search query is empty and the user has no matching favorite locations.
         // Done to show the footer for a custom location.
-        return viewModel.getSearchValue().isEmpty()
+        return viewModel.getSearchValue().isEmpty() && !hasFavorites
     }
 
     fun update() {
-
-        // Only show the "default" item when the search query is not empty.
-        if (viewModel.getSearchValue().isEmpty()
-            || viewModel.getLocations().status == QueryStatus.LOADING
-        ) {
-            defaultItemView.location_item_default.visibility = View.GONE
-        } else {
-            defaultItemView.location_item_default.visibility = View.VISIBLE
-        }
 
         // Update the text of the default item.
         defaultItemView.location_item_default_text.text = String.format(
@@ -133,7 +127,11 @@ class CreateOrderLocationListAdapter(
 
         // Remove the footer and add it again to prevent errors
         listView.removeFooterView(defaultItemView)
-        listView.addFooterView(defaultItemView)
+
+        // Only add the footer if the search value is NOT empty
+        if (viewModel.getSearchValue().isNotBlank()) {
+            listView.addFooterView(defaultItemView)
+        }
 
         // Notify the changes to the list view (to re-render automatically)
         notifyDataSetChanged()

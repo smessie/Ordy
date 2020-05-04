@@ -32,7 +32,7 @@ class LocationsFragment : Fragment() {
 
         // Create binding for the fragment.
         val binding = FragmentLocationsBinding.inflate(inflater, container, false)
-        binding.handlers = LocationsBindings(this, viewModel)
+        binding.handlers = LocationsHandlers(this, viewModel)
         binding.viewmodel = viewModel
 
         // Setup the list view
@@ -43,7 +43,7 @@ class LocationsFragment : Fragment() {
         baseAdapter = LocationsBaseAdapter(
             requireContext(),
             viewModel,
-            viewLifecycleOwner,
+            this,
             binding.root
         )
 

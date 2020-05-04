@@ -1,8 +1,8 @@
 package com.ordy.app.ui.groups.overview
 
-import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
