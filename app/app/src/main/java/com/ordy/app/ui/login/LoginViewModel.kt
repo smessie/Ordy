@@ -15,20 +15,8 @@ class LoginViewModel(repository: Repository) : RepositoryViewModel(repository) {
      * False: register is open
      */
     val isLogin: MutableLiveData<Boolean> = MutableLiveData(true)
-
-    /**
-     * Get the MutableLiveData result of the Login query.
-     */
-    fun getLoginMLD(): MutableLiveData<Query<LoginResponse>> {
-        return repository.getLoginResult()
-    }
-
-    /**
-     * Get the MutableLiveData result of the Register query.
-     */
-    fun getRegisterMLD(): MutableLiveData<Query<ResponseBody>> {
-        return repository.getRegisterResult()
-    }
+    val loginMLD: MutableLiveData<Query<LoginResponse>> = MutableLiveData(Query())
+    val registerMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
 
     /**
      * Attempt to login a user.
@@ -36,8 +24,8 @@ class LoginViewModel(repository: Repository) : RepositoryViewModel(repository) {
      * @param password: Password entered by the user
      * @param deviceToken: Devicetoken of the user
      */
-    fun login(email: String, password: String, deviceToken: String) {
-        repository.login(email, password, deviceToken)
+    fun login(email: String, password: String) {
+        repository.login(loginMLD, email, password)
     }
 
     /**
@@ -47,6 +35,6 @@ class LoginViewModel(repository: Repository) : RepositoryViewModel(repository) {
      * @param password: Password entered by the user
      */
     fun register(username: String, email: String, password: String) {
-        repository.register(username, email, password)
+        repository.register(registerMLD, username, email, password)
     }
 }

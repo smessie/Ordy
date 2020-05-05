@@ -41,7 +41,7 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.getRegisterMLD().observe(this, Observer {
+        viewModel.registerMLD.observe(this, Observer {
 
             when (it.status) {
 
@@ -69,6 +69,9 @@ class RegisterFragment : Fragment() {
                             InputField("password", this.input_register_password)
                         )
                     )
+                }
+
+                else -> {
                 }
             }
         })
