@@ -5,7 +5,6 @@ import com.ordy.app.api.models.*
 import com.ordy.app.api.models.actions.*
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
-import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.api.wrappers.GroupInviteUserWrapper
 import com.ordy.app.api.wrappers.LocationWrapper
 import okhttp3.MultipartBody
@@ -220,11 +219,6 @@ class Repository(private val apiService: ApiService) {
      ***        ORDERS          ***
      ******************************/
     private val orders: MutableLiveData<Query<List<Order>>> = MutableLiveData(Query())
-    private val order: MutableLiveData<Query<Order>> = MutableLiveData(Query(QueryStatus.LOADING))
-    private val cuisineItems: MutableLiveData<Query<List<Item>>> = MutableLiveData(Query())
-    private val addItemResult: MutableLiveData<Query<OrderItem>> = MutableLiveData(Query())
-    private val uploadBillResult: MutableLiveData<Query<ResponseBody>> =
-        MutableLiveData(Query()) //TODO fiks
 
     /**
      * Refresh the list of orders.
@@ -263,15 +257,15 @@ class Repository(private val apiService: ApiService) {
     /**
      * Refresh the order.
      */
-    fun refreshOrder(orderId: Int) {
-        FetchHandler.handle(order, apiService.order(orderId))
+    fun refreshOrder(liveData: MutableLiveData<Query<Order>>, orderId: Int) {
+        FetchHandler.handle(liveData, apiService.order(orderId))
     }
 
     /**
      * Refresh the cuisine items.
      */
-    fun refreshCuisineItems(locationId: Int) {
-        FetchHandler.handle(cuisineItems, apiService.locationItems(locationId))
+    fun refreshCuisineItems(liveData: MutableLiveData<Query<List<Item>>>, locationId: Int) {
+        FetchHandler.handle(liveData, apiService.locationItems(locationId))
     }
 
     /**
@@ -280,9 +274,14 @@ class Repository(private val apiService: ApiService) {
      * @param cuisineItemId: Id of the cuisine item (or null when a custom item name is given)
      * @param name: Custom item name (ignored when cuisineItemId is present)
      */
-    fun addItem(orderId: Int, cuisineItemId: Int?, name: String?) {
+    fun addItem(
+        liveData: MutableLiveData<Query<OrderItem>>,
+        orderId: Int,
+        cuisineItemId: Int?,
+        name: String?
+    ) {
         FetchHandler.handle(
-            addItemResult,
+            liveData,
             apiService.userAddOrderItem(
                 orderId,
                 OrderAddItem(
@@ -339,9 +338,13 @@ class Repository(private val apiService: ApiService) {
      * @param orderId: Id of the order
      * @param image: Body containing the image data
      */
-    fun uploadBill(orderId: Int, image: MultipartBody.Part) {
+    fun uploadBill(
+        liveData: MutableLiveData<Query<ResponseBody>>,
+        orderId: Int,
+        image: MultipartBody.Part
+    ) {
         FetchHandler.handle(
-            uploadBillResult,
+            liveData,
             apiService.createOrderBill(orderId, image)
         )
     }
@@ -351,34 +354,6 @@ class Repository(private val apiService: ApiService) {
      */
     fun getOrdersResult(): MutableLiveData<Query<List<Order>>> {
         return orders
-    }
-
-    /**
-     * Get the MutableLiveData result of the Order fetch.
-     */
-    fun getOrder(): MutableLiveData<Query<Order>> {
-        return order
-    }
-
-    /**
-     * Get the MutableLiveData result of the Cuisine items fetch.
-     */
-    fun getCuisineItems(): MutableLiveData<Query<List<Item>>> {
-        return cuisineItems
-    }
-
-    /**
-     * Get the MutableLiveData result of the Add item query.
-     */
-    fun getAddItemResult(): MutableLiveData<Query<OrderItem>> {
-        return addItemResult
-    }
-
-    /**
-     * Get the MutableLiveData resultof the Upload bill query.
-     */
-    fun getUploadBillResult(): MutableLiveData<Query<ResponseBody>> {
-        return uploadBillResult
     }
 
     /******************************

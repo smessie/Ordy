@@ -14,7 +14,7 @@ import com.ordy.app.ui.orders.create.LocationInput
 import kotlinx.android.synthetic.main.list_location_item.view.*
 import kotlinx.android.synthetic.main.list_location_item_default.view.*
 
-class CreateOrderLocationListAdapter(
+class CreateOrderLocationBaseAdapter(
     val context: Context,
     private val dialog: DialogFragment,
     val viewModel: CreateOrderLocationViewModel,

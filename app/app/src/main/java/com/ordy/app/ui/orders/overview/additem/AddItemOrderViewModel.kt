@@ -12,48 +12,29 @@ class AddItemOrderViewModel(repository: Repository) : RepositoryViewModel(reposi
     /**
      * Value of the search input field.
      */
-    val searchValueData: MutableLiveData<String> = MutableLiveData("")
-
-    /**
-     * Get the MutableLiveData result of the Cuisine items fetch.
-     */
-    fun getCuisineItemsMLD(): MutableLiveData<Query<List<Item>>> {
-        return repository.getCuisineItems()
-    }
+    val searchValueMLD: MutableLiveData<String> = MutableLiveData("")
+    val cuisineItemsMLD: MutableLiveData<Query<List<Item>>> = MutableLiveData(Query())
+    val addItemMLD: MutableLiveData<Query<OrderItem>> = MutableLiveData(Query())
 
     /**
      * Get the list with cuisine items.
      */
     fun getCuisineItems(): Query<List<Item>> {
-        return getCuisineItemsMLD().value!!
-    }
-
-    /**
-     * Get the value of the search input field.
-     */
-    fun getSearchValueMLD(): MutableLiveData<String> {
-        return searchValueData
-    }
-
-    /**
-     * Get the MutableLiveData result of the Add item query.
-     */
-    fun getAddItemMLD(): MutableLiveData<Query<OrderItem>> {
-        return repository.getAddItemResult()
+        return cuisineItemsMLD.value!!
     }
 
     /**
      * Get the result from the add item query.
      */
     fun getAddItemResult(): Query<OrderItem> {
-        return getAddItemMLD().value!!
+        return addItemMLD.value!!
     }
 
     /**
      * Refresh the cuisine items.
      */
     fun refreshCuisineItems(locationId: Int) {
-        repository.refreshCuisineItems(locationId)
+        repository.refreshCuisineItems(cuisineItemsMLD, locationId)
     }
 
     /**
@@ -63,6 +44,6 @@ class AddItemOrderViewModel(repository: Repository) : RepositoryViewModel(reposi
      * @param name: Custom item name (ignored when cuisineItemId is present)
      */
     fun addItem(orderId: Int, cuisineItemId: Int?, name: String?) {
-        repository.addItem(orderId, cuisineItemId, name)
+        repository.addItem(addItemMLD, orderId, cuisineItemId, name)
     }
 }

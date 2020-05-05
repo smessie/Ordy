@@ -36,5 +36,7 @@ class ProfileViewModel(repository: Repository) : RepositoryViewModel(repository)
         actionInviteResult: MutableLiveData<Query<ResponseBody>>
     ) {
         repository.userActionInvites(inviteAction, groupId, actionInviteResult)
+        // refresh group in order to add new group to cached results
+        repository.refreshGroups()
     }
 }

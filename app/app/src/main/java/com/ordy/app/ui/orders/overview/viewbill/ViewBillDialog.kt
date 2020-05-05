@@ -36,7 +36,7 @@ class ViewBillDialog : DialogFragment() {
 
         // Setup the toolbar
         val toolbar: Toolbar = binding.toolbar
-        toolbar.title = "View bill: ${viewModel.getOrderMLD().value!!.requireData().location.name}"
+        toolbar.title = "View bill: ${viewModel.orderMLD.value!!.requireData().location.name}"
         toolbar.setNavigationOnClickListener { dismiss() }
 
         val photoView = binding.root.findViewById(R.id.bill_image) as PhotoView
@@ -44,7 +44,7 @@ class ViewBillDialog : DialogFragment() {
         Picasso.Builder(requireContext())
             .downloader(OkHttp3Downloader(ApiServiceProvider().client(requireContext())))
             .build()
-            .load(viewModel.getOrderMLD().value!!.requireData().billUrl)
+            .load(viewModel.orderMLD.value!!.requireData().billUrl)
             .into(photoView, object : Callback {
 
                 override fun onSuccess() {
