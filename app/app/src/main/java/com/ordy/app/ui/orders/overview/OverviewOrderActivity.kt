@@ -367,6 +367,13 @@ class OverviewOrderActivity : AppCompatActivity() {
         viewModel.uploadBill(orderId, requestBody)
     }
 
+    override fun onRestart() {
+        super.onRestart()
+
+        //refesh the order
+        viewModel.refreshOrder()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
