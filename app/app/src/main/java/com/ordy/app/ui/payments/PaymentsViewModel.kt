@@ -31,7 +31,7 @@ class PaymentsViewModel(repository: Repository) : RepositoryViewModel(repository
         )
     }
 
-    // notify
+    // Notify
     fun notifyDebtor(
         liveData: MutableLiveData<Query<ResponseBody>>,
         orderId: Int,

@@ -10,6 +10,7 @@ import com.ordy.backend.wrappers.PaymentUpdateWrapper
 import com.ordy.backend.wrappers.PaymentWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Service
@@ -128,10 +129,10 @@ class PaymentService(
         val orderItemsFiltered = order.get().orderItems.filter { it.user.id == notifiedUser.get().id }
         // Check whether the last notification was at least one hour ago
         if (orderItemsFiltered.any { Date().time - it.lastNotification.time < 3600000 }) {
-            throw throwableList.also { it.addGenericException("A new notification can only be sent after 1 hour.") }
+            throw throwableList.also { it.addGenericException("A notification can only be sent once per hour.") }
         }
 
-        // Update the last time a notifictaion was sent to the user
+        // Update the last time a notification was sent to the user
         val updatedOrderItems = order.get().orderItems.map {
             if (it.user.id == notifiedUser.get().id) {
                 it.lastNotification = Date()
@@ -141,12 +142,15 @@ class PaymentService(
         order.get().orderItems = updatedOrderItems.toSet()
         orderRepository.save(order.get())
 
+        val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy")
+        val notificationDate = simpleDateFormat.format(order.get().deadline)
+
         notificationService.sendNotificationAsync(
                 user = notifiedUser.get(),
                 content = notificationService.createNotificationContent(
                         title = "Payment reminder",
-                        subtitle = "You still need to pay ${order.get().courier.username}",
-                        detail = "<b>Group: </b>${order.get().group.name}\n<b>Location: </b>${order.get().location.name}",
+                        subtitle = "You still have to pay ${order.get().courier.username}",
+                        detail = "<b>Group: </b>${order.get().group.name}\n<b>Location: </b>${order.get().location.name}\n<b>Date: </b>${notificationDate}",
                         summary = "Payment reminder",
                         type = NotificationType.PAYMENT_DEBT
                 )

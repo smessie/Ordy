@@ -473,6 +473,9 @@ class Repository(private val apiService: ApiService) {
         )
     }
 
+    /**
+     * Send a notification to the selected debtor
+     */
     fun notifyDebtor(
         liveData: MutableLiveData<Query<ResponseBody>>,
         orderId: Int,
