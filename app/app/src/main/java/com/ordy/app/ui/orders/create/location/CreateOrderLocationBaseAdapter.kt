@@ -122,7 +122,6 @@ class CreateOrderLocationBaseAdapter(
 
         // Only add the footer if the search value is NOT empty
         if (viewModel.getSearchValue().isNotBlank()) {
-
             // Update the text of the default item.
             defaultItemView.location_item_default_text.text = String.format(
                 dialog.resources.getString(
@@ -130,7 +129,6 @@ class CreateOrderLocationBaseAdapter(
                     viewModel.getSearchValue()
                 )
             )
-
             listView.addFooterView(defaultItemView)
         }
 

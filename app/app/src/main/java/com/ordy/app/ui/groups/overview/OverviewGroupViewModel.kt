@@ -9,40 +9,17 @@ import okhttp3.ResponseBody
 
 class OverviewGroupViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
+    val renameGroupMLD: MutableLiveData<Query<Group>> = MutableLiveData(Query())
+    val removeMemberMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+    val leaveGroupMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+    val groupMLD: MutableLiveData<Query<Group>> = MutableLiveData(Query())
+
     /**
      * Refresh the group with given id.
      * @param groupId: ID of the group we want to fetch
      */
     fun refreshGroup(groupId: Int) {
-        repository.refreshGroup(groupId)
-    }
-
-    /**
-     * Get the MutableLiveData result of the Group fetch.
-     */
-    fun getGroupMLD(): MutableLiveData<Query<Group>> {
-        return repository.getGroup()
-    }
-
-    /**
-     * Get the MutableLiveData result of the Remove member from group query.
-     */
-    fun getRemoveMemberMLD(): MutableLiveData<Query<ResponseBody>> {
-        return repository.getRemoveMemberResult()
-    }
-
-    /**
-     * Get the MutableLiveData result of the Leave group query.
-     */
-    fun getLeaveGroupMLD(): MutableLiveData<Query<ResponseBody>> {
-        return repository.getLeaveGroupResult()
-    }
-
-    /**
-     * Get the MutableLiveData result of the Rename group query.
-     */
-    fun getRenameGroupMLD(): MutableLiveData<Query<Group>> {
-        return repository.getRenameGroupResult()
+        repository.refreshGroup(groupMLD, groupId)
     }
 
     /**
@@ -50,7 +27,7 @@ class OverviewGroupViewModel(repository: Repository) : RepositoryViewModel(repos
      * @param groupId: ID of the group the user is about to leave
      */
     fun userLeaveGroup(groupId: Int) {
-        repository.userLeaveGroup(groupId)
+        repository.userLeaveGroup(leaveGroupMLD, groupId)
     }
 
     /**
@@ -59,7 +36,7 @@ class OverviewGroupViewModel(repository: Repository) : RepositoryViewModel(repos
      * @param newName: The new name that will be given to the group
      */
     fun renameGroup(groupId: Int, newName: String) {
-        repository.renameGroup(groupId, newName)
+        repository.renameGroup(renameGroupMLD, groupId, newName)
     }
 
     /**
@@ -68,6 +45,6 @@ class OverviewGroupViewModel(repository: Repository) : RepositoryViewModel(repos
      * @param groupId: ID of the group the user is removed from
      */
     fun removeMemberFromGroup(userId: Int, groupId: Int) {
-        repository.removeMemberFromGroup(userId, groupId)
+        repository.removeMemberFromGroup(removeMemberMLD, userId, groupId)
     }
 }

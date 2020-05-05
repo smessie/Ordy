@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.getLoginMLD().observe(this, Observer {
+        viewModel.loginMLD.observe(this, Observer {
 
             when (it.status) {
 
@@ -79,6 +79,9 @@ class LoginFragment : Fragment() {
                             InputField("password", this.input_password)
                         )
                     )
+                }
+
+                else -> {
                 }
             }
         })

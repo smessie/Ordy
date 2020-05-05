@@ -95,7 +95,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         })
 
         // Observe the changes of the fetch.
-        viewModel.getOrderMLD().observe(this, Observer {
+        viewModel.orderMLD.observe(this, Observer {
 
             when (it.status) {
 
@@ -242,7 +242,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         val dialog = builder.create()
 
         // Observe changes to the bill upload.
-        viewModel.getUploadBillResult().observe(this, Observer {
+        viewModel.uploadBillMLD.observe(this, Observer {
 
             when (it.status) {
                 QueryStatus.LOADING -> {
@@ -365,6 +365,13 @@ class OverviewOrderActivity : AppCompatActivity() {
 
         // Upload the bill image.
         viewModel.uploadBill(orderId, requestBody)
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+
+        //refesh the order
+        viewModel.refreshOrder()
     }
 
     override fun onDestroy() {

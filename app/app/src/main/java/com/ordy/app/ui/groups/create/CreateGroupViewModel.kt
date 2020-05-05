@@ -9,6 +9,8 @@ import com.ordy.app.api.util.Query
 class CreateGroupViewModel(repository: Repository) : RepositoryViewModel(repository) {
     private val nameValueData: MutableLiveData<String> = MutableLiveData("")
 
+    val createGroupMLD: MutableLiveData<Query<Group>> = MutableLiveData(Query())
+
     fun getNameValue(): String {
         return nameValueData.value!!
     }
@@ -17,15 +19,8 @@ class CreateGroupViewModel(repository: Repository) : RepositoryViewModel(reposit
         return nameValueData
     }
 
-    /**
-     * Get the MutableLiveData result of the Create group query.
-     */
-    fun getCreateGroupMLD(): MutableLiveData<Query<Group>> {
-        return repository.getCreateGroupResult()
-    }
-
     fun getCreateGroup(): Query<Group> {
-        return getCreateGroupMLD().value!!
+        return createGroupMLD.value!!
     }
 
     /**
@@ -33,6 +28,6 @@ class CreateGroupViewModel(repository: Repository) : RepositoryViewModel(reposit
      * @param groupName: The name that the newly created group should have
      */
     fun createGroup(groupName: String) {
-        repository.createGroup(groupName)
+        repository.createGroup(createGroupMLD, groupName)
     }
 }

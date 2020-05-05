@@ -43,7 +43,7 @@ class AddItemOrderBaseAdapter(
         }
 
         // Update the list adapter when the "cuisine" query updates
-        viewModel.getCuisineItemsMLD().observe(activity, Observer {
+        viewModel.cuisineItemsMLD.observe(activity, Observer {
 
             // Catch possible errors.
             if (it.status == QueryStatus.ERROR) {
@@ -63,7 +63,7 @@ class AddItemOrderBaseAdapter(
         })
 
         // Observe the result of adding an item to the order.
-        viewModel.getAddItemMLD().observe(activity, Observer {
+        viewModel.addItemMLD.observe(activity, Observer {
 
             when (it.status) {
 
@@ -95,7 +95,7 @@ class AddItemOrderBaseAdapter(
         })
 
         // Update the "search value" of the list adapter when a change is observed
-        viewModel.getSearchValueMLD().observe(activity, Observer {
+        viewModel.searchValueMLD.observe(activity, Observer {
 
             // Update the list adapter
             update(cuisineItems, it)
