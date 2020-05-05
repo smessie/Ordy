@@ -479,7 +479,7 @@ class ApiServiceTest {
         Assert.assertEquals("GET", request.method)
         Assert.assertEquals("/locations/$locationId/items", request.path)
     }
-
+    /*
     /**
      * @method GET
      * @endpoint "/locations"
@@ -535,6 +535,64 @@ class ApiServiceTest {
 
         Assert.assertEquals("GET", request.method)
         Assert.assertEquals("/locations?q=${query}", request.path)
+    }
+
+     */
+
+    /**
+     * @method POST
+     * @endpoint "locations/{locationId}"
+     */
+    @Test
+    fun `Location should be marked without errors`() {
+        val locationId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+
+        server.enqueue(response)
+
+        // API Call
+        apiService.markLocationAsFavorite(locationId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/locations/$locationId", request.path)
+    }
+
+    /**
+     * @method DELETE
+     * @endpoint "locations/{locationId}"
+     */
+    @Test
+    fun `Location should be unmarked without errors`() {
+        val locationId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+
+        server.enqueue(response)
+
+        // API Call
+        apiService.unMarkLocationAsFavorite(locationId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("DELETE", request.method)
+        Assert.assertEquals("/locations/$locationId", request.path)
     }
 
     /**
