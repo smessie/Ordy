@@ -161,6 +161,7 @@ class AddItemOrderBaseAdapter(
 
     fun update(cuisineItems: Query<List<Item>>, searchValueData: String) {
         this.cuisineItems = cuisineItems
+        this.searchValueData = searchValueData
 
         if (cuisineItems.status == QueryStatus.SUCCESS) {
 
