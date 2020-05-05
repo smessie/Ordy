@@ -114,6 +114,8 @@ class OverviewOrderActivity : AppCompatActivity() {
 
                     if (!billUrl.isBlank()) {
                         order_bill_button.visibility = View.VISIBLE
+                    } else {
+                        order_bill_button.visibility = View.INVISIBLE
                     }
 
                     // Cancel the previous timer when available
