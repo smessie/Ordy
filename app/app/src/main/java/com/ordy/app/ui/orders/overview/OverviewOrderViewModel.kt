@@ -17,7 +17,7 @@ class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repos
 
     val orderId = MutableLiveData(-1)
 
-    lateinit var updateTimer: Timer
+    var updateTimer: Timer? = null
   
     // Uri of the selected image when uploading from the camera.
     var billUploadUri: URI? = null
