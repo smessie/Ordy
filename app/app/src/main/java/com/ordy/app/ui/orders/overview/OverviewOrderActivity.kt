@@ -116,6 +116,11 @@ class OverviewOrderActivity : AppCompatActivity() {
                         order_bill_button.visibility = View.VISIBLE
                     }
 
+                    // Cancel the previous timer when available
+                    if(viewModel.updateTimer != null) {
+                        viewModel.updateTimer?.cancel()
+                    }
+
                     // Update the closing time left every second.
                     viewModel.updateTimer = TimerUtil.updateUI(this, 0, 1000) {
                         order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
@@ -364,6 +369,6 @@ class OverviewOrderActivity : AppCompatActivity() {
         super.onDestroy()
 
         // Cancel the update timer.
-        viewModel.updateTimer.cancel()
+        viewModel.updateTimer?.cancel()
     }
 }
