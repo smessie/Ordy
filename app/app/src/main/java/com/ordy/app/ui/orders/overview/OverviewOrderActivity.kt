@@ -114,6 +114,13 @@ class OverviewOrderActivity : AppCompatActivity() {
 
                     if (!billUrl.isBlank()) {
                         order_bill_button.visibility = View.VISIBLE
+                    } else {
+                        order_bill_button.visibility = View.INVISIBLE
+                    }
+
+                    // Cancel the previous timer when available
+                    if(viewModel.updateTimer != null) {
+                        viewModel.updateTimer?.cancel()
                     }
 
                     // Update the closing time left every second.
@@ -364,6 +371,6 @@ class OverviewOrderActivity : AppCompatActivity() {
         super.onDestroy()
 
         // Cancel the update timer.
-        viewModel.updateTimer.cancel()
+        viewModel.updateTimer?.cancel()
     }
 }
