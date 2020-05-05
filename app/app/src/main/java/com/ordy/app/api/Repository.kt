@@ -176,19 +176,15 @@ class Repository(private val apiService: ApiService) {
     /******************************
      ***         LOGIN          ***
      ******************************/
-    private val loginResult: MutableLiveData<Query<LoginResponse>> =
-        MutableLiveData(Query()) //TODO fiks
-    private val registerResult: MutableLiveData<Query<ResponseBody>> =
-        MutableLiveData(Query()) //TODO fiks
 
     /**
      * Attempt to login a user.
      * @param email: Email entered by the user
      * @param password: Password entered by the user
      */
-    fun login(email: String, password: String) {
+    fun login(liveData: MutableLiveData<Query<LoginResponse>>, email: String, password: String) {
         FetchHandler.handle(
-            loginResult, apiService.login(
+            liveData, apiService.login(
                 UserLogin(
                     email,
                     password
@@ -203,9 +199,14 @@ class Repository(private val apiService: ApiService) {
      * @param email: Email entered by the user
      * @param password: Password entered by the user
      */
-    fun register(username: String, email: String, password: String) {
+    fun register(
+        liveData: MutableLiveData<Query<ResponseBody>>,
+        username: String,
+        email: String,
+        password: String
+    ) {
         FetchHandler.handle(
-            registerResult, apiService.register(
+            liveData, apiService.register(
                 UserRegister(
                     username,
                     email,
@@ -213,20 +214,6 @@ class Repository(private val apiService: ApiService) {
                 )
             )
         )
-    }
-
-    /**
-     * Get the MutableLiveData result of the Login query.
-     */
-    fun getLoginResult(): MutableLiveData<Query<LoginResponse>> {
-        return loginResult
-    }
-
-    /**
-     * Get the MutableLiveData result of the Register query.
-     */
-    fun getRegisterResult(): MutableLiveData<Query<ResponseBody>> {
-        return registerResult
     }
 
     /******************************
