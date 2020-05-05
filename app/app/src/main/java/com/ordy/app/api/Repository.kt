@@ -17,20 +17,23 @@ class Repository(private val apiService: ApiService) {
     /******************************
      ***        GROUPS          ***
      ******************************/
-    private val createGroupResult: MutableLiveData<Query<Group>> = MutableLiveData(Query())
-    private val inviteableUsers: MutableLiveData<Query<List<GroupInviteUserWrapper>>> = MutableLiveData(Query())
+    private val inviteableUsers: MutableLiveData<Query<List<GroupInviteUserWrapper>>> =
+        MutableLiveData(Query()) //TODO fiks
     private val group: MutableLiveData<Query<Group>> = MutableLiveData(Query())
-    private val renameGroupResult: MutableLiveData<Query<Group>> = MutableLiveData(Query())
-    private val leaveGroupResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
-    private val removeMemberResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+    private val renameGroupResult: MutableLiveData<Query<Group>> =
+        MutableLiveData(Query()) //TODO fiks
+    private val leaveGroupResult: MutableLiveData<Query<ResponseBody>> =
+        MutableLiveData(Query()) //TODO fiks
+    private val removeMemberResult: MutableLiveData<Query<ResponseBody>> =
+        MutableLiveData(Query()) //TODO fiks
     private val groups: MutableLiveData<Query<List<Group>>> = MutableLiveData(Query())
 
     /**
      * Create a new group.
      * @param groupName: The name that the newly created group should have
      */
-    fun createGroup(groupName: String) {
-        FetchHandler.handle(createGroupResult, apiService.createGroup(GroupCreate(groupName)))
+    fun createGroup(liveData: MutableLiveData<Query<Group>>, groupName: String) {
+        FetchHandler.handle(liveData, apiService.createGroup(GroupCreate(groupName)))
     }
 
     /**
@@ -125,13 +128,6 @@ class Repository(private val apiService: ApiService) {
     }
 
     /**
-     * Get the MutableLiveData result of the Create group query.
-     */
-    fun getCreateGroupResult(): MutableLiveData<Query<Group>> {
-        return createGroupResult
-    }
-
-    /**
      * Get the MutableLiveData result of all users matched that are able to invite.
      */
     fun getInviteableUsers(): MutableLiveData<Query<List<GroupInviteUserWrapper>>> {
@@ -214,8 +210,10 @@ class Repository(private val apiService: ApiService) {
     /******************************
      ***         LOGIN          ***
      ******************************/
-    private val loginResult: MutableLiveData<Query<LoginResponse>> = MutableLiveData(Query())
-    private val registerResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+    private val loginResult: MutableLiveData<Query<LoginResponse>> =
+        MutableLiveData(Query()) //TODO fiks
+    private val registerResult: MutableLiveData<Query<ResponseBody>> =
+        MutableLiveData(Query()) //TODO fiks
 
     /**
      * Attempt to login a user.
@@ -272,7 +270,8 @@ class Repository(private val apiService: ApiService) {
     private val order: MutableLiveData<Query<Order>> = MutableLiveData(Query(QueryStatus.LOADING))
     private val cuisineItems: MutableLiveData<Query<List<Item>>> = MutableLiveData(Query())
     private val addItemResult: MutableLiveData<Query<OrderItem>> = MutableLiveData(Query())
-    private val uploadBillResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+    private val uploadBillResult: MutableLiveData<Query<ResponseBody>> =
+        MutableLiveData(Query()) //TODO fiks
 
     /**
      * Refresh the list of orders.
