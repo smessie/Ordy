@@ -10,18 +10,13 @@ import okhttp3.ResponseBody
 
 class ProfileViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
-    /**
-     * Get the MutableLiveData result of the Invites fetch.
-     */
-    fun getInvitesMLD(): MutableLiveData<Query<List<GroupInvite>>> {
-        return repository.getInvites()
-    }
+    val invitesMLD: MutableLiveData<Query<List<GroupInvite>>> = MutableLiveData(Query())
 
     /**
      * Refresh the invites.
      */
     fun refreshInvites() {
-        repository.refreshInvites()
+        repository.refreshInvites(invitesMLD)
     }
 
     /**

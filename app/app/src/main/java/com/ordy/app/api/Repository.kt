@@ -401,13 +401,12 @@ class Repository(private val apiService: ApiService) {
     /******************************
      ***        PROFILE         ***
      ******************************/
-    private val invites: MutableLiveData<Query<List<GroupInvite>>> = MutableLiveData(Query())
 
     /**
      * Refresh the invites.
      */
-    fun refreshInvites() {
-        FetchHandler.handle(invites, apiService.userInvites())
+    fun refreshInvites(liveData: MutableLiveData<Query<List<GroupInvite>>>) {
+        FetchHandler.handle(liveData, apiService.userInvites())
     }
 
     /**
@@ -427,15 +426,4 @@ class Repository(private val apiService: ApiService) {
             )
         )
     }
-
-    /**
-     * Get the MutableLiveData result of the Invites fetch.
-     */
-    fun getInvites(): MutableLiveData<Query<List<GroupInvite>>> {
-        return invites
-    }
-
-    /******************************
-     ***        SETTINGS        ***
-     ******************************/
 }
