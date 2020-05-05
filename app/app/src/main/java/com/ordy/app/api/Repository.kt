@@ -17,13 +17,6 @@ class Repository(private val apiService: ApiService) {
     /******************************
      ***        GROUPS          ***
      ******************************/
-    private val group: MutableLiveData<Query<Group>> = MutableLiveData(Query())
-    private val renameGroupResult: MutableLiveData<Query<Group>> =
-        MutableLiveData(Query()) //TODO fiks
-    private val leaveGroupResult: MutableLiveData<Query<ResponseBody>> =
-        MutableLiveData(Query()) //TODO fiks
-    private val removeMemberResult: MutableLiveData<Query<ResponseBody>> =
-        MutableLiveData(Query()) //TODO fiks
     private val groups: MutableLiveData<Query<List<Group>>> = MutableLiveData(Query())
 
     /**
@@ -86,8 +79,8 @@ class Repository(private val apiService: ApiService) {
      * Refresh the group with given id.
      * @param groupId: ID of the group we want to fetch
      */
-    fun refreshGroup(groupId: Int) {
-        FetchHandler.handle(group, apiService.group(groupId))
+    fun refreshGroup(liveData: MutableLiveData<Query<Group>>, groupId: Int) {
+        FetchHandler.handle(liveData, apiService.group(groupId))
     }
 
     /**
@@ -101,9 +94,9 @@ class Repository(private val apiService: ApiService) {
      * Let the user leave the given group.
      * @param groupId: ID of the group the user is about to leave
      */
-    fun userLeaveGroup(groupId: Int) {
+    fun userLeaveGroup(liveData: MutableLiveData<Query<ResponseBody>>, groupId: Int) {
         FetchHandler.handle(
-            leaveGroupResult,
+            liveData,
             apiService.userLeaveGroup(groupId)
         )
     }
@@ -113,9 +106,9 @@ class Repository(private val apiService: ApiService) {
      * @param groupId: ID of the group of which the name will be changed
      * @param newName: The new name that will be given to the group
      */
-    fun renameGroup(groupId: Int, newName: String) {
+    fun renameGroup(liveData: MutableLiveData<Query<Group>>, groupId: Int, newName: String) {
         FetchHandler.handle(
-            renameGroupResult,
+            liveData,
             apiService.updateGroup(groupId, GroupUpdate(newName))
         )
     }
@@ -125,38 +118,14 @@ class Repository(private val apiService: ApiService) {
      * @param userId: ID of the user that should be kicked
      * @param groupId: ID of the group the user is removed from
      */
-    fun removeMemberFromGroup(userId: Int, groupId: Int) {
+    fun removeMemberFromGroup(
+        liveData: MutableLiveData<Query<ResponseBody>>,
+        userId: Int,
+        groupId: Int
+    ) {
         FetchHandler.handle(
-            removeMemberResult, apiService.deleteMemberGroup(groupId, userId)
+            liveData, apiService.deleteMemberGroup(groupId, userId)
         )
-    }
-
-    /**
-     * Get the MutableLiveData result of the Group fetch.
-     */
-    fun getGroup(): MutableLiveData<Query<Group>> {
-        return group
-    }
-
-    /**
-     * Get the MutableLiveData result of the Rename group query.
-     */
-    fun getRenameGroupResult(): MutableLiveData<Query<Group>> {
-        return renameGroupResult
-    }
-
-    /**
-     * Get the MutableLiveData result of the Leave group query.
-     */
-    fun getLeaveGroupResult(): MutableLiveData<Query<ResponseBody>> {
-        return leaveGroupResult
-    }
-
-    /**
-     * Get the MutableLiveData result of the Remove member from group query.
-     */
-    fun getRemoveMemberResult(): MutableLiveData<Query<ResponseBody>> {
-        return removeMemberResult
     }
 
     /**
