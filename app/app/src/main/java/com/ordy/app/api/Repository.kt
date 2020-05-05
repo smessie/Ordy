@@ -17,8 +17,6 @@ class Repository(private val apiService: ApiService) {
     /******************************
      ***        GROUPS          ***
      ******************************/
-    private val inviteableUsers: MutableLiveData<Query<List<GroupInviteUserWrapper>>> =
-        MutableLiveData(Query()) //TODO fiks
     private val group: MutableLiveData<Query<Group>> = MutableLiveData(Query())
     private val renameGroupResult: MutableLiveData<Query<Group>> =
         MutableLiveData(Query()) //TODO fiks
@@ -41,9 +39,13 @@ class Repository(private val apiService: ApiService) {
      * @param groupId: ID of the group
      * @param username: The name we want to match on in our search query
      */
-    fun searchMatchingInviteUsers(groupId: Int, username: String) {
+    fun searchMatchingInviteUsers(
+        liveData: MutableLiveData<Query<List<GroupInviteUserWrapper>>>,
+        groupId: Int,
+        username: String
+    ) {
         FetchHandler.handle(
-            inviteableUsers,
+            liveData,
             apiService.searchMatchingInviteUsers(groupId, username)
         )
     }
@@ -70,9 +72,11 @@ class Repository(private val apiService: ApiService) {
      * @param groupId: ID of the group we want to delete the invite for
      * @param liveData: Object where we want to store the result of our query in
      */
-    fun deleteInviteOfUserFromGroup(userInvitedId: Int,
-                                    groupId: Int,
-                                    liveData: MutableLiveData<Query<ResponseBody>>) {
+    fun deleteInviteOfUserFromGroup(
+        userInvitedId: Int,
+        groupId: Int,
+        liveData: MutableLiveData<Query<ResponseBody>>
+    ) {
         FetchHandler.handle(
             liveData, apiService.deleteInviteGroup(groupId, userInvitedId)
         )
@@ -125,13 +129,6 @@ class Repository(private val apiService: ApiService) {
         FetchHandler.handle(
             removeMemberResult, apiService.deleteMemberGroup(groupId, userId)
         )
-    }
-
-    /**
-     * Get the MutableLiveData result of all users matched that are able to invite.
-     */
-    fun getInviteableUsers(): MutableLiveData<Query<List<GroupInviteUserWrapper>>> {
-        return inviteableUsers
     }
 
     /**
@@ -435,8 +432,8 @@ class Repository(private val apiService: ApiService) {
     val userDebtsResult: MutableLiveData<Query<List<Payment>>> = MutableLiveData(Query())
 
     /**
-    * Refresh the Debtors.
-    * */
+     * Refresh the Debtors.
+     * */
     fun refreshDebtors() {
         FetchHandler.handle(
             userDebtorsResult, apiService.userDebtors()
