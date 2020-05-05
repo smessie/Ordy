@@ -173,7 +173,7 @@ class AddItemOrderBaseAdapter(
             // Add the "default" item to the bottom of the listview
             // This item serves as a fallback when no correct matches were found.
             defaultItemView.add_item_order_default_text.text = String.format(
-                activity.applicationContext.resources.getString(
+                activity.resources.getString(
                     R.string.add_item_order_default_text,
                     searchValueData
                 )

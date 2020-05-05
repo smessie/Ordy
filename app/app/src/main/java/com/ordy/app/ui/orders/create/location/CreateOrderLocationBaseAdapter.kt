@@ -117,19 +117,18 @@ class CreateOrderLocationBaseAdapter(
 
     fun update() {
 
-        // Update the text of the default item.
-        defaultItemView.location_item_default_text.text = String.format(
-            context.resources.getString(
-                R.string.add_item_order_default_text,
-                viewModel.getSearchValue()
-            )
-        )
-
         // Remove the footer and add it again to prevent errors
         listView.removeFooterView(defaultItemView)
 
         // Only add the footer if the search value is NOT empty
         if (viewModel.getSearchValue().isNotBlank()) {
+            // Update the text of the default item.
+            defaultItemView.location_item_default_text.text = String.format(
+                dialog.resources.getString(
+                    R.string.locations_default_text,
+                    viewModel.getSearchValue()
+                )
+            )
             listView.addFooterView(defaultItemView)
         }
 

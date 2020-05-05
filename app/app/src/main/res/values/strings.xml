@@ -77,6 +77,7 @@
     <string name="pick">Pick</string>
     <string name="no_locations_title">No locations found</string>
     <string name="no_locations_description">Use the searchbar above to search for a location by name</string>
+    <string name="locations_default_text">Use location \"%1$s\" instead</string>
     <string name="pick_custom">Pick Custom</string>
     <string name="location_item_default_title">Not in the list?</string>
     <string name="loading">Loading&#8230;</string>
