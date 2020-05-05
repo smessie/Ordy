@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.ordy.app.api.models.*
 import com.ordy.app.api.models.actions.*
 import com.ordy.app.api.models.actions.enums.OrderUpdateAction
+import com.ordy.app.api.wrappers.LocationWrapper
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -502,29 +503,35 @@ class ApiServiceTest {
 
             assertValue(
                 mutableListOf(
-                    Location(
-                        id = 4,
-                        name = "La Piazza",
-                        latitude = 51.031638,
-                        longitude = 4.096320,
-                        address = "Kerkstraat 48",
-                        cuisine = Cuisine(
-                            id = 4,
-                            name = "Italian",
-                            items = mutableListOf()
-                        )
+                    LocationWrapper(
+                         location = Location(
+                             id = 4,
+                             name = "La Piazza",
+                             latitude = 51.031638,
+                             longitude = 4.096320,
+                             address = "Kerkstraat 48",
+                             cuisine = Cuisine(
+                                 id = 4,
+                                 name = "Italian",
+                                 items = mutableListOf()
+                             )
+                         ),
+                         favorite = true
                     ),
-                    Location(
-                        id = 5,
-                        name = "Naxos Island",
-                        latitude = 51.031604,
-                        longitude = 4.097384,
-                        address = "Kerkstraat 15",
-                        cuisine = Cuisine(
+                    LocationWrapper(
+                        location = Location(
                             id = 5,
-                            name = "Greek",
-                            items = mutableListOf()
-                        )
+                            name = "Naxos Island",
+                            latitude = 51.031604,
+                            longitude = 4.097384,
+                            address = "Kerkstraat 15",
+                            cuisine = Cuisine(
+                                id = 5,
+                                name = "Greek",
+                                items = mutableListOf()
+                            )
+                        ),
+                        favorite = false
                     )
                 )
             )
@@ -535,6 +542,62 @@ class ApiServiceTest {
 
         Assert.assertEquals("GET", request.method)
         Assert.assertEquals("/locations?q=${query}", request.path)
+    }
+
+    /**
+     * @method POST
+     * @endpoint "locations/{locationId}"
+     */
+    @Test
+    fun `Location should be marked without errors`() {
+        val locationId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+
+        server.enqueue(response)
+
+        // API Call
+        apiService.markLocationAsFavorite(locationId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/locations/$locationId", request.path)
+    }
+
+    /**
+     * @method DELETE
+     * @endpoint "locations/{locationId}"
+     */
+    @Test
+    fun `Location should be unmarked without errors`() {
+        val locationId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+
+        server.enqueue(response)
+
+        // API Call
+        apiService.unMarkLocationAsFavorite(locationId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("DELETE", request.method)
+        Assert.assertEquals("/locations/$locationId", request.path)
     }
 
     /**
