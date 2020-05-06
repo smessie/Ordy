@@ -6,7 +6,7 @@ import android.content.Context
 @SuppressLint("ApplySharedPref")
 class AppPreferences (val context: Context) {
 
-    private val preferences = context.getSharedPreferences("ordy", 0)
+    private val preferences = context.getSharedPreferences("ordy", Context.MODE_PRIVATE)
 
     /**
      * Access Token for authentication
@@ -18,6 +18,15 @@ class AppPreferences (val context: Context) {
         }
 
     /**
+     * Device Token for notifications
+     */
+    var deviceToken: String?
+        get() = preferences.getString("device_token", "")
+        set(value) {
+            preferences.edit().putString("device_token", value).commit()
+        }
+
+    /**
      * User ID of the logged in user
      */
     var userId: Int?
@@ -25,6 +34,61 @@ class AppPreferences (val context: Context) {
         set(value) {
             if (value != null) {
                 preferences.edit().putInt("user_id", value).commit()
+            }
+        }
+
+    /**
+     * Boolean that determines whether the user gets notifications for payments
+     */
+    var wantsPaymentsNotifications: Boolean?
+        get() = preferences.getBoolean(userId.toString() + "/" + "notif_payments", true)
+        set(value) {
+            if (value != null) {
+                preferences.edit().putBoolean(userId.toString() + "/" + "notif_payments", value).commit()
+            }
+        }
+
+    /**
+     * Boolean that determines whether the user gets notifications for new orders
+     */
+    var wantsOrdersNotifications: Boolean?
+        get() = preferences.getBoolean(userId.toString() + "/" + "notif_orders", true)
+        set(value) {
+            if (value != null) {
+                preferences.edit().putBoolean(userId.toString() + "/" + "notif_orders", value).commit()
+            }
+        }
+
+    /**
+     * Boolean that determines whether the user gets notifications for new invites
+     */
+    var wantsInvitesNotifications: Boolean?
+        get() = preferences.getBoolean(userId.toString() + "/" + "notif_invites", true)
+        set(value) {
+            if (value != null) {
+                preferences.edit().putBoolean(userId.toString() + "/" + "notif_invites", value).commit()
+            }
+        }
+
+    /**
+     * Boolean that determines whether the user gets notifications when the order deadline draws near
+     */
+    var wantsDeadlineNotifications: Boolean?
+        get() = preferences.getBoolean(userId.toString() + "/" + "notif_deadline", true)
+        set(value) {
+            if (value != null) {
+                preferences.edit().putBoolean(userId.toString() + "/" + "notif_deadline", value).commit()
+            }
+        }
+
+    /**
+     * Boolean that determines whether the user gets notifications when the bill picture is uploaded
+     */
+    var wantsBillNotifications: Boolean?
+        get() = preferences.getBoolean(userId.toString() + "/" + "notif_bill_picture", true)
+        set(value) {
+            if (value != null) {
+                preferences.edit().putBoolean(userId.toString() + "/" + "notif_bill_picture", value).commit()
             }
         }
 }

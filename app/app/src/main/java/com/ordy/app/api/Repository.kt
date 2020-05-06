@@ -180,13 +180,15 @@ class Repository(private val apiService: ApiService) {
      * Attempt to login a user.
      * @param email: Email entered by the user
      * @param password: Password entered by the user
+     * @param deviceToken: Devicetoken of the user
      */
     fun login(liveData: MutableLiveData<Query<LoginResponse>>, email: String, password: String) {
         FetchHandler.handle(
             liveData, apiService.login(
                 UserLogin(
                     email,
-                    password
+                    password,
+                    deviceToken
                 )
             )
         )
@@ -394,6 +396,21 @@ class Repository(private val apiService: ApiService) {
                 orderId = orderId,
                 userId = userId,
                 body = paymentUpdate
+            )
+        )
+    }
+
+    /**
+     * Send a notification to the selected debtor
+     */
+    fun notifyDebtor(
+        liveData: MutableLiveData<Query<ResponseBody>>,
+        orderId: Int,
+        userId: Int
+    ) {
+        FetchHandler.handle(
+            liveData, apiService.userNotifyDeptor(
+                orderId, userId
             )
         )
     }

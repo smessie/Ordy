@@ -31,6 +31,17 @@ class PaymentsViewModel(repository: Repository) : RepositoryViewModel(repository
         )
     }
 
+    // Notify
+    fun notifyDebtor(
+        liveData: MutableLiveData<Query<ResponseBody>>,
+        orderId: Int,
+        userId: Int
+    ) {
+        repository.notifyDebtor(
+            liveData, orderId, userId
+        )
+    }
+
     val debtsSearch = MutableLiveData("")
     fun getDebtsSearchMLD() = debtsSearch
 

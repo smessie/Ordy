@@ -17,6 +17,7 @@ import com.ordy.app.ui.orders.create.CreateOrderActivity
 import com.ordy.app.ui.profile.ProfileActivity
 import com.ordy.app.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -115,6 +116,23 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        /**
+         * Handle potentially passed intent extras.
+         */
+        if (intent.extras != null) {
+            val openTab = intent.extras?.getString("open_tab")
+
+            if(openTab != null) {
+                // Open the correct tab.
+                when (openTab.toLowerCase(Locale.ROOT)) {
+                    "orders" -> navController.navigate(R.id.navigation_orders)
+                    "groups" -> navController.navigate(R.id.navigation_groups)
+                    "payments" -> navController.navigate(R.id.navigation_payments)
+                    "locations" -> navController.navigate(R.id.navigation_locations)
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
