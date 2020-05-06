@@ -19,13 +19,13 @@ class OverviewGroupHandlers(
      * Handle the leave button clicked
      */
     fun onLeaveButtonClick() {
-        if (viewModel.groupMLD.value != null) {
+        if (viewModel.getGroupMLD().value != null) {
             AlertDialog.Builder(activity).apply {
                 setTitle(activity.getString(R.string.order_overview_leave_title))
                 setMessage(activity.getString(R.string.order_overview_leave_message))
 
                 setPositiveButton(android.R.string.ok) { _, _ ->
-                    viewModel.userLeaveGroup(viewModel.groupMLD.value!!.requireData().id)
+                    viewModel.userLeaveGroup(viewModel.getGroup().requireData().id)
                 }
 
                 setNegativeButton(android.R.string.cancel) { dialog, _ ->
@@ -44,11 +44,11 @@ class OverviewGroupHandlers(
      * Handle the invite button clicked
      */
     fun onInviteButtonClick() {
-        if (viewModel.groupMLD.value != null) {
+        if (viewModel.getGroupMLD().value != null) {
             val intent = Intent(activity, InviteMemberActivity::class.java)
 
             // Pass the group as extra information
-            intent.putExtra("group_id", viewModel.groupMLD.value!!.requireData().id)
+            intent.putExtra("group_id", viewModel.getGroup().requireData().id)
 
             activity.startActivity(intent)
         } else {
@@ -63,7 +63,7 @@ class OverviewGroupHandlers(
      * Handle the rename button clicked
      */
     fun onRenameButtonClick() {
-        if (viewModel.groupMLD.value != null) {
+        if (viewModel.getGroupMLD().value != null) {
             val manager = this.activity.supportFragmentManager
 
             val dialog = ChangeGroupNameDialog(
@@ -71,11 +71,11 @@ class OverviewGroupHandlers(
                 activityView = view
             )
             dialog.show(manager, activity.getString(R.string.group_rename_dialog_tag))
-            viewModel.renameGroupMLD.observe(this.activity, Observer {
+            viewModel.getRenameGroupMLD().observe(this.activity, Observer {
                 // Refresh when query is successful
                 when (it.status) {
                     QueryStatus.SUCCESS -> {
-                        viewModel.refreshGroup(viewModel.groupMLD.value!!.requireData().id)
+                        viewModel.refreshGroup(viewModel.getGroup().requireData().id)
                     }
 
                     QueryStatus.ERROR -> {
@@ -91,7 +91,7 @@ class OverviewGroupHandlers(
     }
 
     fun removeMember(groupId: Int, userId: Int) {
-        if (viewModel.removeMemberMLD.value?.status != QueryStatus.LOADING) {
+        if (viewModel.getRemoveMember().status != QueryStatus.LOADING) {
             viewModel.removeMemberFromGroup(userId, groupId)
         }
     }

@@ -98,7 +98,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         })
 
         // Observe the changes of the fetch.
-        viewModel.orderMLD.observe(this, Observer {
+        viewModel.getOrderMLD().observe(this, Observer {
 
             when (it.status) {
 
@@ -245,7 +245,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         val dialog = builder.create()
 
         // Observe changes to the bill upload.
-        viewModel.uploadBillMLD.observe(this, Observer {
+        viewModel.getUploadBillMLD().observe(this, Observer {
 
             when (it.status) {
                 QueryStatus.LOADING -> {

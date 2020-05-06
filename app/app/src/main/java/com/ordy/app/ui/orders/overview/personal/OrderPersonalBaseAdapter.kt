@@ -41,7 +41,7 @@ class OrderPersonalBaseAdapter(
     private var updateTimer: Timer = Timer()
 
     init {
-        viewModel.orderMLD.observe(lifecycleOwner, Observer {
+        viewModel.getOrderMLD().observe(lifecycleOwner, Observer {
             update(it)
         })
     }
@@ -206,7 +206,7 @@ class OrderPersonalBaseAdapter(
                     this.order.requireData().orderItems?.remove(orderItem)
 
                     // Update the query.
-                    viewModel.orderMLD.postValue(this.order)
+                    viewModel.getOrderMLD().postValue(this.order)
                 }
 
                 QueryStatus.ERROR -> {

@@ -41,7 +41,7 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.registerMLD.observe(this, Observer {
+        viewModel.getRegisterMLD().observe(this, Observer {
 
             when (it.status) {
 
@@ -56,7 +56,7 @@ class RegisterFragment : Fragment() {
                     SnackbarUtil.closeSnackbar(requireView())
 
                     // Go to the login fragment.
-                    viewModel.isLogin.postValue(true)
+                    viewModel.getIsLoginMLD().postValue(true)
                 }
 
                 QueryStatus.ERROR -> {

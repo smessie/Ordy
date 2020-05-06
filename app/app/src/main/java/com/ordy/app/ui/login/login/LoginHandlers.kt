@@ -20,6 +20,6 @@ class LoginHandlers(val fragment: LoginFragment, val viewModel: LoginViewModel) 
      * Open register when clicked on the goto register button
      */
     fun onGotoRegisterClick() {
-        viewModel.isLogin.postValue(false)
+        viewModel.getIsLoginMLD().postValue(false)
     }
 }

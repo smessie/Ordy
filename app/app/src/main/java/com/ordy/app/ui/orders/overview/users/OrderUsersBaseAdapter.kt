@@ -28,7 +28,7 @@ class OrderUsersBaseAdapter(
     private var orderItemUserGroups: List<OrderItemUserGroup> = emptyList()
 
     init {
-        viewModel.orderMLD.observe(lifecycleOwner, Observer {
+        viewModel.getOrderMLD().observe(lifecycleOwner, Observer {
             update(it)
         })
     }

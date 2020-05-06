@@ -6,13 +6,59 @@ import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.Group
 import com.ordy.app.api.util.Query
 import okhttp3.ResponseBody
+import java.lang.IllegalStateException
 
 class OverviewGroupViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
-    val renameGroupMLD: MutableLiveData<Query<Group>> = MutableLiveData(Query())
-    val removeMemberMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
-    val leaveGroupMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
-    val groupMLD: MutableLiveData<Query<Group>> = MutableLiveData(Query())
+    private val renameGroupMLD: MutableLiveData<Query<Group>> = MutableLiveData(Query())
+    private val removeMemberMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+    private val leaveGroupMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+    private val groupMLD: MutableLiveData<Query<Group>> = MutableLiveData(Query())
+
+    /**
+     * Get livedata for renaming a group.
+     */
+    fun getRenameGroupMLD(): MutableLiveData<Query<Group>> {
+        return this.renameGroupMLD
+    }
+
+    /**
+     * Get livedata for leaving the group.
+     */
+    fun getLeaveGroupMLD(): MutableLiveData<Query<ResponseBody>> {
+        return this.leaveGroupMLD
+    }
+
+    /**
+     * Get livedata for removing a user from the group.
+     */
+    fun getRemoveMemberMLD(): MutableLiveData<Query<ResponseBody>> {
+        return this.removeMemberMLD
+    }
+
+    /**
+     * Get query for removing a user from the group.
+     * @throws IllegalStateException when MLD.value is null.
+     */
+    fun getRemoveMember(): Query<ResponseBody> {
+        return this.removeMemberMLD.value
+            ?: throw IllegalStateException("RemoveMember data called when null")
+    }
+
+    /**
+     * Get livedata for the current group.
+     */
+    fun getGroupMLD(): MutableLiveData<Query<Group>> {
+        return this.groupMLD
+    }
+
+    /**
+     * Get query for the current group.
+     * @throws IllegalStateException when MLD.value is null.
+     */
+    fun getGroup(): Query<Group> {
+        return this.groupMLD.value ?: throw IllegalStateException("Group data called when null")
+    }
 
     /**
      * Refresh the group with given id.

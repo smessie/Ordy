@@ -8,20 +8,51 @@ import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
+import java.lang.IllegalStateException
 import java.net.URI
 import java.util.*
 
 class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
+    /**
+     * Id of the current order.
+     */
     val orderId = MutableLiveData(-1)
 
+    /**
+     * Timer for updating the closing time.
+     */
     var updateTimer: Timer? = null
-  
-    // Uri of the selected image when uploading from the camera.
+
+    /**
+     * Uri of the selected image when uploading from the camera.
+     */
     var billUploadUri: URI? = null
 
-    val uploadBillMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
-    val orderMLD: MutableLiveData<Query<Order>> = MutableLiveData(Query(QueryStatus.LOADING))
+    private val uploadBillMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+    private val orderMLD: MutableLiveData<Query<Order>> = MutableLiveData(Query(QueryStatus.LOADING))
+
+    /**
+     * Get livedata for uploading the bill.
+     */
+    fun getUploadBillMLD(): MutableLiveData<Query<ResponseBody>> {
+        return this.uploadBillMLD
+    }
+
+    /**
+     * Get livedata for the current order.
+     */
+    fun getOrderMLD(): MutableLiveData<Query<Order>> {
+        return this.orderMLD
+    }
+
+    /**
+     * Get query for the current order.
+     * @throws IllegalStateException when MLD.value is null.
+     */
+    fun getOrder(): Query<Order> {
+        return this.orderMLD.value ?: throw IllegalStateException("Order data is null")
+    }
 
     /**
      * Refresh the order

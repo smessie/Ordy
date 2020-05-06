@@ -13,8 +13,23 @@ class AddItemOrderViewModel(repository: Repository) : RepositoryViewModel(reposi
      * Value of the search input field.
      */
     val searchValueMLD: MutableLiveData<String> = MutableLiveData("")
-    val cuisineItemsMLD: MutableLiveData<Query<List<Item>>> = MutableLiveData(Query())
-    val addItemMLD: MutableLiveData<Query<OrderItem>> = MutableLiveData(Query())
+
+    private val cuisineItemsMLD: MutableLiveData<Query<List<Item>>> = MutableLiveData(Query())
+    private val addItemMLD: MutableLiveData<Query<OrderItem>> = MutableLiveData(Query())
+
+    /**
+     * Get livedata for cuisineitems of the current order.
+     */
+    fun getCuisineItemsMLD(): MutableLiveData<Query<List<Item>>> {
+        return this.cuisineItemsMLD
+    }
+
+    /**
+     * Get livedata for adding an item to the current order.
+     */
+    fun getAddItemMLD() : MutableLiveData<Query<OrderItem>> {
+        return this.addItemMLD
+    }
 
     /**
      * Get the list with cuisine items.

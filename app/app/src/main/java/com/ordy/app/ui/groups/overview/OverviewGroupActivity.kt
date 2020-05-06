@@ -54,7 +54,7 @@ class OverviewGroupActivity : AppCompatActivity() {
         }
 
         // Observe the changes of the fetch.
-        viewModel.groupMLD.observe(this, Observer {
+        viewModel.getGroupMLD().observe(this, Observer {
 
             when (it.status) {
 
@@ -81,7 +81,7 @@ class OverviewGroupActivity : AppCompatActivity() {
         })
 
         // Observe the changes of the remove member request.
-        viewModel.removeMemberMLD.observe(this, Observer {
+        viewModel.getRemoveMemberMLD().observe(this, Observer {
 
             when (it.status) {
 
@@ -100,7 +100,7 @@ class OverviewGroupActivity : AppCompatActivity() {
         })
 
         // Observe the changes of the leave group request.
-        viewModel.leaveGroupMLD.observe(this, Observer {
+        viewModel.getLeaveGroupMLD().observe(this, Observer {
 
             when (it.status) {
 
