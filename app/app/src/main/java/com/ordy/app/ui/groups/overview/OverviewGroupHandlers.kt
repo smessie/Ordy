@@ -1,8 +1,8 @@
 package com.ordy.app.ui.groups.overview
 
-import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
@@ -25,7 +25,7 @@ class OverviewGroupHandlers(
                 setMessage(activity.getString(R.string.order_overview_leave_message))
 
                 setPositiveButton(android.R.string.ok) { _, _ ->
-                    viewModel.userLeaveGroup(viewModel.getGroupMLD().value!!.requireData().id)
+                    viewModel.userLeaveGroup(viewModel.getGroup().requireData().id)
                 }
 
                 setNegativeButton(android.R.string.cancel) { dialog, _ ->
@@ -48,7 +48,7 @@ class OverviewGroupHandlers(
             val intent = Intent(activity, InviteMemberActivity::class.java)
 
             // Pass the group as extra information
-            intent.putExtra("group_id", viewModel.getGroupMLD().value!!.requireData().id)
+            intent.putExtra("group_id", viewModel.getGroup().requireData().id)
 
             activity.startActivity(intent)
         } else {
@@ -75,7 +75,7 @@ class OverviewGroupHandlers(
                 // Refresh when query is successful
                 when (it.status) {
                     QueryStatus.SUCCESS -> {
-                        viewModel.refreshGroup(viewModel.getGroupMLD().value!!.requireData().id)
+                        viewModel.refreshGroup(viewModel.getGroup().requireData().id)
                     }
 
                     QueryStatus.ERROR -> {
@@ -91,7 +91,7 @@ class OverviewGroupHandlers(
     }
 
     fun removeMember(groupId: Int, userId: Int) {
-        if (viewModel.getRemoveMemberMLD().value?.status != QueryStatus.LOADING) {
+        if (viewModel.getRemoveMember().status != QueryStatus.LOADING) {
             viewModel.removeMemberFromGroup(userId, groupId)
         }
     }

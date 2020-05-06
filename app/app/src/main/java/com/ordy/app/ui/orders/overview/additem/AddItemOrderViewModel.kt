@@ -12,48 +12,44 @@ class AddItemOrderViewModel(repository: Repository) : RepositoryViewModel(reposi
     /**
      * Value of the search input field.
      */
-    val searchValueData: MutableLiveData<String> = MutableLiveData("")
+    val searchValueMLD: MutableLiveData<String> = MutableLiveData("")
+
+    private val cuisineItemsMLD: MutableLiveData<Query<List<Item>>> = MutableLiveData(Query())
+    private val addItemMLD: MutableLiveData<Query<OrderItem>> = MutableLiveData(Query())
 
     /**
-     * Get the MutableLiveData result of the Cuisine items fetch.
+     * Get livedata for cuisineitems of the current order.
      */
     fun getCuisineItemsMLD(): MutableLiveData<Query<List<Item>>> {
-        return repository.getCuisineItems()
+        return this.cuisineItemsMLD
+    }
+
+    /**
+     * Get livedata for adding an item to the current order.
+     */
+    fun getAddItemMLD() : MutableLiveData<Query<OrderItem>> {
+        return this.addItemMLD
     }
 
     /**
      * Get the list with cuisine items.
      */
     fun getCuisineItems(): Query<List<Item>> {
-        return getCuisineItemsMLD().value!!
-    }
-
-    /**
-     * Get the value of the search input field.
-     */
-    fun getSearchValueMLD(): MutableLiveData<String> {
-        return searchValueData
-    }
-
-    /**
-     * Get the MutableLiveData result of the Add item query.
-     */
-    fun getAddItemMLD(): MutableLiveData<Query<OrderItem>> {
-        return repository.getAddItemResult()
+        return cuisineItemsMLD.value!!
     }
 
     /**
      * Get the result from the add item query.
      */
     fun getAddItemResult(): Query<OrderItem> {
-        return getAddItemMLD().value!!
+        return addItemMLD.value!!
     }
 
     /**
      * Refresh the cuisine items.
      */
     fun refreshCuisineItems(locationId: Int) {
-        repository.refreshCuisineItems(locationId)
+        repository.refreshCuisineItems(cuisineItemsMLD, locationId)
     }
 
     /**
@@ -63,6 +59,6 @@ class AddItemOrderViewModel(repository: Repository) : RepositoryViewModel(reposi
      * @param name: Custom item name (ignored when cuisineItemId is present)
      */
     fun addItem(orderId: Int, cuisineItemId: Int?, name: String?) {
-        repository.addItem(orderId, cuisineItemId, name)
+        repository.addItem(addItemMLD, orderId, cuisineItemId, name)
     }
 }

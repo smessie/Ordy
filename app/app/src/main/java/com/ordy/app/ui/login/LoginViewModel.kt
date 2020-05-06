@@ -6,6 +6,7 @@ import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.LoginResponse
 import com.ordy.app.api.util.Query
 import okhttp3.ResponseBody
+import java.lang.IllegalStateException
 
 class LoginViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
@@ -14,29 +15,49 @@ class LoginViewModel(repository: Repository) : RepositoryViewModel(repository) {
      * True: login is open
      * False: register is open
      */
-    val isLogin: MutableLiveData<Boolean> = MutableLiveData(true)
+    private val isLoginMLD: MutableLiveData<Boolean> = MutableLiveData(true)
+    private val loginMLD: MutableLiveData<Query<LoginResponse>> = MutableLiveData(Query())
+    private val registerMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
 
     /**
-     * Get the MutableLiveData result of the Login query.
+     * Get livedata for which screen is selected.
      */
-    fun getLoginMLD(): MutableLiveData<Query<LoginResponse>> {
-        return repository.getLoginResult()
+    fun getIsLoginMLD(): MutableLiveData<Boolean> {
+        return this.isLoginMLD
     }
 
     /**
-     * Get the MutableLiveData result of the Register query.
+     * Get value for which screen is selected.
+     *  true: login is open
+     *  false: register is open
+     *  @throws IllegalStateException when MLD.value is null.
+     */
+    fun getIsLogin(): Boolean {
+        return this.isLoginMLD.value ?: throw IllegalStateException("IsLogin data is null")
+    }
+
+    /**
+     * Get livedata for logging in.
+     */
+    fun getLoginMLD(): MutableLiveData<Query<LoginResponse>> {
+        return this.loginMLD
+    }
+
+    /**
+     * Get livedata for registering.
      */
     fun getRegisterMLD(): MutableLiveData<Query<ResponseBody>> {
-        return repository.getRegisterResult()
+        return this.registerMLD
     }
 
     /**
      * Attempt to login a user.
      * @param email: Email entered by the user
      * @param password: Password entered by the user
+     * @param deviceToken: Devicetoken of the user
      */
-    fun login(email: String, password: String) {
-        repository.login(email, password)
+    fun login(email: String, password: String, deviceToken: String) {
+        repository.login(loginMLD, email, password, deviceToken)
     }
 
     /**
@@ -46,6 +67,6 @@ class LoginViewModel(repository: Repository) : RepositoryViewModel(repository) {
      * @param password: Password entered by the user
      */
     fun register(username: String, email: String, password: String) {
-        repository.register(username, email, password)
+        repository.register(registerMLD, username, email, password)
     }
 }

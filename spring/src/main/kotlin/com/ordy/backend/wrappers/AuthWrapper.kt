@@ -6,7 +6,8 @@ import com.ordy.backend.database.models.User
 
 class AuthLoginWrapper(
         val email: String,
-        val password: String
+        val password: String,
+        val deviceToken: String
 )
 
 class AuthRegisterWrapper(

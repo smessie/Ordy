@@ -56,7 +56,7 @@ class RegisterFragment : Fragment() {
                     SnackbarUtil.closeSnackbar(requireView())
 
                     // Go to the login fragment.
-                    viewModel.isLogin.postValue(true)
+                    viewModel.getIsLoginMLD().postValue(true)
                 }
 
                 QueryStatus.ERROR -> {
@@ -69,6 +69,9 @@ class RegisterFragment : Fragment() {
                             InputField("password", this.input_register_password)
                         )
                     )
+                }
+
+                else -> {
                 }
             }
         })

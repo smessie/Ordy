@@ -14,12 +14,19 @@ class InviteMemberViewModel(repository: Repository) : RepositoryViewModel(reposi
      */
 
     private var invitedUsers: MutableList<Int> = mutableListOf()
-
+    private var inviteableUsersMLD: MutableLiveData<Query<List<GroupInviteUserWrapper>>> =
+        MutableLiveData(Query())
 
     /**
-     * add the id of an user to the "already invited users"-list
+     * Get livedata for a list with invitable users.
      */
+    fun getInviteableUsersMLD(): MutableLiveData<Query<List<GroupInviteUserWrapper>>> {
+        return this.inviteableUsersMLD
+    }
 
+    /**
+     * Add the id of an user to the "already invited users"-list
+     */
     fun markUserAsInvited(userId: Int) {
         invitedUsers.add(userId)
     }
@@ -27,15 +34,13 @@ class InviteMemberViewModel(repository: Repository) : RepositoryViewModel(reposi
     /**
      * Remove the id of an user to the "already invited users"-list
      */
-
     fun cancelUserInvite(userId: Int) {
         invitedUsers.remove(userId)
     }
 
     /**
-     * check if a user is already invited
+     * Check if a user is already invited
      */
-
     fun isUserInvited(userId: Int): Boolean {
         return invitedUsers.contains(userId)
     }
@@ -58,19 +63,12 @@ class InviteMemberViewModel(repository: Repository) : RepositoryViewModel(reposi
     fun updateUsers(groupId: Int) {
         // Only update when the search value is not blank
         if (!getSearchValue().isBlank()) {
-            repository.searchMatchingInviteUsers(groupId, getSearchValue())
+            repository.searchMatchingInviteUsers(inviteableUsersMLD, groupId, getSearchValue())
         }
     }
 
     fun getSearchValueData(): MutableLiveData<String> {
         return searchValueData
-    }
-
-    /**
-     * Get the MutableLiveData result of all users matched that are able to invite.
-     */
-    fun getInviteableUsersMLD(): MutableLiveData<Query<List<GroupInviteUserWrapper>>> {
-        return repository.getInviteableUsers()
     }
 
     /**

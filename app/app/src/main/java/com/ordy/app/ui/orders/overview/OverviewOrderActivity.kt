@@ -32,6 +32,9 @@ import com.ordy.app.util.types.SnackbarType
 import com.ordy.app.util.types.TabsEntry
 import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.activity_overview_order.view.*
+import kotlinx.android.synthetic.main.fragment_order_personal.*
+import kotlinx.android.synthetic.main.fragment_order_personal.view.*
+import kotlinx.android.synthetic.main.fragment_order_personal.view.order_items_add
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -114,10 +117,17 @@ class OverviewOrderActivity : AppCompatActivity() {
 
                     if (!billUrl.isBlank()) {
                         order_bill_button.visibility = View.VISIBLE
+                    } else {
+                        order_bill_button.visibility = View.INVISIBLE
+                    }
+
+                    // Cancel the previous timer when available
+                    if(viewModel.updateTimer != null) {
+                        viewModel.updateTimer?.cancel()
                     }
 
                     // Update the closing time left every second.
-                    TimerUtil.updateUI(this, 0, 1000) {
+                    viewModel.updateTimer = TimerUtil.updateUI(this, 0, 1000) {
                         order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
                     }
 
@@ -235,7 +245,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         val dialog = builder.create()
 
         // Observe changes to the bill upload.
-        viewModel.getUploadBillResult().observe(this, Observer {
+        viewModel.getUploadBillMLD().observe(this, Observer {
 
             when (it.status) {
                 QueryStatus.LOADING -> {
@@ -358,5 +368,19 @@ class OverviewOrderActivity : AppCompatActivity() {
 
         // Upload the bill image.
         viewModel.uploadBill(orderId, requestBody)
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+
+        //refesh the order
+        viewModel.refreshOrder()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // Cancel the update timer.
+        viewModel.updateTimer?.cancel()
     }
 }

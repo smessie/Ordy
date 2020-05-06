@@ -11,7 +11,13 @@ import com.ordy.app.R
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentOrderPersonalBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
+import com.ordy.app.util.OrderUtil
 import kotlinx.android.synthetic.main.fragment_order_general.view.*
+import kotlinx.android.synthetic.main.fragment_order_general.view.order_items
+import kotlinx.android.synthetic.main.fragment_order_general.view.order_items_empty
+import kotlinx.android.synthetic.main.fragment_order_general.view.order_refresh
+import kotlinx.android.synthetic.main.fragment_order_personal.*
+import kotlinx.android.synthetic.main.fragment_order_personal.view.*
 
 class OrderPersonalFragment : Fragment() {
 
@@ -64,5 +70,27 @@ class OrderPersonalFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // Destroy the adapter & stop all the ongoing timer tasks.
+        baseAdapter.destroy()
+    }
+
+
+    /**
+     * Hide the "add item"-button when the order is closed.
+     */
+    fun updateAddItemButton(view: View) {
+        if(viewModel.getOrder().status == QueryStatus.SUCCESS) {
+            val closed =
+                OrderUtil.timeLeft(viewModel.getOrder().requireData().deadline) <= 0
+
+            // Hide/show the "add item"-button
+            view.order_items_add.visibility =
+                if (closed) View.INVISIBLE else View.VISIBLE
+        }
     }
 }

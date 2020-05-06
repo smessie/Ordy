@@ -1,36 +1,64 @@
 package com.ordy.app.ui.orders.overview
 
-import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.util.Query
+import com.ordy.app.api.util.QueryStatus
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import java.lang.IllegalStateException
 import java.net.URI
+import java.util.*
 
 class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
+    /**
+     * Id of the current order.
+     */
     val orderId = MutableLiveData(-1)
 
-    // Uri of the selected image when uploading from the camera.
-    var billUploadUri: URI? = null
+    /**
+     * Timer for updating the closing time.
+     */
+    var updateTimer: Timer? = null
 
     /**
-     * Get the MutableLiveData result of the Order fetch.
+     * Uri of the selected image when uploading from the camera.
+     */
+    var billUploadUri: URI? = null
+
+    private val uploadBillMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+    private val orderMLD: MutableLiveData<Query<Order>> = MutableLiveData(Query(QueryStatus.LOADING))
+
+    /**
+     * Get livedata for uploading the bill.
+     */
+    fun getUploadBillMLD(): MutableLiveData<Query<ResponseBody>> {
+        return this.uploadBillMLD
+    }
+
+    /**
+     * Get livedata for the current order.
      */
     fun getOrderMLD(): MutableLiveData<Query<Order>> {
-        return repository.getOrder()
+        return this.orderMLD
+    }
+
+    /**
+     * Get query for the current order.
+     * @throws IllegalStateException when MLD.value is null.
+     */
+    fun getOrder(): Query<Order> {
+        return this.orderMLD.value ?: throw IllegalStateException("Order data is null")
     }
 
     /**
      * Refresh the order
      */
     fun refreshOrder() {
-        repository.refreshOrder(orderId.value!!)
+        repository.refreshOrder(orderMLD, orderId.value!!)
     }
 
     /**
@@ -65,13 +93,6 @@ class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repos
      * @param image: Body containing the image data
      */
     fun uploadBill(orderId: Int, image: MultipartBody.Part) {
-        repository.uploadBill(orderId, image)
-    }
-
-    /**
-     * Get the MutableLiveData resultof the Upload bill query.
-     */
-    fun getUploadBillResult(): MutableLiveData<Query<ResponseBody>> {
-        return repository.getUploadBillResult()
+        repository.uploadBill(uploadBillMLD, orderId, image)
     }
 }
