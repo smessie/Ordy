@@ -43,7 +43,7 @@ class InviteMemberBaseAdapter(
         val searchLoading = view.username_search_loading
 
         // Watch changes to the "users"
-        viewModel.inviteableUsersMLD.observe(activity, Observer {
+        viewModel.getInviteableUsersMLD().observe(activity, Observer {
 
             // Show a loading indicator in the searchbox.
             // Hide the list view while loading.

@@ -31,7 +31,7 @@ class InvitesBaseAdapter(
     private var invites: Query<List<GroupInvite>> = Query()
 
     init {
-        viewModel.invitesMLD.observe(activity, Observer {
+        viewModel.getInvitesMLD().observe(activity, Observer {
             // Stop refreshing on load
             if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
                 view.group_invites_refresh.isRefreshing = false

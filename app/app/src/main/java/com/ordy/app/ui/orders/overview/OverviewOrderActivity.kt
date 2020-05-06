@@ -32,6 +32,9 @@ import com.ordy.app.util.types.SnackbarType
 import com.ordy.app.util.types.TabsEntry
 import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.activity_overview_order.view.*
+import kotlinx.android.synthetic.main.fragment_order_personal.*
+import kotlinx.android.synthetic.main.fragment_order_personal.view.*
+import kotlinx.android.synthetic.main.fragment_order_personal.view.order_items_add
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -95,7 +98,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         })
 
         // Observe the changes of the fetch.
-        viewModel.orderMLD.observe(this, Observer {
+        viewModel.getOrderMLD().observe(this, Observer {
 
             when (it.status) {
 
@@ -242,7 +245,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         val dialog = builder.create()
 
         // Observe changes to the bill upload.
-        viewModel.uploadBillMLD.observe(this, Observer {
+        viewModel.getUploadBillMLD().observe(this, Observer {
 
             when (it.status) {
                 QueryStatus.LOADING -> {

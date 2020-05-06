@@ -47,7 +47,7 @@ class OrderGeneralFragment : Fragment() {
         }
 
         // Stop refreshing on load
-        viewModel.orderMLD.observe(viewLifecycleOwner, Observer {
+        viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
             if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
                 binding.root.order_refresh.isRefreshing = false
             }

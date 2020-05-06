@@ -33,7 +33,7 @@ class CreateGroupActivity : AppCompatActivity() {
         binding.handlers = handlers
         binding.viewModel = viewModel
 
-        viewModel.createGroupMLD.observe(this, Observer {
+        viewModel.getCreateGroupMLD().observe(this, Observer {
 
             when (it.status) {
 

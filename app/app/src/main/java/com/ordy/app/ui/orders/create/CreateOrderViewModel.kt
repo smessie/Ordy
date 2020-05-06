@@ -26,8 +26,18 @@ class CreateOrderViewModel(repository: Repository) : RepositoryViewModel(reposit
      * Value of the group input
      */
     val groupValueData: MutableLiveData<Group> = MutableLiveData()
-    val createOrderMLD: MutableLiveData<Query<Order>> = MutableLiveData(Query())
 
+    /**
+     * Livedata for creating an order
+     */
+    private val createOrderMLD: MutableLiveData<Query<Order>> = MutableLiveData(Query())
+
+    /**
+     * Get livedata for creating an order.
+     */
+    fun getCreateOrderMLD(): MutableLiveData<Query<Order>> {
+        return this.createOrderMLD
+    }
 
     /**
      * Get the name of the location value.

@@ -14,8 +14,9 @@ class OrderPersonalHandlers(
      * Open the activity to add an item to the order.
      */
     fun onAddItemClick() {
-        if (viewModel.orderMLD.value != null) {
-            val order = viewModel.orderMLD.value!!
+        if (viewModel.getOrderMLD().value != null) {
+            val order = viewModel.getOrder()
+
             if (order.status == QueryStatus.SUCCESS) {
                 val intent = Intent(fragment.requireContext(), AddItemOrderActivity::class.java)
 

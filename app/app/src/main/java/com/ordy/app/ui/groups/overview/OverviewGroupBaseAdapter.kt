@@ -26,7 +26,7 @@ class OverviewGroupBaseAdapter(
     private var group: Query<Group> = Query()
 
     init {
-        viewModel.groupMLD.observe(activity, Observer {
+        viewModel.getGroupMLD().observe(activity, Observer {
             update(it)
         })
     }

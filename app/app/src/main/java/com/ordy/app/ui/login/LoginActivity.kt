@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         // Observe which fragment to show (login or register)
-        viewModel.isLogin.observe(this, Observer {
+        viewModel.getIsLoginMLD().observe(this, Observer {
 
             val fragmentTransaction = supportFragmentManager.beginTransaction()
 
@@ -72,8 +72,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onBackPressed() {
 
         // If the register screen is showed, clicking on back will open the login screen again.
-        if(viewModel.isLogin.value == false) {
-            viewModel.isLogin.postValue(true)
+        if(!viewModel.getIsLogin()) {
+            viewModel.getIsLoginMLD().postValue(true)
         }
         // If the login screen is showed, clicking on back will close the app.
         else {
