@@ -6,6 +6,7 @@ import com.ordy.app.api.models.actions.*
 import com.ordy.app.api.models.actions.enums.InviteActionOptions
 import com.ordy.app.api.models.actions.enums.OrderUpdateAction
 import com.ordy.app.api.wrappers.GroupInviteUserWrapper
+import com.ordy.app.api.wrappers.LocationWrapper
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -54,6 +55,10 @@ class ApiServiceTest {
     }
 
     /**
+     * ORDERS
+     */
+
+    /**
      * @method POST
      * @endpoint "/orders"
      */
@@ -63,7 +68,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/order_create.json"))
+            setBody(getFile("responses/orders/order_create.json"))
         }
         server.enqueue(response)
 
@@ -123,7 +128,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/order_get.json"))
+            setBody(getFile("responses/orders/order_get.json"))
         }
         server.enqueue(response)
 
@@ -180,7 +185,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/order_user_list.json"))
+            setBody(getFile("responses/orders/order_user_list.json"))
         }
         server.enqueue(response)
 
@@ -255,7 +260,7 @@ class ApiServiceTest {
         Assert.assertEquals("/user/orders/$orderId", request.path)
 
         JSONAssert.assertEquals(
-            getFile("responses/body_order_user_update.json"),
+            getFile("responses/orders/body_order_user_update.json"),
             Gson().toJson(body),
             false
         )
@@ -272,7 +277,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/order_user_additem.json"))
+            setBody(getFile("responses/orders/order_user_additem.json"))
         }
         server.enqueue(response)
 
@@ -312,7 +317,7 @@ class ApiServiceTest {
         Assert.assertEquals("/user/orders/$orderId/items", request.path)
 
         JSONAssert.assertEquals(
-            getFile("responses/body_order_user_additem.json"),
+            getFile("responses/orders/body_order_user_additem.json"),
             Gson().toJson(body),
             false
         )
@@ -351,7 +356,7 @@ class ApiServiceTest {
         Assert.assertEquals("/user/orders/$orderId/items/$orderItemId", request.path)
 
         JSONAssert.assertEquals(
-            getFile("responses/body_order_user_updateitem.json"),
+            getFile("responses/orders/body_order_user_updateitem.json"),
             Gson().toJson(body),
             false
         )
@@ -386,6 +391,10 @@ class ApiServiceTest {
     }
 
     /**
+     * LOCATIONS
+     */
+
+    /**
      * @method GET
      * @endpoint "/locations/{id}"
      */
@@ -396,7 +405,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/location_get.json"))
+            setBody(getFile("responses/locations/location_get.json"))
         }
         server.enqueue(response)
 
@@ -438,24 +447,24 @@ class ApiServiceTest {
         val locationId = 1
 
         val body = listOf(
-                        Item(
-                            id = 3,
-                            name = "Small pack of fries"
-                        ),
-                        Item(
-                            id = 4,
-                            name = "Chicken nuggets"
-                        ),
-                        Item(
-                            id = 5,
-                            name = "Mayonnaise"
-                        )
-                    )
+            Item(
+                id = 3,
+                name = "Small pack of fries"
+            ),
+            Item(
+                id = 4,
+                name = "Chicken nuggets"
+            ),
+            Item(
+                id = 5,
+                name = "Mayonnaise"
+            )
+        )
 
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/location_items_get.json"))
+            setBody(getFile("responses/locations/location_items_get.json"))
         }
         server.enqueue(response)
 
@@ -485,7 +494,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/locations_filtered_get.json"))
+            setBody(getFile("responses/locations/locations_filtered_get.json"))
         }
         server.enqueue(response)
 
@@ -496,29 +505,35 @@ class ApiServiceTest {
 
             assertValue(
                 mutableListOf(
-                    Location(
-                        id = 4,
-                        name = "La Piazza",
-                        latitude = 51.031638,
-                        longitude = 4.096320,
-                        address = "Kerkstraat 48",
-                        cuisine = Cuisine(
+                    LocationWrapper(
+                        location = Location(
                             id = 4,
-                            name = "Italian",
-                            items = mutableListOf()
-                        )
+                            name = "La Piazza",
+                            latitude = 51.031638,
+                            longitude = 4.096320,
+                            address = "Kerkstraat 48",
+                            cuisine = Cuisine(
+                                id = 4,
+                                name = "Italian",
+                                items = mutableListOf()
+                            )
+                        ),
+                        favorite = true
                     ),
-                    Location(
-                        id = 5,
-                        name = "Naxos Island",
-                        latitude = 51.031604,
-                        longitude = 4.097384,
-                        address = "Kerkstraat 15",
-                        cuisine = Cuisine(
+                    LocationWrapper(
+                        location = Location(
                             id = 5,
-                            name = "Greek",
-                            items = mutableListOf()
-                        )
+                            name = "Naxos Island",
+                            latitude = 51.031604,
+                            longitude = 4.097384,
+                            address = "Kerkstraat 15",
+                            cuisine = Cuisine(
+                                id = 5,
+                                name = "Greek",
+                                items = mutableListOf()
+                            )
+                        ),
+                        favorite = false
                     )
                 )
             )
@@ -533,6 +548,406 @@ class ApiServiceTest {
 
     /**
      * @method POST
+     * @endpoint "locations/{locationId}"
+     */
+    @Test
+    fun `Location should be marked without errors`() {
+        val locationId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+
+        server.enqueue(response)
+
+        // API Call
+        apiService.markLocationAsFavorite(locationId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/locations/$locationId", request.path)
+    }
+
+    /**
+     * @method DELETE
+     * @endpoint "locations/{locationId}"
+     */
+    @Test
+    fun `Location should be unmarked without errors`() {
+        val locationId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+
+        server.enqueue(response)
+
+        // API Call
+        apiService.unMarkLocationAsFavorite(locationId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("DELETE", request.method)
+        Assert.assertEquals("/locations/$locationId", request.path)
+    }
+
+    /**
+     * USERS
+     */
+
+    /**
+     * @method POST
+     * @endpoint "/auth/login"
+     */
+    @Test
+    fun `User and AccesToken should be returned`() {
+        val userLogin = UserLogin("peterparker@gmail.com", "spiderman", "petersPhone")
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/users/auth_post_login.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.login(userLogin).test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                LoginResponse(
+                    accessToken = ".P?ONHHYUBBLJBJJJNJ+%OKP87543389",
+                    user = User(
+                        id = 1,
+                        username = "Peter Parker",
+                        email = "peterparker@gmail.com"
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/auth/login", request.path)
+    }
+
+    /**
+     * @method POST
+     * @endpoint "/auth/register"
+     */
+    @Test
+    fun `User should be registered without errors`() {
+        val userRegister = UserRegister("Peter Parker", "peterparker@gmail.com", "spiderman")
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.register(userRegister).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/auth/register", request.path)
+    }
+
+    /**
+     * @method POST
+     * @endpoint "/auth/logout"
+     */
+    @Test
+    fun `User should be logged out without errors`() {
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.logout().test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/auth/logout", request.path)
+    }
+
+    /**
+     * PAYMENTS
+     */
+
+    /**
+     * @method GET
+     * @endpoint "user/payments/debtors"
+     */
+    @Test
+    fun `Debtors of user should be returned`() {
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/payments/payments_debtors_get.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.userDebtors().test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                mutableListOf(
+                    Payment(
+                        user = User(
+                            id = 5,
+                            username = "Bruce Banner",
+                            email = "brucebanner@gmail.com"
+                        ),
+                        order = Order(
+                            id = 1,
+                            deadline = TEST_DEADLINE,
+                            group = Group(
+                                id = 1,
+                                name = "Zeus",
+                                creator = User(
+                                    id = 2,
+                                    username = "Elon Musk",
+                                    email = "elonmusk@spacex.com"
+                                )
+                            ),
+                            courier = User(
+                                id = 1,
+                                username = "Peter Parker",
+                                email = "peterparker@gmail.com"
+                            ),
+                            location = Location(
+                                id = 1,
+                                name = "'t Blauw Kotje"
+                            ),
+                            orderItems = mutableListOf()
+                        ),
+                        orderItems = mutableListOf()
+                    ),
+                    Payment(
+                        user = User(
+                            id = 3,
+                            username = "Tony Stark",
+                            email = "tonystark@gmail.com"
+                        ),
+                        order = Order(
+                            id = 2,
+                            deadline = TEST_DEADLINE,
+                            group = Group(
+                                id = 1,
+                                name = "Zeus",
+                                creator = User(
+                                    id = 2,
+                                    username = "Elon Musk",
+                                    email = "elonmusk@spacex.com"
+                                )
+                            ),
+                            courier = User(
+                                id = 1,
+                                username = "Peter Parker",
+                                email = "peterparker@gmail.com"
+                            ),
+                            location = Location(
+                                id = 2,
+                                name = "Emily's"
+                            ),
+                            orderItems = mutableListOf()
+                        ),
+                        orderItems = mutableListOf()
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("GET", request.method)
+        Assert.assertEquals("/user/payments/debtors", request.path)
+    }
+
+    /**
+     * @method GET
+     * @endpoint "user/payments/debts"
+     */
+    @Test
+    fun `Debts of user should be returned`() {
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/payments/payments_debts_get.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.userDepts().test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                mutableListOf(
+                    Payment(
+                        user = User(
+                            id = 1,
+                            username = "Peter Parker",
+                            email = "peterparker@gmail.com"
+                        ),
+                        order = Order(
+                            id = 1,
+                            deadline = TEST_DEADLINE,
+                            group = Group(
+                                id = 1,
+                                name = "Zeus",
+                                creator = User(
+                                    id = 2,
+                                    username = "Elon Musk",
+                                    email = "elonmusk@spacex.com"
+                                )
+                            ),
+                            courier = User(
+                                id = 2,
+                                username = "Elon Musk",
+                                email = "elonmusk@spacex.com"
+                            ),
+                            location = Location(
+                                id = 1,
+                                name = "'t Blauw Kotje"
+                            ),
+                            orderItems = mutableListOf()
+                        ),
+                        orderItems = mutableListOf()
+                    ),
+                    Payment(
+                        user = User(
+                            id = 1,
+                            username = "Peter Parker",
+                            email = "peterparker@gmail.com"
+                        ),
+                        order = Order(
+                            id = 2,
+                            deadline = TEST_DEADLINE,
+                            group = Group(
+                                id = 2,
+                                name = "WiNa",
+                                creator = User(
+                                    id = 3,
+                                    username = "Bill Gates",
+                                    email = "billgates@microsoft.com"
+                                )
+                            ),
+                            courier = User(
+                                id = 3,
+                                username = "Bill Gates",
+                                email = "billgates@microsoft.com"
+                            ),
+                            location = Location(
+                                id = 2,
+                                name = "Pizza Hut"
+                            ),
+                            orderItems = mutableListOf()
+                        ),
+                        orderItems = mutableListOf()
+                    )
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("GET", request.method)
+        Assert.assertEquals("/user/payments/debts", request.path)
+    }
+
+    /**
+     * @method "PATCH"
+     * @endpoint "user/payments/{orderId}/{userId}"
+     */
+    @Test
+    fun `Paid-status should be updated`() {
+        val userId = 1
+        val orderId = 1
+        val body = PaymentUpdate(
+            paid = true
+        )
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.userSetPaid(orderId, userId, body).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        JSONAssert.assertEquals(
+            getFile("responses/payments/payments_paid_patch.json"),
+            Gson().toJson(body),
+            false
+        )
+    }
+
+    /**
+     * @method "POST"
+     * @endpoint "user/payments/{orderId}/{userId}/notification"
+     */
+    @Test
+    fun `User should be notified without errors`() {
+        val userId = 1
+        val orderId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.userNotifyDeptor(orderId, userId).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("POST", request.method)
+        Assert.assertEquals("/user/payments/${orderId}/${userId}/notification", request.path)
+    }
+
+    /**
+     * @method POST
      * @endpoint "/groups"
      */
     @Test
@@ -541,7 +956,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/group_create.json"))
+            setBody(getFile("responses/groups/group_create.json"))
         }
         server.enqueue(response)
 
@@ -585,7 +1000,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/group_get.json"))
+            setBody(getFile("responses/groups/group_get.json"))
         }
         server.enqueue(response)
 
@@ -619,12 +1034,42 @@ class ApiServiceTest {
      */
     @Test
     fun `Name of group should be changed`() {
-        // TODO
+        val groupId = 1
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/groups/response_group_update.json"))
+        }
+        server.enqueue(response)
+
+        // Body
+        val body = GroupUpdate(
+            name = "newName"
+        )
+
+        // API Call
+        apiService.updateGroup(groupId, body).test().apply {
+            assertNoErrors()
+            assertComplete()
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("PATCH", request.method)
+        Assert.assertEquals("/groups/$groupId", request.path)
+
+        JSONAssert.assertEquals(
+            getFile("responses/groups/body_group_update.json"),
+            Gson().toJson(body),
+            false
+        )
     }
 
     /**
      * @method GET
-     * @endpoint "/groups/{groupId}/invites/search/{username}"
+     * @endpoint "/groups/{groupId}/invites/search"
      */
     @Test
     fun `Give all matching users without users in given group`() {
@@ -634,7 +1079,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/user_invites_filtered_get.json"))
+            setBody(getFile("responses/groups/user_invites_filtered_get.json"))
         }
         server.enqueue(response)
 
@@ -667,7 +1112,7 @@ class ApiServiceTest {
         val request = server.takeRequest()
 
         Assert.assertEquals("GET", request.method)
-        Assert.assertEquals("/groups/$groupId/invites/search/$username", request.path)
+        Assert.assertEquals("/groups/$groupId/invites/search?username=$username", request.path)
     }
 
     /**
@@ -682,7 +1127,6 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody("")
         }
         server.enqueue(response)
 
@@ -767,7 +1211,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/group_user_list.json"))
+            setBody(getFile("responses/groups/group_user_list.json"))
         }
         server.enqueue(response)
 
@@ -815,7 +1259,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/invite_user_list.json"))
+            setBody(getFile("responses/groups/invite_user_list.json"))
         }
         server.enqueue(response)
 
@@ -878,7 +1322,7 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile("responses/body_invite_action.json"))
+            setBody(getFile("responses/groups/body_invite_action.json"))
         }
         server.enqueue(response)
 
@@ -911,7 +1355,6 @@ class ApiServiceTest {
         // Response
         val response = MockResponse().apply {
             setResponseCode(200)
-            setBody(getFile(""))
         }
         server.enqueue(response)
 

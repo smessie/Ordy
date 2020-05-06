@@ -95,7 +95,7 @@ class AddItemOrderBaseAdapter(
         })
 
         // Update the "search value" of the list adapter when a change is observed
-        viewModel.getSearchValueMLD().observe(activity, Observer {
+        viewModel.searchValueMLD.observe(activity, Observer {
 
             // Update the list adapter
             update(cuisineItems, it)
@@ -161,6 +161,7 @@ class AddItemOrderBaseAdapter(
 
     fun update(cuisineItems: Query<List<Item>>, searchValueData: String) {
         this.cuisineItems = cuisineItems
+        this.searchValueData = searchValueData
 
         if (cuisineItems.status == QueryStatus.SUCCESS) {
 
@@ -173,7 +174,7 @@ class AddItemOrderBaseAdapter(
             // Add the "default" item to the bottom of the listview
             // This item serves as a fallback when no correct matches were found.
             defaultItemView.add_item_order_default_text.text = String.format(
-                activity.applicationContext.resources.getString(
+                activity.resources.getString(
                     R.string.add_item_order_default_text,
                     searchValueData
                 )

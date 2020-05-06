@@ -11,8 +11,8 @@ import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewGroupBinding
 import kotlinx.android.synthetic.main.activity_overview_group.*
 import kotlinx.android.synthetic.main.activity_overview_group.view.*
-import kotlin.properties.Delegates
 import org.koin.android.viewmodel.ext.android.viewModel
+import kotlin.properties.Delegates
 
 class OverviewGroupActivity : AppCompatActivity() {
 

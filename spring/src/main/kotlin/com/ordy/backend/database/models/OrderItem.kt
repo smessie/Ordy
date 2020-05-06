@@ -2,6 +2,7 @@ package com.ordy.backend.database.models
 
 import com.fasterxml.jackson.annotation.JsonView
 import com.ordy.backend.database.View
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -20,6 +21,10 @@ class OrderItem(
     @Column(nullable = false)
     @JsonView(View.List::class)
     var paid: Boolean = false,
+
+    @Column(nullable = false)
+    @JsonView(View.Ignore::class)
+    var lastNotification: Date = Date(0),
 
     @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY, optional = false)
     @JsonView(View.Ignore::class)

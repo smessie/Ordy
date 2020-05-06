@@ -3,6 +3,7 @@ package com.ordy.app
 import android.app.Application
 import com.ordy.app.api.RepositoryProvider
 import com.ordy.app.ui.groups.GroupsViewModel
+import com.ordy.app.ui.groups.create.CreateGroupViewModel
 import com.ordy.app.ui.groups.invite.InviteMemberViewModel
 import com.ordy.app.ui.groups.overview.OverviewGroupViewModel
 import com.ordy.app.ui.locations.LocationsViewModel
@@ -23,62 +24,68 @@ import org.koin.dsl.module
 
 class MainApplication : Application() {
 
-    private val appModule = module {
+    companion object {
+        val appModule = module {
 
-        // Create the repository
-        single { RepositoryProvider().create(androidContext()) }
+            // Create the repository
+            single { RepositoryProvider().create(androidContext()) }
 
-        // Register the viewmodels
-        viewModel {
-            LoginViewModel(get())
-        }
+            // Register the viewmodels
+            viewModel {
+                LoginViewModel(get())
+            }
 
-        viewModel {
-            OrdersViewModel(get())
-        }
+            viewModel {
+                OrdersViewModel(get())
+            }
 
-        viewModel {
-            OverviewOrderViewModel(get())
-        }
+            viewModel {
+                OverviewOrderViewModel(get())
+            }
 
-        viewModel {
-            CreateOrderViewModel(get())
-        }
+            viewModel {
+                CreateOrderViewModel(get())
+            }
 
-        viewModel {
-            CreateOrderLocationViewModel(get())
-        }
+            viewModel {
+                CreateOrderLocationViewModel(get())
+            }
 
-        viewModel {
-            AddItemOrderViewModel(get())
-        }
+            viewModel {
+                AddItemOrderViewModel(get())
+            }
 
-        viewModel {
-            GroupsViewModel(get())
-        }
+            viewModel {
+                GroupsViewModel(get())
+            }
 
-        viewModel {
-            OverviewGroupViewModel(get())
-        }
+            viewModel {
+                OverviewGroupViewModel(get())
+            }
+          
+            viewModel {
+                CreateGroupViewModel(get())
+            }
 
-        viewModel {
-            InviteMemberViewModel(get())
-        }
+            viewModel {
+                InviteMemberViewModel(get())
+            }
 
-        viewModel {
-            ProfileViewModel(get())
-        }
+            viewModel {
+                ProfileViewModel(get())
+            }
 
-        viewModel {
-            SettingsViewModel(get())
-        }
+            viewModel {
+                SettingsViewModel(get())
+            }
 
-        viewModel {
-            LocationsViewModel(get())
-        }
+            viewModel {
+                LocationsViewModel(get())
+            }
 
-        viewModel {
-            PaymentsViewModel(get())
+            viewModel {
+                PaymentsViewModel(get())
+            }
         }
     }
 

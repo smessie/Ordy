@@ -80,6 +80,9 @@ class LoginFragment : Fragment() {
                         )
                     )
                 }
+
+                else -> {
+                }
             }
         })
     }

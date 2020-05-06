@@ -5,24 +5,60 @@ import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.Order
 import com.ordy.app.api.util.Query
+import com.ordy.app.api.util.QueryStatus
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
+import java.lang.IllegalStateException
+import java.net.URI
+import java.util.*
 
 class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
+    /**
+     * Id of the current order.
+     */
     val orderId = MutableLiveData(-1)
 
     /**
-     * Get the MutableLiveData result of the Order fetch.
+     * Timer for updating the closing time.
+     */
+    var updateTimer: Timer? = null
+
+    /**
+     * Uri of the selected image when uploading from the camera.
+     */
+    var billUploadUri: URI? = null
+
+    private val uploadBillMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+    private val orderMLD: MutableLiveData<Query<Order>> = MutableLiveData(Query(QueryStatus.LOADING))
+
+    /**
+     * Get livedata for uploading the bill.
+     */
+    fun getUploadBillMLD(): MutableLiveData<Query<ResponseBody>> {
+        return this.uploadBillMLD
+    }
+
+    /**
+     * Get livedata for the current order.
      */
     fun getOrderMLD(): MutableLiveData<Query<Order>> {
-        return repository.getOrder()
+        return this.orderMLD
+    }
+
+    /**
+     * Get query for the current order.
+     * @throws IllegalStateException when MLD.value is null.
+     */
+    fun getOrder(): Query<Order> {
+        return this.orderMLD.value ?: throw IllegalStateException("Order data is null")
     }
 
     /**
      * Refresh the order
      */
     fun refreshOrder() {
-        repository.refreshOrder(orderId.value!!)
+        repository.refreshOrder(orderMLD, orderId.value!!)
     }
 
     /**
@@ -49,5 +85,14 @@ class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repos
         comment: String
     ) {
         repository.updateItem(liveData, orderId, orderItemId, comment)
+    }
+
+    /**
+     * Upload a bill for a given order.
+     * @param orderId: Id of the order
+     * @param image: Body containing the image data
+     */
+    fun uploadBill(orderId: Int, image: MultipartBody.Part) {
+        repository.uploadBill(uploadBillMLD, orderId, image)
     }
 }

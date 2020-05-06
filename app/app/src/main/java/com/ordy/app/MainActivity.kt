@@ -10,15 +10,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.leinardi.android.speeddial.SpeedDialActionItem
-import com.leinardi.android.speeddial.SpeedDialView
 import com.ordy.app.ui.groups.create.CreateGroupActivity
 import com.ordy.app.ui.login.LoginActivity
 import com.ordy.app.ui.orders.create.CreateOrderActivity
 import com.ordy.app.ui.profile.ProfileActivity
 import com.ordy.app.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -117,6 +116,23 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        /**
+         * Handle potentially passed intent extras.
+         */
+        if (intent.extras != null) {
+            val openTab = intent.extras?.getString("open_tab")
+
+            if(openTab != null) {
+                // Open the correct tab.
+                when (openTab.toLowerCase(Locale.ROOT)) {
+                    "orders" -> navController.navigate(R.id.navigation_orders)
+                    "groups" -> navController.navigate(R.id.navigation_groups)
+                    "payments" -> navController.navigate(R.id.navigation_payments)
+                    "locations" -> navController.navigate(R.id.navigation_locations)
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

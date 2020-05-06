@@ -25,7 +25,6 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(PropertyException::class)
     fun handleException(e: PropertyException) : ResponseEntity<ThrowableListWrapper> {
-        val ec = e.fullWrap()
         return ResponseEntity
                 . status(e.code)
                 . body(e.fullWrap())

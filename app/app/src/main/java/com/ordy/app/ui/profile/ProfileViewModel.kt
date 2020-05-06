@@ -10,18 +10,20 @@ import okhttp3.ResponseBody
 
 class ProfileViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
+    private val invitesMLD: MutableLiveData<Query<List<GroupInvite>>> = MutableLiveData(Query())
+
     /**
-     * Get the MutableLiveData result of the Invites fetch.
+     * Get livedata for the list with invites.
      */
     fun getInvitesMLD(): MutableLiveData<Query<List<GroupInvite>>> {
-        return repository.getInvites()
+        return this.invitesMLD
     }
 
     /**
      * Refresh the invites.
      */
     fun refreshInvites() {
-        repository.refreshInvites()
+        repository.refreshInvites(invitesMLD)
     }
 
     /**
@@ -36,5 +38,7 @@ class ProfileViewModel(repository: Repository) : RepositoryViewModel(repository)
         actionInviteResult: MutableLiveData<Query<ResponseBody>>
     ) {
         repository.userActionInvites(inviteAction, groupId, actionInviteResult)
+        // refresh group in order to add new group to cached results
+        repository.refreshGroups()
     }
 }
