@@ -21,7 +21,6 @@ import com.ordy.app.ui.orders.overview.addcomment.AddCommentDialog
 import com.ordy.app.util.OrderUtil
 import com.ordy.app.util.SnackbarUtil
 import com.ordy.app.util.TimerUtil
-import kotlinx.android.synthetic.main.fragment_order_personal.view.*
 import kotlinx.android.synthetic.main.list_order_item.view.*
 import okhttp3.ResponseBody
 import java.util.*
@@ -227,6 +226,9 @@ class OrderPersonalBaseAdapter(
         // Update the order items, when the query succeeded.
         if (order.status == QueryStatus.SUCCESS) {
 
+            // Update the "add item"-button
+            fragment.updateAddItemButton(this.parentView)
+
             // Only show the items with the same user id as the logged in user.
             orderItems = order.requireData().orderItems!!.filter {
                 it.user.id == AppPreferences(context).userId
@@ -246,13 +248,17 @@ class OrderPersonalBaseAdapter(
                         val closed =
                             OrderUtil.timeLeft(order.requireData().deadline) <= 0
 
-                        // Update the list view only when necessary
-                        if (!closed != showActions) {
+                        // Update the "add item"-button
+                        fragment.updateAddItemButton(this.parentView)
+
+                        // Update the action buttons when the state changes.
+                        if(closed == showActions) {
+
+                            // Update if the "remove" and "update" button should be showed.
                             showActions = !closed
 
-                            // Hide the "add item"-button
-                            parentView.order_items_add.visibility =
-                                if (closed) View.INVISIBLE else View.VISIBLE
+                            // Notify the changes to the list view (to re-render automatically)
+                            notifyDataSetChanged()
                         }
                     }
                 }

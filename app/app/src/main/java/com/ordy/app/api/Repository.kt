@@ -11,7 +11,7 @@ import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import java.util.*
 
-open class Repository(private val apiService: ApiService) {
+class Repository(private val apiService: ApiService) {
 
     /******************************
      ***        GROUPS          ***

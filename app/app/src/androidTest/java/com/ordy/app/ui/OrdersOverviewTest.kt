@@ -20,41 +20,80 @@ import com.ordy.app.api.models.User
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
+import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import org.hamcrest.Matchers.not
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import org.koin.test.KoinTest
+import org.koin.test.inject
 import org.koin.test.mock.MockProviderRule
 import org.koin.test.mock.declareMock
 import org.mockito.BDDMockito.given
-import org.mockito.Mockito.mock
-import java.text.SimpleDateFormat
+import org.mockito.Mockito.*
+import org.mockito.MockitoAnnotations
+import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class OrdersOverviewTest : KoinTest {
 
+    /**
+     * Java faker for faking data.
+     */
+    private val faker = Faker()
+
+    /**
+     * Mocked android activity context.
+     */
+    private lateinit var mockContext: Context
+
+    /**
+     * Viewmodel that has been created using Koin injection.
+     */
+    private val mockOverviewOrderViewModel: OverviewOrderViewModel by inject()
+
+    /**
+     * Viewmodel used for spying & changing method implementations.
+     */
+    private var spyOverviewOrderViewModel = spy(mockOverviewOrderViewModel)
+
+    /**
+     * Mock provider for Koin testing.
+     */
     @get:Rule
     val mockProvider = MockProviderRule.create { clazz ->
         mock(clazz.java)
     }
 
-    private lateinit var mockContext: Context
-    private val faker = Faker()
-
     @Before
     fun setup() {
+        // Initialize mocks using decorators.
+        MockitoAnnotations.initMocks(this)
+
+        // Initialize mocks
         mockContext = InstrumentationRegistry.getInstrumentation().targetContext
+
+        // Initialize koin
+        loadKoinModules(module {
+            viewModel(override = true) {
+                spyOverviewOrderViewModel
+            }
+        })
     }
 
     /**
      * Constants
      */
-    private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ")
-
-    private val TEST_DEADLINE_CLOSED = formatter.parse("2020-01-01T00:00:00+0000")!!
-    private val TEST_DEADLINE = formatter.parse("3020-04-26T16:00:27+0000")!!
+    private val TEST_DEADLINE_CLOSED =
+        Calendar.getInstance().apply { add(Calendar.DATE, -5) }.time
+    private val TEST_DEADLINE_OPEN =
+        Calendar.getInstance().apply { add(Calendar.DATE, 5) }.time
 
     /**
      * Should display the "Add item" button when the deadline is not passed
@@ -63,7 +102,7 @@ class OrdersOverviewTest : KoinTest {
     fun displayAddItemButton() {
         val order = Order(
             id = 1,
-            deadline = TEST_DEADLINE,
+            deadline = TEST_DEADLINE_OPEN,
             billUrl = faker.name().name(),
             group = Group(
                 id = 1,
@@ -96,9 +135,12 @@ class OrdersOverviewTest : KoinTest {
         val orderMLD = MutableLiveData(orderQuery)
 
         declareMock<Repository> {
-            given(getOrder()).willReturn(orderMLD)
-            given(refreshOrder(order.id)).will {  }
+            given(refreshOrder(orderMLD, order.id)).will { }
         }
+
+        // Mock the viewmodel
+        `when`(spyOverviewOrderViewModel.getOrderMLD()).thenReturn(orderMLD)
+        `when`(spyOverviewOrderViewModel.getOrder()).thenReturn(orderQuery)
 
         // Create intent to open activity
         val intent = Intent(mockContext, OverviewOrderActivity::class.java)
@@ -151,9 +193,12 @@ class OrdersOverviewTest : KoinTest {
 
         val orderMLD = MutableLiveData(orderQuery)
 
+        // Mock the viewmodel
+        `when`(mockOverviewOrderViewModel.getOrderMLD()).thenReturn(orderMLD)
+        `when`(mockOverviewOrderViewModel.getOrder()).thenReturn(orderQuery)
+
         declareMock<Repository> {
-            given(getOrder()).willReturn(orderMLD)
-            given(refreshOrder(order.id)).will {  }
+            given(refreshOrder(orderMLD, order.id)).will {  }
         }
 
         // Create intent to open activity

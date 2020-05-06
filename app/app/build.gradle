@@ -14,7 +14,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'com.ordy.app.OpenAndroidJUnitRunner'
     }
 
     buildTypes {
@@ -73,6 +73,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'com.github.javafaker:javafaker:1.0.2'
+    androidTestImplementation 'com.github.tmurakami:dexopener:2.0.5'
     androidTestImplementation 'org.mockito:mockito-core:3.3.3'
     androidTestImplementation 'org.mockito:mockito-android:3.3.3'
     androidTestImplementation ("org.koin:koin-test:$koin_version") { exclude group: 'org.mockito' }
