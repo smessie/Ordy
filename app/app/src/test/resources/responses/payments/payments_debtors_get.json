@@ -1,0 +1,64 @@
+[
+  {
+    "user": {
+      "id": 5,
+      "username": "Bruce Banner",
+      "email": "brucebanner@gmail.com"
+    },
+    "order": {
+      "id": 1,
+      "deadline": "2020-04-26T16:00:27+0000",
+      "group": {
+        "id": 1,
+        "name": "Zeus",
+        "creator": {
+          "id": 2,
+          "username": "Elon Musk",
+          "email": "elonmusk@spacex.com"
+        }
+      },
+      "courier": {
+        "id": 1,
+        "username": "Peter Parker",
+        "email": "peterparker@gmail.com"
+      },
+      "location": {
+        "id": 1,
+        "name": "'t Blauw Kotje"
+      },
+      "orderItems": []
+    },
+    "orderItems": []
+  },
+  {
+    "user": {
+      "id": 3,
+      "username": "Tony Stark",
+      "email": "tonystark@gmail.com"
+    },
+    "order": {
+      "id": 2,
+      "deadline": "2020-04-26T16:00:27+0000",
+      "group": {
+        "id": 1,
+        "name": "Zeus",
+        "creator": {
+          "id": 2,
+          "username": "Elon Musk",
+          "email": "elonmusk@spacex.com"
+        }
+      },
+      "courier": {
+        "id": 1,
+        "username": "Peter Parker",
+        "email": "peterparker@gmail.com"
+      },
+      "location": {
+        "id": 2,
+        "name": "Emily's"
+      },
+      "orderItems": []
+    },
+    "orderItems": []
+  }
+]

@@ -65,8 +65,8 @@ class CreateOrderActivity : AppCompatActivity() {
             if (it.status == QueryStatus.SUCCESS) {
                 if (it.requireData().isEmpty()) {
                     AlertDialog.Builder(this).apply {
-                        setTitle("You are not part of any group")
-                        setMessage("Join a group or create one yourself to be able to create an order")
+                        setTitle(getString(R.string.order_create_no_group_title))
+                        setMessage(getString(R.string.order_create_no_group_description))
                         setPositiveButton(android.R.string.ok) { _, _ ->
 
                             // Close the activity
@@ -79,7 +79,7 @@ class CreateOrderActivity : AppCompatActivity() {
             // Show an error dialog when unable to fetch groups.
             if (it.status == QueryStatus.ERROR) {
                 AlertDialog.Builder(this).apply {
-                    setTitle("Unable to fetch your groups")
+                    setTitle(getString(R.string.order_create_groups_failed))
                     setMessage(it.requireError().message)
                     setPositiveButton(android.R.string.ok) { _, _ ->
 
@@ -91,13 +91,13 @@ class CreateOrderActivity : AppCompatActivity() {
         })
 
         // Observe the result of adding an item to the order.
-        viewModel.getCreateOrderMLD().observe(this, Observer {
+        viewModel.createOrderMLD.observe(this, Observer {
 
             when (it.status) {
 
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
-                        "Creating order...",
+                        getString(R.string.order_create_loading),
                         binding.root
                     )
                 }

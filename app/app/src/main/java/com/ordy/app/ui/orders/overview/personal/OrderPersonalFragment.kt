@@ -52,21 +52,27 @@ class OrderPersonalFragment : Fragment() {
             adapter = baseAdapter
             emptyView = binding.root.order_items_empty
         }
-      
-        // Observe the changes of the fetch.
-        viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
 
-            when (it.status) {
-                QueryStatus.SUCCESS -> {
-                    // Hide the "add item"-button
-                    val closed = OrderUtil.timeLeft(it.requireData().deadline) <= 0
-                    order_items_add.visibility = if (closed) View.INVISIBLE else View.VISIBLE
-                }
-                else -> {
-                }
+        // Swipe to refresh
+        binding.root.order_refresh.setOnRefreshListener {
+            viewModel.refreshOrder()
+        }
+
+        // Stop refreshing on load
+        viewModel.orderMLD.observe(viewLifecycleOwner, Observer {
+            if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
+                binding.root.order_refresh.isRefreshing = false
             }
         })
 
         return binding.root
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // Destroy the adapter & stop all the ongoing timer tasks.
+        baseAdapter.destroy()
     }
 }

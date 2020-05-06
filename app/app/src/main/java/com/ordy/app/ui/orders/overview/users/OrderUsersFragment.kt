@@ -11,11 +11,7 @@ import com.ordy.app.R
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.FragmentOrderUsersBinding
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
-import kotlinx.android.synthetic.main.fragment_order_general.view.*
 import kotlinx.android.synthetic.main.fragment_order_users.view.*
-import kotlinx.android.synthetic.main.fragment_order_users.view.order_items
-import kotlinx.android.synthetic.main.fragment_order_users.view.order_items_empty
-import kotlinx.android.synthetic.main.fragment_order_users.view.order_refresh
 
 class OrderUsersFragment : Fragment() {
 
@@ -51,7 +47,7 @@ class OrderUsersFragment : Fragment() {
         }
 
         // Stop refreshing on load
-        viewModel.getOrderMLD().observe(viewLifecycleOwner, Observer {
+        viewModel.orderMLD.observe(viewLifecycleOwner, Observer {
             if (it.status == QueryStatus.SUCCESS || it.status == QueryStatus.ERROR) {
                 binding.root.order_refresh.isRefreshing = false
             }

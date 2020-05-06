@@ -77,6 +77,7 @@
     <string name="pick">Pick</string>
     <string name="no_locations_title">No locations found</string>
     <string name="no_locations_description">Use the searchbar above to search for a location by name</string>
+    <string name="locations_default_text">Use location \"%1$s\" instead</string>
     <string name="pick_custom">Pick Custom</string>
     <string name="location_item_default_title">Not in the list?</string>
     <string name="loading">Loading&#8230;</string>
@@ -106,6 +107,12 @@
     <string name="mark_confirm_text_decription">This will remove %1$s\'s dept from the list.</string>
 
     <string name="no_order_items_title">No items found</string>
+
+    <!-- Create Order -->
+    <string name="order_create_loading">Creating order…</string>
+    <string name="order_create_groups_failed">Unable to fetch your groups</string>
+    <string name="order_create_no_group_title">You are not part of any group</string>
+    <string name="order_create_no_group_description">Join a group or create one yourself to be able to create an order</string>
 
     <string name="order_overview_header_deadline">Deadline:&#160;</string>
     <string name="order_overview_header_location">Location:&#160;</string>
@@ -137,6 +144,7 @@
     <string name="bill_error_description">Unable to load bill for this order. Make sure you have a valid connection and try again!</string>
     <string name="bill_upload_success">Bill has been uploaded.</string>
 
+    <string name="error_timeout">Unable to get response from server. Please check your connection.</string>
     <string name="error_connection">Unable to connect to the server. Please check your connection.</string>
     <string name="error_picker_past">You cannot select a deadline that has already passed.</string>
     <string name="error_passwords_match">Passwords do not match.</string>

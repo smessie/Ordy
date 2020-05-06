@@ -121,6 +121,8 @@ class ErrorHandler {
 
                 // Check if the user has no internet connection
                 message = view.context.getString(R.string.error_connection)
+            } else if (message.startsWith("timeout")) {
+                message = view.context.getString(R.string.error_timeout)
             }
 
             // Create and show a snackbar with the error message.

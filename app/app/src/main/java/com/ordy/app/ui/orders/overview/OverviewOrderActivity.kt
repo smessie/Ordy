@@ -98,7 +98,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         })
 
         // Observe the changes of the fetch.
-        viewModel.getOrderMLD().observe(this, Observer {
+        viewModel.orderMLD.observe(this, Observer {
 
             when (it.status) {
 
@@ -117,10 +117,17 @@ class OverviewOrderActivity : AppCompatActivity() {
 
                     if (!billUrl.isBlank()) {
                         order_bill_button.visibility = View.VISIBLE
+                    } else {
+                        order_bill_button.visibility = View.INVISIBLE
+                    }
+
+                    // Cancel the previous timer when available
+                    if(viewModel.updateTimer != null) {
+                        viewModel.updateTimer?.cancel()
                     }
 
                     // Update the closing time left every second.
-                    TimerUtil.updateUI(this, 0, 1000) {
+                    viewModel.updateTimer = TimerUtil.updateUI(this, 0, 1000) {
                         order_deadline_time_left.text = OrderUtil.timeLeftFormat(order.deadline)
                     }
 
@@ -238,7 +245,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         val dialog = builder.create()
 
         // Observe changes to the bill upload.
-        viewModel.getUploadBillResult().observe(this, Observer {
+        viewModel.uploadBillMLD.observe(this, Observer {
 
             when (it.status) {
                 QueryStatus.LOADING -> {
@@ -361,5 +368,19 @@ class OverviewOrderActivity : AppCompatActivity() {
 
         // Upload the bill image.
         viewModel.uploadBill(orderId, requestBody)
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+
+        //refesh the order
+        viewModel.refreshOrder()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // Cancel the update timer.
+        viewModel.updateTimer?.cancel()
     }
 }

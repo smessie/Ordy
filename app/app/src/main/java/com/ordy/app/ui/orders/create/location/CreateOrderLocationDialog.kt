@@ -24,7 +24,7 @@ class CreateOrderLocationDialog : DialogFragment() {
 
     private val activityViewModel: CreateOrderViewModel by activityViewModels()
 
-    private lateinit var listAdapter: CreateOrderLocationListAdapter
+    private lateinit var baseAdapter: CreateOrderLocationBaseAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +50,7 @@ class CreateOrderLocationDialog : DialogFragment() {
         val listViewEmpty: LinearLayout = binding.root.locations_empty
 
         // Create the list view adapter
-        listAdapter = CreateOrderLocationListAdapter(
+        baseAdapter = CreateOrderLocationBaseAdapter(
             requireContext(),
             this,
             viewModel,
@@ -59,7 +59,7 @@ class CreateOrderLocationDialog : DialogFragment() {
         )
 
         listView.apply {
-            adapter = listAdapter
+            adapter = baseAdapter
             emptyView = listViewEmpty
         }
 
@@ -99,7 +99,7 @@ class CreateOrderLocationDialog : DialogFragment() {
             }
 
             // Update the list adapter
-            listAdapter.update()
+            baseAdapter.update()
         })
 
         return binding.root
