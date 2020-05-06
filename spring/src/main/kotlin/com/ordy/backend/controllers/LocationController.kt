@@ -3,7 +3,6 @@ package com.ordy.backend.controllers
 import com.fasterxml.jackson.annotation.JsonView
 import com.ordy.backend.database.View
 import com.ordy.backend.database.models.Item
-import com.ordy.backend.database.models.Location
 import com.ordy.backend.services.LocationService
 import com.ordy.backend.wrappers.LocationWrapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,7 +32,7 @@ class LocationController(@Autowired val locationService: LocationService) {
 
     @GetMapping("/{locationId}/items")
     @JsonView(View.Detail::class)
-    fun getLocationItems(@RequestAttribute userId: Int, @PathVariable locationId: Int): List<Item> {
-        return locationService.getLocationItems(userId, locationId)
+    fun getLocationItems(@PathVariable locationId: Int): List<Item> {
+        return locationService.getLocationItems(locationId)
     }
 }

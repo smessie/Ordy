@@ -30,8 +30,8 @@ class PaymentController(@Autowired val paymentService: PaymentService) {
         paymentService.patchOrderPayed(userId, orderId, userPaidId, paymentUpdateWrapper)
     }
 
-    @PatchMapping("/{orderId}/{userId}/notification")
-    fun postDebtNotification(@PathVariable orderId: Int, @PathVariable userId: Int) {
-
+    @PostMapping("/{orderId}/{receiverId}/notification")
+    fun postDebtNotification(@PathVariable orderId: Int, @PathVariable receiverId: Int, @RequestAttribute userId: Int) {
+        paymentService.reactOnNotify(orderId, receiverId, userId)
     }
 }

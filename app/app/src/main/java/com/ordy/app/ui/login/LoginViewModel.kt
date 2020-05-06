@@ -54,6 +54,7 @@ class LoginViewModel(repository: Repository) : RepositoryViewModel(repository) {
      * Attempt to login a user.
      * @param email: Email entered by the user
      * @param password: Password entered by the user
+     * @param deviceToken: Devicetoken of the user
      */
     fun login(email: String, password: String) {
         repository.login(loginMLD, email, password)

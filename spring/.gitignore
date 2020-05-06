@@ -34,5 +34,8 @@ build/
 .env.bat
 .env
 
+### Firebase key ###
+ordy-selab-firebase-adminsdk-*.json
+
 ### Libraries ###
 lib/
