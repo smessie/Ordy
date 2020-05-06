@@ -32,14 +32,27 @@ class LoginFragment : Fragment() {
 
         // Create binding for the fragment.
         val binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
         binding.handlers = LoginHandlers(this, viewModel)
         binding.viewModel = viewModel
 
         return binding.root
     }
 
+    /**
+     * Clears the data of the register-screen
+     */
+    private fun clearRegister() {
+        viewModel.getUserNameData().value = ""
+        viewModel.getEmailRegisterData().value = ""
+        viewModel.getPasswordRegisterData().value = ""
+        viewModel.getPasswordRepeatData().value = ""
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        clearRegister()
 
         viewModel.getLoginMLD().observe(this, Observer {
 

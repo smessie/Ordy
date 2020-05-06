@@ -28,7 +28,6 @@ class RegisterFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        super.onCreate(savedInstanceState)
         // Inflate the layout for this fragment
         inflater.inflate(R.layout.fragment_register, container, false)
 
@@ -41,8 +40,19 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
+
+    /**
+     * Clears the data of the login-screen
+     */
+    private fun clearLogin() {
+        viewModel.getEmailLoginData().value = ""
+        viewModel.getPasswordLoginData().value = ""
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        clearLogin()
 
         viewModel.getRegisterMLD().observe(this, Observer {
 
