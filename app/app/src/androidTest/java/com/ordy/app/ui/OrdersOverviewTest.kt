@@ -22,14 +22,12 @@ import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import org.hamcrest.Matchers.not
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
-import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
@@ -198,7 +196,7 @@ class OrdersOverviewTest : KoinTest {
         `when`(mockOverviewOrderViewModel.getOrder()).thenReturn(orderQuery)
 
         declareMock<Repository> {
-            given(refreshOrder(orderMLD, order.id)).will {  }
+            given(refreshOrder(orderMLD, order.id)).will { }
         }
 
         // Create intent to open activity
