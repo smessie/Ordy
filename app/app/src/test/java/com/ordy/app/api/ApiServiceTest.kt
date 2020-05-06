@@ -610,7 +610,7 @@ class ApiServiceTest {
      */
     @Test
     fun `User and AccesToken should be returned`() {
-        val userLogin = UserLogin("peterparker@gmail.com", "spiderman")
+        val userLogin = UserLogin("peterparker@gmail.com", "spiderman", "petersPhone")
 
         // Response
         val response = MockResponse().apply {

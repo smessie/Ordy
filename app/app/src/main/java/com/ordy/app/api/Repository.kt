@@ -182,7 +182,12 @@ open class Repository(private val apiService: ApiService) {
      * @param password: Password entered by the user
      * @param deviceToken: Devicetoken of the user
      */
-    fun login(liveData: MutableLiveData<Query<LoginResponse>>, email: String, password: String) {
+    fun login(
+        liveData: MutableLiveData<Query<LoginResponse>>,
+        email: String,
+        password: String,
+        deviceToken: String
+    ) {
         FetchHandler.handle(
             liveData, apiService.login(
                 UserLogin(
