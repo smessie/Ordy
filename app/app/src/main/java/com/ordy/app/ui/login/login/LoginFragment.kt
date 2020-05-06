@@ -33,6 +33,7 @@ class LoginFragment : Fragment() {
         // Create binding for the fragment.
         val binding = FragmentLoginBinding.inflate(inflater, container, false)
         binding.handlers = LoginHandlers(this, viewModel)
+        binding.viewModel = viewModel
 
         return binding.root
     }
