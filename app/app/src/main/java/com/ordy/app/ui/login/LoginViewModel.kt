@@ -1,7 +1,6 @@
 package com.ordy.app.ui.login
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.LoginResponse
@@ -51,87 +50,45 @@ class LoginViewModel(repository: Repository) : RepositoryViewModel(repository) {
     private val passwordLoginData: MutableLiveData<String> = MutableLiveData("")
 
     /**
-     * Register: Get the username input.
+     * Register: Get the username data.
      */
     fun getUserNameData(): MutableLiveData<String> {
         return userNameData
     }
 
     /**
-     * Register: Get the username input.
+     * Register: Get the register-email data.
      */
     fun getEmailRegisterData(): MutableLiveData<String> {
         return emailRegisterData
     }
 
     /**
-     * Register: Get the username input.
+     * Register: Get the register-password data.
      */
     fun getPasswordRegisterData(): MutableLiveData<String> {
         return passwordRegisterData
     }
 
     /**
-     * Register: Get the username input.
+     * Register: Get the repeat-password data.
      */
     fun getPasswordRepeatData(): MutableLiveData<String> {
         return passwordRepeatData
     }
 
     /**
-     * Register: Get the username input.
+     * Login: Get the login-email data.
      */
     fun getEmailLoginData(): MutableLiveData<String> {
         return emailLoginData
     }
 
     /**
-     * Register: Get the username input.
+     * Login: Get the login-password data.
      */
     fun getPasswordLoginData(): MutableLiveData<String> {
         return passwordLoginData
-    }
-
-    /**
-     * Register: Get the username input.
-     */
-    fun getUserNameValue(): String {
-        return userNameData.value!!
-    }
-
-    /**
-     * Register: Get the email input.
-     */
-    fun getEmailRegisterValue(): String {
-        return emailRegisterData.value!!
-    }
-
-    /**
-     * Register: Get the password input.
-     */
-    fun getPasswordRegisterValue(): String {
-        return passwordRegisterData.value!!
-    }
-
-    /**
-     * Register: Get the repeat password input.
-     */
-    fun getPasswordRepeatValue(): String {
-        return passwordRepeatData.value!!
-    }
-
-    /**
-     * Login: Get the email input.
-     */
-    fun getEmailLoginValue(): String {
-        return emailLoginData.value!!
-    }
-
-    /**
-     * Login: Get the password input.
-     */
-    fun getPasswordLoginValue(): String {
-        return passwordLoginData.value!!
     }
 
     /**
