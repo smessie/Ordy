@@ -1,6 +1,7 @@
 package com.ordy.app.ui.login
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
 import com.ordy.app.api.models.LoginResponse
@@ -18,6 +19,120 @@ class LoginViewModel(repository: Repository) : RepositoryViewModel(repository) {
     private val isLoginMLD: MutableLiveData<Boolean> = MutableLiveData(true)
     private val loginMLD: MutableLiveData<Query<LoginResponse>> = MutableLiveData(Query())
     private val registerMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
+
+    /**
+     * Register: Value of username input
+     */
+    private val userNameData: MutableLiveData<String> = MutableLiveData("")
+
+    /**
+     * Register: Value of email input
+     */
+    private val emailRegisterData: MutableLiveData<String> = MutableLiveData("")
+
+    /**
+     * Register: Value of password input
+     */
+    private val passwordRegisterData: MutableLiveData<String> = MutableLiveData("")
+
+    /**
+     * Register: Value of repeat password input
+     */
+    private val passwordRepeatData: MutableLiveData<String> = MutableLiveData("")
+
+    /**
+     * Login: Value of email input
+     */
+    private val emailLoginData: MutableLiveData<String> = MutableLiveData("")
+
+    /**
+     * Login: Value of password input
+     */
+    private val passwordLoginData: MutableLiveData<String> = MutableLiveData("")
+
+    /**
+     * Register: Get the username input.
+     */
+    fun getUserNameData(): MutableLiveData<String> {
+        return userNameData
+    }
+
+    /**
+     * Register: Get the username input.
+     */
+    fun getEmailRegisterData(): MutableLiveData<String> {
+        return emailRegisterData
+    }
+
+    /**
+     * Register: Get the username input.
+     */
+    fun getPasswordRegisterData(): MutableLiveData<String> {
+        return passwordRegisterData
+    }
+
+    /**
+     * Register: Get the username input.
+     */
+    fun getPasswordRepeatData(): MutableLiveData<String> {
+        return passwordRepeatData
+    }
+
+    /**
+     * Register: Get the username input.
+     */
+    fun getEmailLoginData(): MutableLiveData<String> {
+        return emailLoginData
+    }
+
+    /**
+     * Register: Get the username input.
+     */
+    fun getPasswordLoginData(): MutableLiveData<String> {
+        return passwordLoginData
+    }
+
+    /**
+     * Register: Get the username input.
+     */
+    fun getUserNameValue(): String {
+        return userNameData.value!!
+    }
+
+    /**
+     * Register: Get the email input.
+     */
+    fun getEmailRegisterValue(): String {
+        return emailRegisterData.value!!
+    }
+
+    /**
+     * Register: Get the password input.
+     */
+    fun getPasswordRegisterValue(): String {
+        return passwordRegisterData.value!!
+    }
+
+    /**
+     * Register: Get the repeat password input.
+     */
+    fun getPasswordRepeatValue(): String {
+        return passwordRepeatData.value!!
+    }
+
+    /**
+     * Login: Get the email input.
+     */
+    fun getEmailLoginValue(): String {
+        return emailLoginData.value!!
+    }
+
+    /**
+     * Login: Get the password input.
+     */
+    fun getPasswordLoginValue(): String {
+        return passwordLoginData.value!!
+    }
 
     /**
      * Get livedata for which screen is selected.

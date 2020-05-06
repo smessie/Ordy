@@ -28,12 +28,15 @@ class RegisterFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreate(savedInstanceState)
         // Inflate the layout for this fragment
         inflater.inflate(R.layout.fragment_register, container, false)
 
         // Create binding for the fragment.
         val binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
         binding.handlers = RegisterHandlers(this, viewModel)
+        binding.viewModel = viewModel
 
         return binding.root
     }
