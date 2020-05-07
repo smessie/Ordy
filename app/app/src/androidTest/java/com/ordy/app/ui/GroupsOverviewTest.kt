@@ -44,12 +44,12 @@ class GroupsOverviewTest : KoinTest {
     private lateinit var mockContext: Context
 
     /**
-     * Viewmodel that has been created using Koin injection.
+     * ViewModel that has been created using Koin injection.
      */
     private val mockOverviewGroupViewModel: OverviewGroupViewModel by inject()
 
     /**
-     * Viewmodel used for spying & changing method implementations.
+     * ViewModel used for spying & changing method implementations.
      */
     private val mockRepository: Repository by inject()
 
@@ -106,7 +106,7 @@ class GroupsOverviewTest : KoinTest {
 
         whenever(mockRepository.refreshGroup(groupMLD, group.id)).then { }
 
-        // Mock the viewmodel
+        // Mock the ViewModel
         whenever(mockOverviewGroupViewModel.getGroupMLD()).thenReturn(groupMLD)
         whenever(mockOverviewGroupViewModel.getGroup()).thenReturn(groupQuery)
         whenever(mockOverviewGroupViewModel.getLeaveGroupMLD()).thenReturn(MutableLiveData(Query()))

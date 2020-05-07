@@ -944,4 +944,42 @@ class ApiServiceTest {
         Assert.assertEquals("/user/payments/${orderId}/${userId}/notification", request.path)
     }
 
+    /**
+     * USER INFORMATION
+     */
+
+    /**
+     * @method "GET"
+     * @endpoint "user"
+     */
+    @Test
+    fun `Should return user information`() {
+
+        // Response
+        val response = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getFile("responses/user_info/response_user_info.json"))
+        }
+        server.enqueue(response)
+
+        // API Call
+        apiService.userInfo().test().apply {
+            assertNoErrors()
+            assertComplete()
+
+            assertValue(
+                User(
+                    id = 1,
+                    username = "Elon Musk",
+                    email = "Elon.Musk@gmail.com"
+                )
+            )
+        }
+
+        // Request
+        val request = server.takeRequest()
+
+        Assert.assertEquals("GET", request.method)
+        Assert.assertEquals("/user", request.path)
+    }
 }
