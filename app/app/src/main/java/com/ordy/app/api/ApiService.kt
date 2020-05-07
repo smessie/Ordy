@@ -28,6 +28,12 @@ interface ApiService {
     fun logout(): Observable<ResponseBody>
 
     /**
+     * User info
+     */
+    @GET("user")
+    fun userInfo(): Observable<User>
+
+    /**
      * Locations
      */
     @GET("locations")
