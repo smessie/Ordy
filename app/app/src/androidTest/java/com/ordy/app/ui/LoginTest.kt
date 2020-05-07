@@ -80,6 +80,12 @@ class LoginTest : KoinTest {
         loginQuery.status = QueryStatus.INITIALIZED
         val loginMLD = MutableLiveData(loginQuery)
 
+        // Mock data for clearRegister function
+        whenever(mockLoginViewModel.getUserNameData()).thenReturn(MutableLiveData(""))
+        whenever(mockLoginViewModel.getEmailRegisterData()).thenReturn(MutableLiveData(""))
+        whenever(mockLoginViewModel.getPasswordRegisterData()).thenReturn(MutableLiveData(""))
+        whenever(mockLoginViewModel.getPasswordRepeatData()).thenReturn(MutableLiveData(""))
+
         whenever(mockLoginViewModel.getIsLoginMLD()).thenReturn(MutableLiveData(true))
         whenever(mockLoginViewModel.login(email, password, deviceToken)).then { }
         whenever(mockLoginViewModel.getLoginMLD()).thenReturn(loginMLD)

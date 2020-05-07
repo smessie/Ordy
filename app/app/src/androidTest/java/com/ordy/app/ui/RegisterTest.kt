@@ -65,6 +65,10 @@ class RegisterTest : KoinTest {
 
         val registerMLD = MutableLiveData(Query<ResponseBody>())
 
+        // Mock data for clearLogin function
+        whenever(mockLoginViewModel.getEmailLoginData()).thenReturn(MutableLiveData(""))
+        whenever(mockLoginViewModel.getPasswordLoginData()).thenReturn(MutableLiveData(""))
+
         whenever(mockLoginViewModel.getIsLoginMLD()).thenReturn(MutableLiveData(false))
         whenever(mockLoginViewModel.register(username, email, password)).then { }
         whenever(mockLoginViewModel.getRegisterMLD()).thenReturn(registerMLD)
