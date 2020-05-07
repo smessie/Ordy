@@ -11,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.javafaker.Faker
+import com.nhaarman.mockitokotlin2.whenever
 import com.ordy.app.R
 import com.ordy.app.api.Repository
 import com.ordy.app.api.models.Group
@@ -22,22 +23,15 @@ import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderActivity
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import org.hamcrest.Matchers.not
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.android.viewmodel.dsl.viewModel
-import org.koin.core.context.loadKoinModules
-import org.koin.core.context.stopKoin
-import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import org.koin.test.mock.MockProviderRule
 import org.koin.test.mock.declareMock
-import org.mockito.BDDMockito.given
-import org.mockito.Mockito.*
-import org.mockito.MockitoAnnotations
+import org.mockito.Mockito
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)
@@ -54,37 +48,30 @@ class OrdersOverviewTest : KoinTest {
     private lateinit var mockContext: Context
 
     /**
-     * Viewmodel that has been created using Koin injection.
+     * ViewModel that has been created using Koin injection.
      */
     private val mockOverviewOrderViewModel: OverviewOrderViewModel by inject()
 
     /**
-     * Viewmodel used for spying & changing method implementations.
+     * Repository that has been created using Koin injection.
      */
-    private var spyOverviewOrderViewModel = spy(mockOverviewOrderViewModel)
+    private val mockRepository: Repository by inject()
 
     /**
      * Mock provider for Koin testing.
      */
     @get:Rule
     val mockProvider = MockProviderRule.create { clazz ->
-        mock(clazz.java)
+        Mockito.mock(clazz.java)
     }
 
     @Before
     fun setup() {
-        // Initialize mocks using decorators.
-        MockitoAnnotations.initMocks(this)
-
         // Initialize mocks
         mockContext = InstrumentationRegistry.getInstrumentation().targetContext
 
-        // Initialize koin
-        loadKoinModules(module {
-            viewModel(override = true) {
-                spyOverviewOrderViewModel
-            }
-        })
+        declareMock<OverviewOrderViewModel>()
+        declareMock<Repository>()
     }
 
     /**
@@ -134,13 +121,14 @@ class OrdersOverviewTest : KoinTest {
 
         val orderMLD = MutableLiveData(orderQuery)
 
-        declareMock<Repository> {
-            given(refreshOrder(orderMLD, order.id)).will { }
-        }
+        // Mock the repository
+        whenever(mockRepository.refreshOrder(orderMLD, order.id)).then { }
 
-        // Mock the viewmodel
-        `when`(spyOverviewOrderViewModel.getOrderMLD()).thenReturn(orderMLD)
-        `when`(spyOverviewOrderViewModel.getOrder()).thenReturn(orderQuery)
+        // Mock the ViewModel
+        whenever(mockOverviewOrderViewModel.getOrderMLD()).thenReturn(orderMLD)
+        whenever(mockOverviewOrderViewModel.getOrder()).thenReturn(orderQuery)
+        whenever(mockOverviewOrderViewModel.orderId).thenReturn(MutableLiveData(order.id))
+        whenever(mockOverviewOrderViewModel.getUploadBillMLD()).thenReturn(MutableLiveData(Query()))
 
         // Create intent to open activity
         val intent = Intent(mockContext, OverviewOrderActivity::class.java)
@@ -193,13 +181,14 @@ class OrdersOverviewTest : KoinTest {
 
         val orderMLD = MutableLiveData(orderQuery)
 
-        // Mock the viewmodel
-        `when`(mockOverviewOrderViewModel.getOrderMLD()).thenReturn(orderMLD)
-        `when`(mockOverviewOrderViewModel.getOrder()).thenReturn(orderQuery)
+        // Mock the ViewModel
+        whenever(mockOverviewOrderViewModel.getOrderMLD()).thenReturn(orderMLD)
+        whenever(mockOverviewOrderViewModel.getOrder()).thenReturn(orderQuery)
+        whenever(mockOverviewOrderViewModel.orderId).thenReturn(MutableLiveData(order.id))
+        whenever(mockOverviewOrderViewModel.getUploadBillMLD()).thenReturn(MutableLiveData(Query()))
 
-        declareMock<Repository> {
-            given(refreshOrder(orderMLD, order.id)).will {  }
-        }
+        // Mock the Repository
+        whenever(mockRepository.refreshOrder(orderMLD, order.id)).then { }
 
         // Create intent to open activity
         val intent = Intent(mockContext, OverviewOrderActivity::class.java)
