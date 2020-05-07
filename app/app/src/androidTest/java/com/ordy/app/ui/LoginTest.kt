@@ -47,11 +47,6 @@ class LoginTest : KoinTest {
     private val mockLoginViewModel: LoginViewModel by inject()
 
     /**
-     * Repository that has been created using Koin injection.
-     */
-    private val mockRepository: Repository by inject()
-
-    /**
      * Mock provider for Koin testing.
      */
     @get:Rule
@@ -86,7 +81,7 @@ class LoginTest : KoinTest {
         val loginMLD = MutableLiveData(loginQuery)
 
         whenever(mockLoginViewModel.getIsLoginMLD()).thenReturn(MutableLiveData(true))
-        whenever(mockRepository.login(loginMLD, email, password, deviceToken)).then { }
+        whenever(mockLoginViewModel.login(email, password, deviceToken)).then { }
         whenever(mockLoginViewModel.getLoginMLD()).thenReturn(loginMLD)
 
         ActivityScenario.launch(LoginActivity::class.java)
