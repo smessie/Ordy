@@ -7,7 +7,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "images")
-class Image (
+class Image(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @JsonView(View.Id::class)

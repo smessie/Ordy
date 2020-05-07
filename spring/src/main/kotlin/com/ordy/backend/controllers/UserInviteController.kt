@@ -2,7 +2,6 @@ package com.ordy.backend.controllers
 
 import com.fasterxml.jackson.annotation.JsonView
 import com.ordy.backend.database.View
-import com.ordy.backend.database.models.GroupInvite
 import com.ordy.backend.services.GroupService
 import com.ordy.backend.wrappers.GroupInviteListWrapper
 import com.ordy.backend.wrappers.InviteActionWrapper

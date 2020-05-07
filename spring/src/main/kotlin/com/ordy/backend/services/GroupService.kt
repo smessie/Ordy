@@ -14,13 +14,13 @@ import java.util.*
 
 @Service
 class GroupService(
-        @Autowired val groupRepository: GroupRepository,
-        @Autowired val userRepository: UserRepository,
-        @Autowired val groupMemberRepository: GroupMemberRepository,
-        @Autowired val groupInviteRepository: GroupInviteRepository,
-        @Autowired val orderRepository: OrderRepository,
-        @Autowired val orderItemRepository: OrderItemRepository,
-        @Autowired val notificationService: NotificationService
+        val groupRepository: GroupRepository,
+        val userRepository: UserRepository,
+        val groupMemberRepository: GroupMemberRepository,
+        val groupInviteRepository: GroupInviteRepository,
+        val orderRepository: OrderRepository,
+        val orderItemRepository: OrderItemRepository,
+        val notificationService: NotificationService
 ) {
 
     private val groupNameRegex = Regex("^[A-z0-9 ]+$")

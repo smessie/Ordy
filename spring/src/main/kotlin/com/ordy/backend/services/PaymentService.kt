@@ -15,10 +15,10 @@ import java.util.*
 
 @Service
 class PaymentService(
-        @Autowired val userRepository: UserRepository,
-        @Autowired val orderRepository: OrderRepository,
-        @Autowired val orderItemRepository: OrderItemRepository,
-        @Autowired val notificationService: NotificationService
+        val userRepository: UserRepository,
+        val orderRepository: OrderRepository,
+        val orderItemRepository: OrderItemRepository,
+        val notificationService: NotificationService
 ) {
 
     /**

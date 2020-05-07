@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class LocationService(
-        @Autowired val userRepository: UserRepository,
-        @Autowired val locationRepository: LocationRepository,
-        @Autowired val favoriteLocationRepository: FavoriteLocationRepository
+        val userRepository: UserRepository,
+        val locationRepository: LocationRepository,
+        val favoriteLocationRepository: FavoriteLocationRepository
 ) {
 
     /**

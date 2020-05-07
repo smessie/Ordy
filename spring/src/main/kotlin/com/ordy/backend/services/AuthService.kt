@@ -20,9 +20,9 @@ import javax.mail.internet.InternetAddress
 
 @Service
 class AuthService(
-        @Autowired val userRepository: UserRepository,
-        @Autowired val tokenService: TokenService,
-        @Autowired val deviceTokenRepository: DeviceTokenRepository
+        val userRepository: UserRepository,
+        val tokenService: TokenService,
+        val deviceTokenRepository: DeviceTokenRepository
 ) {
     private final val bCryptRounds = 12
     private val usernamePattern = Regex("^[^ ][A-Za-z0-9 \\-_]+[^ ]$")
