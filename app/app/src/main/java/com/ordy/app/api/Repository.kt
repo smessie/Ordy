@@ -425,15 +425,16 @@ class Repository(private val apiService: ApiService) {
      ******************************/
 
     /**
-     * refresh the user information
+     * Refresh the user information.
+     * @param liveData: Object where we want to store the result of our query
      */
-
     fun refreshUserInfo(liveData: MutableLiveData<Query<User>>) {
         FetchHandler.handle(liveData, apiService.userInfo())
     }
 
     /**
      * Refresh the invites.
+     * @param liveData: Object where we want to store the result of our query
      */
     fun refreshInvites(liveData: MutableLiveData<Query<List<GroupInvite>>>) {
         FetchHandler.handle(liveData, apiService.userInvites())
