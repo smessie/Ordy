@@ -81,7 +81,7 @@ class GroupsOverviewTest : KoinTest {
         val courier = User(
             id = 1,
             username = faker.name().name(),
-            email = faker.name().name()
+            email = faker.internet().emailAddress()
         )
         val group = Group(
             id = faker.number().randomDigit(),
@@ -92,7 +92,7 @@ class GroupsOverviewTest : KoinTest {
                 User(
                     id = 2,
                     username = faker.name().name(),
-                    email = faker.name().name()
+                    email = faker.internet().emailAddress()
                 )
             ),
             membersCount = 2

@@ -97,13 +97,13 @@ class OrdersOverviewTest : KoinTest {
                 creator = User(
                     id = 1,
                     username = faker.name().name(),
-                    email = faker.name().name()
+                    email = faker.internet().emailAddress()
                 )
             ),
             courier = User(
                 id = 1,
                 username = faker.name().name(),
-                email = faker.name().name()
+                email = faker.internet().emailAddress()
             ),
             location = Location(
                 id = 1,
