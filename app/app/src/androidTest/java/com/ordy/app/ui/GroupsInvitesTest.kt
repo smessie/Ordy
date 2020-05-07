@@ -11,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.javafaker.Faker
+import com.nhaarman.mockitokotlin2.whenever
 import com.ordy.app.R
 import com.ordy.app.api.Repository
 import com.ordy.app.api.models.User
@@ -23,16 +24,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.android.viewmodel.dsl.viewModel
-import org.koin.core.context.loadKoinModules
-import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import org.koin.test.mock.MockProviderRule
 import org.koin.test.mock.declareMock
-import org.mockito.BDDMockito.given
 import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 
 
 @RunWith(AndroidJUnit4::class)
@@ -54,11 +50,6 @@ class GroupsInvitesTest : KoinTest {
     private val mockInviteMemberViewModel: InviteMemberViewModel by inject()
 
     /**
-     * Viewmodel used for spying & changing method implementations.
-     */
-    private var spyInviteMemberViewModel = Mockito.spy(mockInviteMemberViewModel)
-
-    /**
      * Mock provider for Koin testing.
      */
     @get:Rule
@@ -68,18 +59,12 @@ class GroupsInvitesTest : KoinTest {
 
     @Before
     fun setup() {
-        // Initialize mocks using decorators.
-        MockitoAnnotations.initMocks(this)
 
         // Initialize mocks
         mockContext = InstrumentationRegistry.getInstrumentation().targetContext
 
-        // Initialize koin
-        loadKoinModules(module {
-            viewModel(override = true) {
-                spyInviteMemberViewModel
-            }
-        })
+        declareMock<Repository>()
+        declareMock<InviteMemberViewModel>()
     }
 
     /**
@@ -104,19 +89,9 @@ class GroupsInvitesTest : KoinTest {
 
         val inviteableUsersMLD = MutableLiveData(groupInviteQuery)
 
-        declareMock<Repository> {
-            given(
-                (searchMatchingInviteUsers(
-                    inviteableUsersMLD,
-                    groupId = 1,
-                    username = "member"
-                ))
-            ).will { }
-        }
-
         // Mock the viewmodel
-        Mockito.`when`(spyInviteMemberViewModel.getInviteableUsersMLD())
-            .thenReturn(inviteableUsersMLD)
+        whenever(mockInviteMemberViewModel.getInviteableUsersMLD()).thenReturn(inviteableUsersMLD)
+        whenever(mockInviteMemberViewModel.getSearchValueData()).thenReturn(MutableLiveData("member"))
 
         // Create intent to open activity
         val intent = Intent(mockContext, InviteMemberActivity::class.java)
@@ -137,8 +112,8 @@ class GroupsInvitesTest : KoinTest {
         val inviteWrappers = listOf(
             GroupInviteUserWrapper(
                 user = User(
-                    id = 2,
-                    username = "member two",
+                    id = 1,
+                    username = "member one",
                     email = faker.name().name()
                 ),
                 invited = true
@@ -151,19 +126,11 @@ class GroupsInvitesTest : KoinTest {
 
         val inviteableUsersMLD = MutableLiveData(groupInviteQuery)
 
-        declareMock<Repository> {
-            given(
-                (searchMatchingInviteUsers(
-                    inviteableUsersMLD,
-                    groupId = 1,
-                    username = "member"
-                ))
-            ).will { }
-        }
-
         // Mock the viewmodel
-        Mockito.`when`(spyInviteMemberViewModel.getInviteableUsersMLD())
-            .thenReturn(inviteableUsersMLD)
+        whenever(mockInviteMemberViewModel.markUserAsInvited(1)).then { }
+        whenever(mockInviteMemberViewModel.isUserInvited(1)).thenReturn(true)
+        whenever(mockInviteMemberViewModel.getInviteableUsersMLD()).thenReturn(inviteableUsersMLD)
+        whenever(mockInviteMemberViewModel.getSearchValueData()).thenReturn(MutableLiveData("member"))
 
         // Create intent to open activity
         val intent = Intent(mockContext, InviteMemberActivity::class.java)
@@ -171,7 +138,7 @@ class GroupsInvitesTest : KoinTest {
         // Launch the activity
         ActivityScenario.launch<InviteMemberActivity>(intent)
 
-        // Check if the invite member button shows "INVITED!"
+        // Check if the invite member button shows "INVITE"
         onView(withId(R.id.member_invite))
             .check(matches(withText(R.string.invited_button)))
     }

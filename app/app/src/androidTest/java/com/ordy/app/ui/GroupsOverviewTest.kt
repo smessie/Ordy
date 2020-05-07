@@ -11,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.javafaker.Faker
+import com.nhaarman.mockitokotlin2.whenever
 import com.ordy.app.R
 import com.ordy.app.api.Repository
 import com.ordy.app.api.models.Group
@@ -23,16 +24,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.android.viewmodel.dsl.viewModel
-import org.koin.core.context.loadKoinModules
-import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import org.koin.test.mock.MockProviderRule
 import org.koin.test.mock.declareMock
-import org.mockito.BDDMockito.given
 import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 
 @RunWith(AndroidJUnit4::class)
 class GroupsOverviewTest : KoinTest {
@@ -55,7 +51,7 @@ class GroupsOverviewTest : KoinTest {
     /**
      * Viewmodel used for spying & changing method implementations.
      */
-    private var spyOverviewGroupViewModel = Mockito.spy(mockOverviewGroupViewModel)
+    private val mockRepository: Repository by inject()
 
     /**
      * Mock provider for Koin testing.
@@ -67,18 +63,12 @@ class GroupsOverviewTest : KoinTest {
 
     @Before
     fun setup() {
-        // Initialize mocks using decorators.
-        MockitoAnnotations.initMocks(this)
 
         // Initialize mocks
         mockContext = InstrumentationRegistry.getInstrumentation().targetContext
 
-        // Initialize koin
-        loadKoinModules(module {
-            viewModel(override = true) {
-                spyOverviewGroupViewModel
-            }
-        })
+        declareMock<Repository>()
+        declareMock<OverviewGroupViewModel>()
     }
 
 
@@ -114,13 +104,13 @@ class GroupsOverviewTest : KoinTest {
 
         val groupMLD = MutableLiveData(groupQuery)
 
-        declareMock<Repository> {
-            given(refreshGroup(groupMLD, group.id)).will { }
-        }
+        whenever(mockRepository.refreshGroup(groupMLD, group.id)).then { }
 
         // Mock the viewmodel
-        Mockito.`when`(spyOverviewGroupViewModel.getGroupMLD()).thenReturn(groupMLD)
-        Mockito.`when`(spyOverviewGroupViewModel.getGroup()).thenReturn(groupQuery)
+        whenever(mockOverviewGroupViewModel.getGroupMLD()).thenReturn(groupMLD)
+        whenever(mockOverviewGroupViewModel.getGroup()).thenReturn(groupQuery)
+        whenever(mockOverviewGroupViewModel.getLeaveGroupMLD()).thenReturn(MutableLiveData(Query()))
+        whenever(mockOverviewGroupViewModel.getRemoveMemberMLD()).thenReturn(MutableLiveData(Query()))
 
         // Create intent to open activity
         val intent = Intent(mockContext, OverviewGroupActivity::class.java)
