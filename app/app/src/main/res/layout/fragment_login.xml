@@ -7,6 +7,7 @@
 
     <data>
         <variable name="handlers" type="com.ordy.app.ui.login.login.LoginHandlers" />
+        <variable name="viewModel" type="com.ordy.app.ui.login.LoginViewModel" />
     </data>
 
     <LinearLayout
@@ -37,6 +38,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.emailLoginData}"
                 android:inputType="textEmailAddress" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -55,6 +57,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.passwordLoginData}"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 

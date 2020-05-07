@@ -20,6 +20,78 @@ class LoginViewModel(repository: Repository) : RepositoryViewModel(repository) {
     private val registerMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
 
     /**
+     * Register: Value of username input
+     */
+    private val userNameData: MutableLiveData<String> = MutableLiveData("")
+
+    /**
+     * Register: Value of email input
+     */
+    private val emailRegisterData: MutableLiveData<String> = MutableLiveData("")
+
+    /**
+     * Register: Value of password input
+     */
+    private val passwordRegisterData: MutableLiveData<String> = MutableLiveData("")
+
+    /**
+     * Register: Value of repeat password input
+     */
+    private val passwordRepeatData: MutableLiveData<String> = MutableLiveData("")
+
+    /**
+     * Login: Value of email input
+     */
+    private val emailLoginData: MutableLiveData<String> = MutableLiveData("")
+
+    /**
+     * Login: Value of password input
+     */
+    private val passwordLoginData: MutableLiveData<String> = MutableLiveData("")
+
+    /**
+     * Register: Get the username data.
+     */
+    fun getUserNameData(): MutableLiveData<String> {
+        return userNameData
+    }
+
+    /**
+     * Register: Get the register-email data.
+     */
+    fun getEmailRegisterData(): MutableLiveData<String> {
+        return emailRegisterData
+    }
+
+    /**
+     * Register: Get the register-password data.
+     */
+    fun getPasswordRegisterData(): MutableLiveData<String> {
+        return passwordRegisterData
+    }
+
+    /**
+     * Register: Get the repeat-password data.
+     */
+    fun getPasswordRepeatData(): MutableLiveData<String> {
+        return passwordRepeatData
+    }
+
+    /**
+     * Login: Get the login-email data.
+     */
+    fun getEmailLoginData(): MutableLiveData<String> {
+        return emailLoginData
+    }
+
+    /**
+     * Login: Get the login-password data.
+     */
+    fun getPasswordLoginData(): MutableLiveData<String> {
+        return passwordLoginData
+    }
+
+    /**
      * Get livedata for which screen is selected.
      */
     fun getIsLoginMLD(): MutableLiveData<Boolean> {
