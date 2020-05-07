@@ -1,6 +1,5 @@
 package com.ordy.backend.exceptions
 
-import com.ordy.backend.exceptions.wrappers.ExceptionWrapper
 import com.ordy.backend.exceptions.wrappers.ThrowableListWrapper
 import org.springframework.http.HttpStatus
 import java.util.*

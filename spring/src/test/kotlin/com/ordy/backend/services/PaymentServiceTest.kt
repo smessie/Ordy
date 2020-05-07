@@ -7,6 +7,7 @@ import com.ordy.backend.database.repositories.OrderItemRepository
 import com.ordy.backend.database.repositories.OrderRepository
 import com.ordy.backend.database.repositories.UserRepository
 import com.ordy.backend.exceptions.ThrowableList
+import com.ordy.backend.services.notifications.NotificationService
 import com.ordy.backend.wrappers.PaymentUpdateWrapper
 import com.ordy.backend.wrappers.PaymentWrapper
 import org.junit.jupiter.api.Assertions
@@ -35,6 +36,9 @@ class PaymentServiceTest {
 
     @Mock
     private lateinit var orderItemRepository: OrderItemRepository
+
+    @Mock
+    private lateinit var notificationService: NotificationService
 
     private lateinit var creator: User
     private lateinit var courier: User

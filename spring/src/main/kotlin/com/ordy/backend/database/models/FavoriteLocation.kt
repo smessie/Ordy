@@ -6,7 +6,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "favorite_locations")
-class FavoriteLocation (
+class FavoriteLocation(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @JsonView(View.Id::class)

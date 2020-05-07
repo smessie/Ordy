@@ -12,21 +12,21 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
     @ExceptionHandler(ThrowableList::class)
     fun handleException(e: ThrowableList): ResponseEntity<ThrowableListWrapper> {
         return ResponseEntity
-                . status(e.code)
-                . body(e.wrap())
+                .status(e.code)
+                .body(e.wrap())
     }
 
     @ExceptionHandler(GenericException::class)
-    fun handleException(e: GenericException) : ResponseEntity<ThrowableListWrapper> {
+    fun handleException(e: GenericException): ResponseEntity<ThrowableListWrapper> {
         return ResponseEntity
-                . status(e.code)
-                . body(e.fullWrap())
+                .status(e.code)
+                .body(e.fullWrap())
     }
 
     @ExceptionHandler(PropertyException::class)
-    fun handleException(e: PropertyException) : ResponseEntity<ThrowableListWrapper> {
+    fun handleException(e: PropertyException): ResponseEntity<ThrowableListWrapper> {
         return ResponseEntity
-                . status(e.code)
-                . body(e.fullWrap())
+                .status(e.code)
+                .body(e.fullWrap())
     }
 }

@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class AuthInterceptor: HandlerInterceptor{
-
-    @Autowired private lateinit var tokenService: TokenService
-    @Autowired private lateinit var userRepo: UserRepository
+class AuthInterceptor(
+        val tokenService: TokenService,
+        val userRepo: UserRepository
+): HandlerInterceptor{
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, dataObject: Any) : Boolean {
 

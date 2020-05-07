@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile
 import javax.servlet.http.HttpServletRequest
 
 @Service
-class ImageService(@Autowired val imageRepository: ImageRepository) {
+class ImageService(val imageRepository: ImageRepository) {
 
     /**
      * function to save an image

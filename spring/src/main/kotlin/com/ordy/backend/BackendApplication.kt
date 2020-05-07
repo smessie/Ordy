@@ -3,7 +3,7 @@ package com.ordy.backend
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = ["com.ordy.backend"])
 class BackendApplication
 
 fun main(args: Array<String>) {

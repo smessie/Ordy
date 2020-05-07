@@ -9,7 +9,7 @@ class GenericException(code: HttpStatus, override val message: String) : OrdyExc
         return GenericExceptionWrapper(this)
     }
 
-    override fun fullWrap() : ThrowableListWrapper {
+    override fun fullWrap(): ThrowableListWrapper {
         return ThrowableList()
                 .also { it.addGenericException(message) }
                 .also { it.code = code }.wrap()

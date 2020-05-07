@@ -12,10 +12,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 @EnableAsync
 @EnableScheduling
-class AppConfig : WebMvcConfigurer {
-
-    @Autowired
-    private lateinit var authInterceptor: AuthInterceptor
+class AppConfig(
+        var authInterceptor: AuthInterceptor
+) : WebMvcConfigurer {
 
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(authInterceptor)
