@@ -54,7 +54,7 @@ class LocationsViewModel(repository: Repository) : RepositoryViewModel(repositor
     /**
      * Get the value of the search input field.
      */
-    private fun getSearchValue(): String {
+    fun getSearchValue(): String {
         return searchValueData.value!!
     }
 
