@@ -6,10 +6,12 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import com.ordy.backend.database.models.DeviceToken
 import com.ordy.backend.database.models.User
 import com.ordy.backend.database.repositories.DeviceTokenRepository
 import com.ordy.backend.database.repositories.UserRepository
 import com.ordy.backend.exceptions.ThrowableList
+import com.ordy.backend.wrappers.AuthLoginWrapper
 import com.ordy.backend.wrappers.AuthRegisterWrapper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -21,6 +23,7 @@ import org.mockito.MockitoAnnotations
 import org.springframework.http.HttpStatus
 import org.springframework.test.util.ReflectionTestUtils
 import org.springframework.util.Assert
+import java.util.*
 
 class AuthServiceTest {
 
@@ -68,6 +71,99 @@ class AuthServiceTest {
             val b2: String? = ReflectionTestUtils.invokeMethod<String>(authService, "hashPasswd", a2)
             Assert.isTrue((ReflectionTestUtils.invokeMethod<Boolean>(authService, "checkPasswd", a, b2) ?: false).not(),
                     "password did match")
+        }
+    }
+
+    @Nested
+    inner class Login {
+
+        @Test
+        fun `User should be able to login`() {
+            val loginWrapper = getAuthLoginWrapper()
+
+            // get the hashed password
+            val passwordHash: String? = ReflectionTestUtils.invokeMethod<String>(
+                    authService, "hashPasswd", loginWrapper.password
+            )
+
+            Assertions.assertNotNull(passwordHash, "Should not be null")
+
+            val user = User(
+                    username = faker.name().firstName(),
+                    email = loginWrapper.email,
+                    password = passwordHash!!
+            )
+
+            whenever(userRepository.findByEmail(loginWrapper.email)).thenReturn(listOf(user))
+            whenever(deviceTokenRepository.getByToken(loginWrapper.deviceToken)).thenReturn(Optional.empty())
+            whenever(deviceTokenRepository.save(any<DeviceToken>())).thenAnswer { it.getArgument(0) }
+            whenever(tokenService.encrypt(any<String>())).thenAnswer { it.getArgument(0) }
+
+            val authTokenWrapper = authService.login(loginWrapper)
+
+            Assertions.assertEquals(user, authTokenWrapper.user)
+
+            verify(userRepository).findByEmail(loginWrapper.email)
+            verify(deviceTokenRepository).getByToken(loginWrapper.deviceToken)
+            verify(deviceTokenRepository).save(any<DeviceToken>())
+        }
+
+        @Test
+        fun `User should not be able to login, unexisting email`() {
+            val loginWrapper = getAuthLoginWrapper()
+
+            // get the hashed password
+            val passwordHash: String? = ReflectionTestUtils.invokeMethod<String>(
+                    authService, "hashPasswd", loginWrapper.password
+            )
+
+            Assertions.assertNotNull(passwordHash, "Should not be null")
+
+            whenever(userRepository.findByEmail(loginWrapper.email)).thenReturn(emptyList())
+
+            try {
+                authService.login(loginWrapper)
+            } catch (e: ThrowableList) {
+                print(gson.toJson(e.fullWrap()))
+                Assertions.assertEquals(e.code, HttpStatus.UNPROCESSABLE_ENTITY)
+                Assertions.assertEquals(e.inputErrors.any { it.field == "email" }, true)
+                Assertions.assertEquals(e.inputErrors.any { it.field == "password" }, true)
+                verify(userRepository, times(0)).saveAndFlush<User>(any())
+            }
+
+            verify(userRepository).findByEmail(loginWrapper.email)
+        }
+
+        @Test
+        fun `User should not be able to login, wrong password`() {
+            val loginWrapper = getAuthLoginWrapper()
+
+            // get the hashed password
+            val passwordHash: String? = ReflectionTestUtils.invokeMethod<String>(
+                    authService, "hashPasswd", "${loginWrapper.password}YEET"
+            )
+
+            Assertions.assertNotNull(passwordHash, "Should not be null")
+
+            val user = User(
+                    username = faker.name().firstName(),
+                    email = loginWrapper.email,
+                    password = passwordHash!!
+            )
+
+            whenever(userRepository.findByEmail(loginWrapper.email)).thenReturn(listOf(user))
+
+            try {
+                authService.login(loginWrapper)
+            } catch (e: ThrowableList) {
+                print(gson.toJson(e.fullWrap()))
+                Assertions.assertEquals(e.code, HttpStatus.UNPROCESSABLE_ENTITY)
+                Assertions.assertEquals(e.inputErrors.any { it.field == "email" }, true)
+                Assertions.assertEquals(e.inputErrors.any { it.field == "password" }, true)
+                verify(userRepository, times(0)).saveAndFlush<User>(any())
+            }
+
+            verify(userRepository).findByEmail(loginWrapper.email)
         }
     }
 
@@ -298,11 +394,20 @@ class AuthServiceTest {
     }
 
     private fun randomPassword() = faker.internet().password(8, 64, true, true, true)
+
     private fun getAuthRegistrationWrapper(
             username: String = faker.name().firstName(),
             email: String = faker.internet().safeEmailAddress(),
             password: String = faker.internet().password(8, 64, true, true, true)
     ): AuthRegisterWrapper {
         return AuthRegisterWrapper(username, email, password)
+    }
+
+    private fun getAuthLoginWrapper(
+            email: String = faker.internet().safeEmailAddress(),
+            password: String = faker.internet().password(8, 64, true, true, true),
+            deviceToken: String = faker.internet().password(64, 128, true, true, true)
+    ): AuthLoginWrapper {
+        return AuthLoginWrapper(email, password, deviceToken)
     }
 }
