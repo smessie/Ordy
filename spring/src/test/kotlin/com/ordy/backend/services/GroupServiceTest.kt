@@ -66,6 +66,9 @@ class GroupServiceTest {
                 GroupMember(id = faker.number().numberBetween(1, 1000000), user = testUser, group = testGroup),
                 GroupMember(id = faker.number().numberBetween(1, 1000000), user = testUserTwee, group = testGroup)
         )
+
+        whenever(userRepository.findById(testUser.id)).thenReturn(Optional.of(testUser))
+        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
     }
 
     private fun giveValidGroupName(): String {
@@ -93,7 +96,6 @@ class GroupServiceTest {
                 user = testUser
         )
 
-        whenever(userRepository.findById(anyInt())).thenReturn(Optional.of(testUser))
         whenever(groupRepository.save<Group>(any())).thenReturn(savedGroup)
         whenever(groupMemberRepository.save<GroupMember>(any())).thenReturn(savedGroupMember)
 
@@ -115,8 +117,6 @@ class GroupServiceTest {
         )
 
         whenever(userRepository.findById(userToInvite.id)).thenReturn(Optional.of(userToInvite))
-        whenever(userRepository.findById(testUser.id)).thenReturn(Optional.of(testUser))
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
         whenever(groupMemberRepository.findGroupMemberByUserAndGroup(testUser, testGroup)).thenReturn(Optional.of(testGroupMember))
         whenever(groupMemberRepository.findGroupMemberByUserAndGroup(userToInvite, testGroup)).thenReturn(Optional.empty())
         whenever(groupInviteRepository.findGroupInviteByUserAndGroup(userToInvite, testGroup)).thenReturn(Optional.empty())
@@ -135,8 +135,6 @@ class GroupServiceTest {
                 group = testGroup
         )
 
-        whenever(userRepository.findById(anyInt())).thenReturn(Optional.of(testUser))
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
         whenever(groupInviteRepository.findGroupInviteByUserAndGroup(testUser, testGroup)).thenReturn(Optional.of(groupInvite))
 
         groupService.deleteInvite(testGroup.id, testUser.id)
@@ -153,7 +151,6 @@ class GroupServiceTest {
                 )
         )
 
-        whenever(userRepository.findById(anyInt())).thenReturn(Optional.of(testUser))
         whenever(groupInviteRepository.findGroupInvitesByUser(testUser)).thenReturn(groupInvites)
 
         groupService.getInvites(testUser.id)
@@ -174,8 +171,6 @@ class GroupServiceTest {
 
         val groupMember = GroupMember(user = groupInvite.user, group = groupInvite.group)
 
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
-        whenever(userRepository.findById(anyInt())).thenReturn(Optional.of(testUser))
         whenever(groupInviteRepository.findGroupInviteByUserAndGroup(testUser, testGroup)).thenReturn(Optional.of(groupInvite))
         whenever(groupMemberRepository.findGroupMemberByUserAndGroup(testUser, testGroup)).thenReturn(Optional.empty())
         whenever(groupMemberRepository.save<GroupMember>(groupMember)).thenReturn(groupMember)
@@ -197,8 +192,6 @@ class GroupServiceTest {
                 group = testGroup
         )
 
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
-        whenever(userRepository.findById(anyInt())).thenReturn(Optional.of(testUser))
         whenever(groupInviteRepository.findGroupInviteByUserAndGroup(testUser, testGroup)).thenReturn(Optional.of(groupInvite))
 
         groupService.reactOnInvite(testGroup.id, testUser.id, inviteAction)
@@ -213,8 +206,6 @@ class GroupServiceTest {
      */
     @Test
     fun `User should leave the group and group should be deleted`() {
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
-        whenever(userRepository.findById(anyInt())).thenReturn(Optional.of(testUser))
         whenever(groupMemberRepository.findGroupMemberByUserAndGroup(testUser, testGroup)).thenReturn(Optional.of(testGroupMember))
         whenever(groupMemberRepository.findGroupMembersByGroup(testGroup)).thenReturn(emptyList())
         whenever(orderRepository.findAllByGroup(testGroup)).thenReturn(emptyList())
@@ -232,8 +223,6 @@ class GroupServiceTest {
      */
     @Test
     fun `User should leave but the group has to be updated`() {
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
-        whenever(userRepository.findById(anyInt())).thenReturn(Optional.of(testUser))
         whenever(groupMemberRepository.findGroupMemberByUserAndGroup(testUser, testGroup)).thenReturn(Optional.of(testGroupMember))
         whenever(groupMemberRepository.findGroupMembersByGroup(testGroup)).thenReturn(
                 listOf(
@@ -256,9 +245,7 @@ class GroupServiceTest {
 
     @Test
     fun `Should remove a member of the group`() {
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
         whenever(userRepository.findById(testUserTwee.id)).thenReturn(Optional.of(testUserTwee))
-        whenever(userRepository.findById(testUser.id)).thenReturn(Optional.of(testUser))
         whenever(groupMemberRepository.findGroupMemberByUserAndGroup(testUser, testGroup)).thenReturn(Optional.of(testGroupMembers[0]))
         whenever(groupMemberRepository.findGroupMemberByUserAndGroup(testUserTwee, testGroup)).thenReturn(Optional.of(testGroupMembers[1]))
 
@@ -269,9 +256,7 @@ class GroupServiceTest {
 
     @Test
     fun `Should not be able to remove the creator of the group`() {
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
         whenever(userRepository.findById(testUserTwee.id)).thenReturn(Optional.of(testUserTwee))
-        whenever(userRepository.findById(testUser.id)).thenReturn(Optional.of(testUser))
         whenever(groupMemberRepository.findGroupMemberByUserAndGroup(testUser, testGroup)).thenReturn(Optional.of(testGroupMembers[0]))
         whenever(groupMemberRepository.findGroupMemberByUserAndGroup(testUserTwee, testGroup)).thenReturn(Optional.of(testGroupMembers[1]))
 
@@ -327,8 +312,6 @@ class GroupServiceTest {
             }
         }
 
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
-        whenever(userRepository.findById(anyInt())).thenReturn(Optional.of(testUser))
         whenever(groupMemberRepository.findGroupMemberByUserAndGroup(testUser, testGroup)).thenReturn(Optional.of(testGroupMembers[0]))
         whenever(groupMemberRepository.findGroupMembersByGroup(testGroup)).thenReturn(testGroupMembers)
         whenever(groupInviteRepository.findGroupInvitesByGroup(testGroup)).thenReturn(alreadyInvitedUsers)
@@ -343,7 +326,6 @@ class GroupServiceTest {
     fun `Group should be updated`() {
         val groupCreateWrapper = GroupCreateWrapper(name = Optional.of(faker.name().firstName()))
 
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
         whenever(groupRepository.save<Group>(any())).thenReturn(Group(id = testGroup.id, name = groupCreateWrapper.name.get(), creator = testGroup.creator))
 
         val updatedGroup = groupService.updateGroup(testGroup.id, groupCreateWrapper)
@@ -355,8 +337,6 @@ class GroupServiceTest {
     @Test
     fun `Group should not be updated because of invalid name`() {
         val groupCreateWrapper = GroupCreateWrapper(name = Optional.of("./+=}&" + faker.name().firstName()))
-
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
 
         try {
             groupService.updateGroup(testGroup.id, groupCreateWrapper)
@@ -371,8 +351,6 @@ class GroupServiceTest {
     fun `Group should not be updated because of no name was given`() {
         val groupCreateWrapper = GroupCreateWrapper(name = Optional.empty())
 
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
-
         try {
             groupService.updateGroup(testGroup.id, groupCreateWrapper)
         } catch (e: ThrowableList) {
@@ -384,7 +362,6 @@ class GroupServiceTest {
 
     @Test
     fun `Should return all the groups that contains the user`() {
-        whenever(userRepository.findById(anyInt())).thenReturn(Optional.of(testUser))
         whenever(groupMemberRepository.findGroupMembersByUser(testUser)).thenReturn(listOf(testGroupMember))
 
         val results = groupService.getGroups(testUser.id)
@@ -394,8 +371,6 @@ class GroupServiceTest {
 
     @Test
     fun `Should return a group of the user`() {
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
-        whenever(userRepository.findById(anyInt())).thenReturn(Optional.of(testUser))
         whenever(groupMemberRepository.findGroupMembersByGroup(testGroup)).thenReturn(testGroupMembers)
 
         val groupWrapper = groupService.getGroup(testUser.id, testGroup.id)
@@ -406,8 +381,6 @@ class GroupServiceTest {
 
     @Test
     fun `Should not return a group of the user`() {
-        whenever(groupRepository.findById(anyInt())).thenReturn(Optional.of(testGroup))
-        whenever(userRepository.findById(anyInt())).thenReturn(Optional.of(testUser))
         whenever(groupMemberRepository.findGroupMembersByGroup(testGroup)).thenReturn(emptyList())
 
         try {
