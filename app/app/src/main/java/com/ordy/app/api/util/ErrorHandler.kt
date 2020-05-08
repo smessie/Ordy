@@ -117,7 +117,7 @@ class ErrorHandler {
             var message = queryError.message
 
             // Filter a connection error message and throw a custom error instead
-            if (message.startsWith("Unable to resolve host")) {
+            if (message.startsWith("Unable to resolve host") || message.startsWith("Unsatisfiable Request (only-if-cached)")) {
 
                 // Check if the user has no internet connection
                 message = view.context.getString(R.string.error_connection)

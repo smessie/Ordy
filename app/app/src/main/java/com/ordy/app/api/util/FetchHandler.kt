@@ -1,5 +1,8 @@
 package com.ordy.app.api.util
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,7 +21,10 @@ class FetchHandler {
             return handle(MutableLiveData(Query(QueryStatus.LOADING)), observable)
         }
 
-        fun <T> handle(mutableLiveData: MutableLiveData<Query<T>>, observable: Observable<T>): MutableLiveData<Query<T>> {
+        fun <T> handle(
+            mutableLiveData: MutableLiveData<Query<T>>,
+            observable: Observable<T>
+        ): MutableLiveData<Query<T>> {
 
             val query = Query<T>()
 
@@ -56,6 +62,19 @@ class FetchHandler {
                 )
 
             return mutableLiveData
+        }
+
+        /**
+         * Check for Internet connection in the app
+         */
+        fun hasNetwork(context: Context): Boolean? {
+            var isConnected: Boolean? = false
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+            if (activeNetwork != null && activeNetwork.isConnected)
+                isConnected = true
+            return isConnected
         }
     }
 }
