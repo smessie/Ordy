@@ -1,23 +1,23 @@
 package com.ordy.app.api
 
-import android.app.Activity
 import android.view.View
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.github.javafaker.Faker
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import com.ordy.app.MainActivity
 import com.ordy.app.api.util.*
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert
 import org.junit.Test
+import org.mockito.Mock
 import org.mockito.Mockito.*
 import retrofit2.HttpException
 import retrofit2.Response
 
 class ErrorHandlerTest {
 
-    var faker = Faker()
+    private var faker = Faker()
+    private val activity: AppCompatActivity = mock(AppCompatActivity::class.java)
 
     @Test
     fun `'parse' should use the error message when passed a Throwable`() {
@@ -219,8 +219,6 @@ class ErrorHandlerTest {
         // Mock the data
         val queryError = mock(QueryError::class.java)
         whenever(queryError.message).thenReturn(errorMessage)
-        val view = mock(View::class.java)
-        val activity = mock(FragmentActivity::class.java)
         val fields = emptyList<InputField>()
 
         // Prevent spawning a snackbar, since it is not mocked
@@ -229,7 +227,11 @@ class ErrorHandlerTest {
         // Call the handle function
         errorHandler.handle(queryError, activity, fields)
 
-        verify(errorHandler, times(1)).handleInputs(queryError, view, fields)
+        verify(errorHandler, times(1)).handleInputs(
+            queryError,
+            activity.findViewById(android.R.id.content),
+            fields
+        )
     }
 
     @Test
@@ -240,7 +242,6 @@ class ErrorHandlerTest {
         // Mock the data
         val queryError = mock(QueryError::class.java)
         whenever(queryError.message).thenReturn(errorMessage)
-        val activity = mock(FragmentActivity::class.java)
 
         // Prevent spawning a snackbar, since it is not mocked
         doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, activity)
@@ -259,7 +260,6 @@ class ErrorHandlerTest {
         // Mock the data
         val queryError = QueryError()
         queryError.message = errorMessage
-        val activity = mock(FragmentActivity::class.java)
 
         // Prevent spawning a snackbar, since it is not mocked
         doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, activity)
@@ -279,7 +279,6 @@ class ErrorHandlerTest {
         val queryError = QueryError()
         queryError.message = errorMessage
         queryError.displayedError = true
-        val activity = mock(FragmentActivity::class.java)
 
         // Prevent spawning a snackbar, since it is not mocked
         doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, activity)
@@ -301,7 +300,6 @@ class ErrorHandlerTest {
         queryError.message = errorMessage
         queryError.inputErrors = emptyList()
         queryError.generalErrors = emptyList()
-        val activity = mock(FragmentActivity::class.java)
 
         // Prevent spawning a snackbar, since it is not mocked
         doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, activity)

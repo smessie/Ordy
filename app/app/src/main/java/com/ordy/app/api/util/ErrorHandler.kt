@@ -2,6 +2,7 @@ package com.ordy.app.api.util
 
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
@@ -109,7 +110,8 @@ class ErrorHandler {
 
         // Handle input errors.
         if (activity != null) {
-            val view = activity.window?.decorView?.rootView
+            val view = activity.findViewById<ViewGroup>(android.R.id.content)
+
             this.handleInputs(queryError, view, fields)
         }
 
@@ -122,7 +124,7 @@ class ErrorHandler {
             && queryError.generalErrors.isEmpty()
             && activity != null
         ) {
-            val view = activity.window?.decorView?.rootView!!
+            val view = activity.findViewById<ViewGroup>(android.R.id.content)
             var message = queryError.message
 
             // Filter a connection error message and throw a custom error instead
