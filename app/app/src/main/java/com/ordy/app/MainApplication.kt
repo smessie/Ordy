@@ -15,7 +15,6 @@ import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import com.ordy.app.ui.orders.overview.additem.AddItemOrderViewModel
 import com.ordy.app.ui.payments.PaymentsViewModel
 import com.ordy.app.ui.profile.ProfileViewModel
-import com.ordy.app.ui.settings.SettingsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.android.viewmodel.dsl.viewModel
@@ -73,10 +72,6 @@ class MainApplication : Application() {
 
             viewModel {
                 ProfileViewModel(get())
-            }
-
-            viewModel {
-                SettingsViewModel(get())
             }
 
             viewModel {
