@@ -47,11 +47,9 @@ class ArchivedOrdersFragment : Fragment() {
             emptyView = binding.root.orders_archived_empty
         }
 
-        viewModel.refreshOrders()
-
         // Swipe to refresh
         binding.root.orders_archived_refresh.setOnRefreshListener {
-            viewModel.refreshOrders()
+            viewModel.refreshOrders(requireContext(), binding.root)
         }
 
         // Observe the orders

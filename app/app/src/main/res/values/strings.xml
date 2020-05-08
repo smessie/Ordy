@@ -155,6 +155,7 @@
 
     <string name="error_timeout">Unable to get response from server. Please check your connection.</string>
     <string name="error_connection">Unable to connect to the server. Please check your connection.</string>
+    <string name="warning_cached">You seem to be offline, you are now watching an older version that may be outdated.</string>
     <string name="error_picker_past">You cannot select a deadline that has already passed.</string>
     <string name="error_passwords_match">Passwords do not match.</string>
 

@@ -53,6 +53,8 @@ class OverviewOrderActivity : AppCompatActivity() {
 
     private var orderId by Delegates.notNull<Int>()
 
+    private lateinit var view: View
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,6 +62,8 @@ class OverviewOrderActivity : AppCompatActivity() {
         val binding: ActivityOverviewOrderBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_overview_order)
         binding.handlers = OverviewOrderHandlers(this, viewModel)
+
+        view = binding.root
 
         // Set the action bar elevation to 0, since the order extends the action bar.
         if (supportActionBar != null) {
@@ -93,7 +97,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         // Fetch the specific order.
         viewModel.orderId.observe(this, Observer {
             if (it != -1) {
-                viewModel.refreshOrder()
+                viewModel.refreshOrder(applicationContext, binding.root)
             }
         })
 
@@ -263,7 +267,7 @@ class OverviewOrderActivity : AppCompatActivity() {
                     )
 
                     // Refresh the order
-                    viewModel.refreshOrder()
+                    viewModel.refreshOrder(applicationContext, binding.root)
                 }
 
                 QueryStatus.ERROR -> {
@@ -373,8 +377,8 @@ class OverviewOrderActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
 
-        //refesh the order
-        viewModel.refreshOrder()
+        // Refresh the order
+        viewModel.refreshOrder(applicationContext, view)
     }
 
     override fun onDestroy() {

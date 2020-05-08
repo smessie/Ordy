@@ -69,7 +69,8 @@ class OrderPersonalBaseAdapter(
                 view.order_item_data.visibility = View.VISIBLE
 
                 // Assign the data.
-                view.order_item_quantity.text = context.getString(R.string.placeholder_item_quantity)
+                view.order_item_quantity.text =
+                    context.getString(R.string.placeholder_item_quantity)
                 view.order_item_name.text = orderItem.item.name
                 view.order_item_comment.text = orderItem.comment
 
@@ -154,7 +155,7 @@ class OrderPersonalBaseAdapter(
                     SnackbarUtil.closeSnackbar(fragment.requireView())
 
                     // Update the query.
-                    viewModel.refreshOrder()
+                    viewModel.refreshOrder(context, view)
                 }
 
                 QueryStatus.ERROR -> {
@@ -252,7 +253,7 @@ class OrderPersonalBaseAdapter(
                         fragment.updateAddItemButton(this.parentView)
 
                         // Update the action buttons when the state changes.
-                        if(closed == showActions) {
+                        if (closed == showActions) {
 
                             // Update if the "remove" and "update" button should be showed.
                             showActions = !closed

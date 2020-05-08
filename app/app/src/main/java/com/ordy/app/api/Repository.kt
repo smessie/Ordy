@@ -1,8 +1,12 @@
 package com.ordy.app.api
 
+import android.content.Context
+import android.view.View
 import androidx.lifecycle.MutableLiveData
+import com.ordy.app.R
 import com.ordy.app.api.models.*
 import com.ordy.app.api.models.actions.*
+import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.wrappers.GroupInviteUserWrapper
@@ -230,8 +234,12 @@ class Repository(private val apiService: ApiService) {
     /**
      * Refresh the list of orders.
      */
-    fun refreshOrders() {
+    fun refreshOrders(context: Context, view: View) {
         FetchHandler.handle(orders, apiService.userOrders())
+
+        if (!FetchHandler.hasNetwork(context)!!) {
+            ErrorHandler().handleRawGeneral(context.getString(R.string.warning_cached), view)
+        }
     }
 
     /**
@@ -264,8 +272,12 @@ class Repository(private val apiService: ApiService) {
     /**
      * Refresh the order.
      */
-    fun refreshOrder(liveData: MutableLiveData<Query<Order>>, orderId: Int) {
+    fun refreshOrder(liveData: MutableLiveData<Query<Order>>, orderId: Int, context: Context, view: View) {
         FetchHandler.handle(liveData, apiService.order(orderId))
+
+        if (!FetchHandler.hasNetwork(context)!!) {
+            ErrorHandler().handleRawGeneral(context.getString(R.string.warning_cached), view)
+        }
     }
 
     /**

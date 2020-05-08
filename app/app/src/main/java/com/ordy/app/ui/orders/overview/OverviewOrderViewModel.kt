@@ -1,5 +1,7 @@
 package com.ordy.app.ui.orders.overview
 
+import android.content.Context
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
@@ -57,8 +59,8 @@ class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repos
     /**
      * Refresh the order
      */
-    fun refreshOrder() {
-        repository.refreshOrder(orderMLD, orderId.value!!)
+    fun refreshOrder(context: Context, view: View) {
+        repository.refreshOrder(orderMLD, orderId.value!!, context, view)
     }
 
     /**
