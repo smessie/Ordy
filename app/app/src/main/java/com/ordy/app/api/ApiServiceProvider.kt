@@ -63,12 +63,12 @@ class ApiServiceProvider {
                     newBuilder.addHeader("Cache-Control", "public, max-age=" + 5)
                 } else {
                     /*
-                        *  If there is no Internet, get the cache that was stored 7 days ago.
-                        *  If the cache is older than 7 days, then discard it,
-                        *  and indicate an error in fetching the response.
-                        *  The 'max-stale' attribute is responsible for this behavior.
-                        *  The 'only-if-cached' attribute indicates to not retrieve new data; fetch the cache only instead.
-                        */
+                    *  If there is no Internet, get the cache that was stored 7 days ago.
+                    *  If the cache is older than 7 days, then discard it,
+                    *  and indicate an error in fetching the response.
+                    *  The 'max-stale' attribute is responsible for this behavior.
+                    *  The 'only-if-cached' attribute indicates to not retrieve new data; fetch the cache only instead.
+                    */
                     newBuilder.addHeader(
                         "Cache-Control",
                         "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7
