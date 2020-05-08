@@ -61,7 +61,7 @@ class LoginFragment : Fragment() {
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
                         "Attempting to login...",
-                        requireView()
+                        activity
                     )
                 }
 
@@ -88,7 +88,7 @@ class LoginFragment : Fragment() {
                     SnackbarUtil.closeSnackbar(requireView())
 
                     ErrorHandler().handle(
-                        it.error, view, listOf(
+                        it.error, activity, listOf(
                             InputField("email", this.input_email),
                             InputField("password", this.input_password)
                         )

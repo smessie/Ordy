@@ -11,6 +11,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.ordy.app.R
 import com.ordy.app.api.models.Group
 import com.ordy.app.api.util.ErrorHandler
+import com.ordy.app.ui.groups.overview.OverviewGroupActivity
 import com.ordy.app.ui.groups.overview.OverviewGroupViewModel
 import com.ordy.app.util.InputUtil
 import kotlinx.android.synthetic.main.dialog_change_group_name.view.*
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.dialog_change_group_name.view.*
 
 class ChangeGroupNameDialog(
     val viewModel: OverviewGroupViewModel,
-    val activityView: View
+    val activity: OverviewGroupActivity
 ) : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -26,7 +27,7 @@ class ChangeGroupNameDialog(
 
         val dialogView =
             View.inflate(context, R.layout.dialog_change_group_name, null)
-        
+
         val newNameView: TextInputLayout = dialogView.new_group_name
 
         // Initial text for the "New name"-field view
@@ -44,7 +45,7 @@ class ChangeGroupNameDialog(
                 } else {
                     ErrorHandler().handleRawGeneral(
                         getString(R.string.group_rename_dialog_is_empty),
-                        activityView
+                        activity
                     )
                 }
             }

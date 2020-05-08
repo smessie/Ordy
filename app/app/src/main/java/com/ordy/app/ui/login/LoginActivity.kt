@@ -3,7 +3,6 @@ package com.ordy.app.ui.login
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.ordy.app.AppPreferences
 import com.ordy.app.R
@@ -53,13 +52,11 @@ class LoginActivity : AppCompatActivity() {
 
                     // Store the device token in persistent storage.
                     AppPreferences(this).deviceToken = deviceToken
-                }
-
-                else {
+                } else {
                     // Send an error message.
                     ErrorHandler().handleRawGeneral(
                         "Unable to fetch device token. Make sure you have a connection to the internet.",
-                        window.decorView.rootView
+                        this
                     )
 
                     // Set the device token to the empty string
@@ -72,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onBackPressed() {
 
         // If the register screen is showed, clicking on back will open the login screen again.
-        if(!viewModel.getIsLogin()) {
+        if (!viewModel.getIsLogin()) {
             viewModel.getIsLoginMLD().postValue(true)
         }
         // If the login screen is showed, clicking on back will close the app.

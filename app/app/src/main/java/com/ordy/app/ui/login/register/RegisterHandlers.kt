@@ -23,7 +23,7 @@ class RegisterHandlers(val fragment: RegisterFragment, val viewModel: LoginViewM
         } else {
             ErrorHandler().handleRawGeneral(
                 fragment.requireContext().getString(R.string.error_passwords_match),
-                fragment.requireView()
+                fragment.activity
             )
         }
     }

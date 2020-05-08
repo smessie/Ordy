@@ -1,9 +1,12 @@
 package com.ordy.app.api
 
+import android.app.Activity
 import android.view.View
+import androidx.fragment.app.FragmentActivity
 import com.github.javafaker.Faker
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import com.ordy.app.MainActivity
 import com.ordy.app.api.util.*
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert
@@ -217,13 +220,14 @@ class ErrorHandlerTest {
         val queryError = mock(QueryError::class.java)
         whenever(queryError.message).thenReturn(errorMessage)
         val view = mock(View::class.java)
+        val activity = mock(FragmentActivity::class.java)
         val fields = emptyList<InputField>()
 
         // Prevent spawning a snackbar, since it is not mocked
-        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, view)
+        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, activity)
 
         // Call the handle function
-        errorHandler.handle(queryError, view, fields)
+        errorHandler.handle(queryError, activity, fields)
 
         verify(errorHandler, times(1)).handleInputs(queryError, view, fields)
     }
@@ -236,15 +240,15 @@ class ErrorHandlerTest {
         // Mock the data
         val queryError = mock(QueryError::class.java)
         whenever(queryError.message).thenReturn(errorMessage)
-        val view = mock(View::class.java)
+        val activity = mock(FragmentActivity::class.java)
 
         // Prevent spawning a snackbar, since it is not mocked
-        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, view)
+        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, activity)
 
         // Call the handle function
-        errorHandler.handle(queryError, view)
+        errorHandler.handle(queryError, activity)
 
-        verify(errorHandler, times(1)).handleGeneral(queryError, view)
+        verify(errorHandler, times(1)).handleGeneral(queryError, activity)
     }
 
     @Test
@@ -255,13 +259,13 @@ class ErrorHandlerTest {
         // Mock the data
         val queryError = QueryError()
         queryError.message = errorMessage
-        val view = mock(View::class.java)
+        val activity = mock(FragmentActivity::class.java)
 
         // Prevent spawning a snackbar, since it is not mocked
-        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, view)
+        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, activity)
 
         // Call the handle function
-        errorHandler.handle(queryError, view)
+        errorHandler.handle(queryError, activity)
 
         Assert.assertTrue(queryError.displayedError)
     }
@@ -275,15 +279,15 @@ class ErrorHandlerTest {
         val queryError = QueryError()
         queryError.message = errorMessage
         queryError.displayedError = true
-        val view = mock(View::class.java)
+        val activity = mock(FragmentActivity::class.java)
 
         // Prevent spawning a snackbar, since it is not mocked
-        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, view)
+        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, activity)
 
         // Call the handle function
-        errorHandler.handle(queryError, view)
+        errorHandler.handle(queryError, activity)
 
-        verify(errorHandler, times(1)).handle(queryError, view)
+        verify(errorHandler, times(1)).handle(queryError, activity)
         verifyNoMoreInteractions(errorHandler)
     }
 
@@ -297,14 +301,14 @@ class ErrorHandlerTest {
         queryError.message = errorMessage
         queryError.inputErrors = emptyList()
         queryError.generalErrors = emptyList()
-        val view = mock(View::class.java)
+        val activity = mock(FragmentActivity::class.java)
 
         // Prevent spawning a snackbar, since it is not mocked
-        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, view)
+        doNothing().whenever(errorHandler).handleRawGeneral(errorMessage, activity)
 
         // Call the handle function
-        errorHandler.handle(queryError, view)
+        errorHandler.handle(queryError, activity)
 
-        verify(errorHandler, times(1)).handleRawGeneral(queryError.message, view)
+        verify(errorHandler, times(1)).handleRawGeneral(queryError.message, activity)
     }
 }

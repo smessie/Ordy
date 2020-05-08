@@ -72,7 +72,7 @@ class OverviewGroupActivity : AppCompatActivity() {
                     // Stop the refreshing on load
                     binding.root.group_refresh.isRefreshing = false
 
-                    ErrorHandler().handle(it.error, binding.root, emptyList())
+                    ErrorHandler().handle(it.error, this, emptyList())
                 }
 
                 else -> {
@@ -91,7 +91,7 @@ class OverviewGroupActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler().handle(it.error, binding.root, listOf())
+                    ErrorHandler().handle(it.error, this, listOf())
                 }
 
                 else -> {
@@ -110,7 +110,7 @@ class OverviewGroupActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler().handle(it.error, binding.root, listOf())
+                    ErrorHandler().handle(it.error, this, listOf())
                 }
 
                 else -> {
