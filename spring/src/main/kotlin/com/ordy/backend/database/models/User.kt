@@ -6,7 +6,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "users")
-class User (
+class User(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @JsonView(View.Id::class)

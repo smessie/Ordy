@@ -7,11 +7,11 @@ import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 
 @Service
-class TokenService {
+class TokenService(
+        /* this should be an 32 character key */
+        @Value("\${ENCRYPTION_KEY}") private var key: String
+) {
 
-    /* this should be an 32 character key */
-    @Value("\${ENCRYPTION_KEY}")
-    private lateinit var key: String
     private final val encryptionMethod = "AES"
 
     fun encrypt(content: String) : String {

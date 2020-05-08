@@ -6,7 +6,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "group_invites")
-class GroupInvite (
+class GroupInvite(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @JsonView(View.Id::class)

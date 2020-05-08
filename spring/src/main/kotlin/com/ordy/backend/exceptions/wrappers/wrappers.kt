@@ -11,7 +11,7 @@ class GenericExceptionWrapper(ex: GenericException) : ExceptionWrapper {
 }
 
 class PropertyExceptionWrapper(ex: PropertyException) : ExceptionWrapper {
-    val field =  ex.field
+    val field = ex.field
     val message = ex.message
 }
 

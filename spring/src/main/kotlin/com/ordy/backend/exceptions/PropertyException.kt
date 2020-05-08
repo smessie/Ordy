@@ -9,7 +9,7 @@ class PropertyException(code: HttpStatus, val field: String, override val messag
         return PropertyExceptionWrapper(this)
     }
 
-    override fun fullWrap() : ThrowableListWrapper {
+    override fun fullWrap(): ThrowableListWrapper {
         return ThrowableList()
                 .also { it.addPropertyException(field, message) }
                 .also { it.code = code }.wrap()

@@ -3,7 +3,6 @@ package com.ordy.backend.controllers
 import com.fasterxml.jackson.annotation.JsonView
 import com.ordy.backend.database.View
 import com.ordy.backend.database.models.Group
-import com.ordy.backend.database.models.User
 import com.ordy.backend.services.GroupService
 import com.ordy.backend.wrappers.GroupCreateWrapper
 import com.ordy.backend.wrappers.GroupInviteUserWrapper
@@ -11,7 +10,6 @@ import com.ordy.backend.wrappers.GroupWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import java.util.logging.Logger
 
 @RestController
 @RequestMapping("/groups")
@@ -26,7 +24,7 @@ class GroupController(@Autowired val groupService: GroupService) {
 
     @GetMapping("/{groupId}")
     @JsonView(View.Detail::class)
-    fun getGroup(@RequestAttribute userId: Int, @PathVariable groupId: Int) : GroupWrapper {
+    fun getGroup(@RequestAttribute userId: Int, @PathVariable groupId: Int): GroupWrapper {
         return groupService.getGroup(userId, groupId)
     }
 
@@ -56,7 +54,7 @@ class GroupController(@Autowired val groupService: GroupService) {
 
     @GetMapping("/{groupId}/invites/search")
     @JsonView(View.List::class)
-    fun searchMatchingInviteUsers(@PathVariable groupId: Int, @RequestParam username: String, @RequestAttribute userId: Int): List<GroupInviteUserWrapper>{
+    fun searchMatchingInviteUsers(@PathVariable groupId: Int, @RequestParam username: String, @RequestAttribute userId: Int): List<GroupInviteUserWrapper> {
         return groupService.searchMatchingInviteUsers(groupId, username, userId)
     }
 }

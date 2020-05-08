@@ -7,6 +7,7 @@
 
     <data>
         <variable name="handlers" type="com.ordy.app.ui.login.register.RegisterHandlers" />
+        <variable name="viewModel" type="com.ordy.app.ui.login.LoginViewModel" />
     </data>
 
     <LinearLayout
@@ -35,8 +36,10 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_register_username_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.userNameData}"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -52,8 +55,10 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_register_email_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.emailRegisterData}"
                 android:inputType="textEmailAddress"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -70,8 +75,10 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_register_password_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.passwordRegisterData}"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,8 +94,10 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_register_password_repeat_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.passwordRepeatData}"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -26,15 +26,15 @@ import javax.servlet.http.HttpServletResponse
 
 @Service
 class OrderService(
-        @Autowired val orderRepository: OrderRepository,
-        @Autowired val orderItemRepository: OrderItemRepository,
-        @Autowired val itemRepository: ItemRepository,
-        @Autowired val userRepository: UserRepository,
-        @Autowired val groupMemberRepository: GroupMemberRepository,
-        @Autowired val groupRepository: GroupRepository,
-        @Autowired val locationRepository: LocationRepository,
-        @Autowired val imageService: ImageService,
-        @Autowired val notificationService: NotificationService
+        val orderRepository: OrderRepository,
+        val orderItemRepository: OrderItemRepository,
+        val itemRepository: ItemRepository,
+        val userRepository: UserRepository,
+        val groupMemberRepository: GroupMemberRepository,
+        val groupRepository: GroupRepository,
+        val locationRepository: LocationRepository,
+        val imageService: ImageService,
+        val notificationService: NotificationService
 ) {
 
     @Value("\${ORDY_DOMAIN_NAME}")
