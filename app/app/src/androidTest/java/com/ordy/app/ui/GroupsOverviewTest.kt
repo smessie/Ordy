@@ -111,6 +111,7 @@ class GroupsOverviewTest : KoinTest {
         whenever(mockOverviewGroupViewModel.getGroup()).thenReturn(groupQuery)
         whenever(mockOverviewGroupViewModel.getLeaveGroupMLD()).thenReturn(MutableLiveData(Query()))
         whenever(mockOverviewGroupViewModel.getRemoveMemberMLD()).thenReturn(MutableLiveData(Query()))
+        whenever(mockOverviewGroupViewModel.getRenameGroupMLD()).thenReturn(MutableLiveData(Query()))
 
         // Create intent to open activity
         val intent = Intent(mockContext, OverviewGroupActivity::class.java)

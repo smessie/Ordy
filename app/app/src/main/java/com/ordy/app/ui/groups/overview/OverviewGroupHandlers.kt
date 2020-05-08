@@ -71,22 +71,6 @@ class OverviewGroupHandlers(
                 activityView = view
             )
             dialog.show(manager, activity.getString(R.string.group_rename_dialog_tag))
-            viewModel.getRenameGroupMLD().observe(this.activity, Observer {
-                // Refresh when query is successful
-                when (it.status) {
-                    QueryStatus.SUCCESS -> {
-                        viewModel.refreshGroup(viewModel.getGroup().requireData().id)
-                    }
-
-                    QueryStatus.ERROR -> {
-                        ErrorHandler().handle(it.error, view)
-                    }
-
-                    else -> {
-                        // Do nothing
-                    }
-                }
-            })
         }
     }
 

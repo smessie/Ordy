@@ -5,10 +5,14 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewGroupBinding
+import com.ordy.app.util.SnackbarUtil
+import com.ordy.app.util.types.SnackbarType
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_overview_group.*
 import kotlinx.android.synthetic.main.activity_overview_group.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -104,16 +108,41 @@ class OverviewGroupActivity : AppCompatActivity() {
 
             when (it.status) {
 
+                QueryStatus.LOADING -> {
+                    SnackbarUtil.openSnackbar(getString(R.string.group_leave_loading), binding.root)
+                }
+
                 QueryStatus.SUCCESS -> {
+                    SnackbarUtil.closeSnackbar(binding.root)
+
                     // Go back to the GroupsFragment
                     finish()
                 }
 
                 QueryStatus.ERROR -> {
+                    SnackbarUtil.closeSnackbar(binding.root)
                     ErrorHandler().handle(it.error, binding.root, listOf())
                 }
 
                 else -> {
+                }
+            }
+        })
+
+        viewModel.getRenameGroupMLD().observe(this, Observer {
+            // Refresh when query is successful
+            when (it.status) {
+                QueryStatus.SUCCESS -> {
+                    SnackbarUtil.openSnackbar(getString(R.string.group_rename_successful), binding.root, Snackbar.LENGTH_SHORT, SnackbarType.SUCCESS)
+                    viewModel.refreshGroup(viewModel.getGroup().requireData().id)
+                }
+
+                QueryStatus.ERROR -> {
+                    ErrorHandler().handle(it.error, binding.root)
+                }
+
+                else -> {
+                    // Do nothing
                 }
             }
         })
