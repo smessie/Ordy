@@ -177,7 +177,7 @@ class OrderPersonalBaseAdapter(
         view.order_item_action_delete.setOnClickListener {
 
             // Prevent multiple delete requests from sending.
-            if (deleteResult.value!!.status != QueryStatus.LOADING) {
+            if (deleteResult.value != null && deleteResult.value?.status != QueryStatus.LOADING) {
                 viewModel.removeItem(
                     deleteResult,
                     order.id,
@@ -230,8 +230,10 @@ class OrderPersonalBaseAdapter(
             fragment.updateAddItemButton(this.parentView)
 
             // Only show the items with the same user id as the logged in user.
-            orderItems = order.requireData().orderItems!!.filter {
-                it.user.id == AppPreferences(context).userId
+            if (order.requireData().orderItems != null) {
+                orderItems = order.requireData().orderItems!!.filter {
+                    it.user.id == AppPreferences(context).userId
+                }
             }
 
             // Stop the previous timer.

@@ -127,7 +127,9 @@ class OrderUsersBaseAdapter(
 
             val orderItems = order.requireData().orderItems
 
-            orderItemUserGroups = OrderUtil.userGroupItems(orderItems!!)
+            if (orderItems != null) {
+                orderItemUserGroups = OrderUtil.userGroupItems(orderItems)
+            }
         }
 
         // Notify the changes to the list view (to re-render automatically)

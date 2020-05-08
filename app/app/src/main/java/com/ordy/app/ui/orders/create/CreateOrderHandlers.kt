@@ -42,7 +42,7 @@ class CreateOrderHandlers(
 
         // Check if the location exists.
         if (viewModel.getLocationValue().location != null) {
-            locationId = viewModel.getLocationValue().location!!.id
+            locationId = viewModel.getLocationValue().location?.id
         }
 
         // Check if the group exists.

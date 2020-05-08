@@ -29,9 +29,10 @@ class AddCommentDialog(
 
         val commentView = view.order_item_comment
 
-        // Initial text for the comment view
-        commentView.editText!!.text = SpannableStringBuilder(orderItem.comment)
-
+        if (commentView.editText != null) {
+            // Initial text for the comment view
+            commentView.editText?.text = SpannableStringBuilder(orderItem.comment)
+        }
 
         return AlertDialog.Builder(requireContext()).apply {
             setTitle("Edit comment of item")

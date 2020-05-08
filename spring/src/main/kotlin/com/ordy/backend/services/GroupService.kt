@@ -89,7 +89,7 @@ class GroupService(
     }
 
     /**
-     * get groups of a specific user
+     * get group of a specific user
      */
     fun getGroup(userId: Int, groupId: Int): GroupWrapper {
         val throwableList = ThrowableList()
