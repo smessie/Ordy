@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "name": "Zeus",
+        "creator": {
+            "id": 1,
+            "username": "Elon Musk"
+        }
+    },
+    {
+        "id": 2,
+        "name": "TeslaLovers",
+        "creator": {
+            "id": 2,
+            "username": "Test"
+        }
+    }
+]
