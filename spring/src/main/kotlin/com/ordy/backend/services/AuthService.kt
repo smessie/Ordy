@@ -10,7 +10,6 @@ import com.ordy.backend.wrappers.AuthLoginWrapper
 import com.ordy.backend.wrappers.AuthRegisterWrapper
 import com.ordy.backend.wrappers.AuthTokenWrapper
 import com.ordy.backend.wrappers.TokenWrapper
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
@@ -32,7 +31,7 @@ class AuthService(
     }
 
     /**
-     * Returns "true" is password is correct
+     * Returns "true" if password is correct
      */
     private fun checkPasswd(password: String, hash: String): Boolean {
         return BCrypt.checkpw(password, hash)
