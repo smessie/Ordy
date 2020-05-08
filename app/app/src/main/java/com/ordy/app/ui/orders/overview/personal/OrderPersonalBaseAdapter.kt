@@ -147,7 +147,7 @@ class OrderPersonalBaseAdapter(
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
                         "Attempting to update item...",
-                        fragment.requireView()
+                        fragment.activity
                     )
                 }
 
@@ -161,7 +161,7 @@ class OrderPersonalBaseAdapter(
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(fragment.requireView())
 
-                    ErrorHandler().handle(it.error, fragment.requireView(), listOf())
+                    ErrorHandler().handle(it.error, fragment.activity, listOf())
                 }
 
                 else -> {
@@ -195,7 +195,7 @@ class OrderPersonalBaseAdapter(
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
                         "Attempting to delete item...",
-                        fragment.requireView()
+                        fragment.activity
                     )
                 }
 
@@ -212,7 +212,7 @@ class OrderPersonalBaseAdapter(
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(fragment.requireView())
 
-                    ErrorHandler().handle(it.error, fragment.requireView(), listOf())
+                    ErrorHandler().handle(it.error, fragment.activity, listOf())
                 }
 
                 else -> {

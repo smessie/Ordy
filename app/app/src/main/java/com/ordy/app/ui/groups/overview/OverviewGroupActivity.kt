@@ -109,7 +109,7 @@ class OverviewGroupActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler().handle(it.error, binding.root, listOf())
+                    ErrorHandler().handle(it.error, this, listOf())
                 }
 
                 else -> {
@@ -128,7 +128,7 @@ class OverviewGroupActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler().handle(it.error, binding.root, listOf())
+                    ErrorHandler().handle(it.error, this, listOf())
                 }
 
                 else -> {

@@ -273,7 +273,7 @@ class OverviewOrderActivity : AppCompatActivity() {
 
                     SnackbarUtil.openSnackbar(
                         text = getString(R.string.bill_upload_success),
-                        view = binding.root,
+                        activity = this,
                         duration = Snackbar.LENGTH_SHORT,
                         type = SnackbarType.SUCCESS
                     )
@@ -285,7 +285,7 @@ class OverviewOrderActivity : AppCompatActivity() {
                 QueryStatus.ERROR -> {
                     dialog.hide()
 
-                    ErrorHandler().handle(it.error, binding.root)
+                    ErrorHandler().handle(it.error, this)
                 }
 
                 else -> {

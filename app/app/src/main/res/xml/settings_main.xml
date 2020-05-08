@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <!-- Notifications -->
+    <PreferenceCategory
+        app:key="notifications"
+        app:title="@string/settings_title_notifications">
+
+        <!-- Payments -->
+        <SwitchPreferenceCompat
+            app:key="notification_payments"
+            app:title="@string/settings_notif_payments_text"
+            android:defaultValue="true" />
+
+        <!-- Orders -->
+        <SwitchPreferenceCompat
+            app:key="notification_orders"
+            app:title="@string/settings_notif_orders_text"
+            android:defaultValue="true"/>
+
+        <!-- Deadlines -->
+        <SwitchPreferenceCompat
+            app:key="notification_deadline"
+            app:title="@string/settings_notif_deadlines_text"
+            android:defaultValue="true" />
+
+        <!-- Invites -->
+        <SwitchPreferenceCompat
+            app:key="notification_invites"
+            app:title="@string/settings_notif_invites_text"
+            android:defaultValue="true"/>
+
+        <!-- Bill -->
+        <SwitchPreferenceCompat
+            app:key="notification_bill_picture"
+            app:title="@string/settings_notif_bill_text"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
+    <!-- License screen -->
+    <PreferenceCategory
+        app:key="license"
+        app:title="@string/settings_title_other">
+
+        <Preference
+            app:key="licence_fragment"
+            app:title="@string/settings_title_licence" />
+    </PreferenceCategory>
+</PreferenceScreen>

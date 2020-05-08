@@ -2,7 +2,9 @@ package com.ordy.app.api.util
 
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ordy.app.R
@@ -90,7 +92,11 @@ class ErrorHandler {
      * @param view Current view
      * @param fields List of input fields
      */
-    fun handle(queryError: QueryError?, view: View?, fields: List<InputField> = emptyList()) {
+    fun handle(
+        queryError: QueryError?,
+        activity: FragmentActivity?,
+        fields: List<InputField> = emptyList()
+    ) {
 
         // Do not handle the error when it was already displayed before.
         if (queryError != null) {
@@ -103,21 +109,25 @@ class ErrorHandler {
         }
 
         // Handle input errors.
-        this.handleInputs(queryError, view, fields)
+        if (activity != null) {
+            val view = activity.findViewById<ViewGroup>(android.R.id.content)
+
+            this.handleInputs(queryError, view, fields)
+        }
 
         // Handle general errors.
-        this.handleGeneral(queryError, view)
+        this.handleGeneral(queryError, activity)
 
         // If no general error or input error is specified, but an error occurred anyway.
         if (queryError != null
             && queryError.inputErrors.isEmpty()
             && queryError.generalErrors.isEmpty()
-            && view != null
+            && activity != null
         ) {
             val message = getUserFriendlyMessage(queryError.message, view)
 
             // Create and show a snackbar with the error message.
-            this.handleRawGeneral(message, view)
+            this.handleRawGeneral(message, activity)
         }
     }
 
@@ -163,10 +173,10 @@ class ErrorHandler {
      * @param queryError QueryError object
      * @param view Current view to display the toast
      */
-    fun handleGeneral(queryError: QueryError?, view: View?) {
+    fun handleGeneral(queryError: QueryError?, activity: FragmentActivity?) {
 
-        if (queryError != null && view != null && queryError.generalErrors.isNotEmpty()) {
-            handleRawGeneral(queryError.generalErrors[0].message, view)
+        if (queryError != null && activity != null && queryError.generalErrors.isNotEmpty()) {
+            handleRawGeneral(queryError.generalErrors[0].message, activity)
         }
     }
 
@@ -177,9 +187,9 @@ class ErrorHandler {
      * @param message Raw message in String format
      * @param view Current view to display the toast
      */
-    fun handleRawGeneral(message: String, view: View) {
+    fun handleRawGeneral(message: String, activity: FragmentActivity?) {
         // Create and show a snackbar with the error message.
-        SnackbarUtil.openSnackbar(message, view, Snackbar.LENGTH_LONG, SnackbarType.ERROR)
+        SnackbarUtil.openSnackbar(message, activity, Snackbar.LENGTH_LONG, SnackbarType.ERROR)
     }
 
     fun getUserFriendlyMessage(error: String, view: View): String {

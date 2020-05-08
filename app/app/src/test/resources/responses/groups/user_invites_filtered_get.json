@@ -1,0 +1,16 @@
+[
+    {
+        "user": {
+            "id":  1,
+            "username": "Elon Musk"
+        },
+        "invited": false
+    },
+    {
+        "user": {
+            "id": 2,
+            "username": "Test"
+        },
+        "invited": true
+    }
+]

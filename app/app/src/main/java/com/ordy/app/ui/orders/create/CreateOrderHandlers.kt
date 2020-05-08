@@ -28,7 +28,7 @@ class CreateOrderHandlers(
      * Open the dialog to select the deadline for the order.
      */
     fun openDeadline() {
-        PickerUtil.openDateTimePicker(viewModel.deadlineValueData, activity, view, true)
+        PickerUtil.openDateTimePicker(viewModel.deadlineValueData, activity, true)
     }
 
     /**

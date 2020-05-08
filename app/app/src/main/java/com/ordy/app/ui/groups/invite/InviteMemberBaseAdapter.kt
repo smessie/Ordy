@@ -62,7 +62,7 @@ class InviteMemberBaseAdapter(
                 QueryStatus.ERROR -> {
                     searchLoading.visibility = View.INVISIBLE
 
-                    ErrorHandler().handle(it.error, view)
+                    ErrorHandler().handle(it.error, activity)
                 }
 
                 else -> {
@@ -130,7 +130,7 @@ class InviteMemberBaseAdapter(
 
                         QueryStatus.ERROR -> {
                             // Handle error
-                            ErrorHandler().handle(it.error, view)
+                            ErrorHandler().handle(it.error, activity)
 
                             val text = context.getString(R.string.invite_button)
 

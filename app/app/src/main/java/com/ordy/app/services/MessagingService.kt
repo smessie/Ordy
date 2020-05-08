@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.ordy.app.AppPreferences
@@ -52,34 +53,36 @@ class MessagingService : FirebaseMessagingService() {
                 null
             }
 
+            val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+
             // Check preferences to check whether the notification should be sent
             when (type) {
                 "ORDER_CREATE" -> {
-                    if (!AppPreferences(this).wantsOrdersNotifications!!) {
+                    if (!preferences.getBoolean("notification_orders", true)) {
                         return
                     }
                 }
 
                 "ORDER_DEADLINE" -> {
-                    if (!AppPreferences(this).wantsDeadlineNotifications!!) {
+                    if (!preferences.getBoolean("notification_deadline", true)) {
                         return
                     }
                 }
 
                 "ORDER_BILL" -> {
-                    if (!AppPreferences(this).wantsBillNotifications!!) {
+                    if (!preferences.getBoolean("notification_bill_picture", true)) {
                         return
                     }
                 }
 
                 "PAYMENT_DEBT" -> {
-                    if (!AppPreferences(this).wantsPaymentsNotifications!!) {
+                    if (!preferences.getBoolean("notification_payments", true)) {
                         return
                     }
                 }
 
                 "INVITE_NEW" -> {
-                    if (!AppPreferences(this).wantsInvitesNotifications!!) {
+                    if (!preferences.getBoolean("notification_invites", true)) {
                         return
                     }
                 }

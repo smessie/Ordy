@@ -1,8 +1,6 @@
 package com.ordy.backend.services.notifications
 
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseOptions
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingException
 import com.google.firebase.messaging.Message
@@ -16,32 +14,15 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.annotation.PostConstruct
 import kotlin.math.roundToInt
 
 @Service
 class NotificationService(
         val deviceTokenRepository: DeviceTokenRepository,
         val orderRepository: OrderRepository,
-        val groupMemberRepository: GroupMemberRepository
+        val groupMemberRepository: GroupMemberRepository,
+        val firebaseApp: FirebaseApp
 ) {
-
-    private lateinit var firebaseApp: FirebaseApp
-
-    @PostConstruct
-    private fun init() {
-        val options: FirebaseOptions = FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.getApplicationDefault())
-                .build()
-
-        firebaseApp = if (FirebaseApp.getApps().isEmpty()) {
-            // Initialize if none found
-            FirebaseApp.initializeApp(options)
-        } else {
-            // Re use existing app
-            FirebaseApp.getInstance()
-        }
-    }
 
     /**
      * Async method for sending a list of user the same notification.

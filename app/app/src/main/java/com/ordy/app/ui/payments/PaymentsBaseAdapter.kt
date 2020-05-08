@@ -99,7 +99,7 @@ abstract class PaymentsBaseAdapter(
 
     override fun getItem(position: Int) = position
     override fun getItemId(position: Int) = position.toLong()
-    override fun isEnabled(position: Int) = getQuery().status == QueryStatus.SUCCESS
+    override fun isEnabled(position: Int) = false
 
     override fun getCount(): Int {
         return when (getQuery().status) {
@@ -120,6 +120,7 @@ abstract class PaymentsBaseAdapter(
                     )
             }
         }
+
         notifyDataSetChanged()
     }
 }

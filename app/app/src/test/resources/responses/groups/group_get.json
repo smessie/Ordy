@@ -1,0 +1,8 @@
+{
+    "id": 1,
+    "name": "Zeus",
+    "creator": {
+        "id": 1,
+        "username": "Elon Musk"
+    }
+}

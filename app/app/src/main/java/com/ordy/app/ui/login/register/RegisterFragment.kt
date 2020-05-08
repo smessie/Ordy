@@ -61,7 +61,7 @@ class RegisterFragment : Fragment() {
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
                         "Creating account...",
-                        requireView()
+                        activity
                     )
                 }
 
@@ -76,7 +76,7 @@ class RegisterFragment : Fragment() {
                     SnackbarUtil.closeSnackbar(requireView())
 
                     ErrorHandler().handle(
-                        it.error, view, listOf(
+                        it.error, activity, listOf(
                             InputField("username", this.input_register_username),
                             InputField("email", this.input_register_email),
                             InputField("password", this.input_register_password)

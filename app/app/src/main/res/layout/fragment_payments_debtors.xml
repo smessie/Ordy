@@ -57,6 +57,7 @@
                     android:drawSelectorOnTop="true" />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
             <!-- Empty placeholder -->
             <LinearLayout
                 android:id="@+id/payments_debtors_empty"
