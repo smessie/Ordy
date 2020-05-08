@@ -58,7 +58,7 @@ class ErrorHandler {
                                 queryError.inputErrors = errorResult.inputErrors
                             }
                         }
-                    } catch(e: Exception) {
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
@@ -114,16 +114,7 @@ class ErrorHandler {
             && queryError.generalErrors.isEmpty()
             && view != null
         ) {
-            var message = queryError.message
-
-            // Filter a connection error message and throw a custom error instead
-            if (message.startsWith("Unable to resolve host") || message.startsWith("Unsatisfiable Request (only-if-cached)")) {
-
-                // Check if the user has no internet connection
-                message = view.context.getString(R.string.error_connection)
-            } else if (message.startsWith("timeout")) {
-                message = view.context.getString(R.string.error_timeout)
-            }
+            val message = getUserFriendlyMessage(queryError.message, view)
 
             // Create and show a snackbar with the error message.
             this.handleRawGeneral(message, view)
@@ -189,6 +180,19 @@ class ErrorHandler {
     fun handleRawGeneral(message: String, view: View) {
         // Create and show a snackbar with the error message.
         SnackbarUtil.openSnackbar(message, view, Snackbar.LENGTH_LONG, SnackbarType.ERROR)
+    }
+
+    fun getUserFriendlyMessage(error: String, view: View): String {
+        var message = error
+        // Filter a connection error message and throw a custom error instead
+        if (message.startsWith("Unable to resolve host") || message.startsWith("Unsatisfiable Request (only-if-cached)")) {
+
+            // Check if the user has no internet connection
+            message = view.context.getString(R.string.error_connection)
+        } else if (message.startsWith("timeout")) {
+            message = view.context.getString(R.string.error_timeout)
+        }
+        return message
     }
 
     private data class ErrorResult(

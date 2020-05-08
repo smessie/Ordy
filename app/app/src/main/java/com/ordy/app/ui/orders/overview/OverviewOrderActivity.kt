@@ -32,9 +32,6 @@ import com.ordy.app.util.types.SnackbarType
 import com.ordy.app.util.types.TabsEntry
 import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.activity_overview_order.view.*
-import kotlinx.android.synthetic.main.fragment_order_personal.*
-import kotlinx.android.synthetic.main.fragment_order_personal.view.*
-import kotlinx.android.synthetic.main.fragment_order_personal.view.order_items_add
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -126,7 +123,7 @@ class OverviewOrderActivity : AppCompatActivity() {
                     }
 
                     // Cancel the previous timer when available
-                    if(viewModel.updateTimer != null) {
+                    if (viewModel.updateTimer != null) {
                         viewModel.updateTimer?.cancel()
                     }
 
@@ -142,7 +139,22 @@ class OverviewOrderActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler().handle(it.error, binding.root)
+                    // Don't display another error via snackbar if an error is displayed through the AlertDialog.
+                    SnackbarUtil.closeSnackbar(view)
+
+                    AlertDialog.Builder(this).apply {
+                        setTitle(getString(R.string.error_loading_order))
+                        setMessage(
+                            ErrorHandler().getUserFriendlyMessage(
+                                it.requireError().message,
+                                view
+                            )
+                        )
+                        setPositiveButton(android.R.string.ok) { _, _ ->
+                            // Close the activity
+                            finish()
+                        }
+                    }.show()
                 }
 
                 else -> {
