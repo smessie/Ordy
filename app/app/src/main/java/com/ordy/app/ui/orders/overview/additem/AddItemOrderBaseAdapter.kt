@@ -70,7 +70,7 @@ class AddItemOrderBaseAdapter(
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
                         "Adding item...",
-                        view
+                        activity
                     )
                 }
 
@@ -84,7 +84,7 @@ class AddItemOrderBaseAdapter(
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(view)
 
-                    ErrorHandler().handle(it.error, view)
+                    ErrorHandler().handle(it.error, activity)
                 }
 
                 else -> {

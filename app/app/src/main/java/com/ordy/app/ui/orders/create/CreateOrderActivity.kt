@@ -98,7 +98,7 @@ class CreateOrderActivity : AppCompatActivity() {
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
                         getString(R.string.order_create_loading),
-                        binding.root
+                        this
                     )
                 }
 
@@ -121,7 +121,7 @@ class CreateOrderActivity : AppCompatActivity() {
                     SnackbarUtil.closeSnackbar(binding.root)
 
                     ErrorHandler().handle(
-                        it.error, binding.root, listOf(
+                        it.error, this, listOf(
                             InputField("locationId", this.input_location),
                             InputField("customLocationName", this.input_location),
                             InputField("deadline", this.input_deadline),

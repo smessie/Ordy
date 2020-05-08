@@ -7,6 +7,7 @@ import android.text.format.DateFormat
 import android.view.View
 import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
@@ -18,8 +19,7 @@ class PickerUtil {
 
         fun openDateTimePicker(
             liveData: MutableLiveData<Date>,
-            context: Context,
-            view: View,
+            activity: FragmentActivity,
             disablePast: Boolean
         ) {
 
@@ -30,7 +30,7 @@ class PickerUtil {
             val returnCalendar = Calendar.getInstance()
 
             val timePicker = TimePickerDialog(
-                context,
+                activity,
                 { _: TimePicker, hour: Int, minute: Int ->
                     returnCalendar.set(Calendar.HOUR_OF_DAY, hour)
                     returnCalendar.set(Calendar.MINUTE, minute)
@@ -39,8 +39,8 @@ class PickerUtil {
                     // prevent selection of a time in the past
                     if (disablePast && System.currentTimeMillis() >= returnCalendar.timeInMillis) {
                         ErrorHandler().handleRawGeneral(
-                            context.getString(R.string.error_picker_past),
-                            view
+                            activity.getString(R.string.error_picker_past),
+                            activity
                         )
                     } else {
                         // Update the livedata
@@ -49,11 +49,11 @@ class PickerUtil {
                 },
                 hour,
                 minute,
-                DateFormat.is24HourFormat(context)
+                DateFormat.is24HourFormat(activity)
             )
 
             val datePicker = DatePickerDialog(
-                context,
+                activity,
                 { _: DatePicker, year: Int, month: Int, date: Int ->
                     returnCalendar.set(Calendar.YEAR, year)
                     returnCalendar.set(Calendar.MONTH, month)

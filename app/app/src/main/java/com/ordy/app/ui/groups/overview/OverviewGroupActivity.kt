@@ -76,7 +76,7 @@ class OverviewGroupActivity : AppCompatActivity() {
                     // Stop the refreshing on load
                     binding.root.group_refresh.isRefreshing = false
 
-                    ErrorHandler().handle(it.error, binding.root, emptyList())
+                    ErrorHandler().handle(it.error, this, emptyList())
                 }
 
                 else -> {
@@ -95,7 +95,7 @@ class OverviewGroupActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler().handle(it.error, binding.root, listOf())
+                    ErrorHandler().handle(it.error, this, listOf())
                 }
 
                 else -> {
@@ -109,7 +109,7 @@ class OverviewGroupActivity : AppCompatActivity() {
             when (it.status) {
 
                 QueryStatus.LOADING -> {
-                    SnackbarUtil.openSnackbar(getString(R.string.group_leave_loading), binding.root)
+                    SnackbarUtil.openSnackbar(getString(R.string.group_leave_loading), this)
                 }
 
                 QueryStatus.SUCCESS -> {
@@ -121,7 +121,8 @@ class OverviewGroupActivity : AppCompatActivity() {
 
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(binding.root)
-                    ErrorHandler().handle(it.error, binding.root, listOf())
+
+                    ErrorHandler().handle(it.error, this, listOf())
                 }
 
                 else -> {
@@ -133,12 +134,12 @@ class OverviewGroupActivity : AppCompatActivity() {
             // Refresh when query is successful
             when (it.status) {
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.openSnackbar(getString(R.string.group_rename_successful), binding.root, Snackbar.LENGTH_SHORT, SnackbarType.SUCCESS)
+                    SnackbarUtil.openSnackbar(getString(R.string.group_rename_successful), this, Snackbar.LENGTH_SHORT, SnackbarType.SUCCESS)
                     viewModel.refreshGroup(viewModel.getGroup().requireData().id)
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler().handle(it.error, binding.root)
+                    ErrorHandler().handle(it.error, this)
                 }
 
                 else -> {

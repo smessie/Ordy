@@ -35,7 +35,7 @@ class OverviewGroupHandlers(
         } else {
             ErrorHandler().handleRawGeneral(
                 activity.getString(R.string.order_overview_leave_error),
-                view
+                activity
             )
         }
     }
@@ -54,7 +54,7 @@ class OverviewGroupHandlers(
         } else {
             ErrorHandler().handleRawGeneral(
                 activity.getString(R.string.order_overview_invite_error),
-                view
+                activity
             )
         }
     }
@@ -68,7 +68,7 @@ class OverviewGroupHandlers(
 
             val dialog = ChangeGroupNameDialog(
                 viewModel = viewModel,
-                activityView = view
+                activity = activity
             )
             dialog.show(manager, activity.getString(R.string.group_rename_dialog_tag))
         }

@@ -38,7 +38,7 @@ class ProfileActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler().handle(it.error, binding.root)
+                    ErrorHandler().handle(it.error, this)
                 }
 
                 else -> {

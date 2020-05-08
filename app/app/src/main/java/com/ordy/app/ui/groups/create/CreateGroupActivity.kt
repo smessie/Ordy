@@ -48,7 +48,7 @@ class CreateGroupActivity : AppCompatActivity() {
 
                 QueryStatus.ERROR -> {
                     ErrorHandler().handle(
-                        it.error, binding.root, listOf(
+                        it.error, this, listOf(
                             InputField("name", this.input_name)
                         )
                     )
