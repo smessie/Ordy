@@ -52,9 +52,9 @@ class AuthServiceTest {
         @Test
         fun `Password hash should match with password`() {
             for (i in 1..5) {
-                val a = randomPassword()
-                val b: String? = ReflectionTestUtils.invokeMethod<String>(authService, "hashPasswd", a)
-                Assert.isTrue(ReflectionTestUtils.invokeMethod<Boolean>(authService, "checkPasswd", a, b) ?: false,
+                val password = randomPassword()
+                val passwordHash: String? = ReflectionTestUtils.invokeMethod<String>(authService, "hashPasswd", password)
+                Assert.isTrue(ReflectionTestUtils.invokeMethod<Boolean>(authService, "checkPasswd", password, passwordHash) ?: false,
                         "password did not match")
             }
         }
@@ -62,17 +62,17 @@ class AuthServiceTest {
         @Test
         fun `Password hash should not match with different password`() {
             for (i in 1..5) {
-                val a = randomPassword()
-                var a2 = randomPassword()
-                while (a == a2) {
-                    a2 = randomPassword()
+                val password1 = randomPassword()
+                var password2 = randomPassword()
+                while (password1 == password2) {
+                    password2 = randomPassword()
                 }
-                val b: String? = ReflectionTestUtils.invokeMethod<String>(authService, "hashPasswd", a)
-                Assert.isTrue((ReflectionTestUtils.invokeMethod<Boolean>(authService, "checkPasswd", a2, b)
+                val password1Hash: String? = ReflectionTestUtils.invokeMethod<String>(authService, "hashPasswd", password1)
+                Assert.isTrue((ReflectionTestUtils.invokeMethod<Boolean>(authService, "checkPasswd", password2, password1Hash)
                         ?: false).not(),
                         "password did match")
-                val b2: String? = ReflectionTestUtils.invokeMethod<String>(authService, "hashPasswd", a2)
-                Assert.isTrue((ReflectionTestUtils.invokeMethod<Boolean>(authService, "checkPasswd", a, b2)
+                val password2Hash: String? = ReflectionTestUtils.invokeMethod<String>(authService, "hashPasswd", password2)
+                Assert.isTrue((ReflectionTestUtils.invokeMethod<Boolean>(authService, "checkPasswd", password1, password2Hash)
                         ?: false).not(),
                         "password did match")
             }
