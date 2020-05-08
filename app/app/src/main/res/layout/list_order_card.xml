@@ -1,106 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/order"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:cardElevation="0dp">
+    android:layout_height="wrap_content"
+    android:padding="10dp">
 
-    <RelativeLayout
-        android:id="@+id/order"
+    <!-- Loading -->
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/order_loading"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:layout_height="match_parent">
 
-        <!-- Loading -->
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/order_loading">
+        <include layout="@layout/placeholder_default" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
-            <include layout="@layout/placeholder_default"/>
-        </com.facebook.shimmer.ShimmerFrameLayout>
+    <!-- Data -->
+    <LinearLayout
+        android:id="@+id/order_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false">
 
-        <!-- Data -->
+        <!-- Information -->
         <LinearLayout
-            android:id="@+id/order_data"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:divider="@drawable/divider_4dp"
+            android:orientation="vertical"
+            android:showDividers="middle">
 
-            <!-- Information -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/order_location_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:divider="@drawable/divider_4dp"
-                android:orientation="vertical"
-                android:showDividers="middle"
-                android:layout_weight="1">
+                android:text="@string/placeholder_location"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/order_location_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/placeholder_location"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/order_group_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/placeholder_group_name" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/list_item_closing_on"/>
-                    <TextView
-                        android:id="@+id/order_deadline_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/placeholder_closing_date"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Courier & Closing -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/order_group_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:divider="@drawable/divider_4dp"
-                android:orientation="vertical"
-                android:showDividers="middle"
-                >
+                android:text="@string/placeholder_group_name" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/list_item_closing_in" />
+                    android:text="@string/list_item_closing_on" />
 
                 <TextView
-                    android:id="@+id/order_deadline_time_left"
+                    android:id="@+id/order_deadline_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/placeholder_closing_time"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="8dp"
-                    android:text="@string/list_item_courier" />
-
-                <TextView
-                    android:id="@+id/order_courier_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/placeholder_name"
+                    android:text="@string/placeholder_closing_date"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
-</LinearLayout>
+
+        <!-- Courier & Closing -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/divider_4dp"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/list_item_closing_in" />
+
+            <TextView
+                android:id="@+id/order_deadline_time_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder_closing_time"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="@string/list_item_courier" />
+
+            <TextView
+                android:id="@+id/order_courier_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder_name"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
