@@ -45,9 +45,9 @@ class PaymentsDebtsBaseAdapter(
     }
 
     override fun update(query: Query<List<Payment>>, searchValue: String) {
-        super.update(query, searchValue)
-
         debts = query
         debtsSearchValue = searchValue
+
+        super.update(query, searchValue)
     }
 }

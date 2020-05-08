@@ -36,6 +36,8 @@ class PaymentsDebtorsBaseAdapter(
     init {
         // Observe the debtors
         viewModel.getDebtorsMLD().observe(lifecycleOwner, Observer {
+
+            // Notify the changes to the list view (to re-render automatically)
             update(it, debtorsSearchValue)
         })
 
@@ -151,9 +153,9 @@ class PaymentsDebtorsBaseAdapter(
     }
 
     override fun update(query: Query<List<Payment>>, searchValue: String) {
-        super.update(query, searchValue)
-
         debtors = query
         debtorsSearchValue = searchValue
+
+        super.update(query, searchValue)
     }
 }

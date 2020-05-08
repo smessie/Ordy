@@ -175,4 +175,5 @@
     <string name="placeholder_product_name">Big pack of fries</string>
     <string name="placeholder_comment">extra salt</string>
     <string name="placeholder_email">bob@mail.com</string>
+    <string name="placeholder_date">DD-MM-YY-HH</string>
 </resources>
