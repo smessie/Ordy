@@ -43,7 +43,7 @@ class OrdersFragment : Fragment() {
 
             // Show an error when necessary
             if (it.status == QueryStatus.ERROR) {
-                ErrorHandler().handle(it.error, view)
+                ErrorHandler().handle(it.error, activity)
             }
         })
 

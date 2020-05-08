@@ -105,14 +105,14 @@ class InvitesBaseAdapter(
 
                             SnackbarUtil.openSnackbar(
                                 message,
-                                view,
+                                activity,
                                 Snackbar.LENGTH_LONG,
                                 SnackbarType.SUCCESS
                             )
                         }
 
                         QueryStatus.ERROR -> {
-                            ErrorHandler().handle(it.error, view, listOf())
+                            ErrorHandler().handle(it.error, activity, listOf())
                         }
 
                         else -> {

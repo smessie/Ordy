@@ -46,7 +46,7 @@ class LocationsBaseAdapter(
                 QueryStatus.ERROR -> {
                     searchLoading.visibility = View.INVISIBLE
 
-                    ErrorHandler().handle(it.error, view)
+                    ErrorHandler().handle(it.error, fragment.activity)
                 }
 
                 else -> {
@@ -156,7 +156,7 @@ class LocationsBaseAdapter(
                             view.favorite_mark.visibility = View.VISIBLE
                             view.favorite_loading.visibility = View.GONE
 
-                            ErrorHandler().handle(it.error, view)
+                            ErrorHandler().handle(it.error, fragment.activity)
                         }
 
                         else -> {

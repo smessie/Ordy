@@ -92,7 +92,7 @@ class PaymentsDebtorsBaseAdapter(
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
                         fragment.getString(R.string.mark_snackbar_text),
-                        fragment.requireView()
+                        fragment.activity
                     )
                 }
                 QueryStatus.SUCCESS -> {
@@ -101,7 +101,7 @@ class PaymentsDebtorsBaseAdapter(
                 }
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(fragment.requireView())
-                    ErrorHandler().handle(it.error, fragment.requireView(), listOf())
+                    ErrorHandler().handle(it.error, fragment.activity, listOf())
                 }
                 else -> {
                 }
@@ -126,7 +126,7 @@ class PaymentsDebtorsBaseAdapter(
                 QueryStatus.LOADING -> {
                     SnackbarUtil.openSnackbar(
                         fragment.getString(R.string.notify_snackbar_loading, payment.user.username),
-                        fragment.requireView()
+                        fragment.activity
                     )
                     view.payment_notify.isEnabled = false
                 }
@@ -136,7 +136,7 @@ class PaymentsDebtorsBaseAdapter(
 
                     SnackbarUtil.openSnackbar(
                         fragment.getString(R.string.notify_snackbar_success),
-                        fragment.requireView(),
+                        fragment.activity,
                         Snackbar.LENGTH_SHORT,
                         SnackbarType.SUCCESS
                     )
@@ -144,7 +144,7 @@ class PaymentsDebtorsBaseAdapter(
                 QueryStatus.ERROR -> {
                     SnackbarUtil.closeSnackbar(fragment.requireView())
                     view.payment_notify.isEnabled = true
-                    ErrorHandler().handle(it.error, fragment.requireView(), listOf())
+                    ErrorHandler().handle(it.error, fragment.activity, listOf())
                 }
                 else -> {
                 }
