@@ -29,7 +29,7 @@ import org.mockito.Mockito
 
 
 @RunWith(AndroidJUnit4::class)
-class GroupsInvitesTest : KoinTest {
+class GroupsInvitesUITest : KoinTest {
 
     /**
      * Java faker for faking data.
