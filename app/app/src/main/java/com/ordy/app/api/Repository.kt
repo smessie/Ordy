@@ -9,6 +9,7 @@ import com.ordy.app.api.models.actions.*
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.FetchHandler
 import com.ordy.app.api.util.Query
+import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.api.wrappers.GroupInviteUserWrapper
 import com.ordy.app.api.wrappers.LocationWrapper
 import okhttp3.MultipartBody
@@ -20,7 +21,8 @@ class Repository(private val apiService: ApiService) {
     /******************************
      ***        GROUPS          ***
      ******************************/
-    private val groups: MutableLiveData<Query<List<Group>>> = MutableLiveData(Query())
+    private val groups: MutableLiveData<Query<List<Group>>> =
+        MutableLiveData(Query(QueryStatus.LOADING))
 
     /**
      * Create a new group.
@@ -141,7 +143,8 @@ class Repository(private val apiService: ApiService) {
     /******************************
      ***       LOCATIONS        ***
      ******************************/
-    private val locations: MutableLiveData<Query<List<LocationWrapper>>> = MutableLiveData(Query())
+    private val locations: MutableLiveData<Query<List<LocationWrapper>>> =
+        MutableLiveData(Query(QueryStatus.LOADING))
 
     /**
      * Update the locations by the given search query.
@@ -229,7 +232,8 @@ class Repository(private val apiService: ApiService) {
     /******************************
      ***        ORDERS          ***
      ******************************/
-    private val orders: MutableLiveData<Query<List<Order>>> = MutableLiveData(Query())
+    private val orders: MutableLiveData<Query<List<Order>>> =
+        MutableLiveData(Query(QueryStatus.LOADING))
 
     /**
      * Refresh the list of orders.
@@ -378,8 +382,10 @@ class Repository(private val apiService: ApiService) {
     /******************************
      ***       PAYMENTS         ***
      ******************************/
-    val userDebtorsResult: MutableLiveData<Query<List<Payment>>> = MutableLiveData(Query())
-    val userDebtsResult: MutableLiveData<Query<List<Payment>>> = MutableLiveData(Query())
+    val userDebtorsResult: MutableLiveData<Query<List<Payment>>> =
+        MutableLiveData(Query(QueryStatus.LOADING))
+    val userDebtsResult: MutableLiveData<Query<List<Payment>>> =
+        MutableLiveData(Query(QueryStatus.LOADING))
 
     /**
      * Refresh the Debtors.

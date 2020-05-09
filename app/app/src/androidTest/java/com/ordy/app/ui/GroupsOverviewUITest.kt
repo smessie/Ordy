@@ -31,7 +31,7 @@ import org.koin.test.mock.declareMock
 import org.mockito.Mockito
 
 @RunWith(AndroidJUnit4::class)
-class GroupsOverviewTest : KoinTest {
+class GroupsOverviewUITest : KoinTest {
 
     /**
      * Java faker for faking data.
