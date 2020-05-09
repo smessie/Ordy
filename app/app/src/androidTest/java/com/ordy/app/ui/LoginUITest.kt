@@ -29,7 +29,7 @@ import org.koin.test.mock.declareMock
 import org.mockito.Mockito
 
 @RunWith(AndroidJUnit4::class)
-class LoginTest : KoinTest {
+class LoginUITest : KoinTest {
 
     /**
      * Java faker for faking data.
