@@ -2,6 +2,8 @@ package com.ordy.app.ui.groups.overview
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -9,6 +11,7 @@ import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewGroupBinding
+import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.activity_overview_group.*
 import kotlinx.android.synthetic.main.activity_overview_group.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -45,7 +48,8 @@ class OverviewGroupActivity : AppCompatActivity() {
         }
 
         // Create the list view adapter
-        baseAdapter = OverviewGroupBaseAdapter(applicationContext, viewModel, handlers, this, binding.root)
+        baseAdapter =
+            OverviewGroupBaseAdapter(applicationContext, viewModel, handlers, this, binding.root)
         binding.root.group_members.adapter = baseAdapter
 
         // Set the action bar elevation to 0, since the group extends the action bar.
@@ -72,7 +76,22 @@ class OverviewGroupActivity : AppCompatActivity() {
                     // Stop the refreshing on load
                     binding.root.group_refresh.isRefreshing = false
 
-                    ErrorHandler().handle(it.error, this, emptyList())
+                    // Don't display another error via snackbar if an error is displayed through the AlertDialog.
+                    SnackbarUtil.closeSnackbar(this)
+
+                    AlertDialog.Builder(this).apply {
+                        setTitle(getString(R.string.error_loading_group))
+                        setMessage(
+                            ErrorHandler().getUserFriendlyMessage(
+                                it.requireError().message,
+                                binding.root
+                            )
+                        )
+                        setPositiveButton(android.R.string.ok) { _, _ ->
+                            // Close the activity
+                            finish()
+                        }
+                    }.show()
                 }
 
                 else -> {

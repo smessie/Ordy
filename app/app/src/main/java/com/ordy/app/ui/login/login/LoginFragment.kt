@@ -66,7 +66,7 @@ class LoginFragment : Fragment() {
                 }
 
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(requireView())
+                    SnackbarUtil.closeSnackbar(requireActivity())
 
                     val preferences = AppPreferences(requireContext())
 
@@ -85,7 +85,7 @@ class LoginFragment : Fragment() {
                 }
 
                 QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(requireView())
+                    SnackbarUtil.closeSnackbar(requireActivity())
 
                     ErrorHandler().handle(
                         it.error, activity, listOf(

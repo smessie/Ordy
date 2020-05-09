@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -32,9 +33,6 @@ import com.ordy.app.util.types.SnackbarType
 import com.ordy.app.util.types.TabsEntry
 import kotlinx.android.synthetic.main.activity_overview_order.*
 import kotlinx.android.synthetic.main.activity_overview_order.view.*
-import kotlinx.android.synthetic.main.fragment_order_personal.*
-import kotlinx.android.synthetic.main.fragment_order_personal.view.*
-import kotlinx.android.synthetic.main.fragment_order_personal.view.order_items_add
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -53,6 +51,8 @@ class OverviewOrderActivity : AppCompatActivity() {
 
     private var orderId by Delegates.notNull<Int>()
 
+    private lateinit var view: View
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,6 +60,8 @@ class OverviewOrderActivity : AppCompatActivity() {
         val binding: ActivityOverviewOrderBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_overview_order)
         binding.handlers = OverviewOrderHandlers(this, viewModel)
+
+        view = binding.root
 
         // Set the action bar elevation to 0, since the order extends the action bar.
         if (supportActionBar != null) {
@@ -93,7 +95,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         // Fetch the specific order.
         viewModel.orderId.observe(this, Observer {
             if (it != -1) {
-                viewModel.refreshOrder()
+                viewModel.refreshOrder(applicationContext, this)
             }
         })
 
@@ -122,7 +124,7 @@ class OverviewOrderActivity : AppCompatActivity() {
                     }
 
                     // Cancel the previous timer when available
-                    if(viewModel.updateTimer != null) {
+                    if (viewModel.updateTimer != null) {
                         viewModel.updateTimer?.cancel()
                     }
 
@@ -138,7 +140,22 @@ class OverviewOrderActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    ErrorHandler().handle(it.error, this)
+                    // Don't display another error via snackbar if an error is displayed through the AlertDialog.
+                    SnackbarUtil.closeSnackbar(this)
+
+                    AlertDialog.Builder(this).apply {
+                        setTitle(getString(R.string.error_loading_order))
+                        setMessage(
+                            ErrorHandler().getUserFriendlyMessage(
+                                it.requireError().message,
+                                view
+                            )
+                        )
+                        setPositiveButton(android.R.string.ok) { _, _ ->
+                            // Close the activity
+                            finish()
+                        }
+                    }.show()
                 }
 
                 else -> {
@@ -263,7 +280,7 @@ class OverviewOrderActivity : AppCompatActivity() {
                     )
 
                     // Refresh the order
-                    viewModel.refreshOrder()
+                    viewModel.refreshOrder(applicationContext, this)
                 }
 
                 QueryStatus.ERROR -> {
@@ -373,8 +390,8 @@ class OverviewOrderActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
 
-        //refesh the order
-        viewModel.refreshOrder()
+        // Refresh the order
+        viewModel.refreshOrder(applicationContext, this)
     }
 
     override fun onDestroy() {

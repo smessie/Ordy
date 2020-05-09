@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -103,7 +104,7 @@ class CreateOrderActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(binding.root)
+                    SnackbarUtil.closeSnackbar(this)
 
                     // Finish this activity
                     finish()
@@ -118,7 +119,7 @@ class CreateOrderActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(binding.root)
+                    SnackbarUtil.closeSnackbar(this)
 
                     ErrorHandler().handle(
                         it.error, this, listOf(
