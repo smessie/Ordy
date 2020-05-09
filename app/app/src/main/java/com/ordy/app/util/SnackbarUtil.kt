@@ -13,7 +13,7 @@ class SnackbarUtil {
 
     companion object {
 
-        private var snackbars: MutableMap<View, Snackbar> = mutableMapOf()
+        private var snackbars: MutableMap<FragmentActivity, Snackbar> = mutableMapOf()
 
         /**
          * Open a snackbar
@@ -41,7 +41,7 @@ class SnackbarUtil {
                         snackbar.setBackgroundTint(Color.parseColor(color))
                     }
 
-                    snackbars[view] = snackbar
+                    snackbars[activity] = snackbar
 
                     // Spawn the snackbar above the bottom bar.
                     if (view.findViewById<BottomNavigationView>(R.id.nav_view) != null) {
@@ -57,10 +57,10 @@ class SnackbarUtil {
         /**
          * Close a snackbar
          */
-        fun closeSnackbar(view: View) {
+        fun closeSnackbar(activity: FragmentActivity?) {
 
-            if (snackbars.containsKey(view)) {
-                snackbars[view]?.dismiss()
+            if (snackbars.containsKey(activity)) {
+                snackbars[activity]?.dismiss()
             }
         }
     }

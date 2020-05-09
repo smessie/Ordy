@@ -97,11 +97,11 @@ class PaymentsDebtorsBaseAdapter(
                     )
                 }
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireActivity().findViewById<ViewGroup>(android.R.id.content))
+                    SnackbarUtil.closeSnackbar(fragment.requireActivity())
                     viewModel.refreshDebtors()
                 }
                 QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireActivity().findViewById<ViewGroup>(android.R.id.content))
+                    SnackbarUtil.closeSnackbar(fragment.requireActivity())
                     ErrorHandler().handle(it.error, fragment.activity, listOf())
                 }
                 else -> {
@@ -132,7 +132,7 @@ class PaymentsDebtorsBaseAdapter(
                     view.payment_notify.isEnabled = false
                 }
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireActivity().findViewById<ViewGroup>(android.R.id.content))
+                    SnackbarUtil.closeSnackbar(fragment.requireActivity())
                     view.payment_notify.isEnabled = true
 
                     SnackbarUtil.openSnackbar(
@@ -143,7 +143,7 @@ class PaymentsDebtorsBaseAdapter(
                     )
                 }
                 QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireActivity().findViewById<ViewGroup>(android.R.id.content))
+                    SnackbarUtil.closeSnackbar(fragment.requireActivity())
                     view.payment_notify.isEnabled = true
                     ErrorHandler().handle(it.error, fragment.activity, listOf())
                 }

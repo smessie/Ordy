@@ -152,14 +152,14 @@ class OrderPersonalBaseAdapter(
                 }
 
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireActivity().findViewById<ViewGroup>(android.R.id.content))
+                    SnackbarUtil.closeSnackbar(fragment.requireActivity())
 
                     // Update the query.
                     viewModel.refreshOrder(context, fragment.activity)
                 }
 
                 QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireActivity().findViewById<ViewGroup>(android.R.id.content))
+                    SnackbarUtil.closeSnackbar(fragment.requireActivity())
 
                     ErrorHandler().handle(it.error, fragment.activity, listOf())
                 }
@@ -200,7 +200,7 @@ class OrderPersonalBaseAdapter(
                 }
 
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireActivity().findViewById<ViewGroup>(android.R.id.content))
+                    SnackbarUtil.closeSnackbar(fragment.requireActivity())
 
                     // Delete the order item from the list view
                     this.order.requireData().orderItems?.remove(orderItem)
@@ -210,7 +210,7 @@ class OrderPersonalBaseAdapter(
                 }
 
                 QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireActivity().findViewById<ViewGroup>(android.R.id.content))
+                    SnackbarUtil.closeSnackbar(fragment.requireActivity())
 
                     ErrorHandler().handle(it.error, fragment.activity, listOf())
                 }

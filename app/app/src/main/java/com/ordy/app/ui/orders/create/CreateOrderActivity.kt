@@ -104,7 +104,7 @@ class CreateOrderActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(findViewById<ViewGroup>(android.R.id.content))
+                    SnackbarUtil.closeSnackbar(this)
 
                     // Finish this activity
                     finish()
@@ -119,7 +119,7 @@ class CreateOrderActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(findViewById<ViewGroup>(android.R.id.content))
+                    SnackbarUtil.closeSnackbar(this)
 
                     ErrorHandler().handle(
                         it.error, this, listOf(

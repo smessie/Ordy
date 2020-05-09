@@ -77,7 +77,7 @@ class OverviewGroupActivity : AppCompatActivity() {
                     binding.root.group_refresh.isRefreshing = false
 
                     // Don't display another error via snackbar if an error is displayed through the AlertDialog.
-                    SnackbarUtil.closeSnackbar(findViewById<ViewGroup>(android.R.id.content))
+                    SnackbarUtil.closeSnackbar(this)
 
                     AlertDialog.Builder(this).apply {
                         setTitle(getString(R.string.error_loading_group))
