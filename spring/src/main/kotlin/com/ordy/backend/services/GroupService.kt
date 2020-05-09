@@ -26,8 +26,8 @@ class GroupService(
     private val groupNameRegex = Regex("^[A-z0-9 ]+$")
 
     private fun checkGroupName(name: Optional<String>, list: ThrowableList) {
-        if (!name.isPresent) {
-            list.addGenericException("No name was given. Please try again.")
+        if (!name.isPresent || name.get().isBlank()) {
+            list.addPropertyException("name", "No name was given. Please try again.")
             return
         }
 

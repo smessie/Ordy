@@ -13,6 +13,7 @@ import com.ordy.app.api.util.InputField
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityCreateGroupBinding
 import com.ordy.app.ui.groups.overview.OverviewGroupActivity
+import com.ordy.app.util.SnackbarUtil
 import kotlinx.android.synthetic.main.activity_create_group.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -37,7 +38,15 @@ class CreateGroupActivity : AppCompatActivity() {
 
             when (it.status) {
 
+                QueryStatus.LOADING -> {
+                    SnackbarUtil.openSnackbar(getString(R.string.create_group_loading), this)
+                }
+
                 QueryStatus.SUCCESS -> {
+
+                    // Close the loading snackBar
+                    SnackbarUtil.closeSnackbar(binding.root)
+
                     // Go to newly created group
                     val intent = Intent(this, OverviewGroupActivity::class.java)
                     // Pass the group id as extra information
@@ -47,6 +56,10 @@ class CreateGroupActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.ERROR -> {
+
+                    // Close the loading snackBar
+                    SnackbarUtil.closeSnackbar(binding.root)
+
                     ErrorHandler().handle(
                         it.error, this, listOf(
                             InputField("name", this.input_name)

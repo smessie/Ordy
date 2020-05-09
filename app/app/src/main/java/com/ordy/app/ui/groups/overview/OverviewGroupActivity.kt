@@ -5,14 +5,11 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.databinding.ActivityOverviewGroupBinding
 import com.ordy.app.util.SnackbarUtil
-import com.ordy.app.util.types.SnackbarType
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_overview_group.*
 import kotlinx.android.synthetic.main.activity_overview_group.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -49,7 +46,8 @@ class OverviewGroupActivity : AppCompatActivity() {
         }
 
         // Create the list view adapter
-        baseAdapter = OverviewGroupBaseAdapter(applicationContext, viewModel, handlers, this, binding.root)
+        baseAdapter =
+            OverviewGroupBaseAdapter(applicationContext, viewModel, handlers, this, binding.root)
         binding.root.group_members.adapter = baseAdapter
 
         // Set the action bar elevation to 0, since the group extends the action bar.
@@ -129,25 +127,6 @@ class OverviewGroupActivity : AppCompatActivity() {
                 }
             }
         })
-
-        viewModel.getRenameGroupMLD().observe(this, Observer {
-            // Refresh when query is successful
-            when (it.status) {
-                QueryStatus.SUCCESS -> {
-                    SnackbarUtil.openSnackbar(getString(R.string.group_rename_successful), this, Snackbar.LENGTH_SHORT, SnackbarType.SUCCESS)
-                    viewModel.refreshGroup(viewModel.getGroup().requireData().id)
-                }
-
-                QueryStatus.ERROR -> {
-                    ErrorHandler().handle(it.error, this)
-                }
-
-                else -> {
-                    // Do nothing
-                }
-            }
-        })
-
     }
 
     /**
