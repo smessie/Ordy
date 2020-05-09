@@ -59,7 +59,6 @@ class OrderServiceTest {
 
     private lateinit var testUser: User
     private lateinit var testGroup: Group
-    private lateinit var testGroupMembers: List<GroupMember>
     private lateinit var testUserGroups: List<GroupMember>
     private lateinit var testLocation: Location
     private lateinit var testCuisine: Cuisine
@@ -288,7 +287,7 @@ class OrderServiceTest {
     }
 
     @Test
-    fun `Should not be able to delete orderItem because `() {
+    fun `Should not be able to delete orderItem because the order has no orderItems`() {
         testOrder.orderItems = emptySet()
         whenever(orderItemRepository.findById(testOrderItem.id)).thenReturn(Optional.of(testOrderItem))
 
