@@ -1,6 +1,6 @@
 package com.ordy.app.api
 
-import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.github.javafaker.Faker
 import com.nhaarman.mockitokotlin2.verify
@@ -8,8 +8,8 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.ordy.app.api.util.*
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
 import org.mockito.Mockito.*
 import retrofit2.HttpException
 import retrofit2.Response
@@ -18,6 +18,12 @@ class ErrorHandlerTest {
 
     private var faker = Faker()
     private val activity: AppCompatActivity = mock(AppCompatActivity::class.java)
+    private val viewGroup: ViewGroup = mock(ViewGroup::class.java)
+
+    @Before
+    fun setup() {
+        whenever(activity.findViewById<ViewGroup>(android.R.id.content)).thenReturn(viewGroup)
+    }
 
     @Test
     fun `'parse' should use the error message when passed a Throwable`() {
