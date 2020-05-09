@@ -31,9 +31,7 @@ import org.koin.test.mock.declareMock
 import org.mockito.Mockito
 import org.mockito.Mockito.times
 
-/**
- * "UI" is added to the class name to avoid redeclaration error
- */
+
 @RunWith(AndroidJUnit4::class)
 class LocationsUITest : KoinTest {
 
