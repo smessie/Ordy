@@ -7,11 +7,13 @@ import com.ordy.app.api.models.GroupInvite
 import com.ordy.app.api.models.User
 import com.ordy.app.api.models.actions.InviteAction
 import com.ordy.app.api.util.Query
+import com.ordy.app.api.util.QueryStatus
 import okhttp3.ResponseBody
 
 class ProfileViewModel(repository: Repository) : RepositoryViewModel(repository) {
 
-    private val invitesMLD: MutableLiveData<Query<List<GroupInvite>>> = MutableLiveData(Query())
+    private val invitesMLD: MutableLiveData<Query<List<GroupInvite>>> =
+        MutableLiveData(Query(QueryStatus.LOADING))
     private val userMLD: MutableLiveData<Query<User>> = MutableLiveData(Query())
 
     /**
