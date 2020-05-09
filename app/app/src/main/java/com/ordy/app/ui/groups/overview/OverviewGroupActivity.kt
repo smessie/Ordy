@@ -2,6 +2,7 @@ package com.ordy.app.ui.groups.overview
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -76,7 +77,7 @@ class OverviewGroupActivity : AppCompatActivity() {
                     binding.root.group_refresh.isRefreshing = false
 
                     // Don't display another error via snackbar if an error is displayed through the AlertDialog.
-                    SnackbarUtil.closeSnackbar(binding.root)
+                    SnackbarUtil.closeSnackbar(findViewById<ViewGroup>(android.R.id.content))
 
                     AlertDialog.Builder(this).apply {
                         setTitle(getString(R.string.error_loading_group))

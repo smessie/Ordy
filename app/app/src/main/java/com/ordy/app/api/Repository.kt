@@ -1,7 +1,7 @@
 package com.ordy.app.api
 
 import android.content.Context
-import android.view.View
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.R
 import com.ordy.app.api.models.*
@@ -238,11 +238,11 @@ class Repository(private val apiService: ApiService) {
     /**
      * Refresh the list of orders.
      */
-    fun refreshOrders(context: Context, view: View) {
+    fun refreshOrders(context: Context, activity: FragmentActivity?) {
         FetchHandler.handle(orders, apiService.userOrders())
 
         if (!FetchHandler.hasNetwork(context)!!) {
-            ErrorHandler().handleRawGeneral(context.getString(R.string.warning_cached), view)
+            ErrorHandler().handleRawGeneral(context.getString(R.string.warning_cached), activity)
         }
     }
 
@@ -276,11 +276,16 @@ class Repository(private val apiService: ApiService) {
     /**
      * Refresh the order.
      */
-    fun refreshOrder(liveData: MutableLiveData<Query<Order>>, orderId: Int, context: Context, view: View) {
+    fun refreshOrder(
+        liveData: MutableLiveData<Query<Order>>,
+        orderId: Int,
+        context: Context,
+        activity: FragmentActivity?
+    ) {
         FetchHandler.handle(liveData, apiService.order(orderId))
 
         if (!FetchHandler.hasNetwork(context)!!) {
-            ErrorHandler().handleRawGeneral(context.getString(R.string.warning_cached), view)
+            ErrorHandler().handleRawGeneral(context.getString(R.string.warning_cached), activity)
         }
     }
 

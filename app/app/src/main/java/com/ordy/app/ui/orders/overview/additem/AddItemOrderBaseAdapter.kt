@@ -75,14 +75,14 @@ class AddItemOrderBaseAdapter(
                 }
 
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(view)
+                    SnackbarUtil.closeSnackbar(activity.findViewById<ViewGroup>(android.R.id.content))
 
                     // Go back to the order overview activity.
                     activity.finish()
                 }
 
                 QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(view)
+                    SnackbarUtil.closeSnackbar(activity.findViewById<ViewGroup>(android.R.id.content))
 
                     ErrorHandler().handle(it.error, activity)
                 }

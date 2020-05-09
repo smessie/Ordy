@@ -1,7 +1,7 @@
 package com.ordy.app.ui.orders
 
 import android.content.Context
-import android.view.View
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
@@ -20,7 +20,7 @@ class OrdersViewModel(repository: Repository) : RepositoryViewModel(repository) 
     /**
      * Refresh the list of orders
      */
-    fun refreshOrders(context: Context, view: View) {
-        repository.refreshOrders(context, view)
+    fun refreshOrders(context: Context, activity: FragmentActivity?) {
+        repository.refreshOrders(context, activity)
     }
 }

@@ -50,11 +50,11 @@ class ActiveOrdersFragment : Fragment() {
             emptyView = binding.root.orders_active_empty
         }
 
-        viewModel.refreshOrders(requireContext(), binding.root)
+        viewModel.refreshOrders(requireContext(), activity)
 
         // Swipe to refresh
         binding.root.orders_active_refresh.setOnRefreshListener {
-            viewModel.refreshOrders(requireContext(), binding.root)
+            viewModel.refreshOrders(requireContext(), activity)
         }
 
         // Observe the orders

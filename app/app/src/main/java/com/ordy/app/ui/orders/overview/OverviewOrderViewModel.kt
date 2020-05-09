@@ -1,7 +1,7 @@
 package com.ordy.app.ui.orders.overview
 
 import android.content.Context
-import android.view.View
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.ordy.app.api.Repository
 import com.ordy.app.api.RepositoryViewModel
@@ -10,7 +10,6 @@ import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
-import java.lang.IllegalStateException
 import java.net.URI
 import java.util.*
 
@@ -32,7 +31,8 @@ class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repos
     var billUploadUri: URI? = null
 
     private val uploadBillMLD: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
-    private val orderMLD: MutableLiveData<Query<Order>> = MutableLiveData(Query(QueryStatus.LOADING))
+    private val orderMLD: MutableLiveData<Query<Order>> =
+        MutableLiveData(Query(QueryStatus.LOADING))
 
     /**
      * Get livedata for uploading the bill.
@@ -59,8 +59,8 @@ class OverviewOrderViewModel(repository: Repository) : RepositoryViewModel(repos
     /**
      * Refresh the order
      */
-    fun refreshOrder(context: Context, view: View) {
-        repository.refreshOrder(orderMLD, orderId.value!!, context, view)
+    fun refreshOrder(context: Context, activity: FragmentActivity?) {
+        repository.refreshOrder(orderMLD, orderId.value!!, context, activity)
     }
 
     /**

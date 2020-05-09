@@ -124,6 +124,7 @@ class ErrorHandler {
             && queryError.generalErrors.isEmpty()
             && activity != null
         ) {
+            val view = activity.findViewById<ViewGroup>(android.R.id.content)
             val message = getUserFriendlyMessage(queryError.message, view)
 
             // Create and show a snackbar with the error message.

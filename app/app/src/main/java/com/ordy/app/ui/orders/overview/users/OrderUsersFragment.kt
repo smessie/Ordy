@@ -43,7 +43,7 @@ class OrderUsersFragment : Fragment() {
 
         // Swipe to refresh
         binding.root.order_refresh.setOnRefreshListener {
-            viewModel.refreshOrder(requireContext(), binding.root)
+            viewModel.refreshOrder(requireContext(), activity)
         }
 
         // Stop refreshing on load

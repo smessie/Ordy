@@ -49,7 +49,7 @@ class ArchivedOrdersFragment : Fragment() {
 
         // Swipe to refresh
         binding.root.orders_archived_refresh.setOnRefreshListener {
-            viewModel.refreshOrders(requireContext(), binding.root)
+            viewModel.refreshOrders(requireContext(), activity)
         }
 
         // Observe the orders

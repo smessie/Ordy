@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -94,7 +95,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         // Fetch the specific order.
         viewModel.orderId.observe(this, Observer {
             if (it != -1) {
-                viewModel.refreshOrder(applicationContext, binding.root)
+                viewModel.refreshOrder(applicationContext, this)
             }
         })
 
@@ -140,7 +141,7 @@ class OverviewOrderActivity : AppCompatActivity() {
 
                 QueryStatus.ERROR -> {
                     // Don't display another error via snackbar if an error is displayed through the AlertDialog.
-                    SnackbarUtil.closeSnackbar(view)
+                    SnackbarUtil.closeSnackbar(findViewById<ViewGroup>(android.R.id.content))
 
                     AlertDialog.Builder(this).apply {
                         setTitle(getString(R.string.error_loading_order))
@@ -279,7 +280,7 @@ class OverviewOrderActivity : AppCompatActivity() {
                     )
 
                     // Refresh the order
-                    viewModel.refreshOrder(applicationContext, binding.root)
+                    viewModel.refreshOrder(applicationContext, this)
                 }
 
                 QueryStatus.ERROR -> {
@@ -390,7 +391,7 @@ class OverviewOrderActivity : AppCompatActivity() {
         super.onRestart()
 
         // Refresh the order
-        viewModel.refreshOrder(applicationContext, view)
+        viewModel.refreshOrder(applicationContext, this)
     }
 
     override fun onDestroy() {

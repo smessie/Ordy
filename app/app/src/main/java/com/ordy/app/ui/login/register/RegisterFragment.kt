@@ -66,14 +66,14 @@ class RegisterFragment : Fragment() {
                 }
 
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(requireView())
+                    SnackbarUtil.closeSnackbar(requireActivity().findViewById<ViewGroup>(android.R.id.content))
 
                     // Go to the login fragment.
                     viewModel.getIsLoginMLD().postValue(true)
                 }
 
                 QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(requireView())
+                    SnackbarUtil.closeSnackbar(requireActivity().findViewById<ViewGroup>(android.R.id.content))
 
                     ErrorHandler().handle(
                         it.error, activity, listOf(
