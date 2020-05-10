@@ -128,14 +128,14 @@ class OverviewGroupActivity : AppCompatActivity() {
                 }
 
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(binding.root)
+                    SnackbarUtil.closeSnackbar(this)
 
                     // Go back to the GroupsFragment
                     finish()
                 }
 
                 QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(binding.root)
+                    SnackbarUtil.closeSnackbar(this)
 
                     ErrorHandler().handle(it.error, this, listOf())
                 }

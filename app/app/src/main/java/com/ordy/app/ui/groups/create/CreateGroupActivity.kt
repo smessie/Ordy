@@ -45,7 +45,7 @@ class CreateGroupActivity : AppCompatActivity() {
                 QueryStatus.SUCCESS -> {
 
                     // Close the loading snackBar
-                    SnackbarUtil.closeSnackbar(binding.root)
+                    SnackbarUtil.closeSnackbar(this)
 
                     // Go to newly created group
                     val intent = Intent(this, OverviewGroupActivity::class.java)
@@ -58,7 +58,7 @@ class CreateGroupActivity : AppCompatActivity() {
                 QueryStatus.ERROR -> {
 
                     // Close the loading snackBar
-                    SnackbarUtil.closeSnackbar(binding.root)
+                    SnackbarUtil.closeSnackbar(this)
 
                     ErrorHandler().handle(
                         it.error, this, listOf(
