@@ -123,12 +123,20 @@ class OverviewGroupActivity : AppCompatActivity() {
 
             when (it.status) {
 
+                QueryStatus.LOADING -> {
+                    SnackbarUtil.openSnackbar(getString(R.string.group_leave_loading), this)
+                }
+
                 QueryStatus.SUCCESS -> {
+                    SnackbarUtil.closeSnackbar(this)
+
                     // Go back to the GroupsFragment
                     finish()
                 }
 
                 QueryStatus.ERROR -> {
+                    SnackbarUtil.closeSnackbar(this)
+
                     ErrorHandler().handle(it.error, this, listOf())
                 }
 
@@ -136,7 +144,6 @@ class OverviewGroupActivity : AppCompatActivity() {
                 }
             }
         })
-
     }
 
     /**

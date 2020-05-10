@@ -94,10 +94,12 @@
             android:parentActivityName=".ui.orders.overview.OverviewOrderActivity" />
 
         <!-- Create group activity -->
+        <!-- WindowsSoftInputMode is done to show the SnackBar above the keyboard -->
         <activity
             android:name=".ui.groups.create.CreateGroupActivity"
             android:label="@string/title_create_group"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- Invite member activity -->
         <activity

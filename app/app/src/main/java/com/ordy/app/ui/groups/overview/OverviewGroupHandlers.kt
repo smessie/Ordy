@@ -3,7 +3,6 @@ package com.ordy.app.ui.groups.overview
 import android.content.Intent
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import com.ordy.app.R
 import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
@@ -71,22 +70,6 @@ class OverviewGroupHandlers(
                 activity = activity
             )
             dialog.show(manager, activity.getString(R.string.group_rename_dialog_tag))
-            viewModel.getRenameGroupMLD().observe(this.activity, Observer {
-                // Refresh when query is successful
-                when (it.status) {
-                    QueryStatus.SUCCESS -> {
-                        viewModel.refreshGroup(viewModel.getGroup().requireData().id)
-                    }
-
-                    QueryStatus.ERROR -> {
-                        ErrorHandler().handle(it.error, activity)
-                    }
-
-                    else -> {
-                        // Do nothing
-                    }
-                }
-            })
         }
     }
 
