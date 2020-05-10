@@ -2,6 +2,7 @@ package com.ordy.app.ui.payments.debtors
 
 import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
@@ -96,11 +97,11 @@ class PaymentsDebtorsBaseAdapter(
                     )
                 }
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireView())
+                    SnackbarUtil.closeSnackbar(fragment.requireActivity())
                     viewModel.refreshDebtors()
                 }
                 QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireView())
+                    SnackbarUtil.closeSnackbar(fragment.requireActivity())
                     ErrorHandler().handle(it.error, fragment.activity, listOf())
                 }
                 else -> {
@@ -131,7 +132,7 @@ class PaymentsDebtorsBaseAdapter(
                     view.payment_notify.isEnabled = false
                 }
                 QueryStatus.SUCCESS -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireView())
+                    SnackbarUtil.closeSnackbar(fragment.requireActivity())
                     view.payment_notify.isEnabled = true
 
                     SnackbarUtil.openSnackbar(
@@ -142,7 +143,7 @@ class PaymentsDebtorsBaseAdapter(
                     )
                 }
                 QueryStatus.ERROR -> {
-                    SnackbarUtil.closeSnackbar(fragment.requireView())
+                    SnackbarUtil.closeSnackbar(fragment.requireActivity())
                     view.payment_notify.isEnabled = true
                     ErrorHandler().handle(it.error, fragment.activity, listOf())
                 }

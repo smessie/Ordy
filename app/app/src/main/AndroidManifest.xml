@@ -5,6 +5,7 @@
     package="com.ordy.app">
 
     <!-- Permission to connect to the internet for fetching data from the backend API. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- Permission to read from storage for bills -->

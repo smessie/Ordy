@@ -11,6 +11,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.javafaker.Faker
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
 import com.ordy.app.R
 import com.ordy.app.api.Repository
@@ -35,7 +37,7 @@ import org.mockito.Mockito
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)
-class OrdersOverviewTest : KoinTest {
+class OrdersOverviewUITest : KoinTest {
 
     /**
      * Java faker for faking data.
@@ -122,7 +124,7 @@ class OrdersOverviewTest : KoinTest {
         val orderMLD = MutableLiveData(orderQuery)
 
         // Mock the repository
-        whenever(mockRepository.refreshOrder(orderMLD, order.id)).then { }
+        whenever(mockRepository.refreshOrder(eq(orderMLD), eq(order.id), eq(mockContext), any())).then { }
 
         // Mock the ViewModel
         whenever(mockOverviewOrderViewModel.getOrderMLD()).thenReturn(orderMLD)
@@ -188,7 +190,7 @@ class OrdersOverviewTest : KoinTest {
         whenever(mockOverviewOrderViewModel.getUploadBillMLD()).thenReturn(MutableLiveData(Query()))
 
         // Mock the Repository
-        whenever(mockRepository.refreshOrder(orderMLD, order.id)).then { }
+        whenever(mockRepository.refreshOrder(eq(orderMLD), eq(order.id), eq(mockContext), any())).then { }
 
         // Create intent to open activity
         val intent = Intent(mockContext, OverviewOrderActivity::class.java)

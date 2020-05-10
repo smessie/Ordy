@@ -2,6 +2,8 @@ package com.ordy.app.ui.groups.overview
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -74,7 +76,22 @@ class OverviewGroupActivity : AppCompatActivity() {
                     // Stop the refreshing on load
                     binding.root.group_refresh.isRefreshing = false
 
-                    ErrorHandler().handle(it.error, this, emptyList())
+                    // Don't display another error via snackbar if an error is displayed through the AlertDialog.
+                    SnackbarUtil.closeSnackbar(this)
+
+                    AlertDialog.Builder(this).apply {
+                        setTitle(getString(R.string.error_loading_group))
+                        setMessage(
+                            ErrorHandler().getUserFriendlyMessage(
+                                it.requireError().message,
+                                binding.root
+                            )
+                        )
+                        setPositiveButton(android.R.string.ok) { _, _ ->
+                            // Close the activity
+                            finish()
+                        }
+                    }.show()
                 }
 
                 else -> {
