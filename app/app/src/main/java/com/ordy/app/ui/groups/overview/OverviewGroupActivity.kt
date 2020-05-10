@@ -54,7 +54,7 @@ class OverviewGroupActivity : AppCompatActivity() {
 
         // Set the action bar elevation to 0, since the group extends the action bar.
         if (supportActionBar != null) {
-            supportActionBar!!.elevation = 0F
+            supportActionBar?.elevation = 0F
         }
 
         // Observe the changes of the fetch.

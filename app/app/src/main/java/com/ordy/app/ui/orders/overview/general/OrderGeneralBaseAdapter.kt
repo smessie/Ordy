@@ -111,7 +111,9 @@ class OrderGeneralBaseAdapter(
         if (order.status == QueryStatus.SUCCESS) {
             val orderItems = order.requireData().orderItems
 
-            orderItemGroups = OrderUtil.groupItems(orderItems!!)
+            if (orderItems != null) {
+                orderItemGroups = OrderUtil.groupItems(orderItems)
+            }
         }
 
         // Notify the changes to the list view (to re-render automatically)

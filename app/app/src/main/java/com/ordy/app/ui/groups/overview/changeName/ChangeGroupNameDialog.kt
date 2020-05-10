@@ -30,8 +30,10 @@ class ChangeGroupNameDialog(
 
         val newNameView: TextInputLayout = dialogView.new_group_name
 
-        // Initial text for the "New name"-field view
-        newNameView.editText!!.text = SpannableStringBuilder(group.name)
+        if (newNameView.editText != null) {
+            // Initial text for the "New name"-field view
+            newNameView.editText?.text = SpannableStringBuilder(group.name)
+        }
 
         return AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.group_rename_dialog_title)

@@ -42,7 +42,7 @@ class InviteMemberActivity : AppCompatActivity() {
 
         // Set the action bar elevation to 0, since the invite screen extends the action bar.
         if (supportActionBar != null) {
-            supportActionBar!!.elevation = 0F
+            supportActionBar?.elevation = 0F
         }
 
         // Watch changes to the the "search value"
