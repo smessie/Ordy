@@ -16,6 +16,7 @@ import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import com.ordy.app.util.OrderUtil
 import com.ordy.app.util.types.OrderItemGroup
 import kotlinx.android.synthetic.main.list_order_item.view.*
+import java.util.*
 
 class OrderGeneralBaseAdapter(
     val context: Context?,
@@ -113,6 +114,7 @@ class OrderGeneralBaseAdapter(
 
             if (orderItems != null) {
                 orderItemGroups = OrderUtil.groupItems(orderItems)
+                    .sortedBy { it.name.toLowerCase(Locale.getDefault()) }
             }
         }
 

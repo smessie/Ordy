@@ -118,7 +118,7 @@ abstract class PaymentsBaseAdapter(
                         searchValue
                             .toLowerCase(Locale.getDefault())
                     )
-            }
+            }.sortedBy { it.user.username.toLowerCase(Locale.getDefault()) }
         }
 
         notifyDataSetChanged()

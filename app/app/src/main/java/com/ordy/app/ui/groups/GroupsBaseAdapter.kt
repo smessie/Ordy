@@ -15,6 +15,7 @@ import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.groups.overview.OverviewGroupActivity
 import kotlinx.android.synthetic.main.fragment_groups.view.*
 import kotlinx.android.synthetic.main.list_group_card.view.*
+import java.util.*
 
 class GroupsBaseAdapter(
     val context: Context?,
@@ -54,7 +55,8 @@ class GroupsBaseAdapter(
             }
 
             QueryStatus.SUCCESS -> {
-                val group = groups.requireData()[position]
+                val group = groups.requireData()
+                    .sortedBy { it.name.toLowerCase(Locale.getDefault()) }[position]
 
                 // Stop the shimmer effect & hide.
                 view.group_loading.stopShimmer()

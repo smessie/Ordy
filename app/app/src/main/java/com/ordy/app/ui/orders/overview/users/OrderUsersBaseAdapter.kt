@@ -16,6 +16,7 @@ import com.ordy.app.util.OrderUtil
 import com.ordy.app.util.types.OrderItemUserGroup
 import kotlinx.android.synthetic.main.list_order_item.view.*
 import kotlinx.android.synthetic.main.list_order_item_user.view.*
+import java.util.*
 
 class OrderUsersBaseAdapter(
     val context: Context?,
@@ -128,7 +129,9 @@ class OrderUsersBaseAdapter(
             val orderItems = order.requireData().orderItems
 
             if (orderItems != null) {
+                // Sort by username for consistent ordering.
                 orderItemUserGroups = OrderUtil.userGroupItems(orderItems)
+                    .sortedBy { it.username.toLowerCase(Locale.getDefault()) }
             }
         }
 

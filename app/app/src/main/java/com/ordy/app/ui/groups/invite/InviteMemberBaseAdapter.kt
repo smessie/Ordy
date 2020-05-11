@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_invite_member.view.*
 import kotlinx.android.synthetic.main.list_group_member_card.view.member_name
 import kotlinx.android.synthetic.main.list_invite_member_card.view.*
 import okhttp3.ResponseBody
+import java.util.*
 
 
 class InviteMemberBaseAdapter(
@@ -84,7 +85,8 @@ class InviteMemberBaseAdapter(
         when (users.status) {
 
             QueryStatus.SUCCESS -> {
-                val member = users.requireData()[position]
+                val member = users.requireData()
+                    .sortedBy { it.user.username.toLowerCase(Locale.getDefault()) }[position]
 
                 // add already invited users to the local list that contains all already invited users
                 if (member.invited && !viewModel.isUserInvited(member.user.id)) {
