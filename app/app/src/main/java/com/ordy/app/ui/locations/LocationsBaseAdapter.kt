@@ -133,7 +133,7 @@ class LocationsBaseAdapter(
                             view.favorite_loading.visibility = View.GONE
 
                             // Update the locations data.
-                            locationWrapper.favorite = true
+                            locationWrapper.favorite = favorite
                         }
 
                         QueryStatus.ERROR -> {
