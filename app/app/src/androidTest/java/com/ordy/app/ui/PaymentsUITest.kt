@@ -34,7 +34,7 @@ import org.mockito.MockitoAnnotations
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)
-class PaymentsTest : KoinTest {
+class PaymentsUITest : KoinTest {
 
     /**
      * Java faker for faking data.
