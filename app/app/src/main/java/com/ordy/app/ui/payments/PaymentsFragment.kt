@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
 import com.ordy.app.R
 import com.ordy.app.ui.payments.debtors.PaymentsDebtorsFragment
 import com.ordy.app.ui.payments.debts.PaymentsDebtsFragment
 import com.ordy.app.util.TabsAdapter
 import com.ordy.app.util.types.TabsEntry
+import kotlinx.android.synthetic.main.fragment_orders.view.*
 
 class PaymentsFragment : Fragment() {
 
@@ -32,13 +31,13 @@ class PaymentsFragment : Fragment() {
         tabsAdapter = TabsAdapter(childFragmentManager)
         tabsAdapter.addTabsEntry(
             TabsEntry(
-                PaymentsDebtorsFragment(this),
+                PaymentsDebtorsFragment(),
                 getString(R.string.debtors_tab_title)
             )
         )
         tabsAdapter.addTabsEntry(
             TabsEntry(
-                PaymentsDebtsFragment(this),
+                PaymentsDebtsFragment(),
                 getString(R.string.debts_tab_title)
             )
         )
@@ -54,10 +53,10 @@ class PaymentsFragment : Fragment() {
          * Link tabsAdapter to viewPager.
          * Link viewPager ot tabLayout.
          */
-        val viewPager = view.findViewById<ViewPager>(R.id.tabs_view)
+        val viewPager = view.tabs_view
         viewPager.adapter = tabsAdapter
 
-        val tabs = view.findViewById<TabLayout>(R.id.tabs)
+        val tabs = view.tabs
         tabs.setupWithViewPager(viewPager)
     }
 }

@@ -72,7 +72,10 @@ class ActiveOrdersFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
 
-        // Destroy the adapter & stop all the ongoing timer tasks.
-        baseAdapter.destroy()
+        // Check if the baseAdapter is initialized.
+        if (this::baseAdapter.isInitialized) {
+            // Destroy the adapter & stop all the ongoing timer tasks.
+            baseAdapter.destroy()
+        }
     }
 }

@@ -14,9 +14,7 @@ import com.ordy.app.ui.payments.PaymentsFragment
 import com.ordy.app.ui.payments.PaymentsViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
-class PaymentsDebtsFragment(
-    private val parentFragment: PaymentsFragment
-) : Fragment() {
+class PaymentsDebtsFragment : Fragment() {
 
     private val viewModel: PaymentsViewModel by sharedViewModel()
 
@@ -39,7 +37,7 @@ class PaymentsDebtsFragment(
         baseAdapter = PaymentsDebtsBaseAdapter(
             requireContext(),
             viewModel,
-            parentFragment,
+            requireParentFragment() as PaymentsFragment,
             viewLifecycleOwner
         )
 
