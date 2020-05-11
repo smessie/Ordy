@@ -9,5 +9,5 @@ data class LocationWrapper(
     val location: Location,
 
     @SerializedName("favorite")
-    val favorite: Boolean
+    var favorite: Boolean
 )

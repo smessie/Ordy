@@ -5,21 +5,29 @@ import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isSelected
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.javafaker.Faker
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.ordy.app.MainActivity
 import com.ordy.app.R
+import com.ordy.app.api.ApiService
 import com.ordy.app.api.Repository
 import com.ordy.app.api.models.Location
 import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.api.wrappers.LocationWrapper
 import com.ordy.app.ui.locations.LocationsViewModel
+import io.reactivex.Observable
+import okhttp3.ResponseBody
+import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -54,6 +62,11 @@ class LocationsUITest : KoinTest {
      * ViewModel that has been created using Koin injection.
      */
     private val mockLocationsViewModel: LocationsViewModel by inject()
+
+    /**
+     * Repository that has been created using Koin injection.
+     */
+    private val mockRepository: Repository by inject()
 
     /**
      * Mock provider for Koin testing.
@@ -133,14 +146,14 @@ class LocationsUITest : KoinTest {
         whenever(mockLocationsViewModel.searchValueData).thenReturn(searchValueData)
         whenever(mockLocationsViewModel.getLocationsMLD()).thenReturn(locationsMLD)
         whenever(mockLocationsViewModel.getLocations()).thenReturn(locationsQuery)
-        whenever(mockLocationsViewModel.isFavorite(locationId)).thenReturn(false)
+        whenever(mockRepository.unMarkLocationAsFavorite(any(), any())).then {}
 
         // Launch the activity
         ActivityScenario.launch<MainActivity>(locationsIntent)
 
         // Click the button to create a favorite
         onView(withId(R.id.favorite_mark)).perform(click())
-        verify(mockLocationsViewModel).markAsFavorite(locationId)
+        onView(withId(R.id.favorite_mark)).check(matches(isSelected()))
     }
 
     /**
@@ -172,13 +185,13 @@ class LocationsUITest : KoinTest {
         whenever(mockLocationsViewModel.searchValueData).thenReturn(searchValueData)
         whenever(mockLocationsViewModel.getLocationsMLD()).thenReturn(locationsMLD)
         whenever(mockLocationsViewModel.getLocations()).thenReturn(locationsQuery)
-        whenever(mockLocationsViewModel.isFavorite(locationId)).thenReturn(true)
+        whenever(mockRepository.unMarkLocationAsFavorite(any(), any())).then {}
 
         // Launch the activity
         ActivityScenario.launch<MainActivity>(locationsIntent)
 
         // Click the button to create a favorite
         onView(withId(R.id.favorite_mark)).perform(click())
-        verify(mockLocationsViewModel).unMarkAsFavorite(locationId)
+        onView(withId(R.id.favorite_mark)).check(matches(not(isSelected())))
     }
 }

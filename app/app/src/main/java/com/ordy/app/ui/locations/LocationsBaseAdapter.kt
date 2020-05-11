@@ -67,22 +67,8 @@ class LocationsBaseAdapter(
             QueryStatus.SUCCESS -> {
                 val locationWrapper = locations.requireData()[position]
 
-                // This is needed to prevent strange behaviour of ListView that reuses ListCells
-                view.favorite_mark.isSelected = false
-                view.favorite_mark.contentDescription =
-                    context.getString(R.string.not_favorite_description)
-
-                // Add initial favorite locations to viewModel local favorite locations list
-                if (locationWrapper.favorite && !viewModel.isFavorite(locationWrapper.location.id)) {
-                    viewModel.markAsFavorite(locationWrapper.location.id)
-                }
-
-                // If a location is marked as favorite
-                if (viewModel.isFavorite(locationWrapper.location.id)) {
-                    view.favorite_mark.isSelected = true
-                    view.favorite_mark.contentDescription =
-                        context.getString(R.string.is_favorite_description)
-                }
+                // Update the favorite star.
+                updateFavoriteView(view, locationWrapper.favorite)
 
                 val favoriteResult: MutableLiveData<Query<ResponseBody>> = MutableLiveData(Query())
 
@@ -95,14 +81,23 @@ class LocationsBaseAdapter(
                         else -> locationWrapper.location.address
                     }
 
+                // Local variable for storing if the click action
+                // caused the location to become favorite or not
+                var favorite = locationWrapper.favorite
+
                 view.favorite_mark.setOnClickListener {
 
-                    if (viewModel.isFavorite(locationWrapper.location.id)) {
+                    if (favorite) {
                         viewModel.deleteFavoriteLocation(
                             locationWrapper.location.id,
                             favoriteResult
                         )
-                        viewModel.unMarkAsFavorite(locationWrapper.location.id)
+
+                        favorite = false
+
+                        // Update the favorite star.
+                        updateFavoriteView(view, favorite)
+
                         view.favorite_mark.contentDescription =
                             context.getString(R.string.not_favorite_description)
                     } else {
@@ -110,13 +105,15 @@ class LocationsBaseAdapter(
                             locationWrapper.location.id,
                             favoriteResult
                         )
-                        viewModel.markAsFavorite(locationWrapper.location.id)
+
+                        favorite = true
+
+                        // Update the favorite star.
+                        updateFavoriteView(view, favorite)
+
                         view.favorite_mark.contentDescription =
                             context.getString(R.string.is_favorite_description)
                     }
-
-                    view.favorite_mark.isSelected =
-                        viewModel.isFavorite(locationWrapper.location.id)
                 }
 
                 // Observe result of favoriteResult
@@ -134,27 +131,19 @@ class LocationsBaseAdapter(
                             // Stop the loading effect and show the favorite mark again
                             view.favorite_mark.visibility = View.VISIBLE
                             view.favorite_loading.visibility = View.GONE
+
+                            // Update the locations data.
+                            locationWrapper.favorite = favorite
                         }
 
                         QueryStatus.ERROR -> {
 
-                            // Reset state as it was before the favorite mark was clicked
-                            if (viewModel.isFavorite(locationWrapper.location.id)) {
-                                viewModel.unMarkAsFavorite(locationWrapper.location.id)
-                                view.favorite_mark.contentDescription =
-                                    context.getString(R.string.not_favorite_description)
-                            } else {
-                                viewModel.markAsFavorite(locationWrapper.location.id)
-                                view.favorite_mark.contentDescription =
-                                    context.getString(R.string.is_favorite_description)
-                            }
-
-                            view.favorite_mark.isSelected =
-                                viewModel.isFavorite(locationWrapper.location.id)
-
                             // Stop the loading effect and show the favorite mark again
                             view.favorite_mark.visibility = View.VISIBLE
                             view.favorite_loading.visibility = View.GONE
+
+                            // Reset the favorite star.
+                            updateFavoriteView(view, !favorite)
 
                             ErrorHandler().handle(it.error, fragment.activity)
                         }
@@ -162,7 +151,6 @@ class LocationsBaseAdapter(
                         else -> {
                         }
                     }
-
                 })
             }
 
@@ -176,6 +164,24 @@ class LocationsBaseAdapter(
     fun update(locations: Query<List<LocationWrapper>>) {
         this.locations = locations
         notifyDataSetChanged()
+    }
+
+    /**
+     * Update the favorite mark for a specific view
+     * @param view View to update
+     * @param favorite If the star should be filled or not
+     */
+    fun updateFavoriteView(view: View, favorite: Boolean) {
+        if (favorite) {
+            view.favorite_mark.isSelected = true
+            view.favorite_mark.contentDescription =
+                context.getString(R.string.is_favorite_description)
+        } else {
+            view.favorite_mark.isSelected = false
+            view.favorite_mark.contentDescription =
+                context.getString(R.string.not_favorite_description)
+        }
+
     }
 
     override fun getItem(position: Int): Any {
