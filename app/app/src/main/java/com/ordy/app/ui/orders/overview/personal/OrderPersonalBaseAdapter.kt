@@ -135,8 +135,7 @@ class OrderPersonalBaseAdapter(
             val dialog = AddCommentDialog()
 
             val args = Bundle()
-            val test = AddCommentDialogArgumentsWrapper(order, orderItem, updateResult, viewModel)
-            args.putSerializable("args", test)
+            args.putSerializable("args", AddCommentDialogArgumentsWrapper(order, orderItem, updateResult, viewModel))
             dialog.arguments = args
 
             dialog.show(manager, "AddCommentDialog")
