@@ -1,6 +1,7 @@
 package com.ordy.app.ui.groups.overview
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.ordy.app.R
@@ -8,6 +9,7 @@ import com.ordy.app.api.util.ErrorHandler
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.groups.invite.InviteMemberActivity
 import com.ordy.app.ui.groups.overview.changeName.ChangeGroupNameDialog
+import com.ordy.app.ui.groups.overview.changeName.ChangeGroupNameDialogArgumentsWrapper
 
 class OverviewGroupHandlers(
     val activity: OverviewGroupActivity,
@@ -65,10 +67,10 @@ class OverviewGroupHandlers(
         if (viewModel.getGroupMLD().value != null) {
             val manager = this.activity.supportFragmentManager
 
-            val dialog = ChangeGroupNameDialog(
-                viewModel = viewModel,
-                activity = activity
-            )
+            val dialog = ChangeGroupNameDialog()
+            val args = Bundle()
+            args.putSerializable("args", ChangeGroupNameDialogArgumentsWrapper(viewModel, activity))
+            dialog.arguments = args
             dialog.show(manager, activity.getString(R.string.group_rename_dialog_tag))
         }
     }

@@ -23,12 +23,23 @@ import com.ordy.app.util.types.SnackbarType
 import kotlinx.android.synthetic.main.dialog_change_group_name.view.*
 
 
-class ChangeGroupNameDialog(
-    val viewModel: OverviewGroupViewModel,
-    val activity: OverviewGroupActivity
-) : AppCompatDialogFragment() {
+class ChangeGroupNameDialog : AppCompatDialogFragment() {
+
+    private lateinit var viewModel: OverviewGroupViewModel
+    private lateinit var activity: OverviewGroupActivity
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
+        if (this.arguments == null) {
+            throw Exception("Something failed")
+        }
+
+        val arguments: ChangeGroupNameDialogArgumentsWrapper =
+            arguments?.getSerializable("args") as ChangeGroupNameDialogArgumentsWrapper
+
+        activity = arguments.activity
+        viewModel = arguments.viewModel
+
         val group: Group = viewModel.getGroup().requireData()
 
         val dialogView =

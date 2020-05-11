@@ -1,11 +1,13 @@
 package com.ordy.app.ui.orders.overview.personal
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -18,6 +20,7 @@ import com.ordy.app.api.util.Query
 import com.ordy.app.api.util.QueryStatus
 import com.ordy.app.ui.orders.overview.OverviewOrderViewModel
 import com.ordy.app.ui.orders.overview.addcomment.AddCommentDialog
+import com.ordy.app.ui.orders.overview.addcomment.AddCommentDialogArgumentsWrapper
 import com.ordy.app.util.OrderUtil
 import com.ordy.app.util.SnackbarUtil
 import com.ordy.app.util.TimerUtil
@@ -129,12 +132,11 @@ class OrderPersonalBaseAdapter(
         view.order_item_action_comment.setOnClickListener {
             val manager = fragment.parentFragmentManager
 
-            val dialog = AddCommentDialog(
-                order = order,
-                orderItem = orderItem,
-                updateResult = updateResult,
-                viewModel = viewModel
-            )
+            val dialog = AddCommentDialog()
+
+            val args = Bundle()
+            args.putSerializable("args", AddCommentDialogArgumentsWrapper(order, orderItem, updateResult, viewModel))
+            dialog.arguments = args
 
             dialog.show(manager, "AddCommentDialog")
         }

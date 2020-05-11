@@ -354,7 +354,7 @@ class GroupServiceTest {
         try {
             groupService.updateGroup(testGroup.id, groupCreateWrapper)
         } catch (e: ThrowableList) {
-            Assertions.assertEquals("No name was given. Please try again.", e.generalErrors[0].message)
+            Assertions.assertEquals("No name was given. Please try again.", e.inputErrors[0].message)
         }
 
         verify(groupRepository, never()).save<Group>(any())
