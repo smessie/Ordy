@@ -19,6 +19,7 @@ import com.ordy.app.util.types.SnackbarType
 import kotlinx.android.synthetic.main.activity_profile.view.*
 import kotlinx.android.synthetic.main.list_invite_group_card.view.*
 import okhttp3.ResponseBody
+import java.util.*
 
 class InvitesBaseAdapter(
     val context: Context?,
@@ -58,7 +59,8 @@ class InvitesBaseAdapter(
             }
 
             QueryStatus.SUCCESS -> {
-                val invite = invites.requireData()[position]
+                val invite = invites.requireData()
+                    .sortedBy { it.group.name.toLowerCase(Locale.getDefault()) }[position]
 
                 // Stop the shimmer effect & hide.
                 view.group_loading.stopShimmer()

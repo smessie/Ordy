@@ -169,7 +169,7 @@ class AddItemOrderBaseAdapter(
             cuisineFiltered = cuisineItems.requireData().filter {
                 it.name.toLowerCase(Locale.US)
                     .matches(Regex(".*${searchValueData.toLowerCase(Locale.US)}.*"))
-            }.sortedBy { it.name }
+            }.sortedBy { it.name.toLowerCase(Locale.getDefault()) }
 
             // Add the "default" item to the bottom of the listview
             // This item serves as a fallback when no correct matches were found.

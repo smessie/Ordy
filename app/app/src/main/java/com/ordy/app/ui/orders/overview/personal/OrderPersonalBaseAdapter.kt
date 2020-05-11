@@ -234,7 +234,7 @@ class OrderPersonalBaseAdapter(
             if (order.requireData().orderItems != null) {
                 orderItems = order.requireData().orderItems!!.filter {
                     it.user.id == AppPreferences(context).userId
-                }
+                }.sortedBy { it.item.name.toLowerCase(Locale.getDefault()) }
             }
 
             // Stop the previous timer.
