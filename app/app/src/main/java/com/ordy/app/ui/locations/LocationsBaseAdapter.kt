@@ -131,6 +131,9 @@ class LocationsBaseAdapter(
                             // Stop the loading effect and show the favorite mark again
                             view.favorite_mark.visibility = View.VISIBLE
                             view.favorite_loading.visibility = View.GONE
+
+                            // Update the locations data.
+                            locationWrapper.favorite = true
                         }
 
                         QueryStatus.ERROR -> {
@@ -148,7 +151,6 @@ class LocationsBaseAdapter(
                         else -> {
                         }
                     }
-
                 })
             }
 
