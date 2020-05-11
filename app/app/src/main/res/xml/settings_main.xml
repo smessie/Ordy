@@ -39,14 +39,4 @@
             app:title="@string/settings_notif_bill_text"
             android:defaultValue="true"/>
     </PreferenceCategory>
-
-    <!-- License screen -->
-    <PreferenceCategory
-        app:key="license"
-        app:title="@string/settings_title_other">
-
-        <Preference
-            app:key="licence_fragment"
-            app:title="@string/settings_title_licence" />
-    </PreferenceCategory>
 </PreferenceScreen>
