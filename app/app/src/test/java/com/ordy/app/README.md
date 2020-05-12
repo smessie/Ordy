@@ -1,0 +1,1 @@
+In the backend (found in /spring/) there is also a large number of tests that test the functionality of the code. Please do not forget these.
